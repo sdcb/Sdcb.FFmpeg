@@ -17,6 +17,7 @@ jobs:
       - name: Install FFmpeg - linux
         if: matrix.os == 'ubuntu-latest'
         run: |
+          sudo apt update
           sudo apt install ffmpeg -y
       - name: Build
         run: |
