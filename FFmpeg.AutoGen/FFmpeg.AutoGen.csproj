@@ -1,38 +1,39 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;netstandard2.0;net472;net45;net40</TargetFrameworks>
-    <GeneratePackageOnBuild Condition=" $(Configuration) == 'Release' ">true</GeneratePackageOnBuild>
-    <Description>FFmpeg auto generated unsafe bindings for C#/.NET and Mono.</Description>
-  </PropertyGroup>
+    <PropertyGroup>
+        <PackageId>$(AssemblyName)</PackageId>
+        <VersionPrefix>5.0.0</VersionPrefix>
+        <VersionSuffix>preview1</VersionSuffix>
+        <LangVersion>latest</LangVersion>
+        <!-- Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <Authors>sdcb,Ruslan Balanukhin</Authors>
+        <Copyright>Copyright © sdcb, Ruslan Balanukhin 2022 All rights reserved.</Copyright>
+        <PackageProjectUrl>https://github.com/sdcb/FFmpeg.AutoGen</PackageProjectUrl>
+        <AssemblyName>Sdcb.FFmpeg.AutoGen</AssemblyName>
+        <SignAssembly>False</SignAssembly>
+        <TargetFrameworks>netstandard2.1;netstandard2.0;net472;net40</TargetFrameworks>
+        <GeneratePackageOnBuild Condition=" $(Configuration) == 'Release' ">true</GeneratePackageOnBuild>
+        <Description>FFmpeg auto generated unsafe bindings for C#/.NET and Mono.</Description>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <NoWarn>1701;1702;1705;169;108;1591;1573;1591</NoWarn>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
-  
-  <PropertyGroup>
-    <!-- Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Authors>sdcb,Ruslan Balanukhin</Authors>
-    <Company>sdcb,Rational Core</Company>
-    <Copyright>Copyright © sdcb, Ruslan Balanukhin 2022 All rights reserved.</Copyright>
-    <PackageProjectUrl>https://github.com/sdcb/FFmpeg.AutoGen</PackageProjectUrl>
-    <AssemblyName>Sdcb.FFmpeg.AutoGen</AssemblyName>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="all" />
-  </ItemGroup>
-  
-  <ItemGroup Condition="'$(TargetFramework)' == 'net472' or '$(TargetFramework)' == 'net45'">
-    <PackageReference Include="System.Memory">
-      <Version>4.5.4</Version>
-    </PackageReference>
-  </ItemGroup>
+    <PropertyGroup>
+        <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+        <NoWarn>1701;1702;1705;169;108;1591;1573;1591</NoWarn>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'net472' or '$(TargetFramework)' == 'net45'">
+        <PackageReference Include="System.Memory">
+            <Version>4.5.4</Version>
+        </PackageReference>
+    </ItemGroup>
 
 </Project>
