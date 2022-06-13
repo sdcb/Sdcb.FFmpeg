@@ -607,10 +607,10 @@ namespace FFmpeg.AutoGen
         }
     }
     
-    public unsafe struct int_array5
+    public unsafe struct int_array7
     {
-        public const int Size = 5;
-        public fixed int _[5];
+        public const int Size = 7;
+        public fixed int _[7];
         
         public int this[uint i]
         {
@@ -626,7 +626,7 @@ namespace FFmpeg.AutoGen
             };
         }
         
-        public int[] ToArray() => new [] { _[0], _[1], _[2], _[3], _[4] };
+        public int[] ToArray() => new [] { _[0], _[1], _[2], _[3], _[4], _[5], _[6] };
         
         
         public void UpdateFrom(int[] array)
@@ -643,6 +643,8 @@ namespace FFmpeg.AutoGen
                 _[2] = p[2];
                 _[3] = p[3];
                 _[4] = p[4];
+                _[5] = p[5];
+                _[6] = p[6];
             }
         }
     }
@@ -989,58 +991,6 @@ namespace FFmpeg.AutoGen
         }
     }
     
-    public unsafe struct long_array17
-    {
-        public const int Size = 17;
-        public fixed long _[17];
-        
-        public long this[uint i]
-        {
-            get => i switch
-            {
-                < Size => _[i],
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
-            };
-            set => _[i] = i switch
-            {
-                < Size => value,
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
-            };
-        }
-        
-        public long[] ToArray() => new [] { _[0], _[1], _[2], _[3], _[4], _[5], _[6], _[7], _[8], _[9], _[10], _[11], _[12], _[13], _[14], _[15], _[16] };
-        
-        
-        public void UpdateFrom(long[] array)
-        {
-            if (array.Length != Size)
-            {
-                throw new ArgumentOutOfRangeException($"array size({array.Length}) should == {Size}");
-            }
-            
-            fixed (long* p = array)
-            {
-                _[0] = p[0];
-                _[1] = p[1];
-                _[2] = p[2];
-                _[3] = p[3];
-                _[4] = p[4];
-                _[5] = p[5];
-                _[6] = p[6];
-                _[7] = p[7];
-                _[8] = p[8];
-                _[9] = p[9];
-                _[10] = p[10];
-                _[11] = p[11];
-                _[12] = p[12];
-                _[13] = p[13];
-                _[14] = p[14];
-                _[15] = p[15];
-                _[16] = p[16];
-            }
-        }
-    }
-    
     public unsafe struct AVRational_array25
     {
         public const int Size = 25;
@@ -1167,55 +1117,6 @@ namespace FFmpeg.AutoGen
                 _22 = p[22];
                 _23 = p[23];
                 _24 = p[24];
-            }
-        }
-    }
-    
-    public unsafe struct byte_array1024
-    {
-        public const int Size = 1024;
-        public fixed byte _[1024];
-        
-        public byte this[uint i]
-        {
-            get => i switch
-            {
-                < Size => _[i],
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
-            };
-            set => _[i] = i switch
-            {
-                < Size => value,
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
-            };
-        }
-        
-        public byte[] ToArray()
-        {
-            fixed (byte_array1024* p = &this)
-            {
-                var a = new byte[Size];
-                for (uint i = 0; i < Size; i++)
-                {
-                    a[i] = p->_[i];
-                }
-                return a;
-            }
-        }
-        
-        public void UpdateFrom(byte[] array)
-        {
-            if (array.Length != Size)
-            {
-                throw new ArgumentOutOfRangeException($"array size({array.Length}) should == {Size}");
-            }
-            
-            fixed (byte* p = array)
-            {
-                for (int i = 0; i < Size; ++i)
-                {
-                    _[i] = p[i];
-                }
             }
         }
     }

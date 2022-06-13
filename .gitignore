@@ -107,3 +107,4 @@ UpgradeLog*.XML
 
 # Local 
 /FFmpeg.AutoGen.Example/frame.*.jpg
+/ffmpeg-binary-cache
