@@ -17,7 +17,7 @@ jobs:
       - name: Install FFmpeg - linux
         if: matrix.os == 'ubuntu-latest'
         run: |
-          sudo apt-get install ffmpeg -y
+          sudo apt install ffmpeg -y
       - name: Build
         run: |
           dotnet build -c Release
