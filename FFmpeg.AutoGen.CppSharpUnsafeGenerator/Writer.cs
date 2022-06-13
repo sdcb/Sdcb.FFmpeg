@@ -226,40 +226,6 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
             WriteLine();
         }
 
-
-        private void WriteDefaultFunctionDelegateExpression(ExportFunctionDefinition function,
-            string parameterNames, string functionDelegateName, string functionPtrName, string returnCommand)
-        {
-            var delegateParameters = GetParameters(function.Parameters, false);
-
-            WriteLine($"({delegateParameters}) =>");
-
-            using (BeginBlock(true))
-            {
-                var getOrLoadLibrary = $"GetOrLoadLibrary(\"{function.LibraryName}\")";
-                var getDelegate = $"GetFunctionDelegate<{functionDelegateName}>({getOrLoadLibrary}, \"{function.Name}\")";
-
-                WriteLine($"{functionPtrName} = {getDelegate};");
-                WriteLine($"if ({functionPtrName} == null)");
-
-                using (BeginBlock())
-                {
-                    Write($"{functionPtrName} = ");
-                    WriteNotSupportedFunctionDelegateExpression(function);
-                    WriteLine(";");
-                }
-
-                WriteLine($"{returnCommand}{functionPtrName}({parameterNames});");
-            }
-        }
-
-        private void WriteNotSupportedFunctionDelegateExpression(ExportFunctionDefinition function)
-        {
-            WriteLine("delegate ");
-            using var _ = BeginBlock(true);
-            WriteLine($"throw new PlatformNotSupportedException(string.Format(PlatformNotSupportedMessageFormat, \"{function.Name}\"));");
-        }
-
         public void WriteDelegate(DelegateDefinition @delegate)
         {
             WriteSummary(@delegate);

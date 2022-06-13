@@ -5,8 +5,6 @@ using FFmpeg.AutoGen.Native;
 
 namespace FFmpeg.AutoGen
 {
-    public delegate IntPtr GetOrLoadLibrary(string libraryName);
-
     public static partial class ffmpeg
     {
         public static readonly int EAGAIN;
@@ -16,23 +14,6 @@ namespace FFmpeg.AutoGen
         public static readonly int EINVAL = 22;
 
         public static readonly int EPIPE = 32;
-
-        private static readonly object SyncRoot = new();
-
-        public static readonly Dictionary<string, string[]> LibraryDependenciesMap =
-            new()
-            {
-                { "avcodec", new[] { "avutil", "swresample" } },
-                { "avdevice", new[] { "avcodec", "avfilter", "avformat", "avutil" } },
-                { "avfilter", new[] { "avcodec", "avformat", "avutil", "postproc", "swresample", "swscale" } },
-                { "avformat", new[] { "avcodec", "avutil" } },
-                { "avutil", new string[0] },
-                { "postproc", new[] { "avutil" } },
-                { "swresample", new[] { "avutil" } },
-                { "swscale", new[] { "avutil" } }
-            };
-
-        public static readonly Dictionary<string, IntPtr> LoadedLibraries = new();
 
         static ffmpeg()
         {

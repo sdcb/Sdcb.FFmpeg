@@ -162,8 +162,7 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
                     units.OfType<ExportFunctionDefinition>()
                         .OrderBy(x => x.LibraryName)
                         .ThenBy(x => x.Name)
-                        .ToList()
-                        .ForEach(x =>
+                        .ForEach((x, i) =>
                         {
                             writer.WriteFunction(x);
                             writer.WriteLine();
