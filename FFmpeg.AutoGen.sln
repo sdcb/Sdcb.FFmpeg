@@ -22,7 +22,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FFmpeg.AutoGen.Tests", "FFm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FFmpeg.AutoGen.Examples.Encode", "FFmpeg.AutoGen.Examples.Encode\FFmpeg.AutoGen.Examples.Encode.csproj", "{136668DD-ECE0-4153-B21E-511882F358F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFmpeg.AutoGen.Examples.ResamplingAudio", "FFmpeg.AutoGen.Examples.ResamplingAudio\FFmpeg.AutoGen.Examples.ResamplingAudio.csproj", "{A192914F-DAA8-400B-B5CA-BA188AEBB42B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FFmpeg.AutoGen.Examples.ResamplingAudio", "FFmpeg.AutoGen.Examples.ResamplingAudio\FFmpeg.AutoGen.Examples.ResamplingAudio.csproj", "{A192914F-DAA8-400B-B5CA-BA188AEBB42B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{99AA60D6-6C3F-4538-952A-B75F39AC9D76}"
+	ProjectSection(SolutionItems) = preProject
+		.github\issue_template.md = .github\issue_template.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{B5834632-8D6D-4841-BE64-0AB4D6CB1149}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\main.yml = .github\workflows\main.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +71,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{99AA60D6-6C3F-4538-952A-B75F39AC9D76} = {CF48D45D-979F-4574-9E33-A3AC1CB542B5}
+		{B5834632-8D6D-4841-BE64-0AB4D6CB1149} = {99AA60D6-6C3F-4538-952A-B75F39AC9D76}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4BAFD2E8-8AAC-4483-B5FA-6E4C136A59F5}
