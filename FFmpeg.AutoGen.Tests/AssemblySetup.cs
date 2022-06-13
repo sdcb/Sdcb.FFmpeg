@@ -9,10 +9,6 @@ namespace FFmpeg.AutoGen.Tests
         [OneTimeSetUp]
         public void Setup()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                ffmpeg.RootPath = "/lib/x86_64-linux-gnu/";
-            }
         }
     }
 }

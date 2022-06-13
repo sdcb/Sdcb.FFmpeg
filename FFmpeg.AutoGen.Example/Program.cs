@@ -15,8 +15,6 @@ namespace FFmpeg.AutoGen.Example
             Console.WriteLine("Current directory: " + Environment.CurrentDirectory);
             Console.WriteLine("Running in {0}-bit mode.", Environment.Is64BitProcess ? "64" : "32");
 
-            FFmpegBinariesHelper.RegisterFFmpegBinaries();
-
             Console.WriteLine($"FFmpeg version info: {ffmpeg.av_version_info()}");
 
             SetupLogging();
