@@ -4,7 +4,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
-using System.Runtime.InteropServices;
 
 namespace FFmpeg.AutoGen.Tests
 {
@@ -14,8 +13,11 @@ namespace FFmpeg.AutoGen.Tests
         [OneTimeSetUp]
         public void Setup()
         {
-            string FFmpegBinDir = SetupFFmpegBinaries(".", "https://github.com/GyanD/codexffmpeg/releases/download/5.0.1/ffmpeg-5.0.1-full_build-shared.zip");
-            Environment.SetEnvironmentVariable("PATH", $"{FFmpegBinDir};{Environment.GetEnvironmentVariable("PATH")}");
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            {
+                string FFmpegBinDir = SetupFFmpegBinaries(".", "https://github.com/GyanD/codexffmpeg/releases/download/5.0.1/ffmpeg-5.0.1-full_build-shared.zip");
+                Environment.SetEnvironmentVariable("PATH", $"{FFmpegBinDir};{Environment.GetEnvironmentVariable("PATH")}");
+            }
         }
 
         static string SetupFFmpegBinaries(string solutionDir, string ffmpegBinaryUrl)
