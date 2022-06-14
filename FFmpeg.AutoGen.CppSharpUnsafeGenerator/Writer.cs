@@ -431,20 +431,16 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
             if (elementType == "void*")
             {
                 WriteLine();
-                WriteLineWithoutIntent("#if NET45_OR_GREATER");
                 WriteLine($"public unsafe Span<IntPtr> GetPinnableReference()");
                 using (BeginBlock())
                     WriteLine($"fixed (void** p = &_0) return new Span<IntPtr>(p, Size); ");
-                WriteLineWithoutIntent("#endif");
             }
             if (elementType == "byte*")
             {
                 WriteLine();
-                WriteLineWithoutIntent("#if NET45_OR_GREATER");
                 WriteLine($"public unsafe Span<IntPtr> GetPinnableReference()");
                 using (BeginBlock())
                     WriteLine($"fixed (byte** p = &_0) return new Span<IntPtr>(p, Size); ");
-                WriteLineWithoutIntent("#endif");
             }
         }
 

@@ -127,12 +127,10 @@ namespace FFmpeg.AutoGen
             }
         }
         
-#if NET45_OR_GREATER
         public unsafe Span<IntPtr> GetPinnableReference()
         {
             fixed (void** p = &_0) return new Span<IntPtr>(p, Size); 
         }
-#endif
     }
     
     public unsafe struct AVHDRPlusColorTransformParams_array3
@@ -306,12 +304,10 @@ namespace FFmpeg.AutoGen
             }
         }
         
-#if NET45_OR_GREATER
         public unsafe Span<IntPtr> GetPinnableReference()
         {
             fixed (byte** p = &_0) return new Span<IntPtr>(p, Size); 
         }
-#endif
     }
     
     public unsafe struct int_array3
@@ -482,12 +478,10 @@ namespace FFmpeg.AutoGen
             }
         }
         
-#if NET45_OR_GREATER
         public unsafe Span<IntPtr> GetPinnableReference()
         {
             fixed (byte** p = &_0) return new Span<IntPtr>(p, Size); 
         }
-#endif
     }
     
     public unsafe struct int_array4
@@ -787,12 +781,10 @@ namespace FFmpeg.AutoGen
             }
         }
         
-#if NET45_OR_GREATER
         public unsafe Span<IntPtr> GetPinnableReference()
         {
             fixed (byte** p = &_0) return new Span<IntPtr>(p, Size); 
         }
-#endif
     }
     
     public unsafe struct int_array8
