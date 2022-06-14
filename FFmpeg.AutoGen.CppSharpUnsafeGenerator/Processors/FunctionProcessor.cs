@@ -218,9 +218,8 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator.Processors
 
         private static string GetSha256(string text)
         {
-            var bytes = Encoding.UTF8.GetBytes(text);
-            var sha256Managed = new SHA256Managed();
-            var hash = sha256Managed.ComputeHash(bytes);
+            byte[] bytes = Encoding.UTF8.GetBytes(text);
+            byte[] hash = SHA256.HashData(bytes);
             return Convert.ToBase64String(hash);
         }
     }
