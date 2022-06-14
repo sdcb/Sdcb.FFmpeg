@@ -29,14 +29,7 @@ namespace FFmpeg.AutoGen
     }
     
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate int AVClass_query_ranges (AVOptionRanges** p0, void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string key, int flags);
+    public unsafe delegate int AVClass_query_ranges (AVOptionRanges** p0, void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string key, int flags);
     public unsafe record struct AVClass_query_ranges_func(IntPtr Pointer)
     {
         public static implicit operator AVClass_query_ranges_func(AVClass_query_ranges func) => new(func switch
@@ -69,14 +62,7 @@ namespace FFmpeg.AutoGen
     }
     
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate void av_log_set_callback_callback (void* p0, int p1, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string p2, byte* p3);
+    public unsafe delegate void av_log_set_callback_callback (void* p0, int p1, [MarshalAs(UnmanagedType.LPUTF8Str)] string p2, byte* p3);
     public unsafe record struct av_log_set_callback_callback_func(IntPtr Pointer)
     {
         public static implicit operator av_log_set_callback_callback_func(av_log_set_callback_callback func) => new(func switch
@@ -824,14 +810,7 @@ namespace FFmpeg.AutoGen
     }
     
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate int AVFormatContext_io_open (AVFormatContext* s, AVIOContext** pb, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string url, int flags, AVDictionary** options);
+    public unsafe delegate int AVFormatContext_io_open (AVFormatContext* s, AVIOContext** pb, [MarshalAs(UnmanagedType.LPUTF8Str)] string url, int flags, AVDictionary** options);
     public unsafe record struct AVFormatContext_io_open_func(IntPtr Pointer)
     {
         public static implicit operator AVFormatContext_io_open_func(AVFormatContext_io_open func) => new(func switch
@@ -1084,21 +1063,7 @@ namespace FFmpeg.AutoGen
     }
     
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate int AVFilter_process_command (AVFilterContext* p0, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string cmd, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string arg, byte* res, int res_len, int flags);
+    public unsafe delegate int AVFilter_process_command (AVFilterContext* p0, [MarshalAs(UnmanagedType.LPUTF8Str)] string cmd, [MarshalAs(UnmanagedType.LPUTF8Str)] string arg, byte* res, int res_len, int flags);
     public unsafe record struct AVFilter_process_command_func(IntPtr Pointer)
     {
         public static implicit operator AVFilter_process_command_func(AVFilter_process_command func) => new(func switch

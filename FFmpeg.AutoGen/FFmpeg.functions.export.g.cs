@@ -335,14 +335,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Returns codec descriptor with the given name or NULL if no such descriptor exists.</summary>
         [DllImport("avcodec-59", EntryPoint = "avcodec_descriptor_get_by_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVCodecDescriptor* avcodec_descriptor_get_by_name(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name);
+        public static extern AVCodecDescriptor* avcodec_descriptor_get_by_name([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
         
         /// <summary>Iterate over all codec descriptors known to libavcodec.</summary>
         /// <param name="prev">previous descriptor. NULL to get the first descriptor.</param>
@@ -385,14 +378,7 @@ namespace FFmpeg.AutoGen
         /// <summary>Find a registered decoder with the specified name.</summary>
         /// <param name="name">name of the requested decoder</param>
         [DllImport("avcodec-59", EntryPoint = "avcodec_find_decoder_by_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVCodec* avcodec_find_decoder_by_name(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name);
+        public static extern AVCodec* avcodec_find_decoder_by_name([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
         
         /// <summary>Find a registered encoder with a matching codec ID.</summary>
         /// <param name="id">AVCodecID of the requested encoder</param>
@@ -402,14 +388,7 @@ namespace FFmpeg.AutoGen
         /// <summary>Find a registered encoder with the specified name.</summary>
         /// <param name="name">name of the requested encoder</param>
         [DllImport("avcodec-59", EntryPoint = "avcodec_find_encoder_by_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVCodec* avcodec_find_encoder_by_name(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name);
+        public static extern AVCodec* avcodec_find_encoder_by_name([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
         
         /// <summary>Reset the internal codec state / flush internal buffers. Should be called e.g. when seeking or when switching to a different stream.</summary>
         [DllImport("avcodec-59", EntryPoint = "avcodec_flush_buffers", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -657,14 +636,7 @@ namespace FFmpeg.AutoGen
         /// <param name="device_options">An AVDictionary filled with device-private options. May be NULL. The same options must be passed later to avformat_write_header() for output devices or avformat_open_input() for input devices, or at any other place that affects device-private options.</param>
         /// <param name="device_list">list of autodetected devices</param>
         [DllImport("avdevice-59", EntryPoint = "avdevice_list_input_sources", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avdevice_list_input_sources(AVInputFormat* device, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string device_name, AVDictionary* device_options, AVDeviceInfoList** device_list);
+        public static extern int avdevice_list_input_sources(AVInputFormat* device, [MarshalAs(UnmanagedType.LPUTF8Str)] string device_name, AVDictionary* device_options, AVDeviceInfoList** device_list);
         
         /// <summary>List devices.</summary>
         /// <param name="device">device format. May be NULL if device name is set.</param>
@@ -672,34 +644,13 @@ namespace FFmpeg.AutoGen
         /// <param name="device_options">An AVDictionary filled with device-private options. May be NULL. The same options must be passed later to avformat_write_header() for output devices or avformat_open_input() for input devices, or at any other place that affects device-private options.</param>
         /// <param name="device_list">list of autodetected devices</param>
         [DllImport("avdevice-59", EntryPoint = "avdevice_list_input_sources", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avdevice_list_input_sources(AVInputFormat* device, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string device_name, AVDictionary* device_options, ref AVDeviceInfoList* device_list);
+        public static extern int avdevice_list_input_sources(AVInputFormat* device, [MarshalAs(UnmanagedType.LPUTF8Str)] string device_name, AVDictionary* device_options, ref AVDeviceInfoList* device_list);
         
         [DllImport("avdevice-59", EntryPoint = "avdevice_list_output_sinks", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avdevice_list_output_sinks(AVOutputFormat* device, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string device_name, AVDictionary* device_options, AVDeviceInfoList** device_list);
+        public static extern int avdevice_list_output_sinks(AVOutputFormat* device, [MarshalAs(UnmanagedType.LPUTF8Str)] string device_name, AVDictionary* device_options, AVDeviceInfoList** device_list);
         
         [DllImport("avdevice-59", EntryPoint = "avdevice_list_output_sinks", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avdevice_list_output_sinks(AVOutputFormat* device, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string device_name, AVDictionary* device_options, ref AVDeviceInfoList* device_list);
+        public static extern int avdevice_list_output_sinks(AVOutputFormat* device, [MarshalAs(UnmanagedType.LPUTF8Str)] string device_name, AVDictionary* device_options, ref AVDeviceInfoList* device_list);
         
         /// <summary>Initialize libavdevice and register all the input and output devices.</summary>
         [DllImport("avdevice-59", EntryPoint = "avdevice_register_all", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -845,14 +796,7 @@ namespace FFmpeg.AutoGen
         /// <summary>Get a filter definition matching the given name.</summary>
         /// <param name="name">the filter name to find</param>
         [DllImport("avfilter-8", EntryPoint = "avfilter_get_by_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVFilter* avfilter_get_by_name(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name);
+        public static extern AVFilter* avfilter_get_by_name([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
         
         /// <summary>Returns AVClass for AVFilterContext.</summary>
         [DllImport("avfilter-8", EntryPoint = "avfilter_get_class", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -867,14 +811,7 @@ namespace FFmpeg.AutoGen
         /// <param name="filter">the filter to create an instance of</param>
         /// <param name="name">Name to give to the new instance (will be copied to AVFilterContext.name). This may be used by the caller to identify different filters, libavfilter itself assigns no semantics to this parameter. May be NULL.</param>
         [DllImport("avfilter-8", EntryPoint = "avfilter_graph_alloc_filter", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVFilterContext* avfilter_graph_alloc_filter(AVFilterGraph* graph, AVFilter* filter, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name);
+        public static extern AVFilterContext* avfilter_graph_alloc_filter(AVFilterGraph* graph, AVFilter* filter, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
         
         /// <summary>Check validity and configure all the links and formats in the graph.</summary>
         /// <param name="graphctx">the filter graph</param>
@@ -886,54 +823,19 @@ namespace FFmpeg.AutoGen
         /// <param name="name">the instance name to give to the created filter instance</param>
         /// <param name="graph_ctx">the filter graph</param>
         [DllImport("avfilter-8", EntryPoint = "avfilter_graph_create_filter", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avfilter_graph_create_filter(AVFilterContext** filt_ctx, AVFilter* filt, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string args, void* opaque, AVFilterGraph* graph_ctx);
+        public static extern int avfilter_graph_create_filter(AVFilterContext** filt_ctx, AVFilter* filt, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, [MarshalAs(UnmanagedType.LPUTF8Str)] string args, void* opaque, AVFilterGraph* graph_ctx);
         
         /// <summary>Create and add a filter instance into an existing graph. The filter instance is created from the filter filt and inited with the parameter args. opaque is currently ignored.</summary>
         /// <param name="name">the instance name to give to the created filter instance</param>
         /// <param name="graph_ctx">the filter graph</param>
         [DllImport("avfilter-8", EntryPoint = "avfilter_graph_create_filter", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avfilter_graph_create_filter(ref AVFilterContext* filt_ctx, AVFilter* filt, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string args, void* opaque, AVFilterGraph* graph_ctx);
+        public static extern int avfilter_graph_create_filter(ref AVFilterContext* filt_ctx, AVFilter* filt, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, [MarshalAs(UnmanagedType.LPUTF8Str)] string args, void* opaque, AVFilterGraph* graph_ctx);
         
         /// <summary>Dump a graph into a human-readable string representation.</summary>
         /// <param name="graph">the graph to dump</param>
         /// <param name="options">formatting options; currently ignored</param>
         [DllImport("avfilter-8", EntryPoint = "avfilter_graph_dump", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern byte* avfilter_graph_dump(AVFilterGraph* graph, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string options);
+        public static extern byte* avfilter_graph_dump(AVFilterGraph* graph, [MarshalAs(UnmanagedType.LPUTF8Str)] string options);
         
         /// <summary>Free a graph, destroy its links, and set *graph to NULL. If *graph is NULL, do nothing.</summary>
         [DllImport("avfilter-8", EntryPoint = "avfilter_graph_free", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -947,14 +849,7 @@ namespace FFmpeg.AutoGen
         /// <param name="graph">filter graph to search through.</param>
         /// <param name="name">filter instance name (should be unique in the graph).</param>
         [DllImport("avfilter-8", EntryPoint = "avfilter_graph_get_filter", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVFilterContext* avfilter_graph_get_filter(AVFilterGraph* graph, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name);
+        public static extern AVFilterContext* avfilter_graph_get_filter(AVFilterGraph* graph, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
         
         /// <summary>Add a graph described by a string to a graph.</summary>
         /// <param name="graph">the filter graph where to link the parsed graph context</param>
@@ -962,14 +857,7 @@ namespace FFmpeg.AutoGen
         /// <param name="inputs">linked list to the inputs of the graph</param>
         /// <param name="outputs">linked list to the outputs of the graph</param>
         [DllImport("avfilter-8", EntryPoint = "avfilter_graph_parse", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avfilter_graph_parse(AVFilterGraph* graph, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string filters, AVFilterInOut* inputs, AVFilterInOut* outputs, void* log_ctx);
+        public static extern int avfilter_graph_parse(AVFilterGraph* graph, [MarshalAs(UnmanagedType.LPUTF8Str)] string filters, AVFilterInOut* inputs, AVFilterInOut* outputs, void* log_ctx);
         
         /// <summary>Add a graph described by a string to a graph.</summary>
         /// <param name="graph">the filter graph where to link the parsed graph context</param>
@@ -977,14 +865,7 @@ namespace FFmpeg.AutoGen
         /// <param name="inputs">pointer to a linked list to the inputs of the graph, may be NULL. If non-NULL, *inputs is updated to contain the list of open inputs after the parsing, should be freed with avfilter_inout_free().</param>
         /// <param name="outputs">pointer to a linked list to the outputs of the graph, may be NULL. If non-NULL, *outputs is updated to contain the list of open outputs after the parsing, should be freed with avfilter_inout_free().</param>
         [DllImport("avfilter-8", EntryPoint = "avfilter_graph_parse_ptr", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avfilter_graph_parse_ptr(AVFilterGraph* graph, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string filters, AVFilterInOut** inputs, AVFilterInOut** outputs, void* log_ctx);
+        public static extern int avfilter_graph_parse_ptr(AVFilterGraph* graph, [MarshalAs(UnmanagedType.LPUTF8Str)] string filters, AVFilterInOut** inputs, AVFilterInOut** outputs, void* log_ctx);
         
         /// <summary>Add a graph described by a string to a graph.</summary>
         /// <param name="graph">the filter graph where to link the parsed graph context</param>
@@ -992,14 +873,7 @@ namespace FFmpeg.AutoGen
         /// <param name="inputs">pointer to a linked list to the inputs of the graph, may be NULL. If non-NULL, *inputs is updated to contain the list of open inputs after the parsing, should be freed with avfilter_inout_free().</param>
         /// <param name="outputs">pointer to a linked list to the outputs of the graph, may be NULL. If non-NULL, *outputs is updated to contain the list of open outputs after the parsing, should be freed with avfilter_inout_free().</param>
         [DllImport("avfilter-8", EntryPoint = "avfilter_graph_parse_ptr", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avfilter_graph_parse_ptr(AVFilterGraph* graph, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string filters, ref AVFilterInOut* inputs, ref AVFilterInOut* outputs, void* log_ctx);
+        public static extern int avfilter_graph_parse_ptr(AVFilterGraph* graph, [MarshalAs(UnmanagedType.LPUTF8Str)] string filters, ref AVFilterInOut* inputs, ref AVFilterInOut* outputs, void* log_ctx);
         
         /// <summary>Add a graph described by a string to a graph.</summary>
         /// <param name="graph">the filter graph where to link the parsed graph context</param>
@@ -1007,14 +881,7 @@ namespace FFmpeg.AutoGen
         /// <param name="inputs">a linked list of all free (unlinked) inputs of the parsed graph will be returned here. It is to be freed by the caller using avfilter_inout_free().</param>
         /// <param name="outputs">a linked list of all free (unlinked) outputs of the parsed graph will be returned here. It is to be freed by the caller using avfilter_inout_free().</param>
         [DllImport("avfilter-8", EntryPoint = "avfilter_graph_parse2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avfilter_graph_parse2(AVFilterGraph* graph, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string filters, AVFilterInOut** inputs, AVFilterInOut** outputs);
+        public static extern int avfilter_graph_parse2(AVFilterGraph* graph, [MarshalAs(UnmanagedType.LPUTF8Str)] string filters, AVFilterInOut** inputs, AVFilterInOut** outputs);
         
         /// <summary>Add a graph described by a string to a graph.</summary>
         /// <param name="graph">the filter graph where to link the parsed graph context</param>
@@ -1022,14 +889,7 @@ namespace FFmpeg.AutoGen
         /// <param name="inputs">a linked list of all free (unlinked) inputs of the parsed graph will be returned here. It is to be freed by the caller using avfilter_inout_free().</param>
         /// <param name="outputs">a linked list of all free (unlinked) outputs of the parsed graph will be returned here. It is to be freed by the caller using avfilter_inout_free().</param>
         [DllImport("avfilter-8", EntryPoint = "avfilter_graph_parse2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avfilter_graph_parse2(AVFilterGraph* graph, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string filters, ref AVFilterInOut* inputs, ref AVFilterInOut* outputs);
+        public static extern int avfilter_graph_parse2(AVFilterGraph* graph, [MarshalAs(UnmanagedType.LPUTF8Str)] string filters, ref AVFilterInOut* inputs, ref AVFilterInOut* outputs);
         
         /// <summary>Queue a command for one or more filter instances.</summary>
         /// <param name="graph">the filter graph</param>
@@ -1038,28 +898,7 @@ namespace FFmpeg.AutoGen
         /// <param name="arg">the argument for the command</param>
         /// <param name="ts">time at which the command should be sent to the filter</param>
         [DllImport("avfilter-8", EntryPoint = "avfilter_graph_queue_command", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avfilter_graph_queue_command(AVFilterGraph* graph, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string target, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string cmd, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string arg, int flags, double ts);
+        public static extern int avfilter_graph_queue_command(AVFilterGraph* graph, [MarshalAs(UnmanagedType.LPUTF8Str)] string target, [MarshalAs(UnmanagedType.LPUTF8Str)] string cmd, [MarshalAs(UnmanagedType.LPUTF8Str)] string arg, int flags, double ts);
         
         /// <summary>Request a frame on the oldest sink link.</summary>
         [DllImport("avfilter-8", EntryPoint = "avfilter_graph_request_oldest", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -1072,28 +911,7 @@ namespace FFmpeg.AutoGen
         /// <param name="arg">the argument for the command</param>
         /// <param name="res">a buffer with size res_size where the filter(s) can return a response.</param>
         [DllImport("avfilter-8", EntryPoint = "avfilter_graph_send_command", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avfilter_graph_send_command(AVFilterGraph* graph, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string target, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string cmd, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string arg, byte* res, int res_len, int flags);
+        public static extern int avfilter_graph_send_command(AVFilterGraph* graph, [MarshalAs(UnmanagedType.LPUTF8Str)] string target, [MarshalAs(UnmanagedType.LPUTF8Str)] string cmd, [MarshalAs(UnmanagedType.LPUTF8Str)] string arg, byte* res, int res_len, int flags);
         
         /// <summary>Enable or disable automatic format conversion inside the graph.</summary>
         /// <param name="flags">any of the AVFILTER_AUTO_CONVERT_* constants</param>
@@ -1116,14 +934,7 @@ namespace FFmpeg.AutoGen
         /// <param name="ctx">uninitialized filter context to initialize</param>
         /// <param name="args">Options to initialize the filter with. This must be a &apos;:&apos;-separated list of options in the &apos;key=value&apos; form. May be NULL if the options have been set directly using the AVOptions API or there are no options that need to be set.</param>
         [DllImport("avfilter-8", EntryPoint = "avfilter_init_str", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avfilter_init_str(AVFilterContext* ctx, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string args);
+        public static extern int avfilter_init_str(AVFilterContext* ctx, [MarshalAs(UnmanagedType.LPUTF8Str)] string args);
         
         /// <summary>Allocate a single AVFilterInOut entry. Must be freed with avfilter_inout_free().</summary>
         [DllImport("avfilter-8", EntryPoint = "avfilter_inout_alloc", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -1186,21 +997,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Make the filter instance process a command. It is recommended to use avfilter_graph_send_command().</summary>
         [DllImport("avfilter-8", EntryPoint = "avfilter_process_command", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avfilter_process_command(AVFilterContext* filter, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string cmd, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string arg, byte* res, int res_len, int flags);
+        public static extern int avfilter_process_command(AVFilterContext* filter, [MarshalAs(UnmanagedType.LPUTF8Str)] string cmd, [MarshalAs(UnmanagedType.LPUTF8Str)] string arg, byte* res, int res_len, int flags);
         
         /// <summary>Return the LIBAVFILTER_VERSION_INT constant.</summary>
         [DllImport("avfilter-8", EntryPoint = "avfilter_version", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -1268,14 +1065,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Returns The AV_DISPOSITION_* flag corresponding to disp or a negative error code if disp does not correspond to a known stream disposition.</summary>
         [DllImport("avformat-59", EntryPoint = "av_disposition_from_string", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_disposition_from_string(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string disp);
+        public static extern int av_disposition_from_string([MarshalAs(UnmanagedType.LPUTF8Str)] string disp);
         
         /// <summary>Returns The string description corresponding to the lowest set bit in disposition. NULL when the lowest set bit does not correspond to a known disposition or when disposition is 0.</summary>
         /// <param name="disposition">a combination of AV_DISPOSITION_* values</param>
@@ -1289,26 +1079,12 @@ namespace FFmpeg.AutoGen
         /// <param name="url">the URL to print, such as source or destination file</param>
         /// <param name="is_output">Select whether the specified context is an input(0) or output(1)</param>
         [DllImport("avformat-59", EntryPoint = "av_dump_format", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern void av_dump_format(AVFormatContext* ic, int index, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string url, int is_output);
+        public static extern void av_dump_format(AVFormatContext* ic, int index, [MarshalAs(UnmanagedType.LPUTF8Str)] string url, int is_output);
         
         /// <summary>Check whether filename actually is a numbered sequence generator.</summary>
         /// <param name="filename">possible numbered sequence string</param>
         [DllImport("avformat-59", EntryPoint = "av_filename_number_test", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_filename_number_test(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string filename);
+        public static extern int av_filename_number_test([MarshalAs(UnmanagedType.LPUTF8Str)] string filename);
         
         /// <summary>Find the &quot;best&quot; stream in the file. The best stream is determined according to various heuristics as the most likely to be what the user expects. If the decoder parameter is non-NULL, av_find_best_stream will find the default decoder for the stream&apos;s codec; streams for which no decoder can be found are ignored.</summary>
         /// <param name="ic">media file handle</param>
@@ -1335,14 +1111,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Find AVInputFormat based on the short name of the input format.</summary>
         [DllImport("avformat-59", EntryPoint = "av_find_input_format", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVInputFormat* av_find_input_format(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string short_name);
+        public static extern AVInputFormat* av_find_input_format([MarshalAs(UnmanagedType.LPUTF8Str)] string short_name);
         
         /// <summary>Find the programs which belong to a given stream.</summary>
         /// <param name="ic">media file handle</param>
@@ -1360,14 +1129,7 @@ namespace FFmpeg.AutoGen
         public static extern void av_format_inject_global_side_data(AVFormatContext* s);
         
         [DllImport("avformat-59", EntryPoint = "av_get_frame_filename", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_get_frame_filename(byte* buf, int buf_size, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string path, int number);
+        public static extern int av_get_frame_filename(byte* buf, int buf_size, [MarshalAs(UnmanagedType.LPUTF8Str)] string path, int number);
         
         /// <summary>Return in &apos;buf&apos; the path with &apos;%d&apos; replaced by a number.</summary>
         /// <param name="buf">destination buffer</param>
@@ -1376,14 +1138,7 @@ namespace FFmpeg.AutoGen
         /// <param name="number">frame number</param>
         /// <param name="flags">AV_FRAME_FILENAME_FLAGS_*</param>
         [DllImport("avformat-59", EntryPoint = "av_get_frame_filename2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_get_frame_filename2(byte* buf, int buf_size, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string path, int number, int flags);
+        public static extern int av_get_frame_filename2(byte* buf, int buf_size, [MarshalAs(UnmanagedType.LPUTF8Str)] string path, int number, int flags);
         
         /// <summary>Get timing information for the data currently output. The exact meaning of &quot;currently output&quot; depends on the format. It is mostly relevant for devices that have an internal buffer and/or work in real time.</summary>
         /// <param name="s">media file handle</param>
@@ -1402,56 +1157,14 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Guess the codec ID based upon muxer and filename.</summary>
         [DllImport("avformat-59", EntryPoint = "av_guess_codec", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVCodecID av_guess_codec(AVOutputFormat* fmt, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string short_name, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string filename, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string mime_type, AVMediaType type);
+        public static extern AVCodecID av_guess_codec(AVOutputFormat* fmt, [MarshalAs(UnmanagedType.LPUTF8Str)] string short_name, [MarshalAs(UnmanagedType.LPUTF8Str)] string filename, [MarshalAs(UnmanagedType.LPUTF8Str)] string mime_type, AVMediaType type);
         
         /// <summary>Return the output format in the list of registered output formats which best matches the provided parameters, or return NULL if there is no match.</summary>
         /// <param name="short_name">if non-NULL checks if short_name matches with the names of the registered formats</param>
         /// <param name="filename">if non-NULL checks if filename terminates with the extensions of the registered formats</param>
         /// <param name="mime_type">if non-NULL checks if mime_type matches with the MIME type of the registered formats</param>
         [DllImport("avformat-59", EntryPoint = "av_guess_format", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVOutputFormat* av_guess_format(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string short_name, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string filename, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string mime_type);
+        public static extern AVOutputFormat* av_guess_format([MarshalAs(UnmanagedType.LPUTF8Str)] string short_name, [MarshalAs(UnmanagedType.LPUTF8Str)] string filename, [MarshalAs(UnmanagedType.LPUTF8Str)] string mime_type);
         
         /// <summary>Guess the frame rate, based on both the container and codec information.</summary>
         /// <param name="ctx">the format context which the stream is part of</param>
@@ -1503,21 +1216,7 @@ namespace FFmpeg.AutoGen
         /// <param name="filename">file name to check against the given extensions</param>
         /// <param name="extensions">a comma-separated list of filename extensions</param>
         [DllImport("avformat-59", EntryPoint = "av_match_ext", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_match_ext(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string filename, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string extensions);
+        public static extern int av_match_ext([MarshalAs(UnmanagedType.LPUTF8Str)] string filename, [MarshalAs(UnmanagedType.LPUTF8Str)] string extensions);
         
         /// <summary>Iterate over all registered muxers.</summary>
         /// <param name="opaque">a pointer where libavformat will store the iteration state. Must point to NULL to start the iteration.</param>
@@ -1551,25 +1250,11 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Like av_probe_input_buffer2() but returns 0 on success</summary>
         [DllImport("avformat-59", EntryPoint = "av_probe_input_buffer", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_probe_input_buffer(AVIOContext* pb, AVInputFormat** fmt, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string url, void* logctx, uint offset, uint max_probe_size);
+        public static extern int av_probe_input_buffer(AVIOContext* pb, AVInputFormat** fmt, [MarshalAs(UnmanagedType.LPUTF8Str)] string url, void* logctx, uint offset, uint max_probe_size);
         
         /// <summary>Like av_probe_input_buffer2() but returns 0 on success</summary>
         [DllImport("avformat-59", EntryPoint = "av_probe_input_buffer", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_probe_input_buffer(AVIOContext* pb, ref AVInputFormat* fmt, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string url, void* logctx, uint offset, uint max_probe_size);
+        public static extern int av_probe_input_buffer(AVIOContext* pb, ref AVInputFormat* fmt, [MarshalAs(UnmanagedType.LPUTF8Str)] string url, void* logctx, uint offset, uint max_probe_size);
         
         /// <summary>Probe a bytestream to determine the input format. Each time a probe returns with a score that is too low, the probe buffer size is increased and another attempt is made. When the maximum probe size is reached, the input format with the highest score is returned.</summary>
         /// <param name="pb">the bytestream to probe</param>
@@ -1579,14 +1264,7 @@ namespace FFmpeg.AutoGen
         /// <param name="offset">the offset within the bytestream to probe from</param>
         /// <param name="max_probe_size">the maximum probe buffer size (zero for default)</param>
         [DllImport("avformat-59", EntryPoint = "av_probe_input_buffer2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_probe_input_buffer2(AVIOContext* pb, AVInputFormat** fmt, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string url, void* logctx, uint offset, uint max_probe_size);
+        public static extern int av_probe_input_buffer2(AVIOContext* pb, AVInputFormat** fmt, [MarshalAs(UnmanagedType.LPUTF8Str)] string url, void* logctx, uint offset, uint max_probe_size);
         
         /// <summary>Probe a bytestream to determine the input format. Each time a probe returns with a score that is too low, the probe buffer size is increased and another attempt is made. When the maximum probe size is reached, the input format with the highest score is returned.</summary>
         /// <param name="pb">the bytestream to probe</param>
@@ -1596,14 +1274,7 @@ namespace FFmpeg.AutoGen
         /// <param name="offset">the offset within the bytestream to probe from</param>
         /// <param name="max_probe_size">the maximum probe buffer size (zero for default)</param>
         [DllImport("avformat-59", EntryPoint = "av_probe_input_buffer2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_probe_input_buffer2(AVIOContext* pb, ref AVInputFormat* fmt, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string url, void* logctx, uint offset, uint max_probe_size);
+        public static extern int av_probe_input_buffer2(AVIOContext* pb, ref AVInputFormat* fmt, [MarshalAs(UnmanagedType.LPUTF8Str)] string url, void* logctx, uint offset, uint max_probe_size);
         
         /// <summary>Guess the file format.</summary>
         /// <param name="pd">data to be probed</param>
@@ -1713,14 +1384,7 @@ namespace FFmpeg.AutoGen
         /// <param name="path_size">the size of the path buffer</param>
         /// <param name="url">the URL to split</param>
         [DllImport("avformat-59", EntryPoint = "av_url_split", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern void av_url_split(byte* proto, int proto_size, byte* authorization, int authorization_size, byte* hostname, int hostname_size, int* port_ptr, byte* path, int path_size, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string url);
+        public static extern void av_url_split(byte* proto, int proto_size, byte* authorization, int authorization_size, byte* hostname, int hostname_size, int* port_ptr, byte* path, int path_size, [MarshalAs(UnmanagedType.LPUTF8Str)] string url);
         
         /// <summary>Write a packet to an output media file.</summary>
         /// <param name="s">media file handle</param>
@@ -1750,42 +1414,14 @@ namespace FFmpeg.AutoGen
         /// <param name="format_name">the name of output format to use for allocating the context, if NULL filename is used instead</param>
         /// <param name="filename">the name of the filename to use for allocating the context, may be NULL</param>
         [DllImport("avformat-59", EntryPoint = "avformat_alloc_output_context2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avformat_alloc_output_context2(AVFormatContext** ctx, AVOutputFormat* oformat, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string format_name, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string filename);
+        public static extern int avformat_alloc_output_context2(AVFormatContext** ctx, AVOutputFormat* oformat, [MarshalAs(UnmanagedType.LPUTF8Str)] string format_name, [MarshalAs(UnmanagedType.LPUTF8Str)] string filename);
         
         /// <summary>Allocate an AVFormatContext for an output format. avformat_free_context() can be used to free the context and everything allocated by the framework within it.</summary>
         /// <param name="oformat">format to use for allocating the context, if NULL format_name and filename are used instead</param>
         /// <param name="format_name">the name of output format to use for allocating the context, if NULL filename is used instead</param>
         /// <param name="filename">the name of the filename to use for allocating the context, may be NULL</param>
         [DllImport("avformat-59", EntryPoint = "avformat_alloc_output_context2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avformat_alloc_output_context2(ref AVFormatContext* ctx, AVOutputFormat* oformat, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string format_name, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string filename);
+        public static extern int avformat_alloc_output_context2(ref AVFormatContext* ctx, AVOutputFormat* oformat, [MarshalAs(UnmanagedType.LPUTF8Str)] string format_name, [MarshalAs(UnmanagedType.LPUTF8Str)] string filename);
         
         /// <summary>Close an opened input AVFormatContext. Free it and all its contents and set *s to NULL.</summary>
         [DllImport("avformat-59", EntryPoint = "avformat_close_input", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -1878,14 +1514,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Check if the stream st contained in s is matched by the stream specifier spec.</summary>
         [DllImport("avformat-59", EntryPoint = "avformat_match_stream_specifier", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avformat_match_stream_specifier(AVFormatContext* s, AVStream* st, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string spec);
+        public static extern int avformat_match_stream_specifier(AVFormatContext* s, AVStream* st, [MarshalAs(UnmanagedType.LPUTF8Str)] string spec);
         
         /// <summary>Undo the initialization done by avformat_network_init. Call it only once for each time you called avformat_network_init.</summary>
         [DllImport("avformat-59", EntryPoint = "avformat_network_deinit", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -1907,14 +1536,7 @@ namespace FFmpeg.AutoGen
         /// <param name="fmt">If non-NULL, this parameter forces a specific input format. Otherwise the format is autodetected.</param>
         /// <param name="options">A dictionary filled with AVFormatContext and demuxer-private options. On return this parameter will be destroyed and replaced with a dict containing options that were not found. May be NULL.</param>
         [DllImport("avformat-59", EntryPoint = "avformat_open_input", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avformat_open_input(AVFormatContext** ps, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string url, AVInputFormat* fmt, AVDictionary** options);
+        public static extern int avformat_open_input(AVFormatContext** ps, [MarshalAs(UnmanagedType.LPUTF8Str)] string url, AVInputFormat* fmt, AVDictionary** options);
         
         /// <summary>Open an input stream and read the header. The codecs are not opened. The stream must be closed with avformat_close_input().</summary>
         /// <param name="ps">Pointer to user-supplied AVFormatContext (allocated by avformat_alloc_context). May be a pointer to NULL, in which case an AVFormatContext is allocated by this function and written into ps. Note that a user-supplied AVFormatContext will be freed on failure.</param>
@@ -1922,14 +1544,7 @@ namespace FFmpeg.AutoGen
         /// <param name="fmt">If non-NULL, this parameter forces a specific input format. Otherwise the format is autodetected.</param>
         /// <param name="options">A dictionary filled with AVFormatContext and demuxer-private options. On return this parameter will be destroyed and replaced with a dict containing options that were not found. May be NULL.</param>
         [DllImport("avformat-59", EntryPoint = "avformat_open_input", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avformat_open_input(ref AVFormatContext* ps, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string url, AVInputFormat* fmt, ref AVDictionary* options);
+        public static extern int avformat_open_input(ref AVFormatContext* ps, [MarshalAs(UnmanagedType.LPUTF8Str)] string url, AVInputFormat* fmt, ref AVDictionary* options);
         
         /// <summary>Test if the given container can store a codec.</summary>
         /// <param name="ofmt">container to check for compatibility</param>
@@ -2000,14 +1615,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Return AVIO_FLAG_* access flags corresponding to the access permissions of the resource in url, or a negative value corresponding to an AVERROR code in case of failure. The returned access flags are masked by the value in flags.</summary>
         [DllImport("avformat-59", EntryPoint = "avio_check", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avio_check(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string url, int flags);
+        public static extern int avio_check([MarshalAs(UnmanagedType.LPUTF8Str)] string url, int flags);
         
         /// <summary>Close the resource accessed by the AVIOContext s and free it. This function can only be used if s was opened by avio_open().</summary>
         [DllImport("avformat-59", EntryPoint = "avio_close", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -2074,14 +1682,7 @@ namespace FFmpeg.AutoGen
         /// <summary>Return the name of the protocol that will handle the passed URL.</summary>
         [DllImport("avformat-59", EntryPoint = "avio_find_protocol_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(ConstCharPtrMarshaler))]
-        public static extern string avio_find_protocol_name(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string url);
+        public static extern string avio_find_protocol_name([MarshalAs(UnmanagedType.LPUTF8Str)] string url);
         
         /// <summary>Force flushing of buffered data.</summary>
         [DllImport("avformat-59", EntryPoint = "avio_flush", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -2130,56 +1731,28 @@ namespace FFmpeg.AutoGen
         /// <param name="url">resource to access</param>
         /// <param name="flags">flags which control how the resource indicated by url is to be opened</param>
         [DllImport("avformat-59", EntryPoint = "avio_open", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avio_open(AVIOContext** s, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string url, int flags);
+        public static extern int avio_open(AVIOContext** s, [MarshalAs(UnmanagedType.LPUTF8Str)] string url, int flags);
         
         /// <summary>Create and initialize a AVIOContext for accessing the resource indicated by url.</summary>
         /// <param name="s">Used to return the pointer to the created AVIOContext. In case of failure the pointed to value is set to NULL.</param>
         /// <param name="url">resource to access</param>
         /// <param name="flags">flags which control how the resource indicated by url is to be opened</param>
         [DllImport("avformat-59", EntryPoint = "avio_open", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avio_open(ref AVIOContext* s, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string url, int flags);
+        public static extern int avio_open(ref AVIOContext* s, [MarshalAs(UnmanagedType.LPUTF8Str)] string url, int flags);
         
         /// <summary>Open directory for reading.</summary>
         /// <param name="s">directory read context. Pointer to a NULL pointer must be passed.</param>
         /// <param name="url">directory to be listed.</param>
         /// <param name="options">A dictionary filled with protocol-private options. On return this parameter will be destroyed and replaced with a dictionary containing options that were not found. May be NULL.</param>
         [DllImport("avformat-59", EntryPoint = "avio_open_dir", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avio_open_dir(AVIODirContext** s, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string url, AVDictionary** options);
+        public static extern int avio_open_dir(AVIODirContext** s, [MarshalAs(UnmanagedType.LPUTF8Str)] string url, AVDictionary** options);
         
         /// <summary>Open directory for reading.</summary>
         /// <param name="s">directory read context. Pointer to a NULL pointer must be passed.</param>
         /// <param name="url">directory to be listed.</param>
         /// <param name="options">A dictionary filled with protocol-private options. On return this parameter will be destroyed and replaced with a dictionary containing options that were not found. May be NULL.</param>
         [DllImport("avformat-59", EntryPoint = "avio_open_dir", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avio_open_dir(ref AVIODirContext* s, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string url, ref AVDictionary* options);
+        public static extern int avio_open_dir(ref AVIODirContext* s, [MarshalAs(UnmanagedType.LPUTF8Str)] string url, ref AVDictionary* options);
         
         /// <summary>Open a write only memory stream.</summary>
         /// <param name="s">new IO context</param>
@@ -2198,14 +1771,7 @@ namespace FFmpeg.AutoGen
         /// <param name="int_cb">an interrupt callback to be used at the protocols level</param>
         /// <param name="options">A dictionary filled with protocol-private options. On return this parameter will be destroyed and replaced with a dict containing options that were not found. May be NULL.</param>
         [DllImport("avformat-59", EntryPoint = "avio_open2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avio_open2(AVIOContext** s, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string url, int flags, AVIOInterruptCB* int_cb, AVDictionary** options);
+        public static extern int avio_open2(AVIOContext** s, [MarshalAs(UnmanagedType.LPUTF8Str)] string url, int flags, AVIOInterruptCB* int_cb, AVDictionary** options);
         
         /// <summary>Create and initialize a AVIOContext for accessing the resource indicated by url.</summary>
         /// <param name="s">Used to return the pointer to the created AVIOContext. In case of failure the pointed to value is set to NULL.</param>
@@ -2214,14 +1780,7 @@ namespace FFmpeg.AutoGen
         /// <param name="int_cb">an interrupt callback to be used at the protocols level</param>
         /// <param name="options">A dictionary filled with protocol-private options. On return this parameter will be destroyed and replaced with a dict containing options that were not found. May be NULL.</param>
         [DllImport("avformat-59", EntryPoint = "avio_open2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avio_open2(ref AVIOContext* s, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string url, int flags, AVIOInterruptCB* int_cb, ref AVDictionary* options);
+        public static extern int avio_open2(ref AVIOContext* s, [MarshalAs(UnmanagedType.LPUTF8Str)] string url, int flags, AVIOInterruptCB* int_cb, ref AVDictionary* options);
         
         /// <summary>Pause and resume playing - only meaningful if using a network streaming protocol (e.g. MMS).</summary>
         /// <param name="h">IO context from which to call the read_pause function pointer</param>
@@ -2235,62 +1794,27 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Writes a formatted string to the context.</summary>
         [DllImport("avformat-59", EntryPoint = "avio_printf", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avio_printf(AVIOContext* s, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string fmt);
+        public static extern int avio_printf(AVIOContext* s, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
         
         /// <summary>Get AVClass by names of available protocols.</summary>
         [DllImport("avformat-59", EntryPoint = "avio_protocol_get_class", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVClass* avio_protocol_get_class(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name);
+        public static extern AVClass* avio_protocol_get_class([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
         
         /// <summary>Write a NULL-terminated string.</summary>
         [DllImport("avformat-59", EntryPoint = "avio_put_str", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avio_put_str(AVIOContext* s, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string str);
+        public static extern int avio_put_str(AVIOContext* s, [MarshalAs(UnmanagedType.LPUTF8Str)] string str);
         
         /// <summary>Convert an UTF-8 string to UTF-16BE and write it.</summary>
         /// <param name="s">the AVIOContext</param>
         /// <param name="str">NULL-terminated UTF-8 string</param>
         [DllImport("avformat-59", EntryPoint = "avio_put_str16be", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avio_put_str16be(AVIOContext* s, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string str);
+        public static extern int avio_put_str16be(AVIOContext* s, [MarshalAs(UnmanagedType.LPUTF8Str)] string str);
         
         /// <summary>Convert an UTF-8 string to UTF-16LE and write it.</summary>
         /// <param name="s">the AVIOContext</param>
         /// <param name="str">NULL-terminated UTF-8 string</param>
         [DllImport("avformat-59", EntryPoint = "avio_put_str16le", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int avio_put_str16le(AVIOContext* s, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string str);
+        public static extern int avio_put_str16le(AVIOContext* s, [MarshalAs(UnmanagedType.LPUTF8Str)] string str);
         
         /// <summary>@{</summary>
         [DllImport("avformat-59", EntryPoint = "avio_r8", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -2640,14 +2164,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Returns the AVChromaLocation value for name or an AVError if not found.</summary>
         [DllImport("avutil-57", EntryPoint = "av_chroma_location_from_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_chroma_location_from_name(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name);
+        public static extern int av_chroma_location_from_name([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
         
         /// <summary>Returns the name for provided chroma location or NULL if unknown.</summary>
         [DllImport("avutil-57", EntryPoint = "av_chroma_location_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -2656,14 +2173,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Returns the AVColorPrimaries value for name or an AVError if not found.</summary>
         [DllImport("avutil-57", EntryPoint = "av_color_primaries_from_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_color_primaries_from_name(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name);
+        public static extern int av_color_primaries_from_name([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
         
         /// <summary>Returns the name for provided color primaries or NULL if unknown.</summary>
         [DllImport("avutil-57", EntryPoint = "av_color_primaries_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -2672,14 +2182,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Returns the AVColorRange value for name or an AVError if not found.</summary>
         [DllImport("avutil-57", EntryPoint = "av_color_range_from_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_color_range_from_name(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name);
+        public static extern int av_color_range_from_name([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
         
         /// <summary>Returns the name for provided color range or NULL if unknown.</summary>
         [DllImport("avutil-57", EntryPoint = "av_color_range_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -2688,14 +2191,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Returns the AVColorSpace value for name or an AVError if not found.</summary>
         [DllImport("avutil-57", EntryPoint = "av_color_space_from_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_color_space_from_name(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name);
+        public static extern int av_color_space_from_name([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
         
         /// <summary>Returns the name for provided color space or NULL if unknown.</summary>
         [DllImport("avutil-57", EntryPoint = "av_color_space_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -2704,14 +2200,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Returns the AVColorTransferCharacteristic value for name or an AVError if not found.</summary>
         [DllImport("avutil-57", EntryPoint = "av_color_transfer_from_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_color_transfer_from_name(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name);
+        public static extern int av_color_transfer_from_name([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
         
         /// <summary>Returns the name for provided color transfer or NULL if unknown.</summary>
         [DllImport("avutil-57", EntryPoint = "av_color_transfer_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -2795,14 +2284,7 @@ namespace FFmpeg.AutoGen
         /// <param name="prev">Set to the previous matching element to find the next. If set to NULL the first matching element is returned.</param>
         /// <param name="flags">a collection of AV_DICT_* flags controlling how the entry is retrieved</param>
         [DllImport("avutil-57", EntryPoint = "av_dict_get", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVDictionaryEntry* av_dict_get(AVDictionary* m, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string key, AVDictionaryEntry* prev, int flags);
+        public static extern AVDictionaryEntry* av_dict_get(AVDictionary* m, [MarshalAs(UnmanagedType.LPUTF8Str)] string key, AVDictionaryEntry* prev, int flags);
         
         /// <summary>Get dictionary entries as a string.</summary>
         /// <param name="m">dictionary</param>
@@ -2825,120 +2307,36 @@ namespace FFmpeg.AutoGen
         /// <param name="pairs_sep">a 0-terminated list of characters used to separate two pairs from each other</param>
         /// <param name="flags">flags to use when adding to dictionary. AV_DICT_DONT_STRDUP_KEY and AV_DICT_DONT_STRDUP_VAL are ignored since the key/value tokens will always be duplicated.</param>
         [DllImport("avutil-57", EntryPoint = "av_dict_parse_string", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_dict_parse_string(AVDictionary** pm, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string str, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string key_val_sep, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string pairs_sep, int flags);
+        public static extern int av_dict_parse_string(AVDictionary** pm, [MarshalAs(UnmanagedType.LPUTF8Str)] string str, [MarshalAs(UnmanagedType.LPUTF8Str)] string key_val_sep, [MarshalAs(UnmanagedType.LPUTF8Str)] string pairs_sep, int flags);
         
         /// <summary>Parse the key/value pairs list and add the parsed entries to a dictionary.</summary>
         /// <param name="key_val_sep">a 0-terminated list of characters used to separate key from value</param>
         /// <param name="pairs_sep">a 0-terminated list of characters used to separate two pairs from each other</param>
         /// <param name="flags">flags to use when adding to dictionary. AV_DICT_DONT_STRDUP_KEY and AV_DICT_DONT_STRDUP_VAL are ignored since the key/value tokens will always be duplicated.</param>
         [DllImport("avutil-57", EntryPoint = "av_dict_parse_string", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_dict_parse_string(ref AVDictionary* pm, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string str, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string key_val_sep, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string pairs_sep, int flags);
+        public static extern int av_dict_parse_string(ref AVDictionary* pm, [MarshalAs(UnmanagedType.LPUTF8Str)] string str, [MarshalAs(UnmanagedType.LPUTF8Str)] string key_val_sep, [MarshalAs(UnmanagedType.LPUTF8Str)] string pairs_sep, int flags);
         
         /// <summary>Set the given entry in *pm, overwriting an existing entry.</summary>
         /// <param name="pm">pointer to a pointer to a dictionary struct. If *pm is NULL a dictionary struct is allocated and put in *pm.</param>
         /// <param name="key">entry key to add to *pm (will either be av_strduped or added as a new key depending on flags)</param>
         /// <param name="value">entry value to add to *pm (will be av_strduped or added as a new key depending on flags). Passing a NULL value will cause an existing entry to be deleted.</param>
         [DllImport("avutil-57", EntryPoint = "av_dict_set", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_dict_set(AVDictionary** pm, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string key, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string value, int flags);
+        public static extern int av_dict_set(AVDictionary** pm, [MarshalAs(UnmanagedType.LPUTF8Str)] string key, [MarshalAs(UnmanagedType.LPUTF8Str)] string value, int flags);
         
         /// <summary>Set the given entry in *pm, overwriting an existing entry.</summary>
         /// <param name="pm">pointer to a pointer to a dictionary struct. If *pm is NULL a dictionary struct is allocated and put in *pm.</param>
         /// <param name="key">entry key to add to *pm (will either be av_strduped or added as a new key depending on flags)</param>
         /// <param name="value">entry value to add to *pm (will be av_strduped or added as a new key depending on flags). Passing a NULL value will cause an existing entry to be deleted.</param>
         [DllImport("avutil-57", EntryPoint = "av_dict_set", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_dict_set(ref AVDictionary* pm, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string key, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string value, int flags);
+        public static extern int av_dict_set(ref AVDictionary* pm, [MarshalAs(UnmanagedType.LPUTF8Str)] string key, [MarshalAs(UnmanagedType.LPUTF8Str)] string value, int flags);
         
         /// <summary>Convenience wrapper for av_dict_set that converts the value to a string and stores it.</summary>
         [DllImport("avutil-57", EntryPoint = "av_dict_set_int", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_dict_set_int(AVDictionary** pm, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string key, long value, int flags);
+        public static extern int av_dict_set_int(AVDictionary** pm, [MarshalAs(UnmanagedType.LPUTF8Str)] string key, long value, int flags);
         
         /// <summary>Convenience wrapper for av_dict_set that converts the value to a string and stores it.</summary>
         [DllImport("avutil-57", EntryPoint = "av_dict_set_int", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_dict_set_int(ref AVDictionary* pm, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string key, long value, int flags);
+        public static extern int av_dict_set_int(ref AVDictionary* pm, [MarshalAs(UnmanagedType.LPUTF8Str)] string key, long value, int flags);
         
         /// <summary>Divide one rational by another.</summary>
         /// <param name="b">First rational</param>
@@ -3099,27 +2497,13 @@ namespace FFmpeg.AutoGen
         /// <param name="log_offset">loglevel offset used for logging</param>
         /// <param name="log_ctx">context used for logging</param>
         [DllImport("avutil-57", EntryPoint = "av_file_map", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_file_map(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string filename, byte** bufptr, ulong* size, int log_offset, void* log_ctx);
+        public static extern int av_file_map([MarshalAs(UnmanagedType.LPUTF8Str)] string filename, byte** bufptr, ulong* size, int log_offset, void* log_ctx);
         
         /// <summary>Read the file with name filename, and put its content in a newly allocated buffer or map it with mmap() when available. In case of success set *bufptr to the read or mmapped buffer, and *size to the size in bytes of the buffer in *bufptr. Unlike mmap this function succeeds with zero sized files, in this case *bufptr will be set to NULL and *size will be set to 0. The returned buffer must be released with av_file_unmap().</summary>
         /// <param name="log_offset">loglevel offset used for logging</param>
         /// <param name="log_ctx">context used for logging</param>
         [DllImport("avutil-57", EntryPoint = "av_file_map", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_file_map(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string filename, ref byte* bufptr, ulong* size, int log_offset, void* log_ctx);
+        public static extern int av_file_map([MarshalAs(UnmanagedType.LPUTF8Str)] string filename, ref byte* bufptr, ulong* size, int log_offset, void* log_ctx);
         
         /// <summary>Unmap or free the buffer bufptr created by av_file_map().</summary>
         /// <param name="size">size in bytes of bufptr, must be the same as returned by av_file_map()</param>
@@ -3140,21 +2524,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Open a file using a UTF-8 filename. The API of this function matches POSIX fopen(), errors are returned through errno.</summary>
         [DllImport("avutil-57", EntryPoint = "av_fopen_utf8", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern _iobuf* av_fopen_utf8(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string path, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string mode);
+        public static extern _iobuf* av_fopen_utf8([MarshalAs(UnmanagedType.LPUTF8Str)] string path, [MarshalAs(UnmanagedType.LPUTF8Str)] string mode);
         
         /// <summary>Disables cpu detection and forces the specified flags. -1 is a special case that disables forcing of specific flags.</summary>
         [DllImport("avutil-57", EntryPoint = "av_force_cpu_flags", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -3295,14 +2665,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Return a channel layout id that matches name, or 0 if no match is found.</summary>
         [DllImport("avutil-57", EntryPoint = "av_get_channel_layout", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern ulong av_get_channel_layout(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name);
+        public static extern ulong av_get_channel_layout([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
         
         /// <summary>Get the index of a channel in channel_layout.</summary>
         /// <param name="channel">a channel layout describing exactly one channel which must be present in channel_layout.</param>
@@ -3343,14 +2706,7 @@ namespace FFmpeg.AutoGen
         /// <param name="channel_layout">parsed channel layout (0 if unknown)</param>
         /// <param name="nb_channels">number of channels</param>
         [DllImport("avutil-57", EntryPoint = "av_get_extended_channel_layout", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_get_extended_channel_layout(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, ulong* channel_layout, int* nb_channels);
+        public static extern int av_get_extended_channel_layout([MarshalAs(UnmanagedType.LPUTF8Str)] string name, ulong* channel_layout, int* nb_channels);
         
         /// <summary>Return a string describing the media_type enum, NULL if media_type is unknown.</summary>
         [DllImport("avutil-57", EntryPoint = "av_get_media_type_string", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -3372,14 +2728,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Return the pixel format corresponding to name.</summary>
         [DllImport("avutil-57", EntryPoint = "av_get_pix_fmt", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVPixelFormat av_get_pix_fmt(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name);
+        public static extern AVPixelFormat av_get_pix_fmt([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
         
         /// <summary>Compute what kind of losses will occur when converting from one specific pixel format to another. When converting from one pixel format to another, information loss may occur. For example, when converting from RGB24 to GRAY, the color information will be lost. Similarly, other losses occur when converting from some formats to other formats. These losses can involve loss of chroma, but also loss of resolution, loss of color depth, loss due to the color space conversion, loss of the alpha bits or loss due to color quantization. av_get_fix_fmt_loss() informs you about the various types of losses which will occur when converting from one pixel format to another.</summary>
         /// <param name="dst_pix_fmt">destination pixel format</param>
@@ -3406,14 +2755,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Return a sample format corresponding to name, or AV_SAMPLE_FMT_NONE on error.</summary>
         [DllImport("avutil-57", EntryPoint = "av_get_sample_fmt", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVSampleFormat av_get_sample_fmt(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name);
+        public static extern AVSampleFormat av_get_sample_fmt([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
         
         /// <summary>Return the name of sample_fmt, or NULL if sample_fmt is not recognized.</summary>
         [DllImport("avutil-57", EntryPoint = "av_get_sample_fmt_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -3469,14 +2811,7 @@ namespace FFmpeg.AutoGen
         /// <param name="opts">A dictionary of additional (type-specific) options to use in opening the device. The dictionary remains owned by the caller.</param>
         /// <param name="flags">currently unused</param>
         [DllImport("avutil-57", EntryPoint = "av_hwdevice_ctx_create", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_hwdevice_ctx_create(AVBufferRef** device_ctx, AVHWDeviceType type, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string device, AVDictionary* opts, int flags);
+        public static extern int av_hwdevice_ctx_create(AVBufferRef** device_ctx, AVHWDeviceType type, [MarshalAs(UnmanagedType.LPUTF8Str)] string device, AVDictionary* opts, int flags);
         
         /// <summary>Open a device of the specified type and create an AVHWDeviceContext for it.</summary>
         /// <param name="device_ctx">On success, a reference to the newly-created device context will be written here. The reference is owned by the caller and must be released with av_buffer_unref() when no longer needed. On failure, NULL will be written to this pointer.</param>
@@ -3485,14 +2820,7 @@ namespace FFmpeg.AutoGen
         /// <param name="opts">A dictionary of additional (type-specific) options to use in opening the device. The dictionary remains owned by the caller.</param>
         /// <param name="flags">currently unused</param>
         [DllImport("avutil-57", EntryPoint = "av_hwdevice_ctx_create", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_hwdevice_ctx_create(ref AVBufferRef* device_ctx, AVHWDeviceType type, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string device, AVDictionary* opts, int flags);
+        public static extern int av_hwdevice_ctx_create(ref AVBufferRef* device_ctx, AVHWDeviceType type, [MarshalAs(UnmanagedType.LPUTF8Str)] string device, AVDictionary* opts, int flags);
         
         /// <summary>Create a new device of the specified type from an existing device.</summary>
         /// <param name="dst_ctx">On success, a reference to the newly-created AVHWDeviceContext.</param>
@@ -3536,14 +2864,7 @@ namespace FFmpeg.AutoGen
         /// <summary>Look up an AVHWDeviceType by name.</summary>
         /// <param name="name">String name of the device type (case-insensitive).</param>
         [DllImport("avutil-57", EntryPoint = "av_hwdevice_find_type_by_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVHWDeviceType av_hwdevice_find_type_by_name(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name);
+        public static extern AVHWDeviceType av_hwdevice_find_type_by_name([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
         
         /// <summary>Get the constraints on HW frames given a device and the HW-specific configuration to be used with that device. If no HW-specific configuration is provided, returns the maximum possible capabilities of the device.</summary>
         /// <param name="ref">a reference to the associated AVHWDeviceContext.</param>
@@ -3842,14 +3163,7 @@ namespace FFmpeg.AutoGen
         /// <param name="level">The importance level of the message expressed using a &quot;Logging Constant&quot;.</param>
         /// <param name="fmt">The format string (printf-compatible) that specifies how subsequent arguments are converted to output.</param>
         [DllImport("avutil-57", EntryPoint = "av_log", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern void av_log(void* avcl, int level, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string fmt);
+        public static extern void av_log(void* avcl, int level, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
         
         /// <summary>Default logging callback</summary>
         /// <param name="avcl">A pointer to an arbitrary struct of which the first field is a pointer to an AVClass struct.</param>
@@ -3857,42 +3171,21 @@ namespace FFmpeg.AutoGen
         /// <param name="fmt">The format string (printf-compatible) that specifies how subsequent arguments are converted to output.</param>
         /// <param name="vl">The arguments referenced by the format string.</param>
         [DllImport("avutil-57", EntryPoint = "av_log_default_callback", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern void av_log_default_callback(void* avcl, int level, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string fmt, byte* vl);
+        public static extern void av_log_default_callback(void* avcl, int level, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, byte* vl);
         
         /// <summary>Format a line of log the same way as the default callback.</summary>
         /// <param name="line">buffer to receive the formatted line</param>
         /// <param name="line_size">size of the buffer</param>
         /// <param name="print_prefix">used to store whether the prefix must be printed; must point to a persistent integer initially set to 1</param>
         [DllImport("avutil-57", EntryPoint = "av_log_format_line", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern void av_log_format_line(void* ptr, int level, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string fmt, byte* vl, byte* line, int line_size, int* print_prefix);
+        public static extern void av_log_format_line(void* ptr, int level, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, byte* vl, byte* line, int line_size, int* print_prefix);
         
         /// <summary>Format a line of log the same way as the default callback.</summary>
         /// <param name="line">buffer to receive the formatted line; may be NULL if line_size is 0</param>
         /// <param name="line_size">size of the buffer; at most line_size-1 characters will be written to the buffer, plus one null terminator</param>
         /// <param name="print_prefix">used to store whether the prefix must be printed; must point to a persistent integer initially set to 1</param>
         [DllImport("avutil-57", EntryPoint = "av_log_format_line2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_log_format_line2(void* ptr, int level, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string fmt, byte* vl, byte* line, int line_size, int* print_prefix);
+        public static extern int av_log_format_line2(void* ptr, int level, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, byte* vl, byte* line, int line_size, int* print_prefix);
         
         [DllImport("avutil-57", EntryPoint = "av_log_get_flags", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int av_log_get_flags();
@@ -3908,14 +3201,7 @@ namespace FFmpeg.AutoGen
         /// <param name="state">a variable to keep trak of if a message has already been printed this must be initialized to 0 before the first use. The same state must not be accessed by 2 Threads simultaneously.</param>
         /// <param name="fmt">The format string (printf-compatible) that specifies how subsequent arguments are converted to output.</param>
         [DllImport("avutil-57", EntryPoint = "av_log_once", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern void av_log_once(void* avcl, int initial_level, int subsequent_level, int* state, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string fmt);
+        public static extern void av_log_once(void* avcl, int initial_level, int subsequent_level, int* state, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt);
         
         /// <summary>Set the logging callback</summary>
         /// <param name="callback">A logging function with a compatible signature.</param>
@@ -4016,68 +3302,26 @@ namespace FFmpeg.AutoGen
         public static extern int av_opt_copy(void* dest, void* src);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_eval_double", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_eval_double(void* obj, AVOption* o, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string val, double* double_out);
+        public static extern int av_opt_eval_double(void* obj, AVOption* o, [MarshalAs(UnmanagedType.LPUTF8Str)] string val, double* double_out);
         
         /// <summary>@{ This group of functions can be used to evaluate option strings and get numbers out of them. They do the same thing as av_opt_set(), except the result is written into the caller-supplied pointer.</summary>
         /// <param name="obj">a struct whose first element is a pointer to AVClass.</param>
         /// <param name="o">an option for which the string is to be evaluated.</param>
         /// <param name="val">string to be evaluated.</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_eval_flags", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_eval_flags(void* obj, AVOption* o, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string val, int* flags_out);
+        public static extern int av_opt_eval_flags(void* obj, AVOption* o, [MarshalAs(UnmanagedType.LPUTF8Str)] string val, int* flags_out);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_eval_float", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_eval_float(void* obj, AVOption* o, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string val, float* float_out);
+        public static extern int av_opt_eval_float(void* obj, AVOption* o, [MarshalAs(UnmanagedType.LPUTF8Str)] string val, float* float_out);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_eval_int", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_eval_int(void* obj, AVOption* o, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string val, int* int_out);
+        public static extern int av_opt_eval_int(void* obj, AVOption* o, [MarshalAs(UnmanagedType.LPUTF8Str)] string val, int* int_out);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_eval_int64", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_eval_int64(void* obj, AVOption* o, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string val, long* int64_out);
+        public static extern int av_opt_eval_int64(void* obj, AVOption* o, [MarshalAs(UnmanagedType.LPUTF8Str)] string val, long* int64_out);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_eval_q", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_eval_q(void* obj, AVOption* o, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string val, AVRational* q_out);
+        public static extern int av_opt_eval_q(void* obj, AVOption* o, [MarshalAs(UnmanagedType.LPUTF8Str)] string val, AVRational* q_out);
         
         /// <summary>Look for an option in an object. Consider only options which have all the specified flags set.</summary>
         /// <param name="obj">A pointer to a struct whose first element is a pointer to an AVClass. Alternatively a double pointer to an AVClass, if AV_OPT_SEARCH_FAKE_OBJ search flag is set.</param>
@@ -4086,21 +3330,7 @@ namespace FFmpeg.AutoGen
         /// <param name="opt_flags">Find only options with all the specified flags set (AV_OPT_FLAG).</param>
         /// <param name="search_flags">A combination of AV_OPT_SEARCH_*.</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_find", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVOption* av_opt_find(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string unit, int opt_flags, int search_flags);
+        public static extern AVOption* av_opt_find(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, [MarshalAs(UnmanagedType.LPUTF8Str)] string unit, int opt_flags, int search_flags);
         
         /// <summary>Look for an option in an object. Consider only options which have all the specified flags set.</summary>
         /// <param name="obj">A pointer to a struct whose first element is a pointer to an AVClass. Alternatively a double pointer to an AVClass, if AV_OPT_SEARCH_FAKE_OBJ search flag is set.</param>
@@ -4110,21 +3340,7 @@ namespace FFmpeg.AutoGen
         /// <param name="search_flags">A combination of AV_OPT_SEARCH_*.</param>
         /// <param name="target_obj">if non-NULL, an object to which the option belongs will be written here. It may be different from obj if AV_OPT_SEARCH_CHILDREN is present in search_flags. This parameter is ignored if search_flags contain AV_OPT_SEARCH_FAKE_OBJ.</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_find2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVOption* av_opt_find2(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string unit, int opt_flags, int search_flags, void** target_obj);
+        public static extern AVOption* av_opt_find2(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, [MarshalAs(UnmanagedType.LPUTF8Str)] string unit, int opt_flags, int search_flags, void** target_obj);
         
         /// <summary>Look for an option in an object. Consider only options which have all the specified flags set.</summary>
         /// <param name="obj">A pointer to a struct whose first element is a pointer to an AVClass. Alternatively a double pointer to an AVClass, if AV_OPT_SEARCH_FAKE_OBJ search flag is set.</param>
@@ -4134,41 +3350,13 @@ namespace FFmpeg.AutoGen
         /// <param name="search_flags">A combination of AV_OPT_SEARCH_*.</param>
         /// <param name="target_obj">if non-NULL, an object to which the option belongs will be written here. It may be different from obj if AV_OPT_SEARCH_CHILDREN is present in search_flags. This parameter is ignored if search_flags contain AV_OPT_SEARCH_FAKE_OBJ.</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_find2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVOption* av_opt_find2(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string unit, int opt_flags, int search_flags, ref void* target_obj);
+        public static extern AVOption* av_opt_find2(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, [MarshalAs(UnmanagedType.LPUTF8Str)] string unit, int opt_flags, int search_flags, ref void* target_obj);
         
         /// <summary>Check whether a particular flag is set in a flags field.</summary>
         /// <param name="field_name">the name of the flag field option</param>
         /// <param name="flag_name">the name of the flag to check</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_flag_is_set", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_flag_is_set(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string field_name, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string flag_name);
+        public static extern int av_opt_flag_is_set(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string field_name, [MarshalAs(UnmanagedType.LPUTF8Str)] string flag_name);
         
         /// <summary>Free all allocated objects in obj.</summary>
         [DllImport("avutil-57", EntryPoint = "av_opt_free", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -4188,14 +3376,7 @@ namespace FFmpeg.AutoGen
         /// <param name="search_flags">flags passed to av_opt_find2. I.e. if AV_OPT_SEARCH_CHILDREN is passed here, then the option may be found in a child of obj.</param>
         /// <param name="out_val">value of the option will be written here</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_get", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_get(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, int search_flags, byte** out_val);
+        public static extern int av_opt_get(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, int search_flags, byte** out_val);
         
         /// <summary>@{ Those functions get a value of the option with the given name from an object.</summary>
         /// <param name="obj">a struct whose first element is a pointer to an AVClass.</param>
@@ -4203,76 +3384,27 @@ namespace FFmpeg.AutoGen
         /// <param name="search_flags">flags passed to av_opt_find2. I.e. if AV_OPT_SEARCH_CHILDREN is passed here, then the option may be found in a child of obj.</param>
         /// <param name="out_val">value of the option will be written here</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_get", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_get(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, int search_flags, ref byte* out_val);
+        public static extern int av_opt_get(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, int search_flags, ref byte* out_val);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_get_channel_layout", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_get_channel_layout(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, int search_flags, long* ch_layout);
+        public static extern int av_opt_get_channel_layout(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, int search_flags, long* ch_layout);
         
         /// <param name="out_val">The returned dictionary is a copy of the actual value and must be freed with av_dict_free() by the caller</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_get_dict_val", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_get_dict_val(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, int search_flags, AVDictionary** out_val);
+        public static extern int av_opt_get_dict_val(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, int search_flags, AVDictionary** out_val);
         
         /// <param name="out_val">The returned dictionary is a copy of the actual value and must be freed with av_dict_free() by the caller</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_get_dict_val", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_get_dict_val(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, int search_flags, ref AVDictionary* out_val);
+        public static extern int av_opt_get_dict_val(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, int search_flags, ref AVDictionary* out_val);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_get_double", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_get_double(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, int search_flags, double* out_val);
+        public static extern int av_opt_get_double(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, int search_flags, double* out_val);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_get_image_size", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_get_image_size(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, int search_flags, int* w_out, int* h_out);
+        public static extern int av_opt_get_image_size(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, int search_flags, int* w_out, int* h_out);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_get_int", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_get_int(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, int search_flags, long* out_val);
+        public static extern int av_opt_get_int(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, int search_flags, long* out_val);
         
         /// <summary>Extract a key-value pair from the beginning of a string.</summary>
         /// <param name="ropts">pointer to the options string, will be updated to point to the rest of the string (one of the pairs_sep or the final NUL)</param>
@@ -4282,21 +3414,7 @@ namespace FFmpeg.AutoGen
         /// <param name="rkey">parsed key; must be freed using av_free()</param>
         /// <param name="rval">parsed value; must be freed using av_free()</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_get_key_value", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_get_key_value(byte** ropts, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string key_val_sep, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string pairs_sep, uint flags, byte** rkey, byte** rval);
+        public static extern int av_opt_get_key_value(byte** ropts, [MarshalAs(UnmanagedType.LPUTF8Str)] string key_val_sep, [MarshalAs(UnmanagedType.LPUTF8Str)] string pairs_sep, uint flags, byte** rkey, byte** rval);
         
         /// <summary>Extract a key-value pair from the beginning of a string.</summary>
         /// <param name="ropts">pointer to the options string, will be updated to point to the rest of the string (one of the pairs_sep or the final NUL)</param>
@@ -4306,61 +3424,19 @@ namespace FFmpeg.AutoGen
         /// <param name="rkey">parsed key; must be freed using av_free()</param>
         /// <param name="rval">parsed value; must be freed using av_free()</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_get_key_value", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_get_key_value(ref byte* ropts, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string key_val_sep, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string pairs_sep, uint flags, ref byte* rkey, ref byte* rval);
+        public static extern int av_opt_get_key_value(ref byte* ropts, [MarshalAs(UnmanagedType.LPUTF8Str)] string key_val_sep, [MarshalAs(UnmanagedType.LPUTF8Str)] string pairs_sep, uint flags, ref byte* rkey, ref byte* rval);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_get_pixel_fmt", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_get_pixel_fmt(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, int search_flags, AVPixelFormat* out_fmt);
+        public static extern int av_opt_get_pixel_fmt(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, int search_flags, AVPixelFormat* out_fmt);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_get_q", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_get_q(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, int search_flags, AVRational* out_val);
+        public static extern int av_opt_get_q(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, int search_flags, AVRational* out_val);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_get_sample_fmt", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_get_sample_fmt(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, int search_flags, AVSampleFormat* out_fmt);
+        public static extern int av_opt_get_sample_fmt(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, int search_flags, AVSampleFormat* out_fmt);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_get_video_rate", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_get_video_rate(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, int search_flags, AVRational* out_val);
+        public static extern int av_opt_get_video_rate(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, int search_flags, AVRational* out_val);
         
         /// <summary>Check if given option is set to its default value.</summary>
         /// <param name="obj">AVClass object to check option on</param>
@@ -4373,14 +3449,7 @@ namespace FFmpeg.AutoGen
         /// <param name="name">option name</param>
         /// <param name="search_flags">combination of AV_OPT_SEARCH_*</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_is_set_to_default_by_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_is_set_to_default_by_name(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, int search_flags);
+        public static extern int av_opt_is_set_to_default_by_name(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, int search_flags);
         
         /// <summary>Iterate over all AVOptions belonging to obj.</summary>
         /// <param name="obj">an AVOptions-enabled struct or a double pointer to an AVClass describing it.</param>
@@ -4390,62 +3459,27 @@ namespace FFmpeg.AutoGen
         
         /// <summary>@}</summary>
         [DllImport("avutil-57", EntryPoint = "av_opt_ptr", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern void* av_opt_ptr(AVClass* avclass, void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name);
+        public static extern void* av_opt_ptr(AVClass* avclass, void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
         
         /// <summary>Get a list of allowed ranges for the given option.</summary>
         /// <param name="flags">is a bitmask of flags, undefined flags should not be set and should be ignored AV_OPT_SEARCH_FAKE_OBJ indicates that the obj is a double pointer to a AVClass instead of a full instance AV_OPT_MULTI_COMPONENT_RANGE indicates that function may return more than one component,</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_query_ranges", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_query_ranges(AVOptionRanges** p0, void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string key, int flags);
+        public static extern int av_opt_query_ranges(AVOptionRanges** p0, void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string key, int flags);
         
         /// <summary>Get a list of allowed ranges for the given option.</summary>
         /// <param name="flags">is a bitmask of flags, undefined flags should not be set and should be ignored AV_OPT_SEARCH_FAKE_OBJ indicates that the obj is a double pointer to a AVClass instead of a full instance AV_OPT_MULTI_COMPONENT_RANGE indicates that function may return more than one component,</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_query_ranges", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_query_ranges(ref AVOptionRanges* p0, void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string key, int flags);
+        public static extern int av_opt_query_ranges(ref AVOptionRanges* p0, void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string key, int flags);
         
         /// <summary>Get a default list of allowed ranges for the given option.</summary>
         /// <param name="flags">is a bitmask of flags, undefined flags should not be set and should be ignored AV_OPT_SEARCH_FAKE_OBJ indicates that the obj is a double pointer to a AVClass instead of a full instance AV_OPT_MULTI_COMPONENT_RANGE indicates that function may return more than one component,</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_query_ranges_default", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_query_ranges_default(AVOptionRanges** p0, void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string key, int flags);
+        public static extern int av_opt_query_ranges_default(AVOptionRanges** p0, void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string key, int flags);
         
         /// <summary>Get a default list of allowed ranges for the given option.</summary>
         /// <param name="flags">is a bitmask of flags, undefined flags should not be set and should be ignored AV_OPT_SEARCH_FAKE_OBJ indicates that the obj is a double pointer to a AVClass instead of a full instance AV_OPT_MULTI_COMPONENT_RANGE indicates that function may return more than one component,</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_query_ranges_default", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_query_ranges_default(ref AVOptionRanges* p0, void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string key, int flags);
+        public static extern int av_opt_query_ranges_default(ref AVOptionRanges* p0, void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string key, int flags);
         
         /// <summary>Serialize object&apos;s options.</summary>
         /// <param name="obj">AVClass object to serialize</param>
@@ -4473,41 +3507,13 @@ namespace FFmpeg.AutoGen
         /// <param name="val">The value to set. In case of av_opt_set() if the field is not of a string type, then the given string is parsed. SI postfixes and some named scalars are supported. If the field is of a numeric type, it has to be a numeric or named scalar. Behavior with more than one scalar and +- infix operators is undefined. If the field is of a flags type, it has to be a sequence of numeric scalars or named flags separated by &apos;+&apos; or &apos;-&apos;. Prefixing a flag with &apos;+&apos; causes it to be set without affecting the other flags; similarly, &apos;-&apos; unsets a flag. If the field is of a dictionary type, it has to be a &apos;:&apos; separated list of key=value parameters. Values containing &apos;:&apos; special characters must be escaped.</param>
         /// <param name="search_flags">flags passed to av_opt_find2. I.e. if AV_OPT_SEARCH_CHILDREN is passed here, then the option may be set on a child of obj.</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_set", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_set(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string val, int search_flags);
+        public static extern int av_opt_set(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, [MarshalAs(UnmanagedType.LPUTF8Str)] string val, int search_flags);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_set_bin", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_set_bin(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, byte* val, int size, int search_flags);
+        public static extern int av_opt_set_bin(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, byte* val, int size, int search_flags);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_set_channel_layout", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_set_channel_layout(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, long ch_layout, int search_flags);
+        public static extern int av_opt_set_channel_layout(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, long ch_layout, int search_flags);
         
         /// <summary>Set the values of all AVOption fields to their default values.</summary>
         /// <param name="s">an AVOption-enabled struct (its first member must be a pointer to AVClass)</param>
@@ -4534,14 +3540,7 @@ namespace FFmpeg.AutoGen
         public static extern int av_opt_set_dict(void* obj, ref AVDictionary* options);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_set_dict_val", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_set_dict_val(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, AVDictionary* val, int search_flags);
+        public static extern int av_opt_set_dict_val(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, AVDictionary* val, int search_flags);
         
         /// <summary>Set all the options from a given dictionary on an object.</summary>
         /// <param name="obj">a struct whose first element is a pointer to AVClass</param>
@@ -4558,14 +3557,7 @@ namespace FFmpeg.AutoGen
         public static extern int av_opt_set_dict2(void* obj, ref AVDictionary* options, int search_flags);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_set_double", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_set_double(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, double val, int search_flags);
+        public static extern int av_opt_set_double(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, double val, int search_flags);
         
         /// <summary>Parse the key-value pairs list in opts. For each key=value pair found, set the value of the corresponding option in ctx.</summary>
         /// <param name="ctx">the AVClass object to set options on</param>
@@ -4574,28 +3566,7 @@ namespace FFmpeg.AutoGen
         /// <param name="key_val_sep">a 0-terminated list of characters used to separate key from value, for example &apos;=&apos;</param>
         /// <param name="pairs_sep">a 0-terminated list of characters used to separate two pairs from each other, for example &apos;:&apos; or &apos;,&apos;</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_set_from_string", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_set_from_string(void* ctx, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string opts, byte** shorthand, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string key_val_sep, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string pairs_sep);
+        public static extern int av_opt_set_from_string(void* ctx, [MarshalAs(UnmanagedType.LPUTF8Str)] string opts, byte** shorthand, [MarshalAs(UnmanagedType.LPUTF8Str)] string key_val_sep, [MarshalAs(UnmanagedType.LPUTF8Str)] string pairs_sep);
         
         /// <summary>Parse the key-value pairs list in opts. For each key=value pair found, set the value of the corresponding option in ctx.</summary>
         /// <param name="ctx">the AVClass object to set options on</param>
@@ -4604,88 +3575,25 @@ namespace FFmpeg.AutoGen
         /// <param name="key_val_sep">a 0-terminated list of characters used to separate key from value, for example &apos;=&apos;</param>
         /// <param name="pairs_sep">a 0-terminated list of characters used to separate two pairs from each other, for example &apos;:&apos; or &apos;,&apos;</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_set_from_string", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_set_from_string(void* ctx, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string opts, ref byte* shorthand, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string key_val_sep, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string pairs_sep);
+        public static extern int av_opt_set_from_string(void* ctx, [MarshalAs(UnmanagedType.LPUTF8Str)] string opts, ref byte* shorthand, [MarshalAs(UnmanagedType.LPUTF8Str)] string key_val_sep, [MarshalAs(UnmanagedType.LPUTF8Str)] string pairs_sep);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_set_image_size", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_set_image_size(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, int w, int h, int search_flags);
+        public static extern int av_opt_set_image_size(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, int w, int h, int search_flags);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_set_int", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_set_int(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, long val, int search_flags);
+        public static extern int av_opt_set_int(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, long val, int search_flags);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_set_pixel_fmt", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_set_pixel_fmt(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, AVPixelFormat fmt, int search_flags);
+        public static extern int av_opt_set_pixel_fmt(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, AVPixelFormat fmt, int search_flags);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_set_q", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_set_q(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, AVRational val, int search_flags);
+        public static extern int av_opt_set_q(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, AVRational val, int search_flags);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_set_sample_fmt", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_set_sample_fmt(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, AVSampleFormat fmt, int search_flags);
+        public static extern int av_opt_set_sample_fmt(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, AVSampleFormat fmt, int search_flags);
         
         [DllImport("avutil-57", EntryPoint = "av_opt_set_video_rate", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_opt_set_video_rate(void* obj, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, AVRational val, int search_flags);
+        public static extern int av_opt_set_video_rate(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, AVRational val, int search_flags);
         
         /// <summary>Show the obj options.</summary>
         /// <param name="av_log_obj">log context to use for showing the options</param>
@@ -4696,14 +3604,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Parse CPU caps from a string and update the given AV_CPU_* flags based on that.</summary>
         [DllImport("avutil-57", EntryPoint = "av_parse_cpu_caps", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_parse_cpu_caps(uint* flags, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string s);
+        public static extern int av_parse_cpu_caps(uint* flags, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
         
         /// <summary>Returns number of planes in pix_fmt, a negative AVERROR if pix_fmt is not a valid pixel format.</summary>
         [DllImport("avutil-57", EntryPoint = "av_pix_fmt_count_planes", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -4941,28 +3842,7 @@ namespace FFmpeg.AutoGen
         /// <param name="key_val_sep">a 0-terminated list of characters used to separate key from value</param>
         /// <param name="pairs_sep">a 0-terminated list of characters used to separate two pairs from each other</param>
         [DllImport("avutil-57", EntryPoint = "av_set_options_string", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_set_options_string(void* ctx, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string opts, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string key_val_sep, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string pairs_sep);
+        public static extern int av_set_options_string(void* ctx, [MarshalAs(UnmanagedType.LPUTF8Str)] string opts, [MarshalAs(UnmanagedType.LPUTF8Str)] string key_val_sep, [MarshalAs(UnmanagedType.LPUTF8Str)] string pairs_sep);
         
         /// <summary>Multiply two `size_t` values checking for overflow.</summary>
         /// <param name="r">Pointer to the result of the operation</param>
@@ -4972,14 +3852,7 @@ namespace FFmpeg.AutoGen
         /// <summary>Duplicate a string.</summary>
         /// <param name="s">String to be duplicated</param>
         [DllImport("avutil-57", EntryPoint = "av_strdup", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern byte* av_strdup(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string s);
+        public static extern byte* av_strdup([MarshalAs(UnmanagedType.LPUTF8Str)] string s);
         
         /// <summary>Put a description of the AVERROR code errnum in errbuf. In case of failure the global variable errno is set to indicate the error. Even in case of failure av_strerror() will print a generic error message indicating the errnum provided to errbuf.</summary>
         /// <param name="errnum">error code to describe</param>
@@ -4992,14 +3865,7 @@ namespace FFmpeg.AutoGen
         /// <param name="s">String to be duplicated</param>
         /// <param name="len">Maximum length of the resulting string (not counting the terminating byte)</param>
         [DllImport("avutil-57", EntryPoint = "av_strndup", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern byte* av_strndup(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string s, ulong len);
+        public static extern byte* av_strndup([MarshalAs(UnmanagedType.LPUTF8Str)] string s, ulong len);
         
         /// <summary>Subtract one rational from another.</summary>
         /// <param name="b">First rational</param>
@@ -5010,26 +3876,12 @@ namespace FFmpeg.AutoGen
         /// <summary>Wrapper to work around the lack of mkstemp() on mingw. Also, tries to create file in /tmp first, if possible. *prefix can be a character constant; *filename will be allocated internally.</summary>
         [Obsolete("as fd numbers cannot be passed saftely between libs on some platforms")]
         [DllImport("avutil-57", EntryPoint = "av_tempfile", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_tempfile(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string prefix, byte** filename, int log_offset, void* log_ctx);
+        public static extern int av_tempfile([MarshalAs(UnmanagedType.LPUTF8Str)] string prefix, byte** filename, int log_offset, void* log_ctx);
         
         /// <summary>Wrapper to work around the lack of mkstemp() on mingw. Also, tries to create file in /tmp first, if possible. *prefix can be a character constant; *filename will be allocated internally.</summary>
         [Obsolete("as fd numbers cannot be passed saftely between libs on some platforms")]
         [DllImport("avutil-57", EntryPoint = "av_tempfile", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_tempfile(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string prefix, ref byte* filename, int log_offset, void* log_ctx);
+        public static extern int av_tempfile([MarshalAs(UnmanagedType.LPUTF8Str)] string prefix, ref byte* filename, int log_offset, void* log_ctx);
         
         /// <summary>Adjust frame number for NTSC drop frame time code.</summary>
         /// <param name="framenum">frame number to adjust</param>
@@ -5084,14 +3936,7 @@ namespace FFmpeg.AutoGen
         /// <param name="str">timecode string which will determine the frame start</param>
         /// <param name="log_ctx">a pointer to an arbitrary struct of which the first field is a pointer to an AVClass struct (used for av_log).</param>
         [DllImport("avutil-57", EntryPoint = "av_timecode_init_from_string", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_timecode_init_from_string(AVTimecode* tc, AVRational rate, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string str, void* log_ctx);
+        public static extern int av_timecode_init_from_string(AVTimecode* tc, AVRational rate, [MarshalAs(UnmanagedType.LPUTF8Str)] string str, void* log_ctx);
         
         /// <summary>Get the timecode string from the 25-bit timecode format (MPEG GOP format).</summary>
         /// <param name="buf">destination buffer, must be at least AV_TIMECODE_STR_SIZE long</param>
@@ -5180,14 +4025,7 @@ namespace FFmpeg.AutoGen
         /// <param name="fmt">The format string (printf-compatible) that specifies how subsequent arguments are converted to output.</param>
         /// <param name="vl">The arguments referenced by the format string.</param>
         [DllImport("avutil-57", EntryPoint = "av_vlog", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern void av_vlog(void* avcl, int level, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string fmt, byte* vl);
+        public static extern void av_vlog(void* avcl, int level, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, byte* vl);
         
         [DllImport("avutil-57", EntryPoint = "av_write_image_line", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern void av_write_image_line(ushort* src, ref byte_ptrArray4 data, int_array4 linesize, AVPixFmtDescriptor* desc, int x, int y, int c, int w);
@@ -5260,14 +4098,7 @@ namespace FFmpeg.AutoGen
         /// <param name="name">the string after &quot;-pp&quot; on the command line</param>
         /// <param name="quality">a number from 0 to PP_QUALITY_MAX</param>
         [DllImport("postproc-56", EntryPoint = "pp_get_mode_by_name_and_quality", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern void* pp_get_mode_by_name_and_quality(
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string name, int quality);
+        public static extern void* pp_get_mode_by_name_and_quality([MarshalAs(UnmanagedType.LPUTF8Str)] string name, int quality);
         
         [DllImport("postproc-56", EntryPoint = "pp_postprocess", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern void pp_postprocess(byte_ptrArray3 src, int_array3 srcStride, ref byte_ptrArray3 dst, int_array3 dstStride, int horizontalSize, int verticalSize, sbyte* QP_store, int QP_stride, void* mode, void* ppContext, int pict_type);
