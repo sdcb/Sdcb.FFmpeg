@@ -69,6 +69,24 @@ namespace FFmpeg.AutoGen
     }
     
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public unsafe delegate void av_log_set_callback_callback (void* p0, int p1, 
+    #if NET40
+    #elif NET45 || NETSTANDARD2_0
+    [MarshalAs((UnmanagedType)48)]
+    #else
+    [MarshalAs(UnmanagedType.LPUTF8Str)]
+    #endif
+    string p2, byte* p3);
+    public unsafe record struct av_log_set_callback_callback_func(IntPtr Pointer)
+    {
+        public static implicit operator av_log_set_callback_callback_func(av_log_set_callback_callback func) => new(func switch
+        {
+            null => IntPtr.Zero,
+            _ => Marshal.GetFunctionPointerForDelegate(func)
+        });
+    }
+    
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public unsafe delegate void av_fifo_generic_peek_at_func (void* p0, void* p1, int p2);
     public unsafe record struct av_fifo_generic_peek_at_func_func(IntPtr Pointer)
     {
@@ -106,6 +124,50 @@ namespace FFmpeg.AutoGen
     public unsafe record struct av_fifo_generic_write_func_func(IntPtr Pointer)
     {
         public static implicit operator av_fifo_generic_write_func_func(av_fifo_generic_write_func func) => new(func switch
+        {
+            null => IntPtr.Zero,
+            _ => Marshal.GetFunctionPointerForDelegate(func)
+        });
+    }
+    
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public unsafe delegate void av_buffer_create_free (void* opaque, byte* data);
+    public unsafe record struct av_buffer_create_free_func(IntPtr Pointer)
+    {
+        public static implicit operator av_buffer_create_free_func(av_buffer_create_free func) => new(func switch
+        {
+            null => IntPtr.Zero,
+            _ => Marshal.GetFunctionPointerForDelegate(func)
+        });
+    }
+    
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public unsafe delegate AVBufferRef* av_buffer_pool_init_alloc (ulong size);
+    public unsafe record struct av_buffer_pool_init_alloc_func(IntPtr Pointer)
+    {
+        public static implicit operator av_buffer_pool_init_alloc_func(av_buffer_pool_init_alloc func) => new(func switch
+        {
+            null => IntPtr.Zero,
+            _ => Marshal.GetFunctionPointerForDelegate(func)
+        });
+    }
+    
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public unsafe delegate AVBufferRef* av_buffer_pool_init2_alloc (void* opaque, ulong size);
+    public unsafe record struct av_buffer_pool_init2_alloc_func(IntPtr Pointer)
+    {
+        public static implicit operator av_buffer_pool_init2_alloc_func(av_buffer_pool_init2_alloc func) => new(func switch
+        {
+            null => IntPtr.Zero,
+            _ => Marshal.GetFunctionPointerForDelegate(func)
+        });
+    }
+    
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public unsafe delegate void av_buffer_pool_init2_pool_free (void* opaque);
+    public unsafe record struct av_buffer_pool_init2_pool_free_func(IntPtr Pointer)
+    {
+        public static implicit operator av_buffer_pool_init2_pool_free_func(av_buffer_pool_init2_pool_free func) => new(func switch
         {
             null => IntPtr.Zero,
             _ => Marshal.GetFunctionPointerForDelegate(func)
@@ -934,6 +996,39 @@ namespace FFmpeg.AutoGen
     }
     
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public unsafe delegate int avio_alloc_context_read_packet (void* opaque, byte* buf, int buf_size);
+    public unsafe record struct avio_alloc_context_read_packet_func(IntPtr Pointer)
+    {
+        public static implicit operator avio_alloc_context_read_packet_func(avio_alloc_context_read_packet func) => new(func switch
+        {
+            null => IntPtr.Zero,
+            _ => Marshal.GetFunctionPointerForDelegate(func)
+        });
+    }
+    
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public unsafe delegate int avio_alloc_context_write_packet (void* opaque, byte* buf, int buf_size);
+    public unsafe record struct avio_alloc_context_write_packet_func(IntPtr Pointer)
+    {
+        public static implicit operator avio_alloc_context_write_packet_func(avio_alloc_context_write_packet func) => new(func switch
+        {
+            null => IntPtr.Zero,
+            _ => Marshal.GetFunctionPointerForDelegate(func)
+        });
+    }
+    
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public unsafe delegate long avio_alloc_context_seek (void* opaque, long offset, int whence);
+    public unsafe record struct avio_alloc_context_seek_func(IntPtr Pointer)
+    {
+        public static implicit operator avio_alloc_context_seek_func(avio_alloc_context_seek func) => new(func switch
+        {
+            null => IntPtr.Zero,
+            _ => Marshal.GetFunctionPointerForDelegate(func)
+        });
+    }
+    
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public unsafe delegate int AVFilter_preinit (AVFilterContext* ctx);
     public unsafe record struct AVFilter_preinit_func(IntPtr Pointer)
     {
@@ -1040,101 +1135,6 @@ namespace FFmpeg.AutoGen
     public unsafe record struct AVFilterGraph_execute_func(IntPtr Pointer)
     {
         public static implicit operator AVFilterGraph_execute_func(AVFilterGraph_execute func) => new(func switch
-        {
-            null => IntPtr.Zero,
-            _ => Marshal.GetFunctionPointerForDelegate(func)
-        });
-    }
-    
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate void av_log_set_callback_callback (void* p0, int p1, 
-    #if NET40
-    #elif NET45 || NETSTANDARD2_0
-    [MarshalAs((UnmanagedType)48)]
-    #else
-    [MarshalAs(UnmanagedType.LPUTF8Str)]
-    #endif
-    string p2, byte* p3);
-    public unsafe record struct av_log_set_callback_callback_func(IntPtr Pointer)
-    {
-        public static implicit operator av_log_set_callback_callback_func(av_log_set_callback_callback func) => new(func switch
-        {
-            null => IntPtr.Zero,
-            _ => Marshal.GetFunctionPointerForDelegate(func)
-        });
-    }
-    
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate void av_buffer_create_free (void* opaque, byte* data);
-    public unsafe record struct av_buffer_create_free_func(IntPtr Pointer)
-    {
-        public static implicit operator av_buffer_create_free_func(av_buffer_create_free func) => new(func switch
-        {
-            null => IntPtr.Zero,
-            _ => Marshal.GetFunctionPointerForDelegate(func)
-        });
-    }
-    
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate AVBufferRef* av_buffer_pool_init_alloc (ulong size);
-    public unsafe record struct av_buffer_pool_init_alloc_func(IntPtr Pointer)
-    {
-        public static implicit operator av_buffer_pool_init_alloc_func(av_buffer_pool_init_alloc func) => new(func switch
-        {
-            null => IntPtr.Zero,
-            _ => Marshal.GetFunctionPointerForDelegate(func)
-        });
-    }
-    
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate AVBufferRef* av_buffer_pool_init2_alloc (void* opaque, ulong size);
-    public unsafe record struct av_buffer_pool_init2_alloc_func(IntPtr Pointer)
-    {
-        public static implicit operator av_buffer_pool_init2_alloc_func(av_buffer_pool_init2_alloc func) => new(func switch
-        {
-            null => IntPtr.Zero,
-            _ => Marshal.GetFunctionPointerForDelegate(func)
-        });
-    }
-    
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate void av_buffer_pool_init2_pool_free (void* opaque);
-    public unsafe record struct av_buffer_pool_init2_pool_free_func(IntPtr Pointer)
-    {
-        public static implicit operator av_buffer_pool_init2_pool_free_func(av_buffer_pool_init2_pool_free func) => new(func switch
-        {
-            null => IntPtr.Zero,
-            _ => Marshal.GetFunctionPointerForDelegate(func)
-        });
-    }
-    
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate int avio_alloc_context_read_packet (void* opaque, byte* buf, int buf_size);
-    public unsafe record struct avio_alloc_context_read_packet_func(IntPtr Pointer)
-    {
-        public static implicit operator avio_alloc_context_read_packet_func(avio_alloc_context_read_packet func) => new(func switch
-        {
-            null => IntPtr.Zero,
-            _ => Marshal.GetFunctionPointerForDelegate(func)
-        });
-    }
-    
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate int avio_alloc_context_write_packet (void* opaque, byte* buf, int buf_size);
-    public unsafe record struct avio_alloc_context_write_packet_func(IntPtr Pointer)
-    {
-        public static implicit operator avio_alloc_context_write_packet_func(avio_alloc_context_write_packet func) => new(func switch
-        {
-            null => IntPtr.Zero,
-            _ => Marshal.GetFunctionPointerForDelegate(func)
-        });
-    }
-    
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate long avio_alloc_context_seek (void* opaque, long offset, int whence);
-    public unsafe record struct avio_alloc_context_seek_func(IntPtr Pointer)
-    {
-        public static implicit operator avio_alloc_context_seek_func(avio_alloc_context_seek func) => new(func switch
         {
             null => IntPtr.Zero,
             _ => Marshal.GetFunctionPointerForDelegate(func)

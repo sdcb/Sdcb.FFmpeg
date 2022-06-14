@@ -2,7 +2,7 @@
 
 namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator.Processors
 {
-    internal class TypeOrAlias
+    internal record TypeOrAlias
     {
         public TypeOrAlias(Type type)
         {

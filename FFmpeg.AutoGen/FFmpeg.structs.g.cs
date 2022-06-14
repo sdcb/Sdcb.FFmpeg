@@ -222,6 +222,20 @@ namespace FFmpeg.AutoGen
         public byte* value;
     }
     
+    /// <summary>the default value for scalar options</summary>
+    [StructLayout(LayoutKind.Explicit)]
+    public unsafe struct AVOption_default_val
+    {
+        [FieldOffset(0)]
+        public long i64;
+        [FieldOffset(0)]
+        public double dbl;
+        [FieldOffset(0)]
+        public byte* str;
+        [FieldOffset(0)]
+        public AVRational q;
+    }
+    
     /// <summary>A single allowed range of values, or a single allowed value.</summary>
     public unsafe struct AVOptionRange
     {
@@ -236,20 +250,6 @@ namespace FFmpeg.AutoGen
         public double component_max;
         /// <summary>Range flag. If set to 1 the struct encodes a range, if set to 0 a single value.</summary>
         public int is_range;
-    }
-    
-    /// <summary>the default value for scalar options</summary>
-    [StructLayout(LayoutKind.Explicit)]
-    public unsafe struct AVOption_default_val
-    {
-        [FieldOffset(0)]
-        public long i64;
-        [FieldOffset(0)]
-        public double dbl;
-        [FieldOffset(0)]
-        public byte* str;
-        [FieldOffset(0)]
-        public AVRational q;
     }
     
     /// <summary>Descriptor that unambiguously describes how the bits of a pixel are stored in the up to 4 data planes of an image. It also stores the subsampling factors and number of components.</summary>
@@ -2401,19 +2401,6 @@ namespace FFmpeg.AutoGen
         public int* sample_rates;
     }
     
-    /// <summary>Structure describes basic parameters of the device.</summary>
-    public unsafe struct AVDeviceInfo
-    {
-        /// <summary>device name, format depends on device</summary>
-        public byte* device_name;
-        /// <summary>human friendly name</summary>
-        public byte* device_description;
-        /// <summary>array indicating what media types(s), if any, a device can provide. If null, cannot provide any</summary>
-        public AVMediaType* media_types;
-        /// <summary>length of media_types array, 0 if device cannot provide any media types</summary>
-        public int nb_media_types;
-    }
-    
     public unsafe struct AVDeviceRect
     {
         /// <summary>x coordinate of top left corner</summary>
@@ -2442,6 +2429,19 @@ namespace FFmpeg.AutoGen
         public int frame_width;
         public int frame_height;
         public AVRational fps;
+    }
+    
+    /// <summary>Structure describes basic parameters of the device.</summary>
+    public unsafe struct AVDeviceInfo
+    {
+        /// <summary>device name, format depends on device</summary>
+        public byte* device_name;
+        /// <summary>human friendly name</summary>
+        public byte* device_description;
+        /// <summary>array indicating what media types(s), if any, a device can provide. If null, cannot provide any</summary>
+        public AVMediaType* media_types;
+        /// <summary>length of media_types array, 0 if device cannot provide any media types</summary>
+        public int nb_media_types;
     }
     
 }

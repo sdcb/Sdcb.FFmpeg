@@ -50,12 +50,12 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator.Processors
             var typeOrAlias = DeduceType(expression);
             if (typeOrAlias == null) return;
 
-            expression = Rewrite(expression);
+            IExpression rewritedExpression = Rewrite(expression);
 
             macro.TypeName = typeOrAlias.ToString();
             macro.Content = $"{macro.Name} = {macro.Expression}";
-            macro.Expression = Serialize(expression);
-            macro.IsConst = IsConst(expression);
+            macro.Expression = Serialize(rewritedExpression);
+            macro.IsConst = IsConst(rewritedExpression);
             macro.IsValid = !typeOrAlias.IsAlias || _astProcessor.TypeAliases.ContainsKey(typeOrAlias.Alias);
         }
 
@@ -102,10 +102,10 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator.Processors
             {
                 case BinaryExpression e:
                 {
-                    var left = Rewrite(e.Left);
-                    var right = Rewrite(e.Right);
-                    var leftType = DeduceType(left);
-                    var rightType = DeduceType(right);
+                    IExpression left = Rewrite(e.Left);
+                    IExpression right = Rewrite(e.Right);
+                    TypeOrAlias leftType = DeduceType(left);
+                    TypeOrAlias rightType = DeduceType(right);
 
                     if (e.OperationType.IsBitwise() && leftType.Precedence != rightType.Precedence)
                     {

@@ -55,40 +55,41 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
                 SuppressUnmanagedCodeSecurity = options.SuppressUnmanagedCodeSecurity
             };
 
-            g.Parse("libavutil/avutil.h");
-            g.Parse("libavutil/audio_fifo.h");
-            g.Parse("libavutil/channel_layout.h");
-            g.Parse("libavutil/cpu.h");
-            g.Parse("libavutil/file.h");
-            g.Parse("libavutil/frame.h");
-            g.Parse("libavutil/opt.h");
-            g.Parse("libavutil/imgutils.h");
-            g.Parse("libavutil/time.h");
-            g.Parse("libavutil/timecode.h");
-            g.Parse("libavutil/tree.h");
-            g.Parse("libavutil/hwcontext.h");
-            g.Parse("libavutil/hwcontext_dxva2.h");
-            g.Parse("libavutil/hwcontext_d3d11va.h");
-            g.Parse("libavutil/hdr_dynamic_metadata.h");
-            g.Parse("libavutil/mastering_display_metadata.h");
-            
-            g.Parse("libswresample/swresample.h");
+            g.Parse(
+                "libavutil/avutil.h",
+                "libavutil/audio_fifo.h",
+                "libavutil/channel_layout.h",
+                "libavutil/cpu.h",
+                "libavutil/file.h",
+                "libavutil/frame.h",
+                "libavutil/opt.h",
+                "libavutil/imgutils.h",
+                "libavutil/time.h",
+                "libavutil/timecode.h",
+                "libavutil/tree.h",
+                "libavutil/hwcontext.h",
+                "libavutil/hwcontext_dxva2.h",
+                "libavutil/hwcontext_d3d11va.h",
+                "libavutil/hdr_dynamic_metadata.h",
+                "libavutil/mastering_display_metadata.h",
 
-            g.Parse("libpostproc/postprocess.h");
+                "libswresample/swresample.h",
 
-            g.Parse("libswscale/swscale.h");
+                "libpostproc/postprocess.h",
 
-            g.Parse("libavcodec/avcodec.h");
-            g.Parse("libavcodec/dxva2.h");
-            g.Parse("libavcodec/d3d11va.h");
+                "libswscale/swscale.h",
 
-            g.Parse("libavformat/avformat.h");
+                "libavcodec/avcodec.h",
+                "libavcodec/dxva2.h",
+                "libavcodec/d3d11va.h",
 
-            g.Parse("libavfilter/avfilter.h");
-            g.Parse("libavfilter/buffersrc.h");
-            g.Parse("libavfilter/buffersink.h");
+                "libavformat/avformat.h",
 
-            g.Parse("libavdevice/avdevice.h");
+                "libavfilter/avfilter.h",
+                "libavfilter/buffersrc.h",
+                "libavfilter/buffersink.h",
+
+                "libavdevice/avdevice.h");
 
             g.WriteLibraries(Path.Combine(options.OutputDir, "FFmpeg.libraries.g.cs"));
             g.WriteMacros(Path.Combine(options.OutputDir, "FFmpeg.macros.g.cs"));
