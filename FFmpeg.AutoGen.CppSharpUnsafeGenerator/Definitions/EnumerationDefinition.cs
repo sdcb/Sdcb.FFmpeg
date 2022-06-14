@@ -7,7 +7,7 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator.Definitions
     {
         public EnumerationItem[] Items { get; set; }
 
-        public virtual bool Equals(EnumerationDefinition? other) =>
+        public virtual bool Equals(EnumerationDefinition other) =>
             other is not null
             && Equals(Items, other.Items) && base.Equals(other);
 

@@ -10,7 +10,7 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator.Definitions
         public bool IsComplete { get; set; }
         public bool IsUnion { get; init; }
 
-        public virtual bool Equals(StructureDefinition? other) =>
+        public virtual bool Equals(StructureDefinition other) =>
             other is not null
             && base.Equals(other)
             && Fields.SequenceEqual(other.Fields)

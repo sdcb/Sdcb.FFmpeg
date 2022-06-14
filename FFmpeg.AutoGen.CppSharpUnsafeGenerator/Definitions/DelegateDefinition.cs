@@ -11,13 +11,13 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator.Definitions
         public FunctionParameter[] Parameters { get; init; }
         public string Content { get; set; }
 
-        public virtual bool Equals(DelegateDefinition? other) =>
+        public virtual bool Equals(DelegateDefinition other) =>
             other is not null
             && base.Equals(other)
             && EqualityComparer<string>.Default.Equals(FunctionName, other.FunctionName)
             && EqualityComparer<TypeDefinition>.Default.Equals(ReturnType, other.ReturnType)
             && Parameters.SequenceEqual(other.Parameters)
-            && EqualityComparer<string?>.Default.Equals(Content, other.Content);
+            && EqualityComparer<string>.Default.Equals(Content, other.Content);
 
         public override int GetHashCode()
         {

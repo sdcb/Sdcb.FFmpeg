@@ -14,13 +14,13 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator.Definitions
         public string Name { get; set; }
         public Obsoletion Obsoletion { get; set; }
 
-        public virtual bool Equals(FunctionDefinitionBase? other) =>
+        public virtual bool Equals(FunctionDefinitionBase other) =>
             other is not null
             && EqualityComparer<TypeDefinition>.Default.Equals(ReturnType, other.ReturnType)
             && Parameters.SequenceEqual(other.Parameters)
-            && EqualityComparer<string?>.Default.Equals(ReturnComment, other.ReturnComment)
-            && EqualityComparer<string?>.Default.Equals(Content, other.Content)
-            && EqualityComparer<string?>.Default.Equals(Name, other.Name)
+            && EqualityComparer<string>.Default.Equals(ReturnComment, other.ReturnComment)
+            && EqualityComparer<string>.Default.Equals(Content, other.Content)
+            && EqualityComparer<string>.Default.Equals(Name, other.Name)
             && EqualityComparer<Obsoletion>.Default.Equals(Obsoletion, other.Obsoletion);
 
         public override int GetHashCode()

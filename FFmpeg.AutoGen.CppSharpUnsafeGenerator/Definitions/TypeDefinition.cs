@@ -10,7 +10,7 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator.Definitions
         public bool ByReference { get; init; }
         public string Name { get; init; }
 
-        public virtual bool Equals(TypeDefinition? other)
+        public virtual bool Equals(TypeDefinition other)
         {
             return other is not null
                    && Attributes.SequenceEqual(other.Attributes)
