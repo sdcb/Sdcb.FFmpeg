@@ -18,6 +18,10 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt update
+          sudo apt install software-properties-common -y
+          sudo add-apt-repository ppa:savoury1/ffmpeg4 -y
+          sudo add-apt-repository ppa:savoury1/ffmpeg5 -y
+          sudo apt update
           sudo apt install ffmpeg -y
       - name: Build
         run: |
