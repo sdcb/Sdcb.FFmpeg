@@ -7,7 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FFmpeg.AutoGen", "FFmpeg.Au
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CF48D45D-979F-4574-9E33-A3AC1CB542B5}"
 	ProjectSection(SolutionItems) = preProject
-		.travis.yml = .travis.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -16,9 +15,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FFmpeg.AutoGen.Tests", "FFmpeg.AutoGen.Tests\FFmpeg.AutoGen.Tests.csproj", "{2139D117-7EF4-4CF0-88A2-702CA0C72BB6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{99AA60D6-6C3F-4538-952A-B75F39AC9D76}"
-	ProjectSection(SolutionItems) = preProject
-		.github\issue_template.md = .github\issue_template.md
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{B5834632-8D6D-4841-BE64-0AB4D6CB1149}"
 	ProjectSection(SolutionItems) = preProject
