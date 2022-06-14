@@ -2,8 +2,7 @@
 
     <PropertyGroup>
         <PackageId>$(AssemblyName)</PackageId>
-        <VersionPrefix>5.0.0</VersionPrefix>
-        <VersionSuffix>preview1</VersionSuffix>
+        <VersionPrefix>5.0.1</VersionPrefix>
         <LangVersion>latest</LangVersion>
         <!-- Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
         <IncludeSymbols>true</IncludeSymbols>

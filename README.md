@@ -1,14 +1,14 @@
-# Important
-**The FFmpeg API is vast and complex and this project exposes it with minimum modifications - support is very limited.
-Please consider to ask *how to* questions on [stackoverflow.com](https://stackoverflow.com/search?tab=newest&q=ffmpeg%20autogen) or in special repository on [github.com](https://github.com/sdcb/FFmpeg.AutoGen.Questions/issues). 
-The community may be able to offer some assistance but you will largely be on your own.
-As another option you can search for a solution in C(lang) as with some effort you can convert it to C#.**
-
 ## FFmpeg.AutoGen 
 [![main](https://github.com/sdcb/FFmpeg.AutoGen/actions/workflows/main.yml/badge.svg)](https://github.com/sdcb/FFmpeg.AutoGen/actions/workflows/main.yml)
 [![nuget](https://img.shields.io/nuget/v/Sdcb.FFmpeg.AutoGen.svg)](https://www.nuget.org/packages/Sdcb.FFmpeg.AutoGen/)
 
-FFmpeg auto generated unsafe bindings for C#/.NET and Mono.
+FFmpeg auto generated unsafe bindings for C#/.NET, forked from https://github.com/Ruslan-B/FFmpeg.AutoGen, optimized for:
+* Using standard `[DllImport]` instead of `LoadLibrary`
+* Minimized repository size, removed all ffmpeg `*.dll` binaries using `bfg`
+* Auto download FFmpeg binaries from known existing sources
+* Omiting shorter enum values like `AVCodecID.H264` instead of `AVCodecID.AV_CODEC_ID_H264`
+* Omiting same prefix macro into a combined enum like `AVChannels.LayoutStereo` instead of `AV_CH_LAYOUT_STEREO`
+* Other optimization and fixs...
 
 ## Usage
 
@@ -17,27 +17,31 @@ For the more sophisticated operations please refer to offical [ffmpeg Documentat
 Nuget packages version uses [semantic versioning](https://semver.org/) and in sync with MAJOR and MINOR version of FFmpeg as PATCH incremets does not changing API.
 
 - on Windows:  
-Native ffmpeg libraries are pre bundled in this repository, please note the are GPL(!) libraries. 
-The x64 libraries source from [CODEX FFMPEG](https://www.gyan.dev/ffmpeg/builds/).
-Please check to example project it shows how specify path to libraries.  
+You can download dev-binaries from http://ffmpeg.org/download.html#build-windows, then set environment variable `PATH` to extracted folder.
 
 - on OS X:  
 Install ffmpeg via [Homebrew](https://formulae.brew.sh/formula/ffmpeg):
 ```bash
 brew install ffmpeg
 ```
-Normally you need to set static ```ffmpeg.RootPath = ``` with full path to FFmpeg libraries.
 
 - on Linux:  
-Use your package manager of choice.
-Normally you need to set static ```ffmpeg.RootPath = ``` with full path to FFmpeg libraries.
+Use your package manager of choice, in Ubuntu 22.04 & ffmpeg 5.0.1 specificly, you can write following commands:
+```
+apt update
+apt install software-properties-common
+add-apt-repository ppa:savoury1/ffmpeg4 -y
+add-apt-repository ppa:savoury1/ffmpeg5 -y
+apt update
+apt install ffmpeg -y
+```
 
 ## Generation
 
 The bindings generator uses [CppSharp](https://github.com/mono/CppSharp).
 
 Prerequisites:
- - Visual Studio 2019 with C# and C++ desktop development workloads and Windows SDK for desktop.
+ - Visual Studio 2022 with C# and C++ desktop development workloads and Windows SDK for desktop.
 
 Steps to generate:
 - Run ```FFmpeg.AutoGen.CppSharpUnsafeGenerator;```
