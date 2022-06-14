@@ -1,16 +1,15 @@
 name: main
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # os: [ubuntu-latest, windows-latest, macos-latest]
         os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v2
@@ -39,13 +38,8 @@ jobs:
         with:
           path: FFmpeg.AutoGen/bin/Release/*.snupkg
           if-no-files-found: error
-      - uses: actions/upload-artifact@v2
-        if: matrix.os == 'windows-latest'
-        with:
-          path: FFmpeg.AutoGen.Redist.windows.x64/bin/Release/*.nupkg
-          if-no-files-found: error
       - name: Codegen Build & Test
         if: matrix.os == 'windows-latest'
         run: |
-          dotnet run -c Release -p FFmpeg.AutoGen.CppSharpUnsafeGenerator -- -i FFmpeg -o FFmpeg.AutoGen
+          dotnet run -c Release -p FFmpeg.AutoGen.CppSharpUnsafeGenerator --
           dotnet build FFmpeg.AutoGen
