@@ -894,208 +894,6 @@ namespace FFmpeg.AutoGen
         public const int FF_LOSS_DEPTH = 0x2;
         /// <summary>FF_LOSS_RESOLUTION = 0x0001</summary>
         public const int FF_LOSS_RESOLUTION = 0x1;
-        /// <summary>FF_PROFILE_AAC_ELD = 38</summary>
-        public const int FF_PROFILE_AAC_ELD = 0x26;
-        /// <summary>FF_PROFILE_AAC_HE = 4</summary>
-        public const int FF_PROFILE_AAC_HE = 0x4;
-        /// <summary>FF_PROFILE_AAC_HE_V2 = 28</summary>
-        public const int FF_PROFILE_AAC_HE_V2 = 0x1c;
-        /// <summary>FF_PROFILE_AAC_LD = 22</summary>
-        public const int FF_PROFILE_AAC_LD = 0x16;
-        /// <summary>FF_PROFILE_AAC_LOW = 1</summary>
-        public const int FF_PROFILE_AAC_LOW = 0x1;
-        /// <summary>FF_PROFILE_AAC_LTP = 3</summary>
-        public const int FF_PROFILE_AAC_LTP = 0x3;
-        /// <summary>FF_PROFILE_AAC_MAIN = 0</summary>
-        public const int FF_PROFILE_AAC_MAIN = 0x0;
-        /// <summary>FF_PROFILE_AAC_SSR = 2</summary>
-        public const int FF_PROFILE_AAC_SSR = 0x2;
-        /// <summary>FF_PROFILE_ARIB_PROFILE_A = 0</summary>
-        public const int FF_PROFILE_ARIB_PROFILE_A = 0x0;
-        /// <summary>FF_PROFILE_ARIB_PROFILE_C = 1</summary>
-        public const int FF_PROFILE_ARIB_PROFILE_C = 0x1;
-        /// <summary>FF_PROFILE_AV1_HIGH = 1</summary>
-        public const int FF_PROFILE_AV1_HIGH = 0x1;
-        /// <summary>FF_PROFILE_AV1_MAIN = 0</summary>
-        public const int FF_PROFILE_AV1_MAIN = 0x0;
-        /// <summary>FF_PROFILE_AV1_PROFESSIONAL = 2</summary>
-        public const int FF_PROFILE_AV1_PROFESSIONAL = 0x2;
-        /// <summary>FF_PROFILE_DNXHD = 0</summary>
-        public const int FF_PROFILE_DNXHD = 0x0;
-        /// <summary>FF_PROFILE_DNXHR_444 = 5</summary>
-        public const int FF_PROFILE_DNXHR_444 = 0x5;
-        /// <summary>FF_PROFILE_DNXHR_HQ = 3</summary>
-        public const int FF_PROFILE_DNXHR_HQ = 0x3;
-        /// <summary>FF_PROFILE_DNXHR_HQX = 4</summary>
-        public const int FF_PROFILE_DNXHR_HQX = 0x4;
-        /// <summary>FF_PROFILE_DNXHR_LB = 1</summary>
-        public const int FF_PROFILE_DNXHR_LB = 0x1;
-        /// <summary>FF_PROFILE_DNXHR_SQ = 2</summary>
-        public const int FF_PROFILE_DNXHR_SQ = 0x2;
-        /// <summary>FF_PROFILE_DTS = 20</summary>
-        public const int FF_PROFILE_DTS = 0x14;
-        /// <summary>FF_PROFILE_DTS_96_24 = 40</summary>
-        public const int FF_PROFILE_DTS_96_24 = 0x28;
-        /// <summary>FF_PROFILE_DTS_ES = 30</summary>
-        public const int FF_PROFILE_DTS_ES = 0x1e;
-        /// <summary>FF_PROFILE_DTS_EXPRESS = 70</summary>
-        public const int FF_PROFILE_DTS_EXPRESS = 0x46;
-        /// <summary>FF_PROFILE_DTS_HD_HRA = 50</summary>
-        public const int FF_PROFILE_DTS_HD_HRA = 0x32;
-        /// <summary>FF_PROFILE_DTS_HD_MA = 60</summary>
-        public const int FF_PROFILE_DTS_HD_MA = 0x3c;
-        /// <summary>FF_PROFILE_H264_BASELINE = 66</summary>
-        public const int FF_PROFILE_H264_BASELINE = 0x42;
-        /// <summary>FF_PROFILE_H264_CAVLC_444 = 44</summary>
-        public const int FF_PROFILE_H264_CAVLC_444 = 0x2c;
-        /// <summary>FF_PROFILE_H264_CONSTRAINED = (1&lt;&lt;9)</summary>
-        public const int FF_PROFILE_H264_CONSTRAINED = 0x1 << 0x9;
-        /// <summary>FF_PROFILE_H264_CONSTRAINED_BASELINE = (66|FF_PROFILE_H264_CONSTRAINED)</summary>
-        public const int FF_PROFILE_H264_CONSTRAINED_BASELINE = 0x42 | FF_PROFILE_H264_CONSTRAINED;
-        /// <summary>FF_PROFILE_H264_EXTENDED = 88</summary>
-        public const int FF_PROFILE_H264_EXTENDED = 0x58;
-        /// <summary>FF_PROFILE_H264_HIGH = 100</summary>
-        public const int FF_PROFILE_H264_HIGH = 0x64;
-        /// <summary>FF_PROFILE_H264_HIGH_10 = 110</summary>
-        public const int FF_PROFILE_H264_HIGH_10 = 0x6e;
-        /// <summary>FF_PROFILE_H264_HIGH_10_INTRA = (110|FF_PROFILE_H264_INTRA)</summary>
-        public const int FF_PROFILE_H264_HIGH_10_INTRA = 0x6e | FF_PROFILE_H264_INTRA;
-        /// <summary>FF_PROFILE_H264_HIGH_422 = 122</summary>
-        public const int FF_PROFILE_H264_HIGH_422 = 0x7a;
-        /// <summary>FF_PROFILE_H264_HIGH_422_INTRA = (122|FF_PROFILE_H264_INTRA)</summary>
-        public const int FF_PROFILE_H264_HIGH_422_INTRA = 0x7a | FF_PROFILE_H264_INTRA;
-        /// <summary>FF_PROFILE_H264_HIGH_444 = 144</summary>
-        public const int FF_PROFILE_H264_HIGH_444 = 0x90;
-        /// <summary>FF_PROFILE_H264_HIGH_444_INTRA = (244|FF_PROFILE_H264_INTRA)</summary>
-        public const int FF_PROFILE_H264_HIGH_444_INTRA = 0xf4 | FF_PROFILE_H264_INTRA;
-        /// <summary>FF_PROFILE_H264_HIGH_444_PREDICTIVE = 244</summary>
-        public const int FF_PROFILE_H264_HIGH_444_PREDICTIVE = 0xf4;
-        /// <summary>FF_PROFILE_H264_INTRA = (1&lt;&lt;11)</summary>
-        public const int FF_PROFILE_H264_INTRA = 0x1 << 0xb;
-        /// <summary>FF_PROFILE_H264_MAIN = 77</summary>
-        public const int FF_PROFILE_H264_MAIN = 0x4d;
-        /// <summary>FF_PROFILE_H264_MULTIVIEW_HIGH = 118</summary>
-        public const int FF_PROFILE_H264_MULTIVIEW_HIGH = 0x76;
-        /// <summary>FF_PROFILE_H264_STEREO_HIGH = 128</summary>
-        public const int FF_PROFILE_H264_STEREO_HIGH = 0x80;
-        /// <summary>FF_PROFILE_HEVC_MAIN = 1</summary>
-        public const int FF_PROFILE_HEVC_MAIN = 0x1;
-        /// <summary>FF_PROFILE_HEVC_MAIN_10 = 2</summary>
-        public const int FF_PROFILE_HEVC_MAIN_10 = 0x2;
-        /// <summary>FF_PROFILE_HEVC_MAIN_STILL_PICTURE = 3</summary>
-        public const int FF_PROFILE_HEVC_MAIN_STILL_PICTURE = 0x3;
-        /// <summary>FF_PROFILE_HEVC_REXT = 4</summary>
-        public const int FF_PROFILE_HEVC_REXT = 0x4;
-        /// <summary>FF_PROFILE_JPEG2000_CSTREAM_NO_RESTRICTION = 32768</summary>
-        public const int FF_PROFILE_JPEG2000_CSTREAM_NO_RESTRICTION = 0x8000;
-        /// <summary>FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_0 = 1</summary>
-        public const int FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_0 = 0x1;
-        /// <summary>FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_1 = 2</summary>
-        public const int FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_1 = 0x2;
-        /// <summary>FF_PROFILE_JPEG2000_DCINEMA_2K = 3</summary>
-        public const int FF_PROFILE_JPEG2000_DCINEMA_2K = 0x3;
-        /// <summary>FF_PROFILE_JPEG2000_DCINEMA_4K = 4</summary>
-        public const int FF_PROFILE_JPEG2000_DCINEMA_4K = 0x4;
-        /// <summary>FF_PROFILE_KLVA_ASYNC = 1</summary>
-        public const int FF_PROFILE_KLVA_ASYNC = 0x1;
-        /// <summary>FF_PROFILE_KLVA_SYNC = 0</summary>
-        public const int FF_PROFILE_KLVA_SYNC = 0x0;
-        /// <summary>FF_PROFILE_MJPEG_HUFFMAN_BASELINE_DCT = 0xc0</summary>
-        public const int FF_PROFILE_MJPEG_HUFFMAN_BASELINE_DCT = 0xc0;
-        /// <summary>FF_PROFILE_MJPEG_HUFFMAN_EXTENDED_SEQUENTIAL_DCT = 0xc1</summary>
-        public const int FF_PROFILE_MJPEG_HUFFMAN_EXTENDED_SEQUENTIAL_DCT = 0xc1;
-        /// <summary>FF_PROFILE_MJPEG_HUFFMAN_LOSSLESS = 0xc3</summary>
-        public const int FF_PROFILE_MJPEG_HUFFMAN_LOSSLESS = 0xc3;
-        /// <summary>FF_PROFILE_MJPEG_HUFFMAN_PROGRESSIVE_DCT = 0xc2</summary>
-        public const int FF_PROFILE_MJPEG_HUFFMAN_PROGRESSIVE_DCT = 0xc2;
-        /// <summary>FF_PROFILE_MJPEG_JPEG_LS = 0xf7</summary>
-        public const int FF_PROFILE_MJPEG_JPEG_LS = 0xf7;
-        /// <summary>FF_PROFILE_MPEG2_422 = 0</summary>
-        public const int FF_PROFILE_MPEG2_422 = 0x0;
-        /// <summary>FF_PROFILE_MPEG2_AAC_HE = 131</summary>
-        public const int FF_PROFILE_MPEG2_AAC_HE = 0x83;
-        /// <summary>FF_PROFILE_MPEG2_AAC_LOW = 128</summary>
-        public const int FF_PROFILE_MPEG2_AAC_LOW = 0x80;
-        /// <summary>FF_PROFILE_MPEG2_HIGH = 1</summary>
-        public const int FF_PROFILE_MPEG2_HIGH = 0x1;
-        /// <summary>FF_PROFILE_MPEG2_MAIN = 4</summary>
-        public const int FF_PROFILE_MPEG2_MAIN = 0x4;
-        /// <summary>FF_PROFILE_MPEG2_SIMPLE = 5</summary>
-        public const int FF_PROFILE_MPEG2_SIMPLE = 0x5;
-        /// <summary>FF_PROFILE_MPEG2_SNR_SCALABLE = 3</summary>
-        public const int FF_PROFILE_MPEG2_SNR_SCALABLE = 0x3;
-        /// <summary>FF_PROFILE_MPEG2_SS = 2</summary>
-        public const int FF_PROFILE_MPEG2_SS = 0x2;
-        /// <summary>FF_PROFILE_MPEG4_ADVANCED_CODING = 11</summary>
-        public const int FF_PROFILE_MPEG4_ADVANCED_CODING = 0xb;
-        /// <summary>FF_PROFILE_MPEG4_ADVANCED_CORE = 12</summary>
-        public const int FF_PROFILE_MPEG4_ADVANCED_CORE = 0xc;
-        /// <summary>FF_PROFILE_MPEG4_ADVANCED_REAL_TIME = 9</summary>
-        public const int FF_PROFILE_MPEG4_ADVANCED_REAL_TIME = 0x9;
-        /// <summary>FF_PROFILE_MPEG4_ADVANCED_SCALABLE_TEXTURE = 13</summary>
-        public const int FF_PROFILE_MPEG4_ADVANCED_SCALABLE_TEXTURE = 0xd;
-        /// <summary>FF_PROFILE_MPEG4_ADVANCED_SIMPLE = 15</summary>
-        public const int FF_PROFILE_MPEG4_ADVANCED_SIMPLE = 0xf;
-        /// <summary>FF_PROFILE_MPEG4_BASIC_ANIMATED_TEXTURE = 7</summary>
-        public const int FF_PROFILE_MPEG4_BASIC_ANIMATED_TEXTURE = 0x7;
-        /// <summary>FF_PROFILE_MPEG4_CORE = 2</summary>
-        public const int FF_PROFILE_MPEG4_CORE = 0x2;
-        /// <summary>FF_PROFILE_MPEG4_CORE_SCALABLE = 10</summary>
-        public const int FF_PROFILE_MPEG4_CORE_SCALABLE = 0xa;
-        /// <summary>FF_PROFILE_MPEG4_HYBRID = 8</summary>
-        public const int FF_PROFILE_MPEG4_HYBRID = 0x8;
-        /// <summary>FF_PROFILE_MPEG4_MAIN = 3</summary>
-        public const int FF_PROFILE_MPEG4_MAIN = 0x3;
-        /// <summary>FF_PROFILE_MPEG4_N_BIT = 4</summary>
-        public const int FF_PROFILE_MPEG4_N_BIT = 0x4;
-        /// <summary>FF_PROFILE_MPEG4_SCALABLE_TEXTURE = 5</summary>
-        public const int FF_PROFILE_MPEG4_SCALABLE_TEXTURE = 0x5;
-        /// <summary>FF_PROFILE_MPEG4_SIMPLE = 0</summary>
-        public const int FF_PROFILE_MPEG4_SIMPLE = 0x0;
-        /// <summary>FF_PROFILE_MPEG4_SIMPLE_FACE_ANIMATION = 6</summary>
-        public const int FF_PROFILE_MPEG4_SIMPLE_FACE_ANIMATION = 0x6;
-        /// <summary>FF_PROFILE_MPEG4_SIMPLE_SCALABLE = 1</summary>
-        public const int FF_PROFILE_MPEG4_SIMPLE_SCALABLE = 0x1;
-        /// <summary>FF_PROFILE_MPEG4_SIMPLE_STUDIO = 14</summary>
-        public const int FF_PROFILE_MPEG4_SIMPLE_STUDIO = 0xe;
-        /// <summary>FF_PROFILE_PRORES_4444 = 4</summary>
-        public const int FF_PROFILE_PRORES_4444 = 0x4;
-        /// <summary>FF_PROFILE_PRORES_HQ = 3</summary>
-        public const int FF_PROFILE_PRORES_HQ = 0x3;
-        /// <summary>FF_PROFILE_PRORES_LT = 1</summary>
-        public const int FF_PROFILE_PRORES_LT = 0x1;
-        /// <summary>FF_PROFILE_PRORES_PROXY = 0</summary>
-        public const int FF_PROFILE_PRORES_PROXY = 0x0;
-        /// <summary>FF_PROFILE_PRORES_STANDARD = 2</summary>
-        public const int FF_PROFILE_PRORES_STANDARD = 0x2;
-        /// <summary>FF_PROFILE_PRORES_XQ = 5</summary>
-        public const int FF_PROFILE_PRORES_XQ = 0x5;
-        /// <summary>FF_PROFILE_RESERVED = -100</summary>
-        public const int FF_PROFILE_RESERVED = -0x64;
-        /// <summary>FF_PROFILE_SBC_MSBC = 1</summary>
-        public const int FF_PROFILE_SBC_MSBC = 0x1;
-        /// <summary>FF_PROFILE_UNKNOWN = -99</summary>
-        public const int FF_PROFILE_UNKNOWN = -0x63;
-        /// <summary>FF_PROFILE_VC1_ADVANCED = 3</summary>
-        public const int FF_PROFILE_VC1_ADVANCED = 0x3;
-        /// <summary>FF_PROFILE_VC1_COMPLEX = 2</summary>
-        public const int FF_PROFILE_VC1_COMPLEX = 0x2;
-        /// <summary>FF_PROFILE_VC1_MAIN = 1</summary>
-        public const int FF_PROFILE_VC1_MAIN = 0x1;
-        /// <summary>FF_PROFILE_VC1_SIMPLE = 0</summary>
-        public const int FF_PROFILE_VC1_SIMPLE = 0x0;
-        /// <summary>FF_PROFILE_VP9_0 = 0</summary>
-        public const int FF_PROFILE_VP9_0 = 0x0;
-        /// <summary>FF_PROFILE_VP9_1 = 1</summary>
-        public const int FF_PROFILE_VP9_1 = 0x1;
-        /// <summary>FF_PROFILE_VP9_2 = 2</summary>
-        public const int FF_PROFILE_VP9_2 = 0x2;
-        /// <summary>FF_PROFILE_VP9_3 = 3</summary>
-        public const int FF_PROFILE_VP9_3 = 0x3;
-        /// <summary>FF_PROFILE_VVC_MAIN_10 = 1</summary>
-        public const int FF_PROFILE_VVC_MAIN_10 = 0x1;
-        /// <summary>FF_PROFILE_VVC_MAIN_10_444 = 33</summary>
-        public const int FF_PROFILE_VVC_MAIN_10_444 = 0x21;
         /// <summary>FF_QP2LAMBDA = 118</summary>
         public const int FF_QP2LAMBDA = 0x76;
         /// <summary>FF_QUALITY_SCALE = FF_LAMBDA_SCALE</summary>
@@ -1793,6 +1591,314 @@ namespace FFmpeg.AutoGen
             
             /// <summary>FF_MB_DECISION_SIMPLE = 0</summary>
             Simple = 0x0,
+        }
+        
+        /// <summary>Macro enum, prefix: FF_PROFILE_</summary>
+        [Flags]
+        public enum FFProfiles
+        {
+            /// <summary>FF_PROFILE_AAC_ELD = 38</summary>
+            AacEld = 0x26,
+            
+            /// <summary>FF_PROFILE_AAC_HE = 4</summary>
+            AacHe = 0x4,
+            
+            /// <summary>FF_PROFILE_AAC_HE_V2 = 28</summary>
+            AacHeV2 = 0x1c,
+            
+            /// <summary>FF_PROFILE_AAC_LD = 22</summary>
+            AacLd = 0x16,
+            
+            /// <summary>FF_PROFILE_AAC_LOW = 1</summary>
+            AacLow = 0x1,
+            
+            /// <summary>FF_PROFILE_AAC_LTP = 3</summary>
+            AacLtp = 0x3,
+            
+            /// <summary>FF_PROFILE_AAC_MAIN = 0</summary>
+            AacMain = 0x0,
+            
+            /// <summary>FF_PROFILE_AAC_SSR = 2</summary>
+            AacSsr = 0x2,
+            
+            /// <summary>FF_PROFILE_ARIB_PROFILE_A = 0</summary>
+            AribProfileA = 0x0,
+            
+            /// <summary>FF_PROFILE_ARIB_PROFILE_C = 1</summary>
+            AribProfileC = 0x1,
+            
+            /// <summary>FF_PROFILE_AV1_HIGH = 1</summary>
+            Av1High = 0x1,
+            
+            /// <summary>FF_PROFILE_AV1_MAIN = 0</summary>
+            Av1Main = 0x0,
+            
+            /// <summary>FF_PROFILE_AV1_PROFESSIONAL = 2</summary>
+            Av1Professional = 0x2,
+            
+            /// <summary>FF_PROFILE_DNXHD = 0</summary>
+            Dnxhd = 0x0,
+            
+            /// <summary>FF_PROFILE_DNXHR_444 = 5</summary>
+            Dnxhr_444 = 0x5,
+            
+            /// <summary>FF_PROFILE_DNXHR_HQ = 3</summary>
+            DnxhrHq = 0x3,
+            
+            /// <summary>FF_PROFILE_DNXHR_HQX = 4</summary>
+            DnxhrHqx = 0x4,
+            
+            /// <summary>FF_PROFILE_DNXHR_LB = 1</summary>
+            DnxhrLb = 0x1,
+            
+            /// <summary>FF_PROFILE_DNXHR_SQ = 2</summary>
+            DnxhrSq = 0x2,
+            
+            /// <summary>FF_PROFILE_DTS = 20</summary>
+            Dts = 0x14,
+            
+            /// <summary>FF_PROFILE_DTS_96_24 = 40</summary>
+            Dts_96_24 = 0x28,
+            
+            /// <summary>FF_PROFILE_DTS_ES = 30</summary>
+            DtsEs = 0x1e,
+            
+            /// <summary>FF_PROFILE_DTS_EXPRESS = 70</summary>
+            DtsExpress = 0x46,
+            
+            /// <summary>FF_PROFILE_DTS_HD_HRA = 50</summary>
+            DtsHdHra = 0x32,
+            
+            /// <summary>FF_PROFILE_DTS_HD_MA = 60</summary>
+            DtsHdMa = 0x3c,
+            
+            /// <summary>FF_PROFILE_H264_BASELINE = 66</summary>
+            H264Baseline = 0x42,
+            
+            /// <summary>FF_PROFILE_H264_CAVLC_444 = 44</summary>
+            H264Cavlc_444 = 0x2c,
+            
+            /// <summary>FF_PROFILE_H264_CONSTRAINED = (1&lt;&lt;9)</summary>
+            H264Constrained = 0x1 << 0x9,
+            
+            /// <summary>FF_PROFILE_H264_CONSTRAINED_BASELINE = (66|FF_PROFILE_H264_CONSTRAINED)</summary>
+            H264ConstrainedBaseline = 0x42 | H264Constrained,
+            
+            /// <summary>FF_PROFILE_H264_EXTENDED = 88</summary>
+            H264Extended = 0x58,
+            
+            /// <summary>FF_PROFILE_H264_HIGH = 100</summary>
+            H264High = 0x64,
+            
+            /// <summary>FF_PROFILE_H264_HIGH_10 = 110</summary>
+            H264High_10 = 0x6e,
+            
+            /// <summary>FF_PROFILE_H264_HIGH_10_INTRA = (110|FF_PROFILE_H264_INTRA)</summary>
+            H264High_10Intra = 0x6e | H264Intra,
+            
+            /// <summary>FF_PROFILE_H264_HIGH_422 = 122</summary>
+            H264High_422 = 0x7a,
+            
+            /// <summary>FF_PROFILE_H264_HIGH_422_INTRA = (122|FF_PROFILE_H264_INTRA)</summary>
+            H264High_422Intra = 0x7a | H264Intra,
+            
+            /// <summary>FF_PROFILE_H264_HIGH_444 = 144</summary>
+            H264High_444 = 0x90,
+            
+            /// <summary>FF_PROFILE_H264_HIGH_444_INTRA = (244|FF_PROFILE_H264_INTRA)</summary>
+            H264High_444Intra = 0xf4 | H264Intra,
+            
+            /// <summary>FF_PROFILE_H264_HIGH_444_PREDICTIVE = 244</summary>
+            H264High_444Predictive = 0xf4,
+            
+            /// <summary>FF_PROFILE_H264_INTRA = (1&lt;&lt;11)</summary>
+            H264Intra = 0x1 << 0xb,
+            
+            /// <summary>FF_PROFILE_H264_MAIN = 77</summary>
+            H264Main = 0x4d,
+            
+            /// <summary>FF_PROFILE_H264_MULTIVIEW_HIGH = 118</summary>
+            H264MultiviewHigh = 0x76,
+            
+            /// <summary>FF_PROFILE_H264_STEREO_HIGH = 128</summary>
+            H264StereoHigh = 0x80,
+            
+            /// <summary>FF_PROFILE_HEVC_MAIN = 1</summary>
+            HevcMain = 0x1,
+            
+            /// <summary>FF_PROFILE_HEVC_MAIN_10 = 2</summary>
+            HevcMain_10 = 0x2,
+            
+            /// <summary>FF_PROFILE_HEVC_MAIN_STILL_PICTURE = 3</summary>
+            HevcMainStillPicture = 0x3,
+            
+            /// <summary>FF_PROFILE_HEVC_REXT = 4</summary>
+            HevcRext = 0x4,
+            
+            /// <summary>FF_PROFILE_JPEG2000_CSTREAM_NO_RESTRICTION = 32768</summary>
+            Jpeg2000CstreamNoRestriction = 0x8000,
+            
+            /// <summary>FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_0 = 1</summary>
+            Jpeg2000CstreamRestriction_0 = 0x1,
+            
+            /// <summary>FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_1 = 2</summary>
+            Jpeg2000CstreamRestriction_1 = 0x2,
+            
+            /// <summary>FF_PROFILE_JPEG2000_DCINEMA_2K = 3</summary>
+            Jpeg2000Dcinema_2K = 0x3,
+            
+            /// <summary>FF_PROFILE_JPEG2000_DCINEMA_4K = 4</summary>
+            Jpeg2000Dcinema_4K = 0x4,
+            
+            /// <summary>FF_PROFILE_KLVA_ASYNC = 1</summary>
+            KlvaAsync = 0x1,
+            
+            /// <summary>FF_PROFILE_KLVA_SYNC = 0</summary>
+            KlvaSync = 0x0,
+            
+            /// <summary>FF_PROFILE_MJPEG_HUFFMAN_BASELINE_DCT = 0xc0</summary>
+            MjpegHuffmanBaselineDct = 0xc0,
+            
+            /// <summary>FF_PROFILE_MJPEG_HUFFMAN_EXTENDED_SEQUENTIAL_DCT = 0xc1</summary>
+            MjpegHuffmanExtendedSequentialDct = 0xc1,
+            
+            /// <summary>FF_PROFILE_MJPEG_HUFFMAN_LOSSLESS = 0xc3</summary>
+            MjpegHuffmanLossless = 0xc3,
+            
+            /// <summary>FF_PROFILE_MJPEG_HUFFMAN_PROGRESSIVE_DCT = 0xc2</summary>
+            MjpegHuffmanProgressiveDct = 0xc2,
+            
+            /// <summary>FF_PROFILE_MJPEG_JPEG_LS = 0xf7</summary>
+            MjpegJpegLs = 0xf7,
+            
+            /// <summary>FF_PROFILE_MPEG2_422 = 0</summary>
+            Mpeg2_422 = 0x0,
+            
+            /// <summary>FF_PROFILE_MPEG2_AAC_HE = 131</summary>
+            Mpeg2AacHe = 0x83,
+            
+            /// <summary>FF_PROFILE_MPEG2_AAC_LOW = 128</summary>
+            Mpeg2AacLow = 0x80,
+            
+            /// <summary>FF_PROFILE_MPEG2_HIGH = 1</summary>
+            Mpeg2High = 0x1,
+            
+            /// <summary>FF_PROFILE_MPEG2_MAIN = 4</summary>
+            Mpeg2Main = 0x4,
+            
+            /// <summary>FF_PROFILE_MPEG2_SIMPLE = 5</summary>
+            Mpeg2Simple = 0x5,
+            
+            /// <summary>FF_PROFILE_MPEG2_SNR_SCALABLE = 3</summary>
+            Mpeg2SnrScalable = 0x3,
+            
+            /// <summary>FF_PROFILE_MPEG2_SS = 2</summary>
+            Mpeg2Ss = 0x2,
+            
+            /// <summary>FF_PROFILE_MPEG4_ADVANCED_CODING = 11</summary>
+            Mpeg4AdvancedCoding = 0xb,
+            
+            /// <summary>FF_PROFILE_MPEG4_ADVANCED_CORE = 12</summary>
+            Mpeg4AdvancedCore = 0xc,
+            
+            /// <summary>FF_PROFILE_MPEG4_ADVANCED_REAL_TIME = 9</summary>
+            Mpeg4AdvancedRealTime = 0x9,
+            
+            /// <summary>FF_PROFILE_MPEG4_ADVANCED_SCALABLE_TEXTURE = 13</summary>
+            Mpeg4AdvancedScalableTexture = 0xd,
+            
+            /// <summary>FF_PROFILE_MPEG4_ADVANCED_SIMPLE = 15</summary>
+            Mpeg4AdvancedSimple = 0xf,
+            
+            /// <summary>FF_PROFILE_MPEG4_BASIC_ANIMATED_TEXTURE = 7</summary>
+            Mpeg4BasicAnimatedTexture = 0x7,
+            
+            /// <summary>FF_PROFILE_MPEG4_CORE = 2</summary>
+            Mpeg4Core = 0x2,
+            
+            /// <summary>FF_PROFILE_MPEG4_CORE_SCALABLE = 10</summary>
+            Mpeg4CoreScalable = 0xa,
+            
+            /// <summary>FF_PROFILE_MPEG4_HYBRID = 8</summary>
+            Mpeg4Hybrid = 0x8,
+            
+            /// <summary>FF_PROFILE_MPEG4_MAIN = 3</summary>
+            Mpeg4Main = 0x3,
+            
+            /// <summary>FF_PROFILE_MPEG4_N_BIT = 4</summary>
+            Mpeg4NBit = 0x4,
+            
+            /// <summary>FF_PROFILE_MPEG4_SCALABLE_TEXTURE = 5</summary>
+            Mpeg4ScalableTexture = 0x5,
+            
+            /// <summary>FF_PROFILE_MPEG4_SIMPLE = 0</summary>
+            Mpeg4Simple = 0x0,
+            
+            /// <summary>FF_PROFILE_MPEG4_SIMPLE_FACE_ANIMATION = 6</summary>
+            Mpeg4SimpleFaceAnimation = 0x6,
+            
+            /// <summary>FF_PROFILE_MPEG4_SIMPLE_SCALABLE = 1</summary>
+            Mpeg4SimpleScalable = 0x1,
+            
+            /// <summary>FF_PROFILE_MPEG4_SIMPLE_STUDIO = 14</summary>
+            Mpeg4SimpleStudio = 0xe,
+            
+            /// <summary>FF_PROFILE_PRORES_4444 = 4</summary>
+            Prores_4444 = 0x4,
+            
+            /// <summary>FF_PROFILE_PRORES_HQ = 3</summary>
+            ProresHq = 0x3,
+            
+            /// <summary>FF_PROFILE_PRORES_LT = 1</summary>
+            ProresLt = 0x1,
+            
+            /// <summary>FF_PROFILE_PRORES_PROXY = 0</summary>
+            ProresProxy = 0x0,
+            
+            /// <summary>FF_PROFILE_PRORES_STANDARD = 2</summary>
+            ProresStandard = 0x2,
+            
+            /// <summary>FF_PROFILE_PRORES_XQ = 5</summary>
+            ProresXq = 0x5,
+            
+            /// <summary>FF_PROFILE_RESERVED = -100</summary>
+            Reserved = -0x64,
+            
+            /// <summary>FF_PROFILE_SBC_MSBC = 1</summary>
+            SbcMsbc = 0x1,
+            
+            /// <summary>FF_PROFILE_UNKNOWN = -99</summary>
+            Unknown = -0x63,
+            
+            /// <summary>FF_PROFILE_VC1_ADVANCED = 3</summary>
+            Vc1Advanced = 0x3,
+            
+            /// <summary>FF_PROFILE_VC1_COMPLEX = 2</summary>
+            Vc1Complex = 0x2,
+            
+            /// <summary>FF_PROFILE_VC1_MAIN = 1</summary>
+            Vc1Main = 0x1,
+            
+            /// <summary>FF_PROFILE_VC1_SIMPLE = 0</summary>
+            Vc1Simple = 0x0,
+            
+            /// <summary>FF_PROFILE_VP9_0 = 0</summary>
+            Vp9_0 = 0x0,
+            
+            /// <summary>FF_PROFILE_VP9_1 = 1</summary>
+            Vp9_1 = 0x1,
+            
+            /// <summary>FF_PROFILE_VP9_2 = 2</summary>
+            Vp9_2 = 0x2,
+            
+            /// <summary>FF_PROFILE_VP9_3 = 3</summary>
+            Vp9_3 = 0x3,
+            
+            /// <summary>FF_PROFILE_VVC_MAIN_10 = 1</summary>
+            VvcMain_10 = 0x1,
+            
+            /// <summary>FF_PROFILE_VVC_MAIN_10_444 = 33</summary>
+            VvcMain_10_444 = 0x21,
         }
         
         /// <summary>Macro enum, prefix: PARSER_FLAG_</summary>

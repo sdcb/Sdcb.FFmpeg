@@ -114,6 +114,7 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
                 new ("FF_CMP_", "FFComparisons"), 
                 new ("PARSER_FLAG_", "ParserFlags"), 
                 new ("AVIO_FLAG_", "AvioFlags"), 
+                new ("FF_PROFILE_", "FFProfiles"),
             };
             Dictionary<string, MacroEnumDef> knownConstEnumMapping = knownConstEnums.ToDictionary(k => k.Prefix, v => v);
 
