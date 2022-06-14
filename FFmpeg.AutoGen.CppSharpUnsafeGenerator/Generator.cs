@@ -92,10 +92,10 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
             WriteInternal(outputFile,
                 (units, writer) =>
                 {
-                    units.OfType<DelegateDefinition>().ToList().ForEach(x =>
+                    units.OfType<DelegateDefinition>().ForEach((x, i) =>
                     {
                         writer.WriteDelegate(x);
-                        writer.WriteLine();
+                        if (!i.IsLast) writer.WriteLine();
                     });
                 });
         }

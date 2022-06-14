@@ -37,8 +37,8 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
                 .ToHashSet();
             string typeExpr = DetectBestTypeForEnum(allTypes) switch
             {
-                "int" => "", 
-                var x => $" : {x}", 
+                "int" => "",
+                var x => $" : {x}",
             };
 
             Dictionary<string, string> macroShortcutMapping = macros
@@ -62,7 +62,7 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
                 });
             }
 
-            
+
             static string ExpressionTransform(string expression, Dictionary<string, string> mapping)
             {
                 foreach (KeyValuePair<string, string> kv in mapping)
@@ -76,12 +76,12 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
             {
                 string[] priorities = new[]
                 {
-                    "ulong", 
-                    "long", 
-                    "uint", 
-                    "int", 
-                    "ushort", 
-                    "short", 
+                    "ulong",
+                    "long",
+                    "uint",
+                    "int",
+                    "ushort",
+                    "short",
                 };
 
                 foreach (string prior in priorities)
@@ -121,22 +121,21 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
             }
         }
 
-        private static string EnumNameTransform(string name)
-        {
-            return string.Concat(name
-                        .Split('_')
-                        .Select(x => x switch
-                        {
-                            var _ when char.IsDigit(x[0]) => $"_{x}",
-                            _ => char.ToUpper(x[0]) + x[1..].ToLower(),
-                        })) switch
+        private static string EnumNameTransform(string name) => CSharpKeywordTransform(string.Concat(name
+            .Split('_')
+            .Select(x => x switch
             {
-                var x when IsCSharpKeyword(x) => $"@{x}",
-                var x => x,
-            };
+                var _ when char.IsDigit(x[0]) => $"_{x}",
+                _ => char.ToUpper(x[0]) + x[1..].ToLower(),
+            })));
 
-            static bool IsCSharpKeyword(string key) => _csharpKeywords.Contains(key);
-        }
+        private static bool IsCSharpKeyword(string key) => _csharpKeywords.Contains(key);
+
+        private static string CSharpKeywordTransform(string syntax) => syntax switch
+        {
+            _ when IsCSharpKeyword(syntax) => "@" + syntax,
+            _ => syntax
+        };
 
         public static string CommonPrefixOf(IEnumerable<string> strings)
         {
@@ -176,7 +175,7 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
                     WriteSummary(field);
                     WriteObsoletion(field);
                     if (structure.IsUnion) WriteLine("[FieldOffset(0)]");
-                    WriteLine($"public {field.FieldType.Name} @{field.Name};");
+                    WriteLine($"public {field.FieldType.Name} {CSharpKeywordTransform(field.Name)};");
                 }
         }
 
@@ -235,12 +234,17 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
             WriteLine("[UnmanagedFunctionPointer(CallingConvention.Cdecl)]");
             WriteLine($"public unsafe delegate {@delegate.ReturnType.Name} {@delegate.FunctionName} ({parameters});");
 
-            WriteLine($"public unsafe struct {@delegate.Name}");
-            using var _ = BeginBlock();
-            WriteLine("public IntPtr Pointer;");
-            Write($"public static implicit operator {@delegate.Name}({@delegate.FunctionName} func) => ");
-            Write($"new {@delegate.Name} {{ Pointer = func == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(func) }};");
-            WriteLine();
+            WriteLine($"public unsafe record struct {@delegate.Name}(IntPtr Pointer)");
+            using (BeginBlock())
+            {
+                WriteLine($"public static implicit operator {@delegate.Name}({@delegate.FunctionName} func) => new(func switch");
+                using (BeginBlock(inline: true))
+                {
+                    WriteLine("null => IntPtr.Zero,");
+                    WriteLine("_ => Marshal.GetFunctionPointerForDelegate(func)");
+                }
+                WriteLine(");");
+            }
         }
 
         public void WriteLine()
@@ -452,19 +456,7 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
                     var sb = new StringBuilder();
                     if (withAttributes && x.Type.Attributes.Any()) sb.Append($"{string.Join("", x.Type.Attributes)} ");
                     if (x.Type.ByReference) sb.Append("ref ");
-                    sb.Append($"{x.Type.Name} @{x.Name}");
-                    return sb.ToString();
-                }));
-        }
-
-        private static string GetParameterNames(FunctionParameter[] parameters)
-        {
-            return string.Join(", ",
-                parameters.Select(x =>
-                {
-                    var sb = new StringBuilder();
-                    if (x.Type.ByReference) sb.Append("ref ");
-                    sb.Append($"@{x.Name}");
+                    sb.Append($"{x.Type.Name} {CSharpKeywordTransform(x.Name)}");
                     return sb.ToString();
                 }));
         }

@@ -151,7 +151,8 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
             string cacheGoodFile = Path.Combine(FFmpegDir, zippedFilename + ".cache-good");
             if (File.Exists(cacheGoodFile))
             {
-                Console.WriteLine("Detected cache good file, skipped downloading binary.");
+                Console.WriteLine($"Detected cache good file in {FFmpegDir}, skipped downloading binary.");
+                return;
             }
 
             Console.WriteLine($"(1 of 4) Downloading {ffmpegBinaryUrl} to {destinationCacheFile} ...");

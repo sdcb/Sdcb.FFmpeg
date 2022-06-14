@@ -1399,13 +1399,7 @@ namespace FFmpeg.AutoGen
             Layout_2_2 = LayoutStereo | SideLeft | SideRight,
             
             /// <summary>AV_CH_LAYOUT_22POINT2 = (ulong)(AV_CH_LAYOUT_5POINT1_BACK | AV_CH_FRONT_LEFT_OF_CENTER | AV_CH_FRONT_RIGHT_OF_CENTER | AV_CH_BACK_CENTER) | AV_CH_LOW_FREQUENCY_2 | (ulong)(AV_CH_SIDE_LEFT) | (ulong)(AV_CH_SIDE_RIGHT) | (ulong)(AV_CH_TOP_FRONT_LEFT) | (ulong)(AV_CH_TOP_FRONT_RIGHT) | (ulong)(AV_CH_TOP_FRONT_CENTER) | (ulong)(AV_CH_TOP_CENTER) | (ulong)(AV_CH_TOP_BACK_LEFT) | (ulong)(AV_CH_TOP_BACK_RIGHT) | (ulong)(AV_CH_TOP_SIDE_LEFT) | (ulong)(AV_CH_TOP_SIDE_RIGHT) | (ulong)(AV_CH_TOP_BACK_CENTER) | (ulong)(AV_CH_BOTTOM_FRONT_CENTER) | (ulong)(AV_CH_BOTTOM_FRONT_LEFT) | (ulong)(AV_CH_BOTTOM_FRONT_RIGHT)</summary>
-            Layout_22POINT2 = (ulong)(
-                Layout_5POINT1Back | 
-                FrontLeftOfCenter | 
-                FrontRightOfCenter | 
-                BackCenter) | 
-                (ulong)(LowFrequency_2) | 
-                (ulong)((SideLeft)(|(ulong)((SideRight)(|(ulong)((TopFrontLeft)(|(ulong)((TopFrontRight)(|(ulong)((TopFrontCenter)(|(ulong)((TopCenter)(|(ulong)((TopBackLeft)(|(ulong)((TopBackRight)(|(ulong)((TopSideLeft)(|(ulong)((TopSideRight)(|(ulong)((TopBackCenter)(|(ulong)((BottomFrontCenter)(|(ulong)((BottomFrontLeft)(|(ulong)(BottomFrontRight))))))))))))))))))))))))))),
+            Layout_22POINT2 = (ulong)(Layout_5POINT1Back | FrontLeftOfCenter | FrontRightOfCenter | BackCenter) | (ulong)(LowFrequency_2) | (ulong)((SideLeft)(|(ulong)((SideRight)(|(ulong)((TopFrontLeft)(|(ulong)((TopFrontRight)(|(ulong)((TopFrontCenter)(|(ulong)((TopCenter)(|(ulong)((TopBackLeft)(|(ulong)((TopBackRight)(|(ulong)((TopSideLeft)(|(ulong)((TopSideRight)(|(ulong)((TopBackCenter)(|(ulong)((BottomFrontCenter)(|(ulong)((BottomFrontLeft)(|(ulong)(BottomFrontRight))))))))))))))))))))))))))),
             
             /// <summary>AV_CH_LAYOUT_2POINT1 = AV_CH_LAYOUT_STEREO | AV_CH_LOW_FREQUENCY</summary>
             Layout_2POINT1 = LayoutStereo | LowFrequency,
