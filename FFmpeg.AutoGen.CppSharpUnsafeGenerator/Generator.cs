@@ -104,17 +104,24 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
         {
             MacroEnumDef[] knownConstEnums = new MacroEnumDef[]
             {
-                new ("AV_CODEC_FLAG_", "AVCodecFlags"), 
-                new ("AV_CODEC_FLAG2_", "AVCodecFlags2"), 
-                new ("AV_PKG_FLAG_", "AVPacketFlags"), 
-                new ("SLICE_FLAG_", "CodecSliceFlags"), 
-                new ("AV_CH_", "AVChannels"),
-                new ("AV_CODEC_CAP_", "AVCodecCompabilities"), 
-                new ("FF_MB_DECISION_", "FFMacroblockDecisions"), 
-                new ("FF_CMP_", "FFComparisons"), 
-                new ("PARSER_FLAG_", "ParserFlags"), 
-                new ("AVIO_FLAG_", "AvioFlags"), 
-                new ("FF_PROFILE_", "FFProfiles"),
+                new ("AV_CODEC_FLAG_", "AVCodecFlags"),
+                new ("AV_CODEC_FLAG2_", "AVCodecFlags2"),
+                new ("AV_PKG_FLAG_", "AVPacketFlags"),
+                new ("SLICE_FLAG_", "CodecSliceFlags"),
+                new ("AV_CH_", "AVChannel"),
+                new ("AV_CODEC_CAP_", "AVCodecCompability"),
+                new ("FF_MB_DECISION_", "FFMacroblockDecision"),
+                new ("FF_CMP_", "FFComparison"),
+                new ("PARSER_FLAG_", "ParserFlags"),
+                new ("AVIO_FLAG_", "AVIOFlags"),
+                new ("FF_PROFILE_", "FFProfile"),
+                new ("AVSEEK_FLAG_", "AVSeekFlags"),
+                new ("AV_PIX_FMT_FLAG_", "AVPixelFormatFlags"),
+                new ("AV_OPT_FLAG_", "OptionFlags"),
+                new ("AV_LOG_", "AVLog", Except: new []{ "AV_LOG_C" }.ToHashSet()),
+                new ("AV_CPU_FLAG_", "AVCpuFlags"),
+                new ("AV_PKT_FLAG_", "AVPacketFlags"),
+                new ("AVFMT_FLAG_", "AVFormatFlags"), 
             };
             Dictionary<string, MacroEnumDef> knownConstEnumMapping = knownConstEnums.ToDictionary(k => k.Prefix, v => v);
 
@@ -125,12 +132,12 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
                     using (writer.BeginBlock())
                         units.OfType<MacroDefinition>()
                             .OrderBy(x => x.Name)
-                            .GroupBy(x => knownConstEnumMapping.Keys.FirstOrDefault(known => x.Name.StartsWith(known)) switch
+                            .GroupBy(x => knownConstEnums.FirstOrDefault(known => known.Match(x.Name)) switch
                             {
                                 null => null,
-                                string prefix => prefix,
+                                MacroEnumDef prefix => prefix.Prefix,
                             })
-                            .ForEach((IGrouping<string, MacroDefinition> group, ElementInfo i) =>
+                            .ForEach((group, i) =>
                             {
                                 if (group.Key == null)
                                 {
@@ -142,10 +149,7 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
                                 else
                                 {
                                     writer.WriteMacroEnum(group, knownConstEnumMapping[group.Key]);
-                                    if (!i.IsLast)
-                                    {
-                                        writer.WriteLine();
-                                    }
+                                    if (!i.IsLast) writer.WriteLine();
                                 }
                             });
                 });
@@ -319,5 +323,8 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
         }
     }
 
-    public record MacroEnumDef(string Prefix, string EnumName);
+    public record MacroEnumDef(string Prefix, string EnumName, HashSet<string> Except = default)
+    {
+        public bool Match(string name) => name.StartsWith(Prefix) && (Except == null || !Except.Contains(name));
+    }
 }

@@ -59,94 +59,6 @@ namespace FFmpeg.AutoGen
         public const int AV_CODEC_PROP_TEXT_SUB = 0x1 << 0x11;
         // public static av_cold = __attribute__((cold));
         // public static av_const = __attribute__((const));
-        /// <summary>AV_CPU_FLAG_3DNOW = 0x0004</summary>
-        public const int AV_CPU_FLAG_3DNOW = 0x4;
-        /// <summary>AV_CPU_FLAG_3DNOWEXT = 0x0020</summary>
-        public const int AV_CPU_FLAG_3DNOWEXT = 0x20;
-        /// <summary>AV_CPU_FLAG_AESNI = 0x80000</summary>
-        public const int AV_CPU_FLAG_AESNI = 0x80000;
-        /// <summary>AV_CPU_FLAG_ALTIVEC = 0x0001</summary>
-        public const int AV_CPU_FLAG_ALTIVEC = 0x1;
-        /// <summary>AV_CPU_FLAG_ARMV5TE = (1 &lt;&lt; 0)</summary>
-        public const int AV_CPU_FLAG_ARMV5TE = 0x1 << 0x0;
-        /// <summary>AV_CPU_FLAG_ARMV6 = (1 &lt;&lt; 1)</summary>
-        public const int AV_CPU_FLAG_ARMV6 = 0x1 << 0x1;
-        /// <summary>AV_CPU_FLAG_ARMV6T2 = (1 &lt;&lt; 2)</summary>
-        public const int AV_CPU_FLAG_ARMV6T2 = 0x1 << 0x2;
-        /// <summary>AV_CPU_FLAG_ARMV8 = (1 &lt;&lt; 6)</summary>
-        public const int AV_CPU_FLAG_ARMV8 = 0x1 << 0x6;
-        /// <summary>AV_CPU_FLAG_ATOM = 0x10000000</summary>
-        public const int AV_CPU_FLAG_ATOM = 0x10000000;
-        /// <summary>AV_CPU_FLAG_AVX = 0x4000</summary>
-        public const int AV_CPU_FLAG_AVX = 0x4000;
-        /// <summary>AV_CPU_FLAG_AVX2 = 0x8000</summary>
-        public const int AV_CPU_FLAG_AVX2 = 0x8000;
-        /// <summary>AV_CPU_FLAG_AVX512 = 0x100000</summary>
-        public const int AV_CPU_FLAG_AVX512 = 0x100000;
-        /// <summary>AV_CPU_FLAG_AVXSLOW = 0x8000000</summary>
-        public const int AV_CPU_FLAG_AVXSLOW = 0x8000000;
-        /// <summary>AV_CPU_FLAG_BMI1 = 0x20000</summary>
-        public const int AV_CPU_FLAG_BMI1 = 0x20000;
-        /// <summary>AV_CPU_FLAG_BMI2 = 0x40000</summary>
-        public const int AV_CPU_FLAG_BMI2 = 0x40000;
-        /// <summary>AV_CPU_FLAG_CMOV = 0x1000</summary>
-        public const int AV_CPU_FLAG_CMOV = 0x1000;
-        /// <summary>AV_CPU_FLAG_FMA3 = 0x10000</summary>
-        public const int AV_CPU_FLAG_FMA3 = 0x10000;
-        /// <summary>AV_CPU_FLAG_FMA4 = 0x0800</summary>
-        public const int AV_CPU_FLAG_FMA4 = 0x800;
-        /// <summary>AV_CPU_FLAG_FORCE = 0x80000000</summary>
-        public const uint AV_CPU_FLAG_FORCE = 0x80000000U;
-        /// <summary>AV_CPU_FLAG_LASX = (1 &lt;&lt; 1)</summary>
-        public const int AV_CPU_FLAG_LASX = 0x1 << 0x1;
-        /// <summary>AV_CPU_FLAG_LSX = (1 &lt;&lt; 0)</summary>
-        public const int AV_CPU_FLAG_LSX = 0x1 << 0x0;
-        /// <summary>AV_CPU_FLAG_MMI = (1 &lt;&lt; 0)</summary>
-        public const int AV_CPU_FLAG_MMI = 0x1 << 0x0;
-        /// <summary>AV_CPU_FLAG_MMX = 0x0001</summary>
-        public const int AV_CPU_FLAG_MMX = 0x1;
-        /// <summary>AV_CPU_FLAG_MMX2 = 0x0002</summary>
-        public const int AV_CPU_FLAG_MMX2 = 0x2;
-        /// <summary>AV_CPU_FLAG_MMXEXT = 0x0002</summary>
-        public const int AV_CPU_FLAG_MMXEXT = 0x2;
-        /// <summary>AV_CPU_FLAG_MSA = (1 &lt;&lt; 1)</summary>
-        public const int AV_CPU_FLAG_MSA = 0x1 << 0x1;
-        /// <summary>AV_CPU_FLAG_NEON = (1 &lt;&lt; 5)</summary>
-        public const int AV_CPU_FLAG_NEON = 0x1 << 0x5;
-        /// <summary>AV_CPU_FLAG_POWER8 = 0x0004</summary>
-        public const int AV_CPU_FLAG_POWER8 = 0x4;
-        /// <summary>AV_CPU_FLAG_SETEND = (1 &lt;&lt;16)</summary>
-        public const int AV_CPU_FLAG_SETEND = 0x1 << 0x10;
-        /// <summary>AV_CPU_FLAG_SLOW_GATHER = 0x2000000</summary>
-        public const int AV_CPU_FLAG_SLOW_GATHER = 0x2000000;
-        /// <summary>AV_CPU_FLAG_SSE = 0x0008</summary>
-        public const int AV_CPU_FLAG_SSE = 0x8;
-        /// <summary>AV_CPU_FLAG_SSE2 = 0x0010</summary>
-        public const int AV_CPU_FLAG_SSE2 = 0x10;
-        /// <summary>AV_CPU_FLAG_SSE2SLOW = 0x40000000</summary>
-        public const int AV_CPU_FLAG_SSE2SLOW = 0x40000000;
-        /// <summary>AV_CPU_FLAG_SSE3 = 0x0040</summary>
-        public const int AV_CPU_FLAG_SSE3 = 0x40;
-        /// <summary>AV_CPU_FLAG_SSE3SLOW = 0x20000000</summary>
-        public const int AV_CPU_FLAG_SSE3SLOW = 0x20000000;
-        /// <summary>AV_CPU_FLAG_SSE4 = 0x0100</summary>
-        public const int AV_CPU_FLAG_SSE4 = 0x100;
-        /// <summary>AV_CPU_FLAG_SSE42 = 0x0200</summary>
-        public const int AV_CPU_FLAG_SSE42 = 0x200;
-        /// <summary>AV_CPU_FLAG_SSSE3 = 0x0080</summary>
-        public const int AV_CPU_FLAG_SSSE3 = 0x80;
-        /// <summary>AV_CPU_FLAG_SSSE3SLOW = 0x4000000</summary>
-        public const int AV_CPU_FLAG_SSSE3SLOW = 0x4000000;
-        /// <summary>AV_CPU_FLAG_VFP = (1 &lt;&lt; 3)</summary>
-        public const int AV_CPU_FLAG_VFP = 0x1 << 0x3;
-        /// <summary>AV_CPU_FLAG_VFP_VM = (1 &lt;&lt; 7)</summary>
-        public const int AV_CPU_FLAG_VFP_VM = 0x1 << 0x7;
-        /// <summary>AV_CPU_FLAG_VFPV3 = (1 &lt;&lt; 4)</summary>
-        public const int AV_CPU_FLAG_VFPV3 = 0x1 << 0x4;
-        /// <summary>AV_CPU_FLAG_VSX = 0x0002</summary>
-        public const int AV_CPU_FLAG_VSX = 0x2;
-        /// <summary>AV_CPU_FLAG_XOP = 0x0400</summary>
-        public const int AV_CPU_FLAG_XOP = 0x400;
         /// <summary>AV_DICT_APPEND = 32</summary>
         public const int AV_DICT_APPEND = 0x20;
         /// <summary>AV_DICT_DONT_OVERWRITE = 16</summary>
@@ -253,30 +165,6 @@ namespace FFmpeg.AutoGen
         // public static AV_IS_OUTPUT_DEVICE = (category)((category)(==AV_CLASS_CATEGORY_DEVICE_VIDEO_OUTPUT) || (category)(==AV_CLASS_CATEGORY_DEVICE_AUDIO_OUTPUT) || (category)(==AV_CLASS_CATEGORY_DEVICE_OUTPUT));
         // public static AV_JOIN = (a, b) AV_GLUE(a, b);
         // public static AV_LOG_C = (x)((x)(<<0x8));
-        /// <summary>AV_LOG_DEBUG = 48</summary>
-        public const int AV_LOG_DEBUG = 0x30;
-        /// <summary>AV_LOG_ERROR = 16</summary>
-        public const int AV_LOG_ERROR = 0x10;
-        /// <summary>AV_LOG_FATAL = 8</summary>
-        public const int AV_LOG_FATAL = 0x8;
-        /// <summary>AV_LOG_INFO = 32</summary>
-        public const int AV_LOG_INFO = 0x20;
-        /// <summary>AV_LOG_MAX_OFFSET = (AV_LOG_TRACE - AV_LOG_QUIET)</summary>
-        public const int AV_LOG_MAX_OFFSET = AV_LOG_TRACE - AV_LOG_QUIET;
-        /// <summary>AV_LOG_PANIC = 0</summary>
-        public const int AV_LOG_PANIC = 0x0;
-        /// <summary>AV_LOG_PRINT_LEVEL = 2</summary>
-        public const int AV_LOG_PRINT_LEVEL = 0x2;
-        /// <summary>AV_LOG_QUIET = -8</summary>
-        public const int AV_LOG_QUIET = -0x8;
-        /// <summary>AV_LOG_SKIP_REPEATED = 1</summary>
-        public const int AV_LOG_SKIP_REPEATED = 0x1;
-        /// <summary>AV_LOG_TRACE = 56</summary>
-        public const int AV_LOG_TRACE = 0x38;
-        /// <summary>AV_LOG_VERBOSE = 40</summary>
-        public const int AV_LOG_VERBOSE = 0x28;
-        /// <summary>AV_LOG_WARNING = 24</summary>
-        public const int AV_LOG_WARNING = 0x18;
         // public static av_mod_uintp2 = av_mod_uintp2_c;
         // public static AV_NE = (be, le) (le);
         // public static av_noinline = __declspec(noinline);
@@ -288,30 +176,6 @@ namespace FFmpeg.AutoGen
         public const int AV_NUM_DATA_POINTERS = 0x8;
         /// <summary>AV_OPT_ALLOW_NULL = (1 &lt;&lt; 2)</summary>
         public const int AV_OPT_ALLOW_NULL = 0x1 << 0x2;
-        /// <summary>AV_OPT_FLAG_AUDIO_PARAM = 8</summary>
-        public const int AV_OPT_FLAG_AUDIO_PARAM = 0x8;
-        /// <summary>AV_OPT_FLAG_BSF_PARAM = (1&lt;&lt;8)</summary>
-        public const int AV_OPT_FLAG_BSF_PARAM = 0x1 << 0x8;
-        /// <summary>AV_OPT_FLAG_CHILD_CONSTS = (1&lt;&lt;18)</summary>
-        public const int AV_OPT_FLAG_CHILD_CONSTS = 0x1 << 0x12;
-        /// <summary>AV_OPT_FLAG_DECODING_PARAM = 2</summary>
-        public const int AV_OPT_FLAG_DECODING_PARAM = 0x2;
-        /// <summary>AV_OPT_FLAG_DEPRECATED = (1&lt;&lt;17)</summary>
-        public const int AV_OPT_FLAG_DEPRECATED = 0x1 << 0x11;
-        /// <summary>AV_OPT_FLAG_ENCODING_PARAM = 1</summary>
-        public const int AV_OPT_FLAG_ENCODING_PARAM = 0x1;
-        /// <summary>AV_OPT_FLAG_EXPORT = 64</summary>
-        public const int AV_OPT_FLAG_EXPORT = 0x40;
-        /// <summary>AV_OPT_FLAG_FILTERING_PARAM = (1&lt;&lt;16)</summary>
-        public const int AV_OPT_FLAG_FILTERING_PARAM = 0x1 << 0x10;
-        /// <summary>AV_OPT_FLAG_READONLY = 128</summary>
-        public const int AV_OPT_FLAG_READONLY = 0x80;
-        /// <summary>AV_OPT_FLAG_RUNTIME_PARAM = (1&lt;&lt;15)</summary>
-        public const int AV_OPT_FLAG_RUNTIME_PARAM = 0x1 << 0xf;
-        /// <summary>AV_OPT_FLAG_SUBTITLE_PARAM = 32</summary>
-        public const int AV_OPT_FLAG_SUBTITLE_PARAM = 0x20;
-        /// <summary>AV_OPT_FLAG_VIDEO_PARAM = 16</summary>
-        public const int AV_OPT_FLAG_VIDEO_PARAM = 0x10;
         /// <summary>AV_OPT_MULTI_COMPONENT_RANGE = (1 &lt;&lt; 12)</summary>
         public const int AV_OPT_MULTI_COMPONENT_RANGE = 0x1 << 0xc;
         /// <summary>AV_OPT_SEARCH_CHILDREN = (1 &lt;&lt; 0)</summary>
@@ -340,24 +204,6 @@ namespace FFmpeg.AutoGen
         // public static AV_PIX_FMT_BGR555 = AV_PIX_FMT_NE(BGR555BE, BGR555LE);
         // public static AV_PIX_FMT_BGR565 = AV_PIX_FMT_NE(BGR565BE, BGR565LE);
         // public static AV_PIX_FMT_BGRA64 = AV_PIX_FMT_NE(BGRA64BE, BGRA64LE);
-        /// <summary>AV_PIX_FMT_FLAG_ALPHA = (1 &lt;&lt; 7)</summary>
-        public const int AV_PIX_FMT_FLAG_ALPHA = 0x1 << 0x7;
-        /// <summary>AV_PIX_FMT_FLAG_BAYER = (1 &lt;&lt; 8)</summary>
-        public const int AV_PIX_FMT_FLAG_BAYER = 0x1 << 0x8;
-        /// <summary>AV_PIX_FMT_FLAG_BE = (1 &lt;&lt; 0)</summary>
-        public const int AV_PIX_FMT_FLAG_BE = 0x1 << 0x0;
-        /// <summary>AV_PIX_FMT_FLAG_BITSTREAM = (1 &lt;&lt; 2)</summary>
-        public const int AV_PIX_FMT_FLAG_BITSTREAM = 0x1 << 0x2;
-        /// <summary>AV_PIX_FMT_FLAG_FLOAT = (1 &lt;&lt; 9)</summary>
-        public const int AV_PIX_FMT_FLAG_FLOAT = 0x1 << 0x9;
-        /// <summary>AV_PIX_FMT_FLAG_HWACCEL = (1 &lt;&lt; 3)</summary>
-        public const int AV_PIX_FMT_FLAG_HWACCEL = 0x1 << 0x3;
-        /// <summary>AV_PIX_FMT_FLAG_PAL = (1 &lt;&lt; 1)</summary>
-        public const int AV_PIX_FMT_FLAG_PAL = 0x1 << 0x1;
-        /// <summary>AV_PIX_FMT_FLAG_PLANAR = (1 &lt;&lt; 4)</summary>
-        public const int AV_PIX_FMT_FLAG_PLANAR = 0x1 << 0x4;
-        /// <summary>AV_PIX_FMT_FLAG_RGB = (1 &lt;&lt; 5)</summary>
-        public const int AV_PIX_FMT_FLAG_RGB = 0x1 << 0x5;
         // public static AV_PIX_FMT_GBRAP10 = AV_PIX_FMT_NE(GBRAP10BE,   GBRAP10LE);
         // public static AV_PIX_FMT_GBRAP12 = AV_PIX_FMT_NE(GBRAP12BE,   GBRAP12LE);
         // public static AV_PIX_FMT_GBRAP16 = AV_PIX_FMT_NE(GBRAP16BE,   GBRAP16LE);
@@ -423,16 +269,6 @@ namespace FFmpeg.AutoGen
         // public static AV_PIX_FMT_YUVA444P16 = AV_PIX_FMT_NE(YUVA444P16BE, YUVA444P16LE);
         // public static AV_PIX_FMT_YUVA444P9 = AV_PIX_FMT_NE(YUVA444P9BE , YUVA444P9LE);
         // public static AV_PKT_DATA_QUALITY_FACTOR = AV_PKT_DATA_QUALITY_STATS;
-        /// <summary>AV_PKT_FLAG_CORRUPT = 0x0002</summary>
-        public const int AV_PKT_FLAG_CORRUPT = 0x2;
-        /// <summary>AV_PKT_FLAG_DISCARD = 0x0004</summary>
-        public const int AV_PKT_FLAG_DISCARD = 0x4;
-        /// <summary>AV_PKT_FLAG_DISPOSABLE = 0x0010</summary>
-        public const int AV_PKT_FLAG_DISPOSABLE = 0x10;
-        /// <summary>AV_PKT_FLAG_KEY = 0x0001</summary>
-        public const int AV_PKT_FLAG_KEY = 0x1;
-        /// <summary>AV_PKT_FLAG_TRUSTED = 0x0008</summary>
-        public const int AV_PKT_FLAG_TRUSTED = 0x8;
         // public static av_popcount = av_popcount_c;
         // public static av_popcount64 = av_popcount64_c;
         // public static AV_PRAGMA = (s) _Pragma(#s);
@@ -557,38 +393,6 @@ namespace FFmpeg.AutoGen
         public const int AVFMT_EVENT_FLAG_METADATA_UPDATED = 0x1;
         /// <summary>AVFMT_EXPERIMENTAL = 0x0004</summary>
         public const int AVFMT_EXPERIMENTAL = 0x4;
-        /// <summary>AVFMT_FLAG_AUTO_BSF = 0x200000</summary>
-        public const int AVFMT_FLAG_AUTO_BSF = 0x200000;
-        /// <summary>AVFMT_FLAG_BITEXACT = 0x0400</summary>
-        public const int AVFMT_FLAG_BITEXACT = 0x400;
-        /// <summary>AVFMT_FLAG_CUSTOM_IO = 0x0080</summary>
-        public const int AVFMT_FLAG_CUSTOM_IO = 0x80;
-        /// <summary>AVFMT_FLAG_DISCARD_CORRUPT = 0x0100</summary>
-        public const int AVFMT_FLAG_DISCARD_CORRUPT = 0x100;
-        /// <summary>AVFMT_FLAG_FAST_SEEK = 0x80000</summary>
-        public const int AVFMT_FLAG_FAST_SEEK = 0x80000;
-        /// <summary>AVFMT_FLAG_FLUSH_PACKETS = 0x0200</summary>
-        public const int AVFMT_FLAG_FLUSH_PACKETS = 0x200;
-        /// <summary>AVFMT_FLAG_GENPTS = 0x0001</summary>
-        public const int AVFMT_FLAG_GENPTS = 0x1;
-        /// <summary>AVFMT_FLAG_IGNDTS = 0x0008</summary>
-        public const int AVFMT_FLAG_IGNDTS = 0x8;
-        /// <summary>AVFMT_FLAG_IGNIDX = 0x0002</summary>
-        public const int AVFMT_FLAG_IGNIDX = 0x2;
-        /// <summary>AVFMT_FLAG_NOBUFFER = 0x0040</summary>
-        public const int AVFMT_FLAG_NOBUFFER = 0x40;
-        /// <summary>AVFMT_FLAG_NOFILLIN = 0x0010</summary>
-        public const int AVFMT_FLAG_NOFILLIN = 0x10;
-        /// <summary>AVFMT_FLAG_NONBLOCK = 0x0004</summary>
-        public const int AVFMT_FLAG_NONBLOCK = 0x4;
-        /// <summary>AVFMT_FLAG_NOPARSE = 0x0020</summary>
-        public const int AVFMT_FLAG_NOPARSE = 0x20;
-        /// <summary>AVFMT_FLAG_PRIV_OPT = 0x20000</summary>
-        public const int AVFMT_FLAG_PRIV_OPT = 0x20000;
-        /// <summary>AVFMT_FLAG_SHORTEST = 0x100000</summary>
-        public const int AVFMT_FLAG_SHORTEST = 0x100000;
-        /// <summary>AVFMT_FLAG_SORT_DTS = 0x10000</summary>
-        public const int AVFMT_FLAG_SORT_DTS = 0x10000;
         /// <summary>AVFMT_GENERIC_INDEX = 0x0100</summary>
         public const int AVFMT_GENERIC_INDEX = 0x100;
         /// <summary>AVFMT_GLOBALHEADER = 0x0040</summary>
@@ -650,14 +454,6 @@ namespace FFmpeg.AutoGen
         public const int AVPROBE_SCORE_RETRY = AVPROBE_SCORE_MAX / 0x4;
         /// <summary>AVPROBE_SCORE_STREAM_RETRY = (AVPROBE_SCORE_MAX/4-1)</summary>
         public const int AVPROBE_SCORE_STREAM_RETRY = AVPROBE_SCORE_MAX / 0x4 - 0x1;
-        /// <summary>AVSEEK_FLAG_ANY = 4</summary>
-        public const int AVSEEK_FLAG_ANY = 0x4;
-        /// <summary>AVSEEK_FLAG_BACKWARD = 1</summary>
-        public const int AVSEEK_FLAG_BACKWARD = 0x1;
-        /// <summary>AVSEEK_FLAG_BYTE = 2</summary>
-        public const int AVSEEK_FLAG_BYTE = 0x2;
-        /// <summary>AVSEEK_FLAG_FRAME = 8</summary>
-        public const int AVSEEK_FLAG_FRAME = 0x8;
         /// <summary>AVSEEK_FORCE = 0x20000</summary>
         public const int AVSEEK_FORCE = 0x20000;
         /// <summary>AVSEEK_SIZE = 0x10000</summary>
@@ -1155,7 +951,7 @@ namespace FFmpeg.AutoGen
         public const int SWS_X = 0x8;
         /// <summary>Macro enum, prefix: AV_CH_</summary>
         [Flags]
-        public enum AVChannels : ulong
+        public enum AVChannel : ulong
         {
             /// <summary>AV_CH_BACK_CENTER = 0x00000100</summary>
             BackCenter = 0x100,
@@ -1340,7 +1136,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Macro enum, prefix: AV_CODEC_CAP_</summary>
         [Flags]
-        public enum AVCodecCompabilities : uint
+        public enum AVCodecCompability : uint
         {
             /// <summary>AV_CODEC_CAP_AUTO_THREADS = AV_CODEC_CAP_OTHER_THREADS</summary>
             AutoThreads = OtherThreads,
@@ -1503,9 +1299,333 @@ namespace FFmpeg.AutoGen
             SkipManual = 0x1 << 0x1d,
         }
         
+        /// <summary>Macro enum, prefix: AV_CPU_FLAG_</summary>
+        [Flags]
+        public enum AVCpuFlags : uint
+        {
+            /// <summary>AV_CPU_FLAG_3DNOW = 0x0004</summary>
+            _3DNOW = 0x4,
+            
+            /// <summary>AV_CPU_FLAG_3DNOWEXT = 0x0020</summary>
+            _3DNOWEXT = 0x20,
+            
+            /// <summary>AV_CPU_FLAG_AESNI = 0x80000</summary>
+            Aesni = 0x80000,
+            
+            /// <summary>AV_CPU_FLAG_ALTIVEC = 0x0001</summary>
+            Altivec = 0x1,
+            
+            /// <summary>AV_CPU_FLAG_ARMV5TE = (1 &lt;&lt; 0)</summary>
+            Armv5te = 0x1 << 0x0,
+            
+            /// <summary>AV_CPU_FLAG_ARMV6 = (1 &lt;&lt; 1)</summary>
+            Armv6 = 0x1 << 0x1,
+            
+            /// <summary>AV_CPU_FLAG_ARMV6T2 = (1 &lt;&lt; 2)</summary>
+            Armv6t2 = 0x1 << 0x2,
+            
+            /// <summary>AV_CPU_FLAG_ARMV8 = (1 &lt;&lt; 6)</summary>
+            Armv8 = 0x1 << 0x6,
+            
+            /// <summary>AV_CPU_FLAG_ATOM = 0x10000000</summary>
+            Atom = 0x10000000,
+            
+            /// <summary>AV_CPU_FLAG_AVX = 0x4000</summary>
+            Avx = 0x4000,
+            
+            /// <summary>AV_CPU_FLAG_AVX2 = 0x8000</summary>
+            Avx2 = 0x8000,
+            
+            /// <summary>AV_CPU_FLAG_AVX512 = 0x100000</summary>
+            Avx512 = 0x100000,
+            
+            /// <summary>AV_CPU_FLAG_AVXSLOW = 0x8000000</summary>
+            Avxslow = 0x8000000,
+            
+            /// <summary>AV_CPU_FLAG_BMI1 = 0x20000</summary>
+            Bmi1 = 0x20000,
+            
+            /// <summary>AV_CPU_FLAG_BMI2 = 0x40000</summary>
+            Bmi2 = 0x40000,
+            
+            /// <summary>AV_CPU_FLAG_CMOV = 0x1000</summary>
+            Cmov = 0x1000,
+            
+            /// <summary>AV_CPU_FLAG_FMA3 = 0x10000</summary>
+            Fma3 = 0x10000,
+            
+            /// <summary>AV_CPU_FLAG_FMA4 = 0x0800</summary>
+            Fma4 = 0x800,
+            
+            /// <summary>AV_CPU_FLAG_FORCE = 0x80000000</summary>
+            Force = 0x80000000U,
+            
+            /// <summary>AV_CPU_FLAG_LASX = (1 &lt;&lt; 1)</summary>
+            Lasx = 0x1 << 0x1,
+            
+            /// <summary>AV_CPU_FLAG_LSX = (1 &lt;&lt; 0)</summary>
+            Lsx = 0x1 << 0x0,
+            
+            /// <summary>AV_CPU_FLAG_MMI = (1 &lt;&lt; 0)</summary>
+            Mmi = 0x1 << 0x0,
+            
+            /// <summary>AV_CPU_FLAG_MMX = 0x0001</summary>
+            Mmx = 0x1,
+            
+            /// <summary>AV_CPU_FLAG_MMX2 = 0x0002</summary>
+            Mmx2 = 0x2,
+            
+            /// <summary>AV_CPU_FLAG_MMXEXT = 0x0002</summary>
+            Mmxext = 0x2,
+            
+            /// <summary>AV_CPU_FLAG_MSA = (1 &lt;&lt; 1)</summary>
+            Msa = 0x1 << 0x1,
+            
+            /// <summary>AV_CPU_FLAG_NEON = (1 &lt;&lt; 5)</summary>
+            Neon = 0x1 << 0x5,
+            
+            /// <summary>AV_CPU_FLAG_POWER8 = 0x0004</summary>
+            Power8 = 0x4,
+            
+            /// <summary>AV_CPU_FLAG_SETEND = (1 &lt;&lt;16)</summary>
+            Setend = 0x1 << 0x10,
+            
+            /// <summary>AV_CPU_FLAG_SLOW_GATHER = 0x2000000</summary>
+            SlowGather = 0x2000000,
+            
+            /// <summary>AV_CPU_FLAG_SSE = 0x0008</summary>
+            Sse = 0x8,
+            
+            /// <summary>AV_CPU_FLAG_SSE2 = 0x0010</summary>
+            Sse2 = 0x10,
+            
+            /// <summary>AV_CPU_FLAG_SSE2SLOW = 0x40000000</summary>
+            Sse2slow = 0x40000000,
+            
+            /// <summary>AV_CPU_FLAG_SSE3 = 0x0040</summary>
+            Sse3 = 0x40,
+            
+            /// <summary>AV_CPU_FLAG_SSE3SLOW = 0x20000000</summary>
+            Sse3slow = 0x20000000,
+            
+            /// <summary>AV_CPU_FLAG_SSE4 = 0x0100</summary>
+            Sse4 = 0x100,
+            
+            /// <summary>AV_CPU_FLAG_SSE42 = 0x0200</summary>
+            Sse42 = 0x200,
+            
+            /// <summary>AV_CPU_FLAG_SSSE3 = 0x0080</summary>
+            Ssse3 = 0x80,
+            
+            /// <summary>AV_CPU_FLAG_SSSE3SLOW = 0x4000000</summary>
+            Ssse3slow = 0x4000000,
+            
+            /// <summary>AV_CPU_FLAG_VFP = (1 &lt;&lt; 3)</summary>
+            Vfp = 0x1 << 0x3,
+            
+            /// <summary>AV_CPU_FLAG_VFP_VM = (1 &lt;&lt; 7)</summary>
+            VfpVm = 0x1 << 0x7,
+            
+            /// <summary>AV_CPU_FLAG_VFPV3 = (1 &lt;&lt; 4)</summary>
+            Vfpv3 = 0x1 << 0x4,
+            
+            /// <summary>AV_CPU_FLAG_VSX = 0x0002</summary>
+            Vsx = 0x2,
+            
+            /// <summary>AV_CPU_FLAG_XOP = 0x0400</summary>
+            Xop = 0x400,
+        }
+        
+        /// <summary>Macro enum, prefix: AV_LOG_</summary>
+        [Flags]
+        public enum AVLog
+        {
+            /// <summary>AV_LOG_DEBUG = 48</summary>
+            Debug = 0x30,
+            
+            /// <summary>AV_LOG_ERROR = 16</summary>
+            Error = 0x10,
+            
+            /// <summary>AV_LOG_FATAL = 8</summary>
+            Fatal = 0x8,
+            
+            /// <summary>AV_LOG_INFO = 32</summary>
+            Info = 0x20,
+            
+            /// <summary>AV_LOG_MAX_OFFSET = (AV_LOG_TRACE - AV_LOG_QUIET)</summary>
+            MaxOffset = Trace - Quiet,
+            
+            /// <summary>AV_LOG_PANIC = 0</summary>
+            Panic = 0x0,
+            
+            /// <summary>AV_LOG_PRINT_LEVEL = 2</summary>
+            PrintLevel = 0x2,
+            
+            /// <summary>AV_LOG_QUIET = -8</summary>
+            Quiet = -0x8,
+            
+            /// <summary>AV_LOG_SKIP_REPEATED = 1</summary>
+            SkipRepeated = 0x1,
+            
+            /// <summary>AV_LOG_TRACE = 56</summary>
+            Trace = 0x38,
+            
+            /// <summary>AV_LOG_VERBOSE = 40</summary>
+            Verbose = 0x28,
+            
+            /// <summary>AV_LOG_WARNING = 24</summary>
+            Warning = 0x18,
+        }
+        
+        /// <summary>Macro enum, prefix: AV_OPT_FLAG_</summary>
+        [Flags]
+        public enum OptionFlags
+        {
+            /// <summary>AV_OPT_FLAG_AUDIO_PARAM = 8</summary>
+            AudioParam = 0x8,
+            
+            /// <summary>AV_OPT_FLAG_BSF_PARAM = (1&lt;&lt;8)</summary>
+            BsfParam = 0x1 << 0x8,
+            
+            /// <summary>AV_OPT_FLAG_CHILD_CONSTS = (1&lt;&lt;18)</summary>
+            ChildConsts = 0x1 << 0x12,
+            
+            /// <summary>AV_OPT_FLAG_DECODING_PARAM = 2</summary>
+            DecodingParam = 0x2,
+            
+            /// <summary>AV_OPT_FLAG_DEPRECATED = (1&lt;&lt;17)</summary>
+            Deprecated = 0x1 << 0x11,
+            
+            /// <summary>AV_OPT_FLAG_ENCODING_PARAM = 1</summary>
+            EncodingParam = 0x1,
+            
+            /// <summary>AV_OPT_FLAG_EXPORT = 64</summary>
+            Export = 0x40,
+            
+            /// <summary>AV_OPT_FLAG_FILTERING_PARAM = (1&lt;&lt;16)</summary>
+            FilteringParam = 0x1 << 0x10,
+            
+            /// <summary>AV_OPT_FLAG_READONLY = 128</summary>
+            Readonly = 0x80,
+            
+            /// <summary>AV_OPT_FLAG_RUNTIME_PARAM = (1&lt;&lt;15)</summary>
+            RuntimeParam = 0x1 << 0xf,
+            
+            /// <summary>AV_OPT_FLAG_SUBTITLE_PARAM = 32</summary>
+            SubtitleParam = 0x20,
+            
+            /// <summary>AV_OPT_FLAG_VIDEO_PARAM = 16</summary>
+            VideoParam = 0x10,
+        }
+        
+        /// <summary>Macro enum, prefix: AV_PIX_FMT_FLAG_</summary>
+        [Flags]
+        public enum AVPixelFormatFlags
+        {
+            /// <summary>AV_PIX_FMT_FLAG_ALPHA = (1 &lt;&lt; 7)</summary>
+            Alpha = 0x1 << 0x7,
+            
+            /// <summary>AV_PIX_FMT_FLAG_BAYER = (1 &lt;&lt; 8)</summary>
+            Bayer = 0x1 << 0x8,
+            
+            /// <summary>AV_PIX_FMT_FLAG_BE = (1 &lt;&lt; 0)</summary>
+            Be = 0x1 << 0x0,
+            
+            /// <summary>AV_PIX_FMT_FLAG_BITSTREAM = (1 &lt;&lt; 2)</summary>
+            Bitstream = 0x1 << 0x2,
+            
+            /// <summary>AV_PIX_FMT_FLAG_FLOAT = (1 &lt;&lt; 9)</summary>
+            Float = 0x1 << 0x9,
+            
+            /// <summary>AV_PIX_FMT_FLAG_HWACCEL = (1 &lt;&lt; 3)</summary>
+            Hwaccel = 0x1 << 0x3,
+            
+            /// <summary>AV_PIX_FMT_FLAG_PAL = (1 &lt;&lt; 1)</summary>
+            Pal = 0x1 << 0x1,
+            
+            /// <summary>AV_PIX_FMT_FLAG_PLANAR = (1 &lt;&lt; 4)</summary>
+            Planar = 0x1 << 0x4,
+            
+            /// <summary>AV_PIX_FMT_FLAG_RGB = (1 &lt;&lt; 5)</summary>
+            Rgb = 0x1 << 0x5,
+        }
+        
+        /// <summary>Macro enum, prefix: AV_PKT_FLAG_</summary>
+        [Flags]
+        public enum AVPacketFlags
+        {
+            /// <summary>AV_PKT_FLAG_CORRUPT = 0x0002</summary>
+            Corrupt = 0x2,
+            
+            /// <summary>AV_PKT_FLAG_DISCARD = 0x0004</summary>
+            Discard = 0x4,
+            
+            /// <summary>AV_PKT_FLAG_DISPOSABLE = 0x0010</summary>
+            Disposable = 0x10,
+            
+            /// <summary>AV_PKT_FLAG_KEY = 0x0001</summary>
+            Key = 0x1,
+            
+            /// <summary>AV_PKT_FLAG_TRUSTED = 0x0008</summary>
+            Trusted = 0x8,
+        }
+        
+        /// <summary>Macro enum, prefix: AVFMT_FLAG_</summary>
+        [Flags]
+        public enum AVFormatFlags
+        {
+            /// <summary>AVFMT_FLAG_AUTO_BSF = 0x200000</summary>
+            AutoBsf = 0x200000,
+            
+            /// <summary>AVFMT_FLAG_BITEXACT = 0x0400</summary>
+            Bitexact = 0x400,
+            
+            /// <summary>AVFMT_FLAG_CUSTOM_IO = 0x0080</summary>
+            CustomIo = 0x80,
+            
+            /// <summary>AVFMT_FLAG_DISCARD_CORRUPT = 0x0100</summary>
+            DiscardCorrupt = 0x100,
+            
+            /// <summary>AVFMT_FLAG_FAST_SEEK = 0x80000</summary>
+            FastSeek = 0x80000,
+            
+            /// <summary>AVFMT_FLAG_FLUSH_PACKETS = 0x0200</summary>
+            FlushPackets = 0x200,
+            
+            /// <summary>AVFMT_FLAG_GENPTS = 0x0001</summary>
+            Genpts = 0x1,
+            
+            /// <summary>AVFMT_FLAG_IGNDTS = 0x0008</summary>
+            Igndts = 0x8,
+            
+            /// <summary>AVFMT_FLAG_IGNIDX = 0x0002</summary>
+            Ignidx = 0x2,
+            
+            /// <summary>AVFMT_FLAG_NOBUFFER = 0x0040</summary>
+            Nobuffer = 0x40,
+            
+            /// <summary>AVFMT_FLAG_NOFILLIN = 0x0010</summary>
+            Nofillin = 0x10,
+            
+            /// <summary>AVFMT_FLAG_NONBLOCK = 0x0004</summary>
+            Nonblock = 0x4,
+            
+            /// <summary>AVFMT_FLAG_NOPARSE = 0x0020</summary>
+            Noparse = 0x20,
+            
+            /// <summary>AVFMT_FLAG_PRIV_OPT = 0x20000</summary>
+            PrivOpt = 0x20000,
+            
+            /// <summary>AVFMT_FLAG_SHORTEST = 0x100000</summary>
+            Shortest = 0x100000,
+            
+            /// <summary>AVFMT_FLAG_SORT_DTS = 0x10000</summary>
+            SortDts = 0x10000,
+        }
+        
         /// <summary>Macro enum, prefix: AVIO_FLAG_</summary>
         [Flags]
-        public enum AvioFlags
+        public enum AVIOFlags
         {
             /// <summary>AVIO_FLAG_DIRECT = 0x8000</summary>
             Direct = 0x8000,
@@ -1523,9 +1643,26 @@ namespace FFmpeg.AutoGen
             Write = 0x2,
         }
         
+        /// <summary>Macro enum, prefix: AVSEEK_FLAG_</summary>
+        [Flags]
+        public enum AVSeekFlags
+        {
+            /// <summary>AVSEEK_FLAG_ANY = 4</summary>
+            Any = 0x4,
+            
+            /// <summary>AVSEEK_FLAG_BACKWARD = 1</summary>
+            Backward = 0x1,
+            
+            /// <summary>AVSEEK_FLAG_BYTE = 2</summary>
+            Byte = 0x2,
+            
+            /// <summary>AVSEEK_FLAG_FRAME = 8</summary>
+            Frame = 0x8,
+        }
+        
         /// <summary>Macro enum, prefix: FF_CMP_</summary>
         [Flags]
-        public enum FFComparisons
+        public enum FFComparison
         {
             /// <summary>FF_CMP_BIT = 5</summary>
             Bit = 0x5,
@@ -1581,7 +1718,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Macro enum, prefix: FF_MB_DECISION_</summary>
         [Flags]
-        public enum FFMacroblockDecisions
+        public enum FFMacroblockDecision
         {
             /// <summary>FF_MB_DECISION_BITS = 1</summary>
             Bits = 0x1,
@@ -1595,7 +1732,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Macro enum, prefix: FF_PROFILE_</summary>
         [Flags]
-        public enum FFProfiles
+        public enum FFProfile
         {
             /// <summary>FF_PROFILE_AAC_ELD = 38</summary>
             AacEld = 0x26,
