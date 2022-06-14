@@ -100,35 +100,6 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
             g.WriteIncompleteStructures(Path.Combine(options.OutputDir, "FFmpeg.structs.incomplete.g.cs"));
             g.WriteExportFunctions(Path.Combine(options.OutputDir, "FFmpeg.functions.export.g.cs"));
             g.WriteInlineFunctions(Path.Combine(options.OutputDir, "FFmpeg.functions.inline.g.cs"));
-
-            // Run latest dotnet format
-            {
-                using var p = Process.Start(new ProcessStartInfo
-                {
-                    FileName = "dotnet",
-                    Arguments = "tool install --global dotnet-format",
-                    WorkingDirectory = options.OutputDir,
-                });
-                p.WaitForExit();
-            }
-            {
-                using var p = Process.Start(new ProcessStartInfo
-                {
-                    FileName = "dotnet",
-                    Arguments = "tool update --global dotnet-format",
-                    WorkingDirectory = options.OutputDir,
-                });
-                p.WaitForExit();
-            }
-            {
-                using var p = Process.Start(new ProcessStartInfo
-                {
-                    FileName = "dotnet",
-                    Arguments = "format",
-                    WorkingDirectory = options.OutputDir,
-                });
-                p.WaitForExit();
-            }
         }
     }
 }
