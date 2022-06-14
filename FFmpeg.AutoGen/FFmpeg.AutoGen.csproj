@@ -13,7 +13,7 @@
         <PackageProjectUrl>https://github.com/sdcb/FFmpeg.AutoGen</PackageProjectUrl>
         <AssemblyName>Sdcb.FFmpeg.AutoGen</AssemblyName>
         <SignAssembly>False</SignAssembly>
-        <TargetFrameworks>netstandard2.1;netstandard2.0;net472;net40</TargetFrameworks>
+        <TargetFrameworks>net6;net48</TargetFrameworks>
         <GeneratePackageOnBuild Condition=" $(Configuration) == 'Release' ">true</GeneratePackageOnBuild>
         <Description>FFmpeg auto generated unsafe bindings for C#/.NET and Mono.</Description>
     </PropertyGroup>
@@ -27,12 +27,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="all" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)' == 'net472' or '$(TargetFramework)' == 'net45'">
+    <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
         <PackageReference Include="System.Memory">
-            <Version>4.5.4</Version>
+            <Version>4.5.5</Version>
         </PackageReference>
     </ItemGroup>
 

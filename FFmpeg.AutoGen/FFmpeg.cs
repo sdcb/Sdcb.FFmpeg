@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using FFmpeg.AutoGen.Native;
 
 namespace FFmpeg.AutoGen
@@ -17,12 +19,36 @@ namespace FFmpeg.AutoGen
 
         static ffmpeg()
         {
+#if NET6_0_OR_GREATER
+            SetupLibs();
+#endif
+
             EAGAIN = LibraryLoader.GetPlatformId() switch
             {
                 PlatformID.MacOSX => 35,
                 _ => 11
             };
         }
+
+#if NET6_0_OR_GREATER
+        private static void SetupLibs()
+        {
+            NativeLibrary.SetDllImportResolver(typeof(ffmpeg).Assembly, DllImportResolver);
+        }
+
+        private static IntPtr DllImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
+        {
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            {
+                return NativeLibrary.Load(libraryName, assembly, searchPath);
+            }
+            else
+            {
+                (string name, string version) = libraryName.Split("-") switch { var x => (x[0], x[1]) };
+                return NativeLibrary.Load($"lib{name}.so.{version}", assembly, searchPath);
+            }
+        }
+#endif
 
         public static ulong UINT64_C<T>(T a)
             => Convert.ToUInt64(a);

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5</TargetFramework>
+    <TargetFramework>net6</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
@@ -24,6 +24,17 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <Visible>true</Visible>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\ZhouJie\source\repos\FFmpeg.AutoGen\FFmpeg.AutoGen.Tests\..\FFmpeg\bin\x64\avcodec-58.dll" />
+    <None Remove="C:\Users\ZhouJie\source\repos\FFmpeg.AutoGen\FFmpeg.AutoGen.Tests\..\FFmpeg\bin\x64\avdevice-58.dll" />
+    <None Remove="C:\Users\ZhouJie\source\repos\FFmpeg.AutoGen\FFmpeg.AutoGen.Tests\..\FFmpeg\bin\x64\avfilter-7.dll" />
+    <None Remove="C:\Users\ZhouJie\source\repos\FFmpeg.AutoGen\FFmpeg.AutoGen.Tests\..\FFmpeg\bin\x64\avformat-58.dll" />
+    <None Remove="C:\Users\ZhouJie\source\repos\FFmpeg.AutoGen\FFmpeg.AutoGen.Tests\..\FFmpeg\bin\x64\avutil-56.dll" />
+    <None Remove="C:\Users\ZhouJie\source\repos\FFmpeg.AutoGen\FFmpeg.AutoGen.Tests\..\FFmpeg\bin\x64\postproc-55.dll" />
+    <None Remove="C:\Users\ZhouJie\source\repos\FFmpeg.AutoGen\FFmpeg.AutoGen.Tests\..\FFmpeg\bin\x64\swresample-3.dll" />
+    <None Remove="C:\Users\ZhouJie\source\repos\FFmpeg.AutoGen\FFmpeg.AutoGen.Tests\..\FFmpeg\bin\x64\swscale-5.dll" />
   </ItemGroup>
 
 </Project>

@@ -8,16 +8,13 @@ namespace FFmpeg.AutoGen.Tests
     {
         /// <summary>
         /// version.h
-        /// #define LIBAVCODEC_VERSION_MAJOR  58
-        /// #define LIBAVCODEC_VERSION_MINOR  91
-        /// #define LIBAVCODEC_VERSION_MICRO 100
         /// </summary>
         [Test]
         public void Test_avcodec_version()
         {
             var version = ffmpeg.avcodec_version();
             var major = version >> 16;
-            major.Should().Be(58);
+            major.Should().Be(59);
         }
     }
 }
