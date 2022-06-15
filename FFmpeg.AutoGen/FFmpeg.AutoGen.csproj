@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <PackageId>$(AssemblyName)</PackageId>
+        <PackageId>Sdcb.FFmpeg.AutoGen</PackageId>
         <VersionPrefix>5.0.1</VersionPrefix>
+        <VersionSuffix>preview-1</VersionSuffix>
         <LangVersion>latest</LangVersion>
         <!-- Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
         <IncludeSymbols>true</IncludeSymbols>
@@ -10,7 +11,7 @@
         <Authors>sdcb,Ruslan Balanukhin</Authors>
         <Copyright>Copyright © sdcb, Ruslan Balanukhin 2022 All rights reserved.</Copyright>
         <PackageProjectUrl>https://github.com/sdcb/FFmpeg.AutoGen</PackageProjectUrl>
-        <AssemblyName>Sdcb.FFmpeg.AutoGen</AssemblyName>
+        <AssemblyName>$(PackageId)</AssemblyName>
         <SignAssembly>False</SignAssembly>
         <TargetFrameworks>net6;net48</TargetFrameworks>
         <GeneratePackageOnBuild Condition=" $(Configuration) == 'Release' ">true</GeneratePackageOnBuild>
