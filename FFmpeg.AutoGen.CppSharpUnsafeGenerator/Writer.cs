@@ -196,7 +196,7 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
         public void WriteFunction(ExportFunctionDefinition function)
         {
             WriteSummary(function);
-            function.Parameters.ToList().ForEach(x => WriteParam(x, x.Name));
+            function.Parameters.ForEach((x, i) => WriteParam(x, x.Name));
             WriteObsoletion(function);
             if (SuppressUnmanagedCodeSecurity)
                 WriteLine("[SuppressUnmanagedCodeSecurity]");

@@ -4434,6 +4434,5 @@ namespace FFmpeg.AutoGen
         /// <summary>Color conversion and scaling library.</summary>
         [DllImport("swscale-6", EntryPoint = "swscale_version", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern uint swscale_version();
-        
     }
 }

@@ -55,7 +55,7 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
                     using (writer.BeginBlock())
                     {
                         writer.WriteLine(
-                            "public static Dictionary<string, int> LibraryVersionMap =  new Dictionary<string, int>");
+                            "public static Dictionary<string, int> LibraryVersionMap =  new ()");
 
                         using (writer.BeginBlock(true))
                         {
@@ -63,7 +63,7 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
                                 .Distinct()
                                 .ToDictionary(x => x.LibraryName, x => x.LibraryVersion);
                             foreach (var pair in libraryVersionMap)
-                                writer.WriteLine($"{{\"{pair.Key}\", {pair.Value}}},");
+                                writer.WriteLine($"[\"{pair.Key}\"] = {pair.Value},");
                         }
 
                         writer.WriteLine(";");
@@ -170,7 +170,7 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
                         .ForEach((x, i) =>
                         {
                             writer.WriteFunction(x);
-                            writer.WriteLine();
+                            if (!i.IsLast) writer.WriteLine();
                         });
                 });
         }
