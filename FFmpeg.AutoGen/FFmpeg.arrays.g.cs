@@ -761,6 +761,16 @@ namespace FFmpeg.AutoGen
         
         public byte*[] ToArray4() => new [] { _0, _1, _2, _3 };
         
+        public static unsafe explicit operator byte_ptrArray4(byte_ptrArray8 me)
+        {
+            byte_ptrArray4 r = new ();
+            r._0 = me._0;
+            r._1 = me._1;
+            r._2 = me._2;
+            r._3 = me._3;
+            return r;
+        }
+        
         public byte*[] ToArray() => new [] { _0, _1, _2, _3, _4, _5, _6, _7 };
         
         public void UpdateFrom(byte*[] array)
