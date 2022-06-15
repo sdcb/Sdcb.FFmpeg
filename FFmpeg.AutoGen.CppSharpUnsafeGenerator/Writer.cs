@@ -306,6 +306,14 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
             }
             WriteLine();
 
+            // ToArray4
+            if (size == 8)
+            {
+                string seq = string.Join(", ", Enumerable.Range(0, 4).Select(i => $"{prefix}[{i}]"));
+                WriteLine($"public {elementType}[] ToArray4() => new [] {{ {seq} }};");
+                WriteLine();
+            }
+
             // ToArray
             if (size <= 64)
             {
@@ -402,6 +410,14 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
                 }
             }
             WriteLine();
+
+            // ToArray4
+            if (size == 8 && elementType == "byte*")
+            {
+                string seq4 = string.Join(", ", Enumerable.Range(0, 4).Select(i => prefix + i));
+                WriteLine($"public {elementType}[] ToArray4() => new [] {{ {seq4} }};");
+                WriteLine();
+            }
 
             // ToArray
             WriteLine($"public {elementType}[] ToArray() => new [] {{ {seq} }};");

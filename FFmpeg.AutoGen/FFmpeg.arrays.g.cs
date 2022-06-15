@@ -710,6 +710,8 @@ namespace FFmpeg.AutoGen
             };
         }
         
+        public byte[] ToArray4() => new [] { _[0], _[1], _[2], _[3] };
+        
         public byte[] ToArray() => new [] { _[0], _[1], _[2], _[3], _[4], _[5], _[6], _[7] };
         
         
@@ -759,6 +761,8 @@ namespace FFmpeg.AutoGen
             }
         }
         
+        public byte*[] ToArray4() => new [] { _0, _1, _2, _3 };
+        
         public byte*[] ToArray() => new [] { _0, _1, _2, _3, _4, _5, _6, _7 };
         
         public void UpdateFrom(byte*[] array)
@@ -806,6 +810,8 @@ namespace FFmpeg.AutoGen
             };
         }
         
+        public int[] ToArray4() => new [] { _[0], _[1], _[2], _[3] };
+        
         public int[] ToArray() => new [] { _[0], _[1], _[2], _[3], _[4], _[5], _[6], _[7] };
         
         
@@ -848,6 +854,8 @@ namespace FFmpeg.AutoGen
                 _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
             };
         }
+        
+        public ulong[] ToArray4() => new [] { _[0], _[1], _[2], _[3] };
         
         public ulong[] ToArray() => new [] { _[0], _[1], _[2], _[3], _[4], _[5], _[6], _[7] };
         
