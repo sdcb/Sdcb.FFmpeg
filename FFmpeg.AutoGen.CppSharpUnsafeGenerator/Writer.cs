@@ -46,7 +46,7 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
                 .ToDictionary(k => k.Name, v => EnumNameTransform(v.Name[enumDef.Prefix.Length..]));
 
             WriteLine($"/// <summary>Macro enum, prefix: {enumDef.Prefix}</summary>");
-            WriteLine($"[Flags]");
+            if (enumDef.IsFlags) WriteLine($"[Flags]");
             WriteLine($"public enum {enumDef.EnumName}{typeExpr}");
             using (BeginBlock())
             {

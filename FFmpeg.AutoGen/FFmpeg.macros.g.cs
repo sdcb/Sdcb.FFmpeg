@@ -951,7 +951,7 @@ namespace FFmpeg.AutoGen
         public const int SWS_X = 0x8;
         /// <summary>Macro enum, prefix: AV_CH_</summary>
         [Flags]
-        public enum AVChannel : ulong
+        public enum Channels : ulong
         {
             /// <summary>AV_CH_BACK_CENTER = 0x00000100</summary>
             BackCenter = 0x100,
@@ -1135,8 +1135,7 @@ namespace FFmpeg.AutoGen
         }
         
         /// <summary>Macro enum, prefix: AV_CODEC_CAP_</summary>
-        [Flags]
-        public enum AVCodecCompability : uint
+        public enum CodecCompability : uint
         {
             /// <summary>AV_CODEC_CAP_AUTO_THREADS = AV_CODEC_CAP_OTHER_THREADS</summary>
             AutoThreads = OtherThreads,
@@ -1204,7 +1203,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Macro enum, prefix: AV_CODEC_FLAG_</summary>
         [Flags]
-        public enum AVCodecFlags : uint
+        public enum CodecFlags : uint
         {
             /// <summary>AV_CODEC_FLAG_4MV = (1 &lt;&lt;  2)</summary>
             _4MV = 0x1 << 0x2,
@@ -1265,8 +1264,7 @@ namespace FFmpeg.AutoGen
         }
         
         /// <summary>Macro enum, prefix: AV_CODEC_FLAG2_</summary>
-        [Flags]
-        public enum AVCodecFlags2
+        public enum CodecFlags2
         {
             /// <summary>AV_CODEC_FLAG2_CHUNKS = (1 &lt;&lt; 15)</summary>
             Chunks = 0x1 << 0xf,
@@ -1301,7 +1299,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Macro enum, prefix: AV_CPU_FLAG_</summary>
         [Flags]
-        public enum AVCpuFlags : uint
+        public enum CpuFlags : uint
         {
             /// <summary>AV_CPU_FLAG_3DNOW = 0x0004</summary>
             _3DNOW = 0x4,
@@ -1437,8 +1435,7 @@ namespace FFmpeg.AutoGen
         }
         
         /// <summary>Macro enum, prefix: AV_LOG_</summary>
-        [Flags]
-        public enum AVLog
+        public enum LogLevel
         {
             /// <summary>AV_LOG_DEBUG = 48</summary>
             Debug = 0x30,
@@ -1458,14 +1455,8 @@ namespace FFmpeg.AutoGen
             /// <summary>AV_LOG_PANIC = 0</summary>
             Panic = 0x0,
             
-            /// <summary>AV_LOG_PRINT_LEVEL = 2</summary>
-            PrintLevel = 0x2,
-            
             /// <summary>AV_LOG_QUIET = -8</summary>
             Quiet = -0x8,
-            
-            /// <summary>AV_LOG_SKIP_REPEATED = 1</summary>
-            SkipRepeated = 0x1,
             
             /// <summary>AV_LOG_TRACE = 56</summary>
             Trace = 0x38,
@@ -1475,6 +1466,17 @@ namespace FFmpeg.AutoGen
             
             /// <summary>AV_LOG_WARNING = 24</summary>
             Warning = 0x18,
+        }
+        
+        /// <summary>Macro enum, prefix: AV_LOG_</summary>
+        [Flags]
+        public enum LogFlags
+        {
+            /// <summary>AV_LOG_PRINT_LEVEL = 2</summary>
+            PrintLevel = 0x2,
+            
+            /// <summary>AV_LOG_SKIP_REPEATED = 1</summary>
+            SkipRepeated = 0x1,
         }
         
         /// <summary>Macro enum, prefix: AV_OPT_FLAG_</summary>
@@ -1520,7 +1522,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Macro enum, prefix: AV_PIX_FMT_FLAG_</summary>
         [Flags]
-        public enum AVPixelFormatFlags
+        public enum PixelFormatFlags
         {
             /// <summary>AV_PIX_FMT_FLAG_ALPHA = (1 &lt;&lt; 7)</summary>
             Alpha = 0x1 << 0x7,
@@ -1552,7 +1554,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Macro enum, prefix: AV_PKT_FLAG_</summary>
         [Flags]
-        public enum AVPacketFlags
+        public enum PacketFlags
         {
             /// <summary>AV_PKT_FLAG_CORRUPT = 0x0002</summary>
             Corrupt = 0x2,
@@ -1572,7 +1574,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Macro enum, prefix: AVFMT_FLAG_</summary>
         [Flags]
-        public enum AVFormatFlags
+        public enum FormatFlags
         {
             /// <summary>AVFMT_FLAG_AUTO_BSF = 0x200000</summary>
             AutoBsf = 0x200000,
@@ -1625,7 +1627,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Macro enum, prefix: AVIO_FLAG_</summary>
         [Flags]
-        public enum AVIOFlags
+        public enum IOFlags
         {
             /// <summary>AVIO_FLAG_DIRECT = 0x8000</summary>
             Direct = 0x8000,
@@ -1645,7 +1647,7 @@ namespace FFmpeg.AutoGen
         
         /// <summary>Macro enum, prefix: AVSEEK_FLAG_</summary>
         [Flags]
-        public enum AVSeekFlags
+        public enum SeekFlags
         {
             /// <summary>AVSEEK_FLAG_ANY = 4</summary>
             Any = 0x4,
@@ -1661,7 +1663,6 @@ namespace FFmpeg.AutoGen
         }
         
         /// <summary>Macro enum, prefix: FF_CMP_</summary>
-        [Flags]
         public enum FFComparison
         {
             /// <summary>FF_CMP_BIT = 5</summary>
@@ -1717,7 +1718,6 @@ namespace FFmpeg.AutoGen
         }
         
         /// <summary>Macro enum, prefix: FF_MB_DECISION_</summary>
-        [Flags]
         public enum FFMacroblockDecision
         {
             /// <summary>FF_MB_DECISION_BITS = 1</summary>
@@ -1731,7 +1731,6 @@ namespace FFmpeg.AutoGen
         }
         
         /// <summary>Macro enum, prefix: FF_PROFILE_</summary>
-        [Flags]
         public enum FFProfile
         {
             /// <summary>FF_PROFILE_AAC_ELD = 38</summary>
