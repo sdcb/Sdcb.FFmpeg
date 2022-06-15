@@ -307,11 +307,29 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
             WriteLine();
 
             // ToArray4
-            if (size == 8)
+            if (size == 8 && (elementType == "int" || elementType == "ulong"))
             {
                 string seq = string.Join(", ", Enumerable.Range(0, 4).Select(i => $"{prefix}[{i}]"));
                 WriteLine($"public {elementType}[] ToArray4() => new [] {{ {seq} }};");
                 WriteLine();
+
+                //public static unsafe explicit operator byte_ptrArray4(byte_ptrArray8 me)
+                //{
+                //    byte_ptrArray4 r = new ();
+                //    r._0 = me._0;
+                //    return r;
+                //}
+                string arr4 = arrayName.Replace('8', '4');
+                WriteLine($"public static unsafe explicit operator {arr4}({arrayName} me)");
+                using (BeginBlock())
+                {
+                    WriteLine($"{arr4} r = new ();");
+                    for (int i = 0; i < 4; ++i)
+                    {
+                        WriteLine($"r.{prefix}[{i}] = me.{prefix}[{i}];");
+                    }
+                    WriteLine($"return r;");
+                }
             }
 
             // ToArray

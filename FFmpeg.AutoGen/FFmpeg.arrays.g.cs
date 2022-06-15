@@ -710,8 +710,6 @@ namespace FFmpeg.AutoGen
             };
         }
         
-        public byte[] ToArray4() => new [] { _[0], _[1], _[2], _[3] };
-        
         public byte[] ToArray() => new [] { _[0], _[1], _[2], _[3], _[4], _[5], _[6], _[7] };
         
         
@@ -812,6 +810,15 @@ namespace FFmpeg.AutoGen
         
         public int[] ToArray4() => new [] { _[0], _[1], _[2], _[3] };
         
+        public static unsafe explicit operator int_array4(int_array8 me)
+        {
+            int_array4 r = new ();
+            r._[0] = me._[0];
+            r._[1] = me._[1];
+            r._[2] = me._[2];
+            r._[3] = me._[3];
+            return r;
+        }
         public int[] ToArray() => new [] { _[0], _[1], _[2], _[3], _[4], _[5], _[6], _[7] };
         
         
@@ -857,6 +864,15 @@ namespace FFmpeg.AutoGen
         
         public ulong[] ToArray4() => new [] { _[0], _[1], _[2], _[3] };
         
+        public static unsafe explicit operator ulong_array4(ulong_array8 me)
+        {
+            ulong_array4 r = new ();
+            r._[0] = me._[0];
+            r._[1] = me._[1];
+            r._[2] = me._[2];
+            r._[3] = me._[3];
+            return r;
+        }
         public ulong[] ToArray() => new [] { _[0], _[1], _[2], _[3], _[4], _[5], _[6], _[7] };
         
         
