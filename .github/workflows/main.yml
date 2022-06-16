@@ -34,7 +34,7 @@ jobs:
       - name: Codegen Build & Test
         run: |
           dotnet run -c Release --project src/Sdcb.FFmpeg.AutoGen --
-          dotnet build Sdcb.FFmpeg
+          dotnet build src/Sdcb.FFmpeg
       - name: Test
         run: |
           dotnet test -c Release
