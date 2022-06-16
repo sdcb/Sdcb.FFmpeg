@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Build
+        run: |
+          dotnet build -c Release
       - name: Install FFmpeg - linux
         run: |
           sudo apt update
@@ -18,9 +21,6 @@ jobs:
           sudo add-apt-repository ppa:savoury1/ffmpeg5 -y
           sudo apt update
           sudo apt install ffmpeg -y
-      - name: Build
-        run: |
-          dotnet build -c Release
       - name: Test
         run: |
           dotnet test -c Release
@@ -41,6 +41,6 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           path: |
-            Sdcb.FFmpeg/bin/Release/*.nupkg
-            Sdcb.FFmpeg/bin/Release/*.snupkg
+            src/Sdcb.FFmpeg/bin/Release/*.nupkg
+            src/Sdcb.FFmpeg/bin/Release/*.snupkg
           if-no-files-found: error
