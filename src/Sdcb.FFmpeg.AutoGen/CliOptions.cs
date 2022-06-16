@@ -67,9 +67,10 @@ namespace Sdcb.FFmpeg.AutoGen
         private void Normalize()
         {
             // Support for the original path setup
-            string solutionDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../");
+            string solutionDir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory)
+                .Parent.Parent.Parent.Parent.Parent.FullName;
 
-            if (string.IsNullOrWhiteSpace(OutputDir)) OutputDir = Path.Combine(solutionDir, "FFmpeg.AutoGen/");
+            if (string.IsNullOrWhiteSpace(OutputDir)) OutputDir = Path.Combine(solutionDir, "src/Sdcb.FFmpeg/Raw");
 
             if (UsingOnlineFFmpegBinaries)
             {

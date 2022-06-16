@@ -33,7 +33,7 @@ jobs:
           dotnet build -c Release
       - name: Codegen Build & Test
         run: |
-          dotnet run -c Release --project Sdcb.FFmpeg.AutoGen --
+          dotnet run -c Release --project src/Sdcb.FFmpeg.AutoGen --
           dotnet build Sdcb.FFmpeg
       - name: Test
         run: |

@@ -91,15 +91,15 @@ namespace Sdcb.FFmpeg.AutoGen
 
                 "libavdevice/avdevice.h");
 
-            g.WriteLibraries(Path.Combine(options.OutputDir, "Raw/FFmpeg.libraries.g.cs"));
-            g.WriteMacros(Path.Combine(options.OutputDir, "Raw/FFmpeg.macros.g.cs"));
-            g.WriteEnums(Path.Combine(options.OutputDir, "Raw/FFmpeg.enums.g.cs"));
-            g.WriteDelegates(Path.Combine(options.OutputDir, "Raw/FFmpeg.delegates.g.cs"));
-            g.WriteArrays(Path.Combine(options.OutputDir, "Raw/FFmpeg.arrays.g.cs"));
-            g.WriteStructures(Path.Combine(options.OutputDir, "Raw/FFmpeg.structs.g.cs"));
-            g.WriteIncompleteStructures(Path.Combine(options.OutputDir, "Raw/FFmpeg.structs.incomplete.g.cs"));
-            g.WriteExportFunctions(Path.Combine(options.OutputDir, "Raw/FFmpeg.functions.export.g.cs"));
-            g.WriteInlineFunctions(Path.Combine(options.OutputDir, "Raw/FFmpeg.functions.inline.g.cs"));
+            g.WriteLibraries(Path.Combine(options.OutputDir, "FFmpeg.libraries.g.cs"));
+            g.WriteMacros(Path.Combine(options.OutputDir, "FFmpeg.macros.g.cs"));
+            g.WriteEnums(Path.Combine(options.OutputDir, "FFmpeg.enums.g.cs"));
+            g.WriteDelegates(Path.Combine(options.OutputDir, "FFmpeg.delegates.g.cs"));
+            g.WriteArrays(Path.Combine(options.OutputDir, "FFmpeg.arrays.g.cs"));
+            g.WriteStructures(Path.Combine(options.OutputDir, "FFmpeg.structs.g.cs"));
+            g.WriteIncompleteStructures(Path.Combine(options.OutputDir, "FFmpeg.structs.incomplete.g.cs"));
+            g.WriteExportFunctions(Path.Combine(options.OutputDir, "FFmpeg.functions.export.g.cs"));
+            g.WriteInlineFunctions(Path.Combine(options.OutputDir, "FFmpeg.functions.inline.g.cs"));
         }
     }
 }
