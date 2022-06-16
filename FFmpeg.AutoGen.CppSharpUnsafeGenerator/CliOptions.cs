@@ -13,7 +13,7 @@ namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
     /// </summary>
     public class CliOptions
     {
-        [Option('n', "namespace", Default = "FFmpeg.AutoGen",
+        [Option('n', "namespace", Default = "Sdcb.FFmpeg.Raw",
             HelpText = "The namespace that will contain the generated symbols.")]
         public string Namespace { get; set; }
 

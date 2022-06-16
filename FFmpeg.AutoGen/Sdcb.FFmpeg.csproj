@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <PackageId>Sdcb.FFmpeg.AutoGen</PackageId>
+        <PackageId>Sdcb.FFmpeg</PackageId>
         <VersionPrefix>5.0.1</VersionPrefix>
         <VersionSuffix>preview-3</VersionSuffix>
         <LangVersion>latest</LangVersion>
