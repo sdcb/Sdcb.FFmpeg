@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using FFmpeg.AutoGen.Native;
 
 namespace FFmpeg.AutoGen
 {
     public static partial class ffmpeg
     {
-        public static readonly int EAGAIN;
+        public static readonly int EAGAIN = 11;
 
         public static readonly int ENOMEM = 12;
 
@@ -21,13 +18,11 @@ namespace FFmpeg.AutoGen
         {
 #if NET6_0_OR_GREATER
             SetupLibs();
-#endif
-
-            EAGAIN = LibraryLoader.GetPlatformId() switch
+            if (OperatingSystem.IsMacOS())
             {
-                PlatformID.MacOSX => 35,
-                _ => 11
-            };
+                EAGAIN = 35;
+            }
+#endif
         }
 
 #if NET6_0_OR_GREATER
@@ -38,14 +33,26 @@ namespace FFmpeg.AutoGen
 
         private static IntPtr DllImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            if (OperatingSystem.IsWindows())
             {
                 return NativeLibrary.Load(libraryName, assembly, searchPath);
             }
             else
             {
                 (string name, string version) = libraryName.Split("-") switch { var x => (x[0], x[1]) };
-                return NativeLibrary.Load($"lib{name}.so.{version}", assembly, searchPath);
+                if (OperatingSystem.IsLinux() || OperatingSystem.IsFreeBSD())
+                {
+                    return NativeLibrary.Load($"lib{name}.so.{version}", assembly, searchPath);
+                }
+                else if (OperatingSystem.IsMacOS())
+                {
+                    return NativeLibrary.Load($"lib{name}.{version}.dylib", assembly, searchPath);
+                }
+                else
+                {
+                    Console.WriteLine($"Warning: OS Platform {Environment.OSVersion.Platform} might not support");
+                    return NativeLibrary.Load($"lib{name}.so.{version}", assembly, searchPath);
+                }
             }
         }
 #endif

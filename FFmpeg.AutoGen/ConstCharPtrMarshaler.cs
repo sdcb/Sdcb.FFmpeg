@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace FFmpeg.AutoGen
 {
     internal class ConstCharPtrMarshaler : ICustomMarshaler
     {
-        public object MarshalNativeToManaged(IntPtr pNativeData) => Marshal.PtrToStringAnsi(pNativeData);
+        public object MarshalNativeToManaged(IntPtr pNativeData) => pNativeData.PtrToStringUTF8();
 
-        public IntPtr MarshalManagedToNative(object managedObj) => IntPtr.Zero;
+        public IntPtr MarshalManagedToNative(object managedObj) => throw new NotImplementedException();
 
         public void CleanUpNativeData(IntPtr pNativeData)
         {
