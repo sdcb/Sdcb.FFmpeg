@@ -6,11 +6,8 @@ on:
     branches: [main]
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
+  ubuntu-latest:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Install FFmpeg - linux
@@ -28,18 +25,23 @@ jobs:
       - name: Test
         run: |
           dotnet test -c Release
-      - uses: actions/upload-artifact@v2
-        if: matrix.os == 'windows-latest'
-        with:
-          path: FFmpeg.AutoGen/bin/Release/*.nupkg
-          if-no-files-found: error
-      - uses: actions/upload-artifact@v2
-        if: matrix.os == 'windows-latest'
-        with:
-          path: FFmpeg.AutoGen/bin/Release/*.snupkg
-          if-no-files-found: error
+  windows-latest:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: |
+          dotnet build -c Release
       - name: Codegen Build & Test
-        if: matrix.os == 'windows-latest'
         run: |
           dotnet run -c Release -p FFmpeg.AutoGen.CppSharpUnsafeGenerator --
-          dotnet build FFmpeg.AutoGen
+          dotnet build Sdcb.FFmpeg
+      - name: Test
+        run: |
+          dotnet test -c Release
+      - uses: actions/upload-artifact@v3
+        with:
+          path: |
+            Sdcb.FFmpeg/bin/Release/*.nupkg
+            Sdcb.FFmpeg/bin/Release/*.snupkg
+          if-no-files-found: error
