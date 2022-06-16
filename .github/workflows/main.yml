@@ -11,7 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install FFmpeg - linux
-        if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt update
           sudo apt install software-properties-common -y
@@ -34,7 +33,7 @@ jobs:
           dotnet build -c Release
       - name: Codegen Build & Test
         run: |
-          dotnet run -c Release -p FFmpeg.AutoGen.CppSharpUnsafeGenerator --
+          dotnet run -c Release --project Sdcb.FFmpeg.AutoGen --
           dotnet build Sdcb.FFmpeg
       - name: Test
         run: |
