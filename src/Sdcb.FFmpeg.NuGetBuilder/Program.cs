@@ -7,8 +7,9 @@ using System.Xml.XPath;
 
 string solutionDir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory)
     .Parent?.Parent?.Parent?.Parent?.Parent?.FullName ?? throw new Exception();
+string downloadVersion = "5.0.1";
 string version = "5.0.1";
-await SetupFFmpegBinaries(solutionDir, $"https://github.com/GyanD/codexffmpeg/releases/download/{version}/ffmpeg-{version}-full_build-shared.zip");
+await SetupFFmpegBinaries(solutionDir, $"https://github.com/GyanD/codexffmpeg/releases/download/{downloadVersion}/ffmpeg-{downloadVersion}-full_build-shared.zip");
 
 const string namePrefix = "Sdcb.FFmpeg.runtime";
 

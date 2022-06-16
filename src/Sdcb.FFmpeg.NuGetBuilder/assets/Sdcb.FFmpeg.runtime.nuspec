@@ -5,7 +5,7 @@
         <version>{version}</version>
         <title>FFmpeg native bindings for {titleRid}</title>
         <authors>sdcb</authors>
-        <license type="expression">LGPL</license>
+        <license type="expression">LGPL-3.0-only</license>
         <projectUrl>https://github.com/sdcb/FFmpeg.AutoGen</projectUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <description>Native binding for FFmpeg to work on {titleRid}.</description>
