@@ -15,26 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FFmpeg.AutoGen\Sdcb.FFmpeg.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)../FFmpeg/bin/x64/*.dll" Condition="$([MSBuild]::IsOSPlatform('Windows'))">
-      <Link>%(filename)%(extension)</Link>      
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Visible>true</Visible>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="C:\Users\ZhouJie\source\repos\FFmpeg.AutoGen\FFmpeg.AutoGen.Tests\..\FFmpeg\bin\x64\avcodec-58.dll" />
-    <None Remove="C:\Users\ZhouJie\source\repos\FFmpeg.AutoGen\FFmpeg.AutoGen.Tests\..\FFmpeg\bin\x64\avdevice-58.dll" />
-    <None Remove="C:\Users\ZhouJie\source\repos\FFmpeg.AutoGen\FFmpeg.AutoGen.Tests\..\FFmpeg\bin\x64\avfilter-7.dll" />
-    <None Remove="C:\Users\ZhouJie\source\repos\FFmpeg.AutoGen\FFmpeg.AutoGen.Tests\..\FFmpeg\bin\x64\avformat-58.dll" />
-    <None Remove="C:\Users\ZhouJie\source\repos\FFmpeg.AutoGen\FFmpeg.AutoGen.Tests\..\FFmpeg\bin\x64\avutil-56.dll" />
-    <None Remove="C:\Users\ZhouJie\source\repos\FFmpeg.AutoGen\FFmpeg.AutoGen.Tests\..\FFmpeg\bin\x64\postproc-55.dll" />
-    <None Remove="C:\Users\ZhouJie\source\repos\FFmpeg.AutoGen\FFmpeg.AutoGen.Tests\..\FFmpeg\bin\x64\swresample-3.dll" />
-    <None Remove="C:\Users\ZhouJie\source\repos\FFmpeg.AutoGen\FFmpeg.AutoGen.Tests\..\FFmpeg\bin\x64\swscale-5.dll" />
+    <ProjectReference Include="..\Sdcb.FFmpeg\Sdcb.FFmpeg.csproj" />
   </ItemGroup>
 
 </Project>
