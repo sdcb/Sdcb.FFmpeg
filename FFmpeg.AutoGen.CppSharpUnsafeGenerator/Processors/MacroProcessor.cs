@@ -1,7 +1,7 @@
 ﻿using CppSharp.AST;
 using System.Linq;
 
-namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator.Processors
+namespace Sdcb.FFmpeg.AutoGen.Processors
 {
     internal class MacroProcessor
     {

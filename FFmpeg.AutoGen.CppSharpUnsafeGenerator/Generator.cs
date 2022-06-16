@@ -6,12 +6,12 @@ using System.Linq;
 using CppSharp;
 using CppSharp.AST;
 using CppSharp.Parser;
-using FFmpeg.AutoGen.CppSharpUnsafeGenerator.Definitions;
-using FFmpeg.AutoGen.CppSharpUnsafeGenerator.Processors;
+using Sdcb.FFmpeg.AutoGen.Definitions;
+using Sdcb.FFmpeg.AutoGen.Processors;
 using ClangParser = CppSharp.ClangParser;
-using MacroDefinition = FFmpeg.AutoGen.CppSharpUnsafeGenerator.Definitions.MacroDefinition;
+using MacroDefinition = Sdcb.FFmpeg.AutoGen.Definitions.MacroDefinition;
 
-namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
+namespace Sdcb.FFmpeg.AutoGen
 {
     internal class Generator
     {

@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
+namespace Sdcb.FFmpeg.AutoGen
 {
     internal static class FunctionExportHelper
     {

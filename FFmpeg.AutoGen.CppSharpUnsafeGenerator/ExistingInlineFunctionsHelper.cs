@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
-using FFmpeg.AutoGen.CppSharpUnsafeGenerator.Definitions;
+using Sdcb.FFmpeg.AutoGen.Definitions;
 
-namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
+namespace Sdcb.FFmpeg.AutoGen
 {
     internal static class ExistingInlineFunctionsHelper
     {

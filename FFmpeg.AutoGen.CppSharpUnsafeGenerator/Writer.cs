@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security;
 using System.Text;
-using FFmpeg.AutoGen.CppSharpUnsafeGenerator.Definitions;
+using Sdcb.FFmpeg.AutoGen.Definitions;
 
-namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
+namespace Sdcb.FFmpeg.AutoGen
 {
     internal class Writer
     {

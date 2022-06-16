@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
-using FFmpeg.AutoGen.CppSharpUnsafeGenerator.Definitions;
+using Sdcb.FFmpeg.AutoGen.Definitions;
 using Type = CppSharp.AST.Type;
 
-namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator.Processors
+namespace Sdcb.FFmpeg.AutoGen.Processors
 {
     internal class StructureProcessor
     {

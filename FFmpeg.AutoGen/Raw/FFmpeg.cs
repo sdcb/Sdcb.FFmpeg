@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace FFmpeg.AutoGen
+namespace Sdcb.FFmpeg.Raw
 {
     public static partial class ffmpeg
     {

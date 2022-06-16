@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using FFmpeg.AutoGen.CppSharpUnsafeGenerator.Processors;
+using Sdcb.FFmpeg.AutoGen.Processors;
 
-namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
+namespace Sdcb.FFmpeg.AutoGen
 {
     internal class Program
     {

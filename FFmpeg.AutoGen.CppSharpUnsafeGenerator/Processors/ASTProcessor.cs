@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
-using FFmpeg.AutoGen.CppSharpUnsafeGenerator.Definitions;
-using MacroDefinition = FFmpeg.AutoGen.CppSharpUnsafeGenerator.Definitions.MacroDefinition;
+using Sdcb.FFmpeg.AutoGen.Definitions;
+using MacroDefinition = Sdcb.FFmpeg.AutoGen.Definitions.MacroDefinition;
 
-namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator.Processors
+namespace Sdcb.FFmpeg.AutoGen.Processors
 {
     internal class ASTProcessor
     {

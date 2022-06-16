@@ -4,11 +4,11 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using FFmpeg.AutoGen.CppSharpUnsafeGenerator.Definitions;
+using Sdcb.FFmpeg.AutoGen.Definitions;
 using RCore.ClangMacroParser;
 using RCore.ClangMacroParser.Expressions;
 
-namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator.Processors
+namespace Sdcb.FFmpeg.AutoGen.Processors
 {
     internal class MacroPostProcessor
     {

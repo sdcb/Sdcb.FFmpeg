@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
+namespace Sdcb.FFmpeg.AutoGen
 {
     [DebuggerDisplay("{Name}, {LibraryName}")]
     internal class FunctionExport

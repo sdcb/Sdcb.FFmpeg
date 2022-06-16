@@ -3,10 +3,10 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using CppSharp.AST;
-using FFmpeg.AutoGen.CppSharpUnsafeGenerator.Definitions;
+using Sdcb.FFmpeg.AutoGen.Definitions;
 using Type = CppSharp.AST.Type;
 
-namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator.Processors
+namespace Sdcb.FFmpeg.AutoGen.Processors
 {
     internal class FunctionProcessor
     {

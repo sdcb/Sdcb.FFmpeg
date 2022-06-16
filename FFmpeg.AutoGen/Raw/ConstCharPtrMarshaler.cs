@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace FFmpeg.AutoGen
+namespace Sdcb.FFmpeg.Raw
 {
     internal class ConstCharPtrMarshaler : ICustomMarshaler
     {

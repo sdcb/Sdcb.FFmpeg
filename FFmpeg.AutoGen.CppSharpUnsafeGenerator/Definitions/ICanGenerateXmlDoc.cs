@@ -1,4 +1,4 @@
-namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator.Definitions
+namespace Sdcb.FFmpeg.AutoGen.Definitions
 {
     internal interface ICanGenerateXmlDoc
     {

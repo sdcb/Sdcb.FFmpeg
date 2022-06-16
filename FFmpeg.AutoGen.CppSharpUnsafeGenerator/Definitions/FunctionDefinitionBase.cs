@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator.Definitions
+namespace Sdcb.FFmpeg.AutoGen.Definitions
 {
     internal record FunctionDefinitionBase : IDefinition, ICanGenerateXmlDoc, IObsoletionAware
     {

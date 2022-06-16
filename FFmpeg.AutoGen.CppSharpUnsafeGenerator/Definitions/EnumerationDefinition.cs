@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator.Definitions
+namespace Sdcb.FFmpeg.AutoGen.Definitions
 {
     internal record EnumerationDefinition : NamedDefinition, IDefinition
     {

@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using CommandLine;
 
-namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
+namespace Sdcb.FFmpeg.AutoGen
 {
     /// <summary>
     ///     Command line options.

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FFmpeg.AutoGen.CppSharpUnsafeGenerator
+namespace Sdcb.FFmpeg.AutoGen
 {
 	internal static class EnumerableExtensions
 	{

@@ -1,7 +1,8 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
+using Sdcb.FFmpeg.Raw;
 
-namespace FFmpeg.AutoGen.Tests
+namespace Sdcb.FFmpeg.Tests
 {
     [TestFixture]
     public class BasicTests

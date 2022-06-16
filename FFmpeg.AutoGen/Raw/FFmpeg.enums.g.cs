@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 #pragma warning disable 169
 #pragma warning disable CS0649
 #pragma warning disable CS0108
-namespace FFmpeg.AutoGen
+namespace Sdcb.FFmpeg.Raw
 {
     public enum AVActiveFormatDescription : int
     {

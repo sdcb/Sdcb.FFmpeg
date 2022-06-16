@@ -5,7 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 
-namespace FFmpeg.AutoGen.Tests
+namespace Sdcb.FFmpeg.Tests
 {
     [SetUpFixture]
     public class AssemblySetup
