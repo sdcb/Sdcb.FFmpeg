@@ -3,7 +3,7 @@
 ## NuGet Packages
 | Package | Link |
 | ------- | ---- |
-| Sdcb.AutoGen | [![NuGet](https://img.shields.io/nuget/v/Sdcb.FFmpeg.AutoGen.svg)](https://nuget.org/packages/Sdcb.FFmpeg.AutoGen) |
+| Sdcb.FFmpeg | [![NuGet](https://img.shields.io/nuget/v/Sdcb.FFmpeg.AutoGen.svg)](https://nuget.org/packages/Sdcb.FFmpeg.AutoGen) |
 | Sdcb.FFmpeg.runtime.windows-x64 | [![NuGet](https://img.shields.io/nuget/v/Sdcb.FFmpeg.runtime.windows-x64.svg)](https://nuget.org/packages/Sdcb.FFmpeg.runtime.windows-x64) |
 
 
