@@ -12,12 +12,10 @@ FFmpeg auto generated unsafe bindings for C#/.NET, forked from https://github.co
 
 ## Usage
 
-The basic example of the library usage: video decoding, conversion and frame extraction to jpeg is included in ```FFmpeg.AutoGen.Example``` project.  
 For the more sophisticated operations please refer to offical [ffmpeg Documentation](https://www.ffmpeg.org/documentation.html) expecially API section of it.
-Nuget packages version uses [semantic versioning](https://semver.org/) and in sync with MAJOR and MINOR version of FFmpeg as PATCH incremets does not changing API.
 
 - on Windows:  
-You can download dev-binaries from http://ffmpeg.org/download.html#build-windows, then set environment variable `PATH` to extracted folder.
+Install `NuGet` package: `https://www.nuget.org/packages/Sdcb.FFmpeg.runtime.windows-x64`
 
 - on OS X:  
 Install ffmpeg via [Homebrew](https://formulae.brew.sh/formula/ffmpeg):
@@ -44,8 +42,8 @@ Prerequisites:
  - Visual Studio 2022 with C# and C++ desktop development workloads and Windows SDK for desktop.
 
 Steps to generate:
-- Run ```FFmpeg.AutoGen.CppSharpUnsafeGenerator;```
-- All files with extension ```*.g.cs```  in ```FFmpeg.AutoGen``` project will be regenerated.
+- Run ```Sdcb.FFmpeg.AutoGen```
+- All files with extension ```*.g.cs```  in ```Sdcb.FFmpeg``` project will be regenerated.
 
 
 ## License
