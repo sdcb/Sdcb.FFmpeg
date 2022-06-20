@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>Sdcb.FFmpeg.runtime.{titleRid}</id>
+        <version>{version}</version>
+        <title>FFmpeg native bindings for {titleRid}</title>
+        <authors>sdcb</authors>
+        <license type="expression">LGPL-3.0-only</license>
+        <projectUrl>https://github.com/sdcb/FFmpeg.AutoGen</projectUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>Native binding for FFmpeg to work on {titleRid}.</description>
+        <summary>Native binding for FFmpeg to work on {titleRid}.</summary>
+        <releaseNotes></releaseNotes>
+        <copyright>Copyright {year}</copyright>
+        <tags>FFmpeg linqpad-samples</tags>
+        <repository type="git" url="https://github.com/sdcb/FFmpeg.AutoGen.git" />
+        <dependencies>
+        </dependencies>
+        <frameworkAssemblies>
+        </frameworkAssemblies>
+    </metadata>
+    <files>
+    </files>
+</package>
