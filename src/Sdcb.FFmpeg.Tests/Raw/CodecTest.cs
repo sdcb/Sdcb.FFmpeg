@@ -1,25 +1,23 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
-using Sdcb.FFmpeg.Raw;
+﻿using Sdcb.FFmpeg.Raw;
+using Xunit;
 
 namespace Sdcb.FFmpeg.Tests.Raw
 {
-    [TestFixture]
     public class CodecTest
     {
-        [Test]
+        [Fact]
         public void Test_avcodec_version()
         {
             uint version = ffmpeg.avcodec_version();
             uint major = version >> 16;
-            major.Should().Be(59);
+            Assert.Equal(59u, major);
         }
 
-        [Test]
+        [Fact]
         public void Test_av_version()
         {
             string version = ffmpeg.av_version_info();
-            version.Should().NotBeNull();
+            Assert.NotNull(version);
         }
     }
 }
