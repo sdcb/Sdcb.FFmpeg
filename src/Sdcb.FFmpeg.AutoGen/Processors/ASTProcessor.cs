@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using CppSharp.AST;
 using Sdcb.FFmpeg.AutoGen.Definitions;
@@ -75,16 +77,22 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
 
         public void Process(IEnumerable<TranslationUnit> units)
         {
-            foreach (var translationUnit in units)
+            MetricHelper.RecordTime("Macro/Enumeration/Structure/Functions Process", () =>
             {
-                MacroProcessor.Process(translationUnit);
-                EnumerationProcessor.Process(translationUnit);
-                StructureProcessor.Process(translationUnit);
-                FunctionProcessor.Process(translationUnit);
-            }
+                foreach (var translationUnit in units)
+                {
+                    MacroProcessor.Process(translationUnit);
+                    EnumerationProcessor.Process(translationUnit);
+                    StructureProcessor.Process(translationUnit);
+                    FunctionProcessor.Process(translationUnit);
+                }
+            });
 
-            var macros = Units.OfType<MacroDefinition>().ToArray();
-            MacroPostProcessor.Process(macros);
+            MetricHelper.RecordTime("MacroPostProcess", () =>
+            {
+                MacroDefinition[] macros = Units.OfType<MacroDefinition>().ToArray();
+                MacroPostProcessor.Process(macros);
+            });
         }
     }
 }

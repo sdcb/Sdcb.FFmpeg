@@ -24,19 +24,26 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
         {
             _macroExpressionMap = new Dictionary<string, IExpression>(macros.Count);
 
+            int goodCount = 0, unsupportedFailCount = 0, unknownFailCount = 0;
             foreach (var x in macros)
+            {
                 try
                 {
                     _macroExpressionMap.Add(x.Name, Parser.Parse(x.Expression));
+                    ++goodCount;
                 }
                 catch (NotSupportedException)
                 {
                     Trace.TraceError($"Cannot parse macro expression: {x.Expression}");
+                    ++unsupportedFailCount;
                 }
                 catch (Exception e)
                 {
                     Trace.TraceError($"Cannot parse macro expression: {x.Expression}: {e.Message}");
+                    ++unknownFailCount;
                 }
+            }
+            Console.WriteLine($"Parsing macro done, good={goodCount}, unsupported={unsupportedFailCount}, unknown={unknownFailCount}");
 
             foreach (var macro in macros) Process(macro);
         }

@@ -34,7 +34,7 @@ namespace Sdcb.FFmpeg.AutoGen
         public void Parse(params string[] sourceFiles)
         {
             _hasParsingErrors = false;
-            var context = ParseInternal(sourceFiles);
+            ASTContext context = MetricHelper.RecordTime("Parse header files", () => ParseInternal(sourceFiles));
             if (_hasParsingErrors)
                 throw new InvalidOperationException();
 
@@ -277,7 +277,7 @@ namespace Sdcb.FFmpeg.AutoGen
             switch (result.Kind)
             {
                 case ParserResultKind.Success:
-                    Diagnostics.Message("Parsed '{0}'", string.Join(", ", files));
+                    Diagnostics.Message($"Parsed {files.Count()} headers.");
                     break;
                 case ParserResultKind.Error:
                     Diagnostics.Error("Error parsing '{0}'", string.Join(", ", files));

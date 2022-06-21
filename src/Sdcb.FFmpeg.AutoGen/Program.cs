@@ -10,6 +10,7 @@ namespace Sdcb.FFmpeg.AutoGen
     {
         internal static void Main(string[] args)
         {
+            Console.WriteLine($"App started using args: {String.Join(",", args)}");
             var options = CliOptions.ParseArgumentsStrict(args);
 
             if (options.Verbose)
