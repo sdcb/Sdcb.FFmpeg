@@ -44,3 +44,6 @@ jobs:
             src/Sdcb.FFmpeg/bin/Release/*.nupkg
             src/Sdcb.FFmpeg/bin/Release/*.snupkg
           if-no-files-found: error
+      - name: Publish to NuGet
+        if: github.event_name == 'push'
+        run: dotnet nuget push .\src\Sdcb.FFmpeg\bin\Release\*.nupkg -s "https://api.nuget.org/v3/index.json" -k ${{secrets.NUGET_API_KEY}} --skip-duplicate
