@@ -12,6 +12,7 @@
     <PackageReference Include="NUnit" Version="3.*" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.*" />
     <PackageReference Include="coverlet.msbuild" Version="3.*" PrivateAssets="all" />
+    <PackageReference Include="Sdcb.FFmpeg.runtime.windows-x64" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>
