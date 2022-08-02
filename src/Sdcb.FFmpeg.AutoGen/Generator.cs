@@ -121,7 +121,8 @@ namespace Sdcb.FFmpeg.AutoGen
                 new ("AV_LOG_", "LogLevel", Except: new []{ "AV_LOG_C" }.ToHashSet()),
                 new ("AV_CPU_FLAG_", "CpuFlags"),
                 new ("AV_PKT_FLAG_", "PacketFlags"),
-                new ("AVFMT_FLAG_", "FormatFlags"), 
+                new ("AVFMT_FLAG_", "FormatFlags"),
+                new ("AVFMT_", "FormatIOFlags"),
             };
             Dictionary<string, MacroEnumDef> knownConstEnumMapping = knownConstEnums.ToDictionary(k => k.EnumName, v => v);
 

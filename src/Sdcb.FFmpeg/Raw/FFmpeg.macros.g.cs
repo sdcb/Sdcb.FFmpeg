@@ -381,50 +381,6 @@ namespace Sdcb.FFmpeg.Raw
         public const int AVFILTER_FLAG_SUPPORT_TIMELINE_INTERNAL = 0x1 << 0x11;
         /// <summary>AVFILTER_THREAD_SLICE = (1 &lt;&lt; 0)</summary>
         public const int AVFILTER_THREAD_SLICE = 0x1 << 0x0;
-        /// <summary>AVFMT_ALLOW_FLUSH = 0x10000</summary>
-        public const int AVFMT_ALLOW_FLUSH = 0x10000;
-        /// <summary>AVFMT_AVOID_NEG_TS_AUTO = -1</summary>
-        public const int AVFMT_AVOID_NEG_TS_AUTO = -0x1;
-        /// <summary>AVFMT_AVOID_NEG_TS_MAKE_NON_NEGATIVE = 1</summary>
-        public const int AVFMT_AVOID_NEG_TS_MAKE_NON_NEGATIVE = 0x1;
-        /// <summary>AVFMT_AVOID_NEG_TS_MAKE_ZERO = 2</summary>
-        public const int AVFMT_AVOID_NEG_TS_MAKE_ZERO = 0x2;
-        /// <summary>AVFMT_EVENT_FLAG_METADATA_UPDATED = 0x0001</summary>
-        public const int AVFMT_EVENT_FLAG_METADATA_UPDATED = 0x1;
-        /// <summary>AVFMT_EXPERIMENTAL = 0x0004</summary>
-        public const int AVFMT_EXPERIMENTAL = 0x4;
-        /// <summary>AVFMT_GENERIC_INDEX = 0x0100</summary>
-        public const int AVFMT_GENERIC_INDEX = 0x100;
-        /// <summary>AVFMT_GLOBALHEADER = 0x0040</summary>
-        public const int AVFMT_GLOBALHEADER = 0x40;
-        /// <summary>AVFMT_NEEDNUMBER = 0x0002</summary>
-        public const int AVFMT_NEEDNUMBER = 0x2;
-        /// <summary>AVFMT_NO_BYTE_SEEK = 0x8000</summary>
-        public const int AVFMT_NO_BYTE_SEEK = 0x8000;
-        /// <summary>AVFMT_NOBINSEARCH = 0x2000</summary>
-        public const int AVFMT_NOBINSEARCH = 0x2000;
-        /// <summary>AVFMT_NODIMENSIONS = 0x0800</summary>
-        public const int AVFMT_NODIMENSIONS = 0x800;
-        /// <summary>AVFMT_NOFILE = 0x0001</summary>
-        public const int AVFMT_NOFILE = 0x1;
-        /// <summary>AVFMT_NOGENSEARCH = 0x4000</summary>
-        public const int AVFMT_NOGENSEARCH = 0x4000;
-        /// <summary>AVFMT_NOSTREAMS = 0x1000</summary>
-        public const int AVFMT_NOSTREAMS = 0x1000;
-        /// <summary>AVFMT_NOTIMESTAMPS = 0x0080</summary>
-        public const int AVFMT_NOTIMESTAMPS = 0x80;
-        /// <summary>AVFMT_SEEK_TO_PTS = 0x4000000</summary>
-        public const int AVFMT_SEEK_TO_PTS = 0x4000000;
-        /// <summary>AVFMT_SHOW_IDS = 0x0008</summary>
-        public const int AVFMT_SHOW_IDS = 0x8;
-        /// <summary>AVFMT_TS_DISCONT = 0x0200</summary>
-        public const int AVFMT_TS_DISCONT = 0x200;
-        /// <summary>AVFMT_TS_NEGATIVE = 0x40000</summary>
-        public const int AVFMT_TS_NEGATIVE = 0x40000;
-        /// <summary>AVFMT_TS_NONSTRICT = 0x20000</summary>
-        public const int AVFMT_TS_NONSTRICT = 0x20000;
-        /// <summary>AVFMT_VARIABLE_FPS = 0x0400</summary>
-        public const int AVFMT_VARIABLE_FPS = 0x400;
         /// <summary>AVFMTCTX_NOHEADER = 0x0001</summary>
         public const int AVFMTCTX_NOHEADER = 0x1;
         /// <summary>AVFMTCTX_UNSEEKABLE = 0x0002</summary>
@@ -1570,6 +1526,77 @@ namespace Sdcb.FFmpeg.Raw
             
             /// <summary>AV_PKT_FLAG_TRUSTED = 0x0008</summary>
             Trusted = 0x8,
+        }
+        
+        /// <summary>Macro enum, prefix: AVFMT_</summary>
+        [Flags]
+        public enum FormatIOFlags
+        {
+            /// <summary>AVFMT_ALLOW_FLUSH = 0x10000</summary>
+            AllowFlush = 0x10000,
+            
+            /// <summary>AVFMT_AVOID_NEG_TS_AUTO = -1</summary>
+            AvoidNegTsAuto = -0x1,
+            
+            /// <summary>AVFMT_AVOID_NEG_TS_MAKE_NON_NEGATIVE = 1</summary>
+            AvoidNegTsMakeNonNegative = 0x1,
+            
+            /// <summary>AVFMT_AVOID_NEG_TS_MAKE_ZERO = 2</summary>
+            AvoidNegTsMakeZero = 0x2,
+            
+            /// <summary>AVFMT_EVENT_FLAG_METADATA_UPDATED = 0x0001</summary>
+            EventFlagMetadataUpdated = 0x1,
+            
+            /// <summary>AVFMT_EXPERIMENTAL = 0x0004</summary>
+            Experimental = 0x4,
+            
+            /// <summary>AVFMT_GENERIC_INDEX = 0x0100</summary>
+            GenericIndex = 0x100,
+            
+            /// <summary>AVFMT_GLOBALHEADER = 0x0040</summary>
+            Globalheader = 0x40,
+            
+            /// <summary>AVFMT_NEEDNUMBER = 0x0002</summary>
+            Neednumber = 0x2,
+            
+            /// <summary>AVFMT_NO_BYTE_SEEK = 0x8000</summary>
+            NoByteSeek = 0x8000,
+            
+            /// <summary>AVFMT_NOBINSEARCH = 0x2000</summary>
+            Nobinsearch = 0x2000,
+            
+            /// <summary>AVFMT_NODIMENSIONS = 0x0800</summary>
+            Nodimensions = 0x800,
+            
+            /// <summary>AVFMT_NOFILE = 0x0001</summary>
+            Nofile = 0x1,
+            
+            /// <summary>AVFMT_NOGENSEARCH = 0x4000</summary>
+            Nogensearch = 0x4000,
+            
+            /// <summary>AVFMT_NOSTREAMS = 0x1000</summary>
+            Nostreams = 0x1000,
+            
+            /// <summary>AVFMT_NOTIMESTAMPS = 0x0080</summary>
+            Notimestamps = 0x80,
+            
+            /// <summary>AVFMT_SEEK_TO_PTS = 0x4000000</summary>
+            SeekToPts = 0x4000000,
+            
+            /// <summary>AVFMT_SHOW_IDS = 0x0008</summary>
+            ShowIds = 0x8,
+            
+            /// <summary>AVFMT_TS_DISCONT = 0x0200</summary>
+            TsDiscont = 0x200,
+            
+            /// <summary>AVFMT_TS_NEGATIVE = 0x40000</summary>
+            TsNegative = 0x40000,
+            
+            /// <summary>AVFMT_TS_NONSTRICT = 0x20000</summary>
+            TsNonstrict = 0x20000,
+            
+            /// <summary>AVFMT_VARIABLE_FPS = 0x0400</summary>
+            VariableFps = 0x400,
         }
         
         /// <summary>Macro enum, prefix: AVFMT_FLAG_</summary>
