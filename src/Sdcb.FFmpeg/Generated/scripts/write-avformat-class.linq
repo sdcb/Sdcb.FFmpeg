@@ -9,9 +9,11 @@
 #load ".\common"
 #load ".\write-class"
 
-Environment.CurrentDirectory = BaseDir;
+string baseDir = Path.Combine(BaseDir, "MediaFormats");
+Directory.CreateDirectory(baseDir);
+Environment.CurrentDirectory = baseDir;
 
-string ns = "Sdcb.FFmpegAPIWrapper.MediaFormats";
+string ns = "Sdcb.FFmpeg.MediaFormats";
 WriteClass(new GenerateOption(typeof(AVFormatContext), ns, "FormatContext")
 {
 	FieldNameMapping = new()
@@ -33,7 +35,7 @@ WriteClass(new GenerateOption(typeof(AVFormatContext), ns, "FormatContext")
 		["streams"] = FieldOption.Hide, 
 		["nb_streams"] = FieldOption.Hide
 	},
-	AdditionalNamespaces = new string[] {"Sdcb.FFmpegAPIWrapper.MediaCodecs" }, 
+	AdditionalNamespaces = new string[] {"Sdcb.FFmpeg.MediaCodecs" }, 
 	WriteStub = true, 
 });
 

@@ -117,6 +117,7 @@ namespace Sdcb.FFmpeg.AutoGen
                 new ("AVSEEK_FLAG_", "SeekFlags"),
                 new ("AV_PIX_FMT_FLAG_", "PixelFormatFlags"),
                 new ("AV_OPT_FLAG_", "OptionFlags"),
+                new ("AV_OPT_SEARCH_", "OptionSearchFlags"),
                 new ("AV_LOG_", "LogFlags", Only: new []{ "AV_LOG_SKIP_REPEATED", "AV_LOG_PRINT_LEVEL" }.ToHashSet()),
                 new ("AV_LOG_", "LogLevel", Except: new []{ "AV_LOG_C" }.ToHashSet()),
                 new ("AV_CPU_FLAG_", "CpuFlags"),

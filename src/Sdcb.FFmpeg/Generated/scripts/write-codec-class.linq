@@ -1,21 +1,19 @@
 <Query Kind="Statements">
-  <Namespace>FFmpeg.AutoGen</Namespace>
   <Namespace>Microsoft.CSharp</Namespace>
-  <Namespace>Sdcb.FFmpegAPIWrapper.Common</Namespace>
+  <Namespace>Sdcb.FFmpeg.Raw</Namespace>
   <Namespace>System.CodeDom</Namespace>
   <Namespace>System.CodeDom.Compiler</Namespace>
-  <Namespace>Sdcb.FFmpeg.Raw</Namespace>
 </Query>
 
 #load ".\common"
 #load ".\write-class"
 #nullable enable
 
-string baseDir = Path.GetFullPath(Path.Combine(Util.CurrentQuery.Location, @"..\..\MediaCodecs\GeneratedTypes"));
+string baseDir = Path.GetFullPath(Path.Combine(Util.CurrentQuery.Location, @"..\MediaCodecs"));
 Directory.CreateDirectory(baseDir);
 Environment.CurrentDirectory = baseDir;
 
-string ns = "Sdcb.FFmpegAPIWrapper.MediaCodecs";
+string ns = "Sdcb.FFmpeg.MediaCodecs";
 WriteClass(new GenerateOption(typeof(AVCodecParameters), ns, "CodecParameters"));
 WriteClass(new GenerateOption(typeof(AVFrame), ns, "Frame")
 {

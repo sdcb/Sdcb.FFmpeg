@@ -178,10 +178,6 @@ namespace Sdcb.FFmpeg.Raw
         public const int AV_OPT_ALLOW_NULL = 0x1 << 0x2;
         /// <summary>AV_OPT_MULTI_COMPONENT_RANGE = (1 &lt;&lt; 12)</summary>
         public const int AV_OPT_MULTI_COMPONENT_RANGE = 0x1 << 0xc;
-        /// <summary>AV_OPT_SEARCH_CHILDREN = (1 &lt;&lt; 0)</summary>
-        public const int AV_OPT_SEARCH_CHILDREN = 0x1 << 0x0;
-        /// <summary>AV_OPT_SEARCH_FAKE_OBJ = (1 &lt;&lt; 1)</summary>
-        public const int AV_OPT_SEARCH_FAKE_OBJ = 0x1 << 0x1;
         /// <summary>AV_OPT_SERIALIZE_OPT_FLAGS_EXACT = 0x00000002</summary>
         public const int AV_OPT_SERIALIZE_OPT_FLAGS_EXACT = 0x2;
         /// <summary>AV_OPT_SERIALIZE_SKIP_DEFAULTS = 0x00000001</summary>
@@ -1474,6 +1470,17 @@ namespace Sdcb.FFmpeg.Raw
             
             /// <summary>AV_OPT_FLAG_VIDEO_PARAM = 16</summary>
             VideoParam = 0x10,
+        }
+        
+        /// <summary>Macro enum, prefix: AV_OPT_SEARCH_</summary>
+        [Flags]
+        public enum OptionSearchFlags
+        {
+            /// <summary>AV_OPT_SEARCH_CHILDREN = (1 &lt;&lt; 0)</summary>
+            Children = 0x1 << 0x0,
+            
+            /// <summary>AV_OPT_SEARCH_FAKE_OBJ = (1 &lt;&lt; 1)</summary>
+            FakeObj = 0x1 << 0x1,
         }
         
         /// <summary>Macro enum, prefix: AV_PIX_FMT_FLAG_</summary>

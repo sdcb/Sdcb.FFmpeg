@@ -6,7 +6,7 @@ namespace Sdcb.FFmpeg.Raw
 {
     internal class ConstCharPtrMarshaler : ICustomMarshaler
     {
-        public object MarshalNativeToManaged(IntPtr pNativeData) => pNativeData.PtrToStringUTF8();
+        public object MarshalNativeToManaged(IntPtr pNativeData) => pNativeData.PtrToStringUTF8()!;
 
         public IntPtr MarshalManagedToNative(object managedObj) => throw new NotImplementedException();
 

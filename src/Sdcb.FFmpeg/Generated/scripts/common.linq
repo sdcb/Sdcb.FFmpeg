@@ -12,7 +12,7 @@ void Main()
 
 }
 
-string BaseDir => Path.GetFullPath(Path.Combine(Util.CurrentQuery.Location, @"."));
+string BaseDir => Path.GetFullPath(Path.Combine(Util.CurrentQuery.Location, @"..\"));
 
 string GetFriendlyTypeName(Type type, bool includeNamespace = false)
 {
@@ -120,9 +120,9 @@ void WriteBasic(IndentedTextWriter writer, string ns, Action bodyWriter, bool wi
 	}
 	
 	writer.WriteLine("using System;");
-	writer.WriteLine("using Sdcb.FFmpegAPIWrapper.Common;");
-	writer.WriteLine("using FFmpeg.AutoGen;");
-	writer.WriteLine("using static FFmpeg.AutoGen.ffmpeg;");
+	writer.WriteLine("using Sdcb.FFmpeg.Common;");
+	writer.WriteLine("using Sdcb.FFmpeg.Raw;");
+	writer.WriteLine("using static Sdcb.FFmpeg.Raw.ffmpeg;");
 	foreach (string additionalNamespace in additionalNamespaces ?? new string[0])
 	{
 		writer.WriteLine($"using {additionalNamespace};");
