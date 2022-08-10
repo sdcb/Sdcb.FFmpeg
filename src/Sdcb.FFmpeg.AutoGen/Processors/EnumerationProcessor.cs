@@ -36,18 +36,17 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 Name = name,
                 TypeName = TypeHelper.GetTypeName(enumeration.Type),
                 Content = enumeration.Comment?.BriefText,
-                Obsoletion = ObsoletionHelper.CreateObsoletion(enumeration)
+                Obsoletion = ObsoletionHelper.CreateObsoletion(enumeration),
+                Items = enumeration.Items
+                    .Select(x =>
+                        new EnumerationItem
+                        {
+                            Name = x.Name,
+                            Value = ConvertValue(x.Value, enumeration.BuiltinType.Type).ToString(),
+                            Content = x.Comment?.BriefText
+                        })
+                    .ToArray()
             };
-
-            definition.Items = enumeration.Items
-                .Select(x =>
-                    new EnumerationItem
-                    {
-                        Name = x.Name,
-                        Value = ConvertValue(x.Value, enumeration.BuiltinType.Type).ToString(),
-                        Content = x.Comment?.BriefText
-                    })
-                .ToArray();
 
             _context.AddUnit(definition);
         }

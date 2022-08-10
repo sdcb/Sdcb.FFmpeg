@@ -13,4 +13,8 @@
     <PackageReference Include="RCore.ClangMacroParser" Version="0.0.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Sdcb.FFmpeg.NuGetBuilder\Sdcb.FFmpeg.NuGetBuilder.csproj" />
+  </ItemGroup>
+
 </Project>

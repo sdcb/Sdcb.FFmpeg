@@ -20,7 +20,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
 
         public MacroPostProcessor(ASTProcessor astProcessor) => _astProcessor = astProcessor;
 
-        public void Process(IReadOnlyList<MacroDefinition> macros)
+        public void Process(IReadOnlyList<MacroDefinition> macros, IReadOnlyList<EnumerationDefinition> enums)
         {
             _macroExpressionMap = new Dictionary<string, IExpression>(macros.Count);
 

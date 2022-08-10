@@ -5,7 +5,7 @@ namespace Sdcb.FFmpeg.AutoGen.Definitions
 {
     internal record EnumerationDefinition : NamedDefinition, IDefinition
     {
-        public EnumerationItem[] Items { get; set; }
+        public EnumerationItem[] Items { get; init; }
 
         public virtual bool Equals(EnumerationDefinition other) =>
             other is not null

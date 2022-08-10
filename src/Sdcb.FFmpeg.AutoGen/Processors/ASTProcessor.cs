@@ -91,7 +91,10 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             MetricHelper.RecordTime("MacroPostProcess", () =>
             {
                 MacroDefinition[] macros = Units.OfType<MacroDefinition>().ToArray();
-                MacroPostProcessor.Process(macros);
+                EnumerationDefinition[] enums = Units.OfType<EnumerationDefinition>().ToArray();
+                MacroPostProcessor.Process(macros, enums);
+
+                
             });
         }
     }
