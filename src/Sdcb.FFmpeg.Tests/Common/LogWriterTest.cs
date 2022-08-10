@@ -1,6 +1,7 @@
 ﻿using Sdcb.FFmpeg.Common;
 using Xunit;
 using Xunit.Abstractions;
+using static Sdcb.FFmpeg.Raw.ffmpeg;
 
 namespace Sdcb.FFmpeg.Tests.Common
 {
@@ -16,10 +17,11 @@ namespace Sdcb.FFmpeg.Tests.Common
         [Fact]
         public void WriteLog()
         {
-            string lastLog = null;
-            FFmpegLogger.LogWriter = log => lastLog = log;
+            string lastLog = default;
+            LogLevel logLevel = default;
+            FFmpegLogger.LogWriter = (level, log) => (logLevel, lastLog) = (level, log);
             FFmpegLogger.LogError("hello");
-            _console.WriteLine(lastLog);
+            _console.WriteLine($"{logLevel}: {lastLog}");
         }
     }
 }
