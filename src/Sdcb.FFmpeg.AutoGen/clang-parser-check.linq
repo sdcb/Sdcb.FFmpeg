@@ -21,14 +21,21 @@ var data = JsonConvert.DeserializeObject<MacroResult[]>(File.ReadAllText(@"C:\Us
 		MyParsed = Parse(parser, x.Raw),
 		Raw = x.Raw,
 	})
+	.Dump()
 	.ToArray();
 
 Console.WriteLine($"Total={data.Length}, Parsed={data.Count(x => x.MyParsed != null)}");
-data.Dump();
+Parse(parser, "FFERRTAG( 'P','A','W','E')").Dump();
+
 
 FSharpFunc<FParsec.CharStream<Unit>, FParsec.Reply<Expression>> MakeParser()
 {
-	var id = Many1Chars(Choice(Letter, CharP('_')), Choice(Letter, Digit, CharP('_'))).And(WS);
+	HashSet<string> typeLiterals = "int64_t,UINT64_C".Split(',').OrderByDescending(x => x.Length).ToHashSet();
+	FSharpFunc<FParsec.CharStream<Unit>, FParsec.Reply<string>> notReserved(string id) => typeLiterals.Contains(id) ? Zero<string>() : Return(id);
+	var identifier1 = Choice(Letter, CharP('_'));
+	var identifierRest = Choice(Letter, CharP('_'), Digit);
+	var identifier = Purify(Many1Chars(identifier1, identifierRest)).AndTry(notReserved).Lbl("identifier");
+	
 	return new OPPBuilder<Unit, Expression, Unit>()
 		.WithOperators(ops => ops
 			.AddInfix(">", 10, WS, (x, y) => new BinaryExpression(x, new Operator(">"), y))
@@ -40,25 +47,36 @@ FSharpFunc<FParsec.CharStream<Unit>, FParsec.Reply<Expression>> MakeParser()
 			.AddInfix("*", 40, WS, (x, y) => new BinaryExpression(x, new Operator("*"), y))
 			.AddInfix("/", 40, WS, (x, y) => new BinaryExpression(x, new Operator("/"), y))
 			.AddPrefix("-", 40, WS, (x) => new NegativeExpression(x)))
-		.WithTerms(term => PrimitivesCS.Choice(
-			Between('\'', Letter, '\'').And(WS).Map(x => (Expression)new ConstCharExpression(x)), 
-			Between('"', ManyChars(NoneOf("\"")), '"').And(WS).Map(x => (Expression)new ConstStringExpression(x)), 
-			NumberLiteral(NumberLiteralOptions.AllowSuffix, "Number").And(WS).Map(x => (Expression)new ConstNumberExpression(x)),
-			Between(CharP('(').And(WS), term, CharP(')').And(WS)).Map(x => (Expression)new ParentheseExpression(x)), 
-			Between(id.And(CharP('(')).And(WS), term.And(Many(CharP(',').And(term))), CharP(')').And(WS)).Map(x => (Expression)new ParentheseExpression(x)), 
-			//id.And(Between(CharP('(').And(WS), term, CharP(')'))),
-			id.Map(x => (Expression)new IdentifierExpression(x)) 
-		))
+		.WithImplicitOperator(50, (e1, e2) => ImplicitExpression.FromBinary(e1, e2))
+		.WithTerms((FSharpFunc<FParsec.CharStream<Unit>, FParsec.Reply<Expression>> term) =>
+		{
+			var typeSyntax = Choice(typeLiterals.Select(t => StringP(t)).ToArray()).And(WS);
+			var parenthese1 = Between(CharP('(').And(WS), term, CharP(')').And(WS));
+			var parentheseN = Between(CharP('(').And(WS), Many(term, CharP(',').And(WS)), CharP(')').And(WS));
+			return PrimitivesCS.Choice(
+				Try(Between(CharP('(').And(WS), typeSyntax, CharP(')'))).And(term).And(WS).Map((id, val) => (Expression)new TypeConvertExpression(id, val)), 
+				Between('\'', Letter, '\'').And(WS).Map(x => (Expression)new CharLiteralExpression(x)),
+				Between('"', ManyChars(NoneOf("\"")), '"').And(WS).Map(x => (Expression)new StringLiteralExpression(x)),
+				NumberLiteral(NumberLiteralOptions.AllowSuffix | NumberLiteralOptions.AllowHexadecimal | NumberLiteralOptions.DefaultFloat, "Number").And(WS).Map(x => (Expression)new NumberLiteralExpression(x)),
+				parentheseN.Map(x => (Expression)new ParentheseExpression(x.ToArray())),
+				typeSyntax.And(parenthese1).Map((id, val) => (Expression)new TypeConvertExpression(id, val)), 
+				//identifier.And(parentheseN).Map((id, args) => (Expression)new FunctionCallExpression(id, args.ToArray())),
+				identifier.Map(x => (Expression)new IdentifierExpression(x)) 
+			).Label("expression");
+		})
 		.Build()
 		.ExpressionParser;
 }
 
-string Parse(FSharpFunc<FParsec.CharStream<Unit>, FParsec.Reply<Expression>> parser, string expression)
+string Parse(FSharpFunc<FParsec.CharStream<Unit>, FParsec.Reply<Expression>> parser, string raw)
 {
-	return parser.ParseString(expression) switch
+	string inline = raw.Replace("\\\n", "");
+	return parser.ParseString(inline) switch
 	{
-		var x when x.Status == FParsec.ReplyStatus.Ok => x.Result.Serialize(), 
-		_ => null
+		{ Status: FParsec.ReplyStatus.Ok } x => x.Result.Serialize(), 
+		//var x => throw new Exception(string.Join(",", FParsec.ErrorMessageList.ToHashSet(x.Error).Select(x => x.Type.ToString())) + $"\nraw: {inline}"), 
+		var x => string.Join(",", FParsec.ErrorMessageList.ToHashSet(x.Error).Select(x => x.Type.ToString())) + $", raw: {inline}", 
+		//_ => null, 
 	};
 }
 
@@ -70,7 +88,7 @@ abstract record Expression : Token
 {
 }
 
-record ConstNumberExpression(NumberLiteral number) : Expression
+record NumberLiteralExpression(NumberLiteral number) : Expression
 {
 	public override string Serialize()
 	{
@@ -78,7 +96,7 @@ record ConstNumberExpression(NumberLiteral number) : Expression
 	}
 }
 
-record ConstStringExpression(string c) : Expression
+record StringLiteralExpression(string c) : Expression
 {
 	public override string Serialize()
 	{
@@ -86,7 +104,7 @@ record ConstStringExpression(string c) : Expression
 	}
 }
 
-record ConstCharExpression(char c) : Expression
+record CharLiteralExpression(char c) : Expression
 {
 	public override string Serialize()
 	{
@@ -108,7 +126,7 @@ record NegativeExpression(Expression val) : Expression
 }
 
 record IdentifierExpression(string identifier) : Expression
-{
+{	
 	public override string Serialize()
 	{
 		return identifier;
@@ -123,9 +141,36 @@ record BinaryExpression(Expression left, Operator op, Expression right) : Expres
 	}
 }
 
-record ParentheseExpression(Expression content) : Expression
+record ParentheseExpression(Expression[] contents) : Expression
 {
-	public override string Serialize() => $"({content.Serialize()})";
+	public override string Serialize() => $"({string.Join(", ", contents.Select(x => x.Serialize()))})";
+}
+
+static class ImplicitExpression
+{
+	public static Expression FromBinary(Expression left, Expression right)
+	{
+		// UINT64_C(0x8000000000000000)
+		return (left, right) switch
+		{
+			//(IdentifierExpression { IsType: true } id, ParentheseExpression { contents.Length: 1 } parenthese) => new TypeConvertExpression(id.identifier, parenthese.contents[0]),
+			(IdentifierExpression id, ParentheseExpression parenthese) => new FunctionCallExpression(id.identifier, parenthese.contents),
+			//(ParentheseExpression { contents: [IdentifierExpression { IsType: true } id] }, ParentheseExpression { contents: [Expression val] }) => new TypeConvertExpression(id.identifier, val),
+			//(ParentheseExpression { contents: [IdentifierExpression { IsType: true } id] }, Expression val) => new TypeConvertExpression(id.identifier, val),
+			_ => left, 
+			//_ => throw new NotSupportedException($"left {left.GetType().Name}({left.Serialize()}), right: {right.GetType().Name}({left.Serialize()}) is not supported"), 
+		};
+	}
+}
+
+record FunctionCallExpression(string identifier, Expression[] arguments) : Expression
+{
+	public override string Serialize() => $"{identifier}({string.Join(", ", arguments.Select(x => x.Serialize()))})";
+}
+
+record TypeConvertExpression(string destType, Expression value) : Expression
+{
+	public override string Serialize() => $"({destType}){value.Serialize()}";
 }
 
 record MacroResult
