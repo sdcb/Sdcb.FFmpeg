@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="CppSharp" Version="1.0.1" />
+    <PackageReference Include="FParsec.CSharp" Version="12.2.0" />
     <PackageReference Include="RCore.ClangMacroParser" Version="0.0.0.3" />
   </ItemGroup>
 
