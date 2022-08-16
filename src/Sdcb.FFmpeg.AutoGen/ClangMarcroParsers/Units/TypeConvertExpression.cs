@@ -1,7 +1,7 @@
-﻿namespace Sdcb.FFmpeg.AutoGen.ClangMarcroParser.Units
+﻿namespace Sdcb.FFmpeg.AutoGen.ClangMarcroParsers.Units
 {
-    public record TypeConvertExpression(string DestType, Expression Exp) : Expression
+    public record TypeConvertExpression(string DestType, IExpression Exp) : IExpression
     {
-        public override string Serialize() => $"({DestType}){Exp.Serialize()}";
+        public string Serialize() => $"({DestType}){Exp.Serialize()}";
     }
 }

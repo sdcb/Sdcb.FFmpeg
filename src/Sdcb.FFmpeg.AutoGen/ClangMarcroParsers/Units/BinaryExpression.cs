@@ -1,7 +1,9 @@
-﻿namespace Sdcb.FFmpeg.AutoGen.ClangMarcroParser.Units
+﻿namespace Sdcb.FFmpeg.AutoGen.ClangMarcroParsers.Units
 {
-    public record BinaryExpression(Expression Left, Operator Op, Expression Right) : Expression
+    public record BinaryExpression(IExpression Left, string Op, IExpression Right) : IExpression
     {
-        public override string Serialize() => $"{Left.Serialize()} {Op.Serialize()} {Right.Serialize()}";
+        public string Serialize() => $"{Left.Serialize()} {Op} {Right.Serialize()}";
+
+        public bool IsBitwise => Op == "|" || Op == "&";
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 
-namespace Sdcb.FFmpeg.AutoGen.ClangMarcroParser.Units
+namespace Sdcb.FFmpeg.AutoGen.ClangMarcroParsers.Units
 {
-    public record FunctionCallExpression(string FunctionName, Expression[] Arguments) : Expression
+    public record FunctionCallExpression(string FunctionName, IExpression[] Arguments) : IExpression
     {
-        public override string Serialize() => $"{FunctionName}({string.Join(", ", Arguments.Select(x => x.Serialize()))})";
+        public string Serialize() => $"{FunctionName}({string.Join(", ", Arguments.Select(x => x.Serialize()))})";
     }
 }

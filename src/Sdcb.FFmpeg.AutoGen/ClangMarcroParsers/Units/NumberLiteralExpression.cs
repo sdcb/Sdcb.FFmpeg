@@ -1,9 +1,9 @@
 ﻿using static FParsec.CharParsers;
 
-namespace Sdcb.FFmpeg.AutoGen.ClangMarcroParser.Units
+namespace Sdcb.FFmpeg.AutoGen.ClangMarcroParsers.Units
 {
-    public record NumberLiteralExpression(NumberLiteral Number) : Expression
+    public record NumberLiteralExpression(NumberLiteral Number) : IExpression
     {
-        public override string Serialize() => Number.String;
+        public string Serialize() => Number.String;
     }
 }

@@ -1,7 +1,7 @@
-﻿namespace Sdcb.FFmpeg.AutoGen.ClangMarcroParser.Units
+﻿namespace Sdcb.FFmpeg.AutoGen.ClangMarcroParsers.Units
 {
-    public record StringLiteralExpression(string Str) : Expression
+    public record StringLiteralExpression(string Str) : IExpression
     {
-        public override string Serialize() => $"\"{Str}\"";
+        public string Serialize() => $"\"{Str}\"";
     }
 }

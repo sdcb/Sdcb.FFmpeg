@@ -1,7 +1,7 @@
-﻿namespace Sdcb.FFmpeg.AutoGen.ClangMarcroParser.Units
+﻿namespace Sdcb.FFmpeg.AutoGen.ClangMarcroParsers.Units
 {
-    public record ParentheseExpression(Expression Content) : Expression
+    public record ParentheseExpression(IExpression Content) : IExpression
     {
-        public override string Serialize() => $"({Content.Serialize()})";
+        public string Serialize() => $"({Content.Serialize()})";
     }
 }

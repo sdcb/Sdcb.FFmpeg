@@ -93,8 +93,6 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 MacroDefinition[] macros = Units.OfType<MacroDefinition>().ToArray();
                 EnumerationDefinition[] enums = Units.OfType<EnumerationDefinition>().ToArray();
                 MacroPostProcessor.Process(macros, enums);
-
-                
             });
         }
     }

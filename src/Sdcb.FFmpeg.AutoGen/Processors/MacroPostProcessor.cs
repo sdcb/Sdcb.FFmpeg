@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Sdcb.FFmpeg.AutoGen.ClangMarcroParsers;
 using Sdcb.FFmpeg.AutoGen.Definitions;
-using RCore.ClangMacroParser;
-using RCore.ClangMacroParser.Expressions;
+using Sdcb.FFmpeg.AutoGen.ClangMarcroParsers.Units;
 
 namespace Sdcb.FFmpeg.AutoGen.Processors
 {
@@ -22,28 +22,24 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
 
         public void Process(IReadOnlyList<MacroDefinition> macros, IReadOnlyList<EnumerationDefinition> enums)
         {
-            _macroExpressionMap = new Dictionary<string, IExpression>(macros.Count);
-
-            int goodCount = 0, unsupportedFailCount = 0, unknownFailCount = 0;
-            foreach (var x in macros)
-            {
-                try
+            Func<string, IExpression> parser = ClangMacroParser.MakeParser();
+            Stopwatch sw = Stopwatch.StartNew();
+            _macroExpressionMap = macros
+                .ToDictionary(k => k.Name, v =>
                 {
-                    _macroExpressionMap.Add(x.Name, Parser.Parse(x.Expression));
-                    ++goodCount;
-                }
-                catch (NotSupportedException)
-                {
-                    Trace.TraceError($"Cannot parse macro expression: {x.Expression}");
-                    ++unsupportedFailCount;
-                }
-                catch (Exception e)
-                {
-                    Trace.TraceError($"Cannot parse macro expression: {x.Expression}: {e.Message}");
-                    ++unknownFailCount;
-                }
-            }
-            Console.WriteLine($"Parsing macro done, good={goodCount}, unsupported={unsupportedFailCount}, unknown={unknownFailCount}");
+                    try
+                    {
+                        return parser(v.Expression);
+                    }
+                    catch (NotSupportedException e)
+                    {
+                        Console.WriteLine(e.ToString());
+                        return null;
+                    }
+                });
+            int goodCount = _macroExpressionMap.Values.Count(x => x != null);
+            int unsupportedFailCount = _macroExpressionMap.Count - goodCount;
+            Console.WriteLine($"Parsing macro done, good={goodCount}, unsupported={unsupportedFailCount}");
 
             foreach (var macro in macros) Process(macro);
         }
@@ -114,7 +110,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                     TypeOrAlias leftType = DeduceType(left);
                     TypeOrAlias rightType = DeduceType(right);
 
-                    if (e.OperationType.IsBitwise() && leftType.Precedence != rightType.Precedence)
+                    if (e.IsBitwise && leftType.Precedence != rightType.Precedence)
                     {
                         var toType = leftType.Precedence > rightType.Precedence ? rightType : leftType;
                         if (leftType != toType) left = new CastExpression(toType.ToString(), left);
