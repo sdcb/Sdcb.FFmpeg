@@ -61,6 +61,74 @@ namespace Sdcb.FFmpeg.Raw
         Nb = 9,
     }
     
+    /// <summary>@{</summary>
+    public enum AVChannel : int
+    {
+        None = -1,
+        FrontLeft = 0,
+        FrontRight = 1,
+        FrontCenter = 2,
+        LowFrequency = 3,
+        BackLeft = 4,
+        BackRight = 5,
+        FrontLeftOfCenter = 6,
+        FrontRightOfCenter = 7,
+        BackCenter = 8,
+        SideLeft = 9,
+        SideRight = 10,
+        TopCenter = 11,
+        TopFrontLeft = 12,
+        TopFrontCenter = 13,
+        TopFrontRight = 14,
+        TopBackLeft = 15,
+        TopBackCenter = 16,
+        TopBackRight = 17,
+        /// <summary>Stereo downmix.</summary>
+        StereoLeft = 29,
+        /// <summary>See above.</summary>
+        StereoRight = 30,
+        /// <summary>See above.</summary>
+        WideLeft = 31,
+        /// <summary>See above.</summary>
+        WideRight = 32,
+        /// <summary>See above.</summary>
+        SurroundDirectLeft = 33,
+        /// <summary>See above.</summary>
+        SurroundDirectRight = 34,
+        /// <summary>See above.</summary>
+        LowFrequency_2 = 35,
+        /// <summary>See above.</summary>
+        TopSideLeft = 36,
+        /// <summary>See above.</summary>
+        TopSideRight = 37,
+        /// <summary>See above.</summary>
+        BottomFrontCenter = 38,
+        /// <summary>See above.</summary>
+        BottomFrontLeft = 39,
+        /// <summary>See above.</summary>
+        BottomFrontRight = 40,
+        /// <summary>Channel is empty can be safely skipped.</summary>
+        Unused = 512,
+        /// <summary>Channel contains data, but its position is unknown.</summary>
+        Unknown = 768,
+        /// <summary>Range of channels between AV_CHAN_AMBISONIC_BASE and AV_CHAN_AMBISONIC_END represent Ambisonic components using the ACN system.</summary>
+        AmbisonicBase = 1024,
+        /// <summary>Range of channels between AV_CHAN_AMBISONIC_BASE and AV_CHAN_AMBISONIC_END represent Ambisonic components using the ACN system.</summary>
+        AmbisonicEnd = 2047,
+    }
+    
+    public enum AVChannelOrder : int
+    {
+        /// <summary>Only the channel count is specified, without any further information about the channel order.</summary>
+        Unspec = 0,
+        /// <summary>The native channel order, i.e. the channels are in the same order in which they are defined in the AVChannel enum. This supports up to 63 different channels.</summary>
+        Native = 1,
+        /// <summary>The channel order does not correspond to any other predefined order and is stored as an explicit map. For example, this could be used to support layouts with 64 or more channels, or with empty/skipped (AV_CHAN_SILENCE) channels at arbitrary positions.</summary>
+        Custom = 2,
+        /// <summary>The audio is represented as the decomposition of the sound field into spherical harmonics. Each channel corresponds to a single expansion component. Channels are ordered according to ACN (Ambisonic Channel Number).</summary>
+        Ambisonic = 3,
+    }
+    
     /// <summary>Location of chroma samples.</summary>
     public enum AVChromaLocation : int
     {
@@ -363,6 +431,10 @@ namespace Sdcb.FFmpeg.Raw
         SimbiosisImx = 255,
         SgaVideo = 256,
         Gem = 257,
+        Vbn = 258,
+        Jpegxl = 259,
+        Qoi = 260,
+        Phm = 261,
         /// <summary>A dummy id pointing at the start of audio codecs</summary>
         FirstAudio = 65536,
         PcmS16le = 65536,
@@ -562,6 +634,7 @@ namespace Sdcb.FFmpeg.Raw
         Hca = 86109,
         Fastaudio = 86110,
         Msnsiren = 86111,
+        Dfpwm = 86112,
         /// <summary>A dummy ID pointing at the start of subtitle codecs.</summary>
         FirstSubtitle = 94208,
         DvdSubtitle = 94208,
@@ -873,6 +946,8 @@ namespace Sdcb.FFmpeg.Raw
         DoviRpuBuffer = 23,
         /// <summary>Parsed Dolby Vision metadata, suitable for passing to a software implementation. The payload is the AVDOVIMetadata struct defined in libavutil/dovi_meta.h.</summary>
         DoviMetadata = 24,
+        /// <summary>HDR Vivid dynamic metadata associated with a video frame. The payload is an AVDynamicHDRVivid type and contains information for color volume transform - CUVA 005.1-2021.</summary>
+        DynamicHdrVivid = 25,
     }
     
     /// <summary>Option for overlapping elliptical pixel selectors in an image.</summary>
@@ -991,6 +1066,7 @@ namespace Sdcb.FFmpeg.Raw
         Color = 16,
         ChannelLayout = 17,
         Bool = 18,
+        Chlayout = 19,
     }
     
     /// <summary>Types and functions for working with AVPacket. @{</summary>
@@ -1509,7 +1585,7 @@ namespace Sdcb.FFmpeg.Raw
         P410le = 201,
         /// <summary>interleaved chroma YUV 4:2:2, 32bpp, big-endian</summary>
         P216be = 202,
-        /// <summary>interleaved chroma YUV 4:2:2, 32bpp, liddle-endian</summary>
+        /// <summary>interleaved chroma YUV 4:2:2, 32bpp, little-endian</summary>
         P216le = 203,
         /// <summary>interleaved chroma YUV 4:4:4, 48bpp, big-endian</summary>
         P416be = 204,
