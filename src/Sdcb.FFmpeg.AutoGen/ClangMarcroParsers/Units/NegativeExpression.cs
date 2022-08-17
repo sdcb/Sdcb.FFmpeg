@@ -1,7 +1,7 @@
 ﻿namespace Sdcb.FFmpeg.AutoGen.ClangMarcroParsers.Units
 {
-    public record NegativeExpression(IExpression val) : IExpression
+    public record NegativeExpression(IExpression Val) : IExpression
     {
-        public string Serialize() => $"-{val.Serialize()}";
+        public string Serialize() => $"-{Val.Serialize()}";
     }
 }

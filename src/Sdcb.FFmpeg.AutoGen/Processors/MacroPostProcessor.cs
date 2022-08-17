@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Sdcb.FFmpeg.AutoGen.ClangMarcroParsers;
 using Sdcb.FFmpeg.AutoGen.Definitions;
 using Sdcb.FFmpeg.AutoGen.ClangMarcroParsers.Units;
+using static FParsec.CharParsers;
 
 namespace Sdcb.FFmpeg.AutoGen.Processors
 {
@@ -17,11 +17,19 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
 
         private readonly ASTProcessor _astProcessor;
         private Dictionary<string, IExpression> _macroExpressionMap;
+        private Dictionary<string, string> _enums;
 
         public MacroPostProcessor(ASTProcessor astProcessor) => _astProcessor = astProcessor;
 
         public void Process(IReadOnlyList<MacroDefinition> macros, IReadOnlyList<EnumerationDefinition> enums)
         {
+            _enums = enums
+                .SelectMany(x => x.Items.Select(i => new
+                {
+                    Name = i.Name, 
+                    Type = x.TypeName, 
+                }))
+                .ToDictionary(k => k.Name, v => v.Type);
             Func<string, IExpression> parser = ClangMacroParser.MakeParser();
             Stopwatch sw = Stopwatch.StartNew();
             _macroExpressionMap = macros
@@ -50,16 +58,16 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
 
             if (!_macroExpressionMap.TryGetValue(macro.Name, out var expression) || expression == null) return;
 
-            var typeOrAlias = DeduceType(expression);
+            var typeOrAlias = DeduceTypeOne(expression, _macroExpressionMap, _enums, _astProcessor.WellKnownMacros);
             if (typeOrAlias == null) return;
 
-            IExpression rewritedExpression = Rewrite(expression);
+            //IExpression rewritedExpression = Rewrite(expression);
 
             macro.TypeName = typeOrAlias.ToString();
             macro.Content = $"{macro.Name} = {macro.Expression}";
-            macro.Expression = Serialize(rewritedExpression);
-            macro.IsConst = IsConst(rewritedExpression);
-            macro.IsValid = !typeOrAlias.IsAlias || _astProcessor.TypeAliases.ContainsKey(typeOrAlias.Alias);
+            macro.Expression = expression.Serialize();
+            macro.IsConst = IsConst(expression);
+            macro.IsValid = TypeHelper.IsKnownType(typeOrAlias);
         }
 
         private static string CleanUp(string expression)
@@ -69,113 +77,107 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             return trimmed;
         }
 
-        private TypeOrAlias DeduceType(IExpression expression)
+        private static string DeduceTypeOne(IExpression expression, Dictionary<string, IExpression> macroExpressionMap, Dictionary<string, string> enumTypeMapping, Dictionary<string, string> wellKnownMacroMapping)
         {
-            return expression switch
+            return DeduceType(expression);
+
+            string DeduceType(IExpression expression) => expression switch
             {
-                BinaryExpression e => DeduceType(e),
-                UnaryExpression e => DeduceType(e.Operand),
-                CastExpression e => GetTypeAlias(e.TargetType),
-                CallExpression e => GetWellKnownMaroType(e.Name),
-                VariableExpression e => DeduceType(e),
-                ConstantExpression e => e.Value.GetType(),
+                BinaryExpression e => e switch
+                {
+                    { Op: ">" or "<" or "==" or "!=" or "&&" or "||" } => "bool",
+                    _ => (DeduceType(e.Left), DeduceType(e.Right)) switch
+                    {
+                        (string left, string right) => TypeHelper.CalculatePrecedence(left) < TypeHelper.CalculatePrecedence(left) ? left : right,
+                    }
+                },
+                CharLiteralExpression => "char",
+                FunctionCallExpression func => throw new NotImplementedException(),
+                IdentifierExpression id => DeduceTypeForId(id),
+                NegativeExpression e => DeduceType(e.Val),
+#pragma warning disable CS8509 // switch 表达式不会处理属于其输入类型的所有可能值(它并非详尽无遗)。
+                NumberLiteralExpression e => e.Number switch
+                {
+                    { Info: NumberLiteralResultFlags.IsDecimal | NumberLiteralResultFlags.HasIntegerPart } x => "int",
+                    { Info: NumberLiteralResultFlags.IsDecimal | NumberLiteralResultFlags.HasIntegerPart | NumberLiteralResultFlags.HasMinusSign } x => "int",
+                    { Info: NumberLiteralResultFlags.HasIntegerPart | NumberLiteralResultFlags.IsHexadecimal } x => "int",
+                    { Info: NumberLiteralResultFlags.IsDecimal | NumberLiteralResultFlags.HasIntegerPart | NumberLiteralResultFlags.HasFraction } x => "double",
+                    { Info: NumberLiteralResultFlags.IsDecimal | NumberLiteralResultFlags.HasIntegerPart | NumberLiteralResultFlags.HasFraction | NumberLiteralResultFlags.HasExponent } x => "double",
+                    { SuffixChar1: 'f' } x => "float",
+                    { SuffixLength: 1, SuffixChar1: 'L' } x => "int",
+                    { SuffixLength: 2, SuffixChar1: 'L', SuffixChar2: 'L' } x => "long",
+                    { SuffixLength: 3, SuffixChar1: 'U', SuffixChar2: 'L', SuffixChar3: 'L' } x => "ulong",
+                },
+#pragma warning restore CS8509
+                ParentheseExpression p => DeduceType(p.Content),
+                StringConcatExpression => "string",
+                StringLiteralExpression => "string",
+                TypeConvertExpression tc => tc.DestType,
                 _ => throw new NotSupportedException()
             };
-        }
 
-        private TypeOrAlias DeduceType(BinaryExpression expression)
-        {
-            var operationType = expression.OperationType;
-            if (operationType.IsConditional() || operationType.IsComparison()) return typeof(bool);
-
-            var leftType = DeduceType(expression.Left);
-            var rightType = DeduceType(expression.Right);
-            return leftType.Precedence > rightType.Precedence ? rightType : leftType;
-        }
-
-
-        private TypeOrAlias DeduceType(VariableExpression expression) =>
-            _macroExpressionMap.TryGetValue(expression.Name, out var nested) && nested != null
-                ? DeduceType(nested)
-                : GetWellKnownMaroType(expression.Name);
-
-        private IExpression Rewrite(IExpression expression)
-        {
-            switch (expression)
+            string DeduceTypeForId(IdentifierExpression expression)
             {
-                case BinaryExpression e:
+                if (macroExpressionMap.TryGetValue(expression.Name, out IExpression nested) && nested != null)
                 {
-                    IExpression left = Rewrite(e.Left);
-                    IExpression right = Rewrite(e.Right);
-                    TypeOrAlias leftType = DeduceType(left);
-                    TypeOrAlias rightType = DeduceType(right);
-
-                    if (e.IsBitwise && leftType.Precedence != rightType.Precedence)
-                    {
-                        var toType = leftType.Precedence > rightType.Precedence ? rightType : leftType;
-                        if (leftType != toType) left = new CastExpression(toType.ToString(), left);
-                        if (rightType != toType) right = new CastExpression(toType.ToString(), right);
-                    }
-
-                    return new BinaryExpression(left, e.OperationType, right);
+                    return DeduceType(nested);
                 }
-                case UnaryExpression e: return new UnaryExpression(e.OperationType, Rewrite(e.Operand));
-                case CastExpression e: return new CastExpression(e.TargetType, Rewrite(e.Operand));
-                case CallExpression e: return new CallExpression(e.Name, e.Arguments.Select(Rewrite));
-                case VariableExpression e: return e;
-                case ConstantExpression e: return e;
-                default: return expression;
+
+                if (enumTypeMapping.TryGetValue(expression.Name, out string val))
+                {
+                    return val;
+                }
+
+                return wellKnownMacroMapping.TryGetValue(expression.Name, out string alias) ? alias : null;
             }
         }
+        
 
-        private string Serialize(IExpression expression)
-        {
-            return expression switch
-            {
-                BinaryExpression e =>
-                    $"{Serialize(e.Left)} {e.OperationType.ToOperationTypeString()} {Serialize(e.Right)}",
-                UnaryExpression e => $"{e.OperationType.ToOperationTypeString()}{Serialize(e.Operand)}",
-                CastExpression e => $"({GetTypeAlias(e.TargetType)})({Serialize(e.Operand)})",
-                CallExpression e => $"{e.Name}({string.Join(", ", e.Arguments.Select(Serialize))})",
-                VariableExpression e => e.Name,
-                ConstantExpression e => Serialize(e.Value),
-                _ => throw new NotSupportedException()
-            };
-        }
+        //private IExpression Rewrite(IExpression expression)
+        //{
+        //    switch (expression)
+        //    {
+        //        case BinaryExpression e:
+        //        {
+        //            IExpression left = Rewrite(e.Left);
+        //            IExpression right = Rewrite(e.Right);
+        //            TypeOrAlias leftType = DeduceType(left);
+        //            TypeOrAlias rightType = DeduceType(right);
 
-        private string Serialize(object value)
-        {
-            if (value is double d) return string.Format(CultureInfo.InvariantCulture, "{0}D", d);
-            if (value is float f) return string.Format(CultureInfo.InvariantCulture, "{0}F", f);
-            if (value is char c) return $"\'{c}\'";
-            if (value is string s) return $"\"{s}\"";
-            if (value is long l) return string.Format(CultureInfo.InvariantCulture, "0x{0:x}L", l);
-            if (value is ulong ul) return string.Format(CultureInfo.InvariantCulture, "0x{0:x}UL", ul);
-            if (value is int i) return string.Format(CultureInfo.InvariantCulture, "0x{0:x}", i);
-            if (value is uint ui) return string.Format(CultureInfo.InvariantCulture, "0x{0:x}U", ui);
-            if (value is bool b) return b ? "true" : "false";
-            throw new NotSupportedException();
-        }
+        //            if (e.IsBitwise && leftType.Precedence != rightType.Precedence)
+        //            {
+        //                var toType = leftType.Precedence > rightType.Precedence ? rightType : leftType;
+        //                if (leftType != toType) left = new CastExpression(toType.ToString(), left);
+        //                if (rightType != toType) right = new CastExpression(toType.ToString(), right);
+        //            }
+
+        //            return new BinaryExpression(left, e.OperationType, right);
+        //        }
+        //        case UnaryExpression e: return new UnaryExpression(e.OperationType, Rewrite(e.Operand));
+        //        case CastExpression e: return new CastExpression(e.TargetType, Rewrite(e.Operand));
+        //        case CallExpression e: return new CallExpression(e.Name, e.Arguments.Select(Rewrite));
+        //        case VariableExpression e: return e;
+        //        case ConstantExpression e: return e;
+        //        default: return expression;
+        //    }
+        //}
 
         private bool IsConst(IExpression expression)
         {
             return expression switch
             {
-                BinaryExpression e => IsConst(e.Left) && IsConst(e.Right),
-                UnaryExpression e => IsConst(e.Operand),
-                CastExpression e => IsConst(e.Operand),
-                CallExpression e => false,
-                VariableExpression e => _macroExpressionMap.TryGetValue(e.Name, out var nested) && nested != null &&
-                                        IsConst(nested),
-                ConstantExpression e => true,
+                BinaryExpression e => IsConst(e.Left) && IsConst(e.Right), 
+                CharLiteralExpression => true,
+                FunctionCallExpression func => throw new NotImplementedException(),
+                IdentifierExpression id => _macroExpressionMap.TryGetValue(id.Name, out var nested) && nested != null && IsConst(nested),
+                NegativeExpression e => IsConst(e.Val),
+                NumberLiteralExpression => true, 
+                ParentheseExpression p => IsConst(p.Content),
+                StringConcatExpression p => IsConst(p.Exp),
+                StringLiteralExpression => true,
+                TypeConvertExpression => false,
                 _ => throw new NotSupportedException()
             };
         }
-
-        private TypeOrAlias GetWellKnownMaroType(string macroName) =>
-            _astProcessor.WellKnownMacros.TryGetValue(macroName, out var alias) ? alias : null;
-
-        private TypeOrAlias GetTypeAlias(string typeName) =>
-            _astProcessor.TypeAliases.TryGetValue(typeName, out var alias) ? alias : typeName;
     }
 }

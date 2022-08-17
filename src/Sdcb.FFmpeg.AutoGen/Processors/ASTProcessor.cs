@@ -16,8 +16,8 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
         {
             _units = new List<IDefinition>();
             IgnoreUnitNames = new HashSet<string>();
-            TypeAliases = new Dictionary<string, TypeOrAlias>();
-            WellKnownMacros = new Dictionary<string, TypeOrAlias>();
+            TypeAliases = new Dictionary<string, string>();
+            WellKnownMacros = new Dictionary<string, string>();
             FunctionProcessor = new FunctionProcessor(this);
             StructureProcessor = new StructureProcessor(this);
             EnumerationProcessor = new EnumerationProcessor(this);
@@ -26,8 +26,8 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
         }
 
         public HashSet<string> IgnoreUnitNames { get; }
-        public Dictionary<string, TypeOrAlias> TypeAliases { get; }
-        public Dictionary<string, TypeOrAlias> WellKnownMacros { get; }
+        public Dictionary<string, string> TypeAliases { get; }
+        public Dictionary<string, string> WellKnownMacros { get; }
         public MacroProcessor MacroProcessor { get; }
         public EnumerationProcessor EnumerationProcessor { get; }
         public StructureProcessor StructureProcessor { get; }

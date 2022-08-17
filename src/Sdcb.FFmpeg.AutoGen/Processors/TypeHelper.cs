@@ -65,5 +65,39 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 _ => throw new ArgumentOutOfRangeException(nameof(type))
             };
         }
+
+        public static int CalculatePrecedence(string type)
+        {
+            return type switch
+            {
+                "bool" => 0,
+                "double" => 1,
+                "float" => 2,
+                "ulong" => 3,
+                "long" => 4,
+                "uint" => 5,
+                "int" => 6,
+                "char" => 7,
+                "string" => 8,
+                _ => int.MaxValue,
+            };
+        }
+
+        public static bool IsKnownType(string type)
+        {
+            return type switch
+            {
+                "bool" => true,
+                "double" => true,
+                "float" => true,
+                "ulong" => true,
+                "long" => true,
+                "uint" => true,
+                "int" => true,
+                "char" => true,
+                "string" => true,
+                _ => false,
+            };
+        }
     }
 }
