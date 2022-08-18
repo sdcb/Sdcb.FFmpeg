@@ -74,11 +74,11 @@ namespace Sdcb.FFmpeg.Raw
         /// <summary>AV_CODEC_EXPORT_DATA_VIDEO_ENC_PARAMS = (1 &lt;&lt; 2)</summary>
         public const int AV_CODEC_EXPORT_DATA_VIDEO_ENC_PARAMS = (1 << 2);
         /// <summary>AV_CODEC_ID_H265 = AV_CODEC_ID_HEVC</summary>
-        public static readonly int AV_CODEC_ID_H265 = AV_CODEC_ID_HEVC;
+        public static readonly int AV_CODEC_ID_H265 = AVCodecID.AV_CODEC_ID_HEVC;
         /// <summary>AV_CODEC_ID_H266 = AV_CODEC_ID_VVC</summary>
-        public static readonly int AV_CODEC_ID_H266 = AV_CODEC_ID_VVC;
+        public static readonly int AV_CODEC_ID_H266 = AVCodecID.AV_CODEC_ID_VVC;
         /// <summary>AV_CODEC_ID_IFF_BYTERUN1 = AV_CODEC_ID_IFF_ILBM</summary>
-        public static readonly int AV_CODEC_ID_IFF_BYTERUN1 = AV_CODEC_ID_IFF_ILBM;
+        public static readonly int AV_CODEC_ID_IFF_BYTERUN1 = AVCodecID.AV_CODEC_ID_IFF_ILBM;
         /// <summary>AV_CODEC_PROP_BITMAP_SUB = (1 &lt;&lt; 16)</summary>
         public const int AV_CODEC_PROP_BITMAP_SUB = (1 << 16);
         /// <summary>AV_CODEC_PROP_INTRA_ONLY = (1 &lt;&lt; 0)</summary>
@@ -304,7 +304,7 @@ namespace Sdcb.FFmpeg.Raw
         // public static AV_PIX_FMT_YUVA444P16 = AV_PIX_FMT_NE(YUVA444P16BE, YUVA444P16LE);
         // public static AV_PIX_FMT_YUVA444P9 = AV_PIX_FMT_NE(YUVA444P9BE , YUVA444P9LE);
         /// <summary>AV_PKT_DATA_QUALITY_FACTOR = AV_PKT_DATA_QUALITY_STATS</summary>
-        public static readonly int AV_PKT_DATA_QUALITY_FACTOR = AV_PKT_DATA_QUALITY_STATS;
+        public static readonly int AV_PKT_DATA_QUALITY_FACTOR = AVPacketSideDataType.AV_PKT_DATA_QUALITY_STATS;
         // public static av_popcount = av_popcount_c;
         // public static av_popcount64 = av_popcount64_c;
         // public static AV_PRAGMA = (s) _Pragma(#s);

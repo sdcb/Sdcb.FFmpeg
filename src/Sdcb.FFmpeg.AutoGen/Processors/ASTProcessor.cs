@@ -22,7 +22,6 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             StructureProcessor = new StructureProcessor(this);
             EnumerationProcessor = new EnumerationProcessor(this);
             MacroProcessor = new MacroProcessor(this);
-            MacroPostProcessor = new MacroPostProcessor(this);
         }
 
         public HashSet<string> IgnoreUnitNames { get; }
@@ -32,7 +31,6 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
         public EnumerationProcessor EnumerationProcessor { get; }
         public StructureProcessor StructureProcessor { get; }
         public FunctionProcessor FunctionProcessor { get; }
-        public MacroPostProcessor MacroPostProcessor { get; }
 
         public Dictionary<string, FunctionExport> FunctionExportMap { get; init; }
         public IReadOnlyList<IDefinition> Units => _units;
@@ -92,7 +90,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             {
                 MacroDefinition[] macros = Units.OfType<MacroDefinition>().ToArray();
                 EnumerationDefinition[] enums = Units.OfType<EnumerationDefinition>().ToArray();
-                MacroPostProcessor.Process(macros, enums);
+                MacroPostProcessor.Process(macros, enums, WellKnownMacros);
             });
         }
     }
