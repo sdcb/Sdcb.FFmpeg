@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
@@ -30,7 +31,8 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
         {
             name = string.IsNullOrEmpty(enumeration.Name) ? name : enumeration.Name;
             if (_context.IsKnownUnitName(name)) return;
-            
+
+            string commonPrefix = StringExtensions.CommonPrefixOf(enumeration.Items.Select(x => x.Name));
             var definition = new EnumerationDefinition
             {
                 Name = name,
@@ -41,7 +43,8 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                     .Select(x =>
                         new EnumerationItem
                         {
-                            Name = x.Name,
+                            Name = StringExtensions.EnumNameTransform(x.Name[commonPrefix.Length..]),
+                            RawName = x.Name, 
                             Value = ConvertValue(x.Value, enumeration.BuiltinType.Type).ToString(),
                             Content = x.Comment?.BriefText
                         })

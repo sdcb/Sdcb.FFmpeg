@@ -43,7 +43,7 @@ namespace Sdcb.FFmpeg.AutoGen
 
             Dictionary<string, string> macroShortcutMapping = macros
                 .OrderByDescending(k => k.Name.Length)
-                .ToDictionary(k => k.Name, v => EnumNameTransform(v.Name[enumDef.Prefix.Length..]));
+                .ToDictionary(k => k.Name, v => StringExtensions.EnumNameTransform(v.Name[enumDef.Prefix.Length..]));
 
             WriteLine($"/// <summary>Macro enum, prefix: {enumDef.Prefix}</summary>");
             if (enumDef.IsFlags) WriteLine($"[Flags]");
@@ -93,15 +93,6 @@ namespace Sdcb.FFmpeg.AutoGen
             }
         }
 
-        private static readonly HashSet<string> _csharpKeywords = ("abstract,as,base,bool,break,byte,case," +
-                    "catch,char,checked,class,const,continue,decimal,default,delegate,do," +
-                    "double,else,enum,event,explicit,extern,false,finally,fixed,float,for," +
-                    "foreach,goto,if,implicit,in,int,interface,internal,is,lock,long,namespace," +
-                    "new,null,object,operator,out,override,params,private,protected,public," +
-                    "readonly,ref,return,sbyte,sealed,short,sizeof,stackalloc,static,string," +
-                    "struct,switch,this,throw,true,try,typeof,uint,ulong,unchecked,unsafe," +
-                    "ushort,using,virtual,void,volatile,while").Split(',').ToHashSet();
-
         public void WriteEnumeration(EnumerationDefinition enumeration)
         {
             WriteSummary(enumeration);
@@ -110,56 +101,13 @@ namespace Sdcb.FFmpeg.AutoGen
 
             using (BeginBlock())
             {
-                string commonPrefix = CommonPrefixOf(enumeration.Items.Select(i => i.Name));
-
                 foreach (var item in enumeration.Items)
                 {
                     WriteSummary(item);
-                    string key = EnumNameTransform(item.Name.Substring(commonPrefix.Length));
-                    WriteLine($"{key} = {item.Value},");
+                    WriteLine($"{item.Name} = {item.Value},");
                 }
             }
-        }
-
-        private static string EnumNameTransform(string name) => CSharpKeywordTransform(string.Concat(name
-            .Split('_')
-            .Select(x => x switch
-            {
-                var _ when char.IsDigit(x[0]) => $"_{x}",
-                _ => char.ToUpper(x[0]) + x[1..].ToLower(),
-            })));
-
-        private static bool IsCSharpKeyword(string key) => _csharpKeywords.Contains(key);
-
-        private static string CSharpKeywordTransform(string syntax) => syntax switch
-        {
-            _ when IsCSharpKeyword(syntax) => "@" + syntax,
-            _ => syntax
-        };
-
-        public static string CommonPrefixOf(IEnumerable<string> strings)
-        {
-            string commonPrefix = strings.FirstOrDefault() ?? "";
-
-            foreach (var s in strings)
-            {
-                var potentialMatchLength = Math.Min(s.Length, commonPrefix.Length);
-
-                if (potentialMatchLength < commonPrefix.Length)
-                    commonPrefix = commonPrefix.Substring(0, potentialMatchLength);
-
-                for (var i = 0; i < potentialMatchLength; i++)
-                {
-                    if (s[i] != commonPrefix[i])
-                    {
-                        commonPrefix = commonPrefix.Substring(0, i);
-                        break;
-                    }
-                }
-            }
-
-            return commonPrefix;
-        }
+        }        
 
         public void WriteStructure(StructureDefinition structure)
         {
@@ -175,7 +123,7 @@ namespace Sdcb.FFmpeg.AutoGen
                     WriteSummary(field);
                     WriteObsoletion(field);
                     if (structure.IsUnion) WriteLine("[FieldOffset(0)]");
-                    WriteLine($"public {field.FieldType.Name} {CSharpKeywordTransform(field.Name)};");
+                    WriteLine($"public {field.FieldType.Name} {StringExtensions.CSharpKeywordTransform(field.Name)};");
                 }
         }
 
@@ -493,7 +441,7 @@ namespace Sdcb.FFmpeg.AutoGen
                     var sb = new StringBuilder();
                     if (withAttributes && x.Type.Attributes.Any()) sb.Append($"{string.Join("", x.Type.Attributes)} ");
                     if (x.Type.ByReference) sb.Append("ref ");
-                    sb.Append($"{x.Type.Name} {CSharpKeywordTransform(x.Name)}");
+                    sb.Append($"{x.Type.Name} {StringExtensions.CSharpKeywordTransform(x.Name)}");
                     return sb.ToString();
                 }));
         }

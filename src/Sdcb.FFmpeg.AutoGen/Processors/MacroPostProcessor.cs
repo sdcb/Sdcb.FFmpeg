@@ -31,7 +31,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                     }
                     catch (NotSupportedException e)
                     {
-                        Console.WriteLine(e.ToString());
+                        //Console.WriteLine(e.ToString());
                         return null;
                     }
                 });
@@ -44,7 +44,6 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             var typeDeductor = MakeDeduceType(macroExpressionMap, enums, wellKnownMacros);
             foreach (MacroDefinition macro in macros)
             {
-                Console.WriteLine(macro.Name);
                 macro.Expression = CleanUp(macro.Expression);
 
                 if (!macroExpressionMap.TryGetValue(macro.Name, out var expression) || expression == null) continue;
@@ -60,7 +59,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 macro.IsConst = isConst(rewritedExpression);
                 macro.IsValid = TypeHelper.IsKnownType(type);
             }
-            Console.WriteLine($"Macro postprocess done, elapsed={sw.ElapsedMilliseconds}ms");
+            Console.WriteLine($"Macro postprocess done, elapsed={sw.ElapsedMilliseconds}ms, total/valid={macros.Count}/{macros.Count(x => x.IsValid)}");
         }
 
         static string CleanUp(string expression)
@@ -73,7 +72,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
         static Func<IExpression, string?> MakeDeduceType(Dictionary<string, IExpression?> macroExpressionMap, IReadOnlyList<EnumerationDefinition> enums, Dictionary<string, string> wellKnownMacroMapping)
         {
             Dictionary<string, string> enumTypeMapping = enums
-                .SelectMany(k => k.Items.Select(v => new { Key = v.Name, Value = k.TypeName }))
+                .SelectMany(k => k.Items.Select(v => new { Key = v.RawName, Value = k.TypeName }))
                 .ToDictionary(k => k.Key, v => v.Value);
             return DeduceType;
 
@@ -88,8 +87,12 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                     }
                 },
                 CharLiteralExpression => "char",
-                FunctionCallExpression func => null,
-                //FunctionCallExpression func => throw new NotImplementedException(),
+                FunctionCallExpression func => func.FunctionName switch
+                {
+                    "AV_VERSION" => "string",
+                    "AV_CHANNEL_LAYOUT_MASK" => "AVChannelLayout", 
+                    _ => null, 
+                }, 
                 IdentifierExpression id => DeduceTypeForId(id),
                 NegativeExpression e => DeduceType(e.Val) switch
                 {
@@ -114,7 +117,6 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 StringConcatExpression => "string",
                 StringLiteralExpression => "string",
                 TypeConvertExpression tc => tc.DestType,
-                _ => throw new NotSupportedException()
             };
 
             string? DeduceTypeForId(IdentifierExpression expression)
@@ -135,18 +137,30 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
 
         static Func<IExpression, IExpression> MakeRewriter(Dictionary<string, IExpression?> macros, IReadOnlyList<EnumerationDefinition> enums)
         {
-            Dictionary<string, EnumerationDefinition> enumMapping = enums
-                .SelectMany(x => x.Items.Select(v => new { Key = v.Name, Enum = x }))
-                .ToDictionary(k => k.Key, v => v.Enum);
+            Dictionary<string, (EnumerationDefinition Enum, EnumerationItem Item)> enumMapping = enums
+                .SelectMany(x => x.Items.Select(v => new { Key = v.RawName, Enum = x, Item = v }))
+                .ToDictionary(k => k.Key, v => (v.Enum, v.Item));
 
-            return (IExpression src) => src switch
+            return Rewrite;
+
+            IExpression Rewrite(IExpression src) => src switch
             {
+                BinaryExpression e => new BinaryExpression(Rewrite(e.Left), e.Op, Rewrite(e.Right)),
+                FunctionCallExpression func => func.FunctionName switch
+                {
+                    "AV_STRINGIFY" => IExpression.MakeStringLiteral(func.Arguments.OfType<IdentifierExpression>().Single().Name), 
+                    _ => new FunctionCallExpression(func.FunctionName, func.Arguments.Select(Rewrite).ToArray()),
+                },
                 IdentifierExpression id => id switch
                 {
                     var _ when macros.TryGetValue(id.Name, out IExpression? value) && value != null => id,
-                    var _ when enumMapping.TryGetValue(id.Name, out EnumerationDefinition? @enum) && @enum != null => new IdentifierExpression($"{@enum.Name}.{id.Name}"),
-                    var x => x, 
-                }, 
+                    var _ when enumMapping.TryGetValue(id.Name, out (EnumerationDefinition Enum, EnumerationItem Item) v) => IExpression.MakeTypeConvert(v.Enum.TypeName, IExpression.MakeIdentifier($"{v.Enum.Name}.{v.Item.Name}")),
+                    var x => x,
+                },
+                NegativeExpression e => new NegativeExpression(Rewrite(e.Val)),
+                ParentheseExpression p => Rewrite(p.Content),
+                StringConcatExpression e => new StringConcatExpression(e.Str, Rewrite(e.Exp)),
+                TypeConvertExpression tc => new TypeConvertExpression(tc.DestType, Rewrite(tc.Exp)),
                 var x => x, 
             };
         }
