@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+#pragma warning disable CS8509 // switch 表达式不会处理属于其输入类型的所有可能值(它并非详尽无遗)。
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,8 +13,8 @@ namespace Sdcb.FFmpeg.AutoGen
             .Split('_')
             .Select(x => x switch
             {
-                var _ when char.IsDigit(x[0]) => $"_{x}",
-                _ => char.ToUpper(x[0]) + x[1..].ToLower(),
+                [var c, ..] when char.IsDigit(c) => $"_{x}",
+                [var c, .. var rest] => char.ToUpper(c) + rest.ToLowerInvariant(),
             })));
 
         public static string CSharpKeywordTransform(string syntax) => syntax switch
