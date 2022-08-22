@@ -4,7 +4,7 @@ namespace Sdcb.FFmpeg.AutoGen.Definitions
     {
         public string Name { get; init; }
         public TypeDefinition FieldType { get; init; }
-        public string Content { get; init; }
+        public string XmlDocument { get; init; }
         public Obsoletion Obsoletion { get; init; }
     }
 }

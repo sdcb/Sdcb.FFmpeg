@@ -3,40 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
 using Sdcb.FFmpeg.AutoGen.Definitions;
-using MacroDefinition = Sdcb.FFmpeg.AutoGen.Definitions.MacroDefinition;
+using MacroDefinition = CppSharp.AST.MacroDefinition;
 
 namespace Sdcb.FFmpeg.AutoGen.Processors
 {
     internal class ASTProcessor
     {
-        private readonly List<IDefinition> _units;
-
         public ASTProcessor()
         {
-            _units = new List<IDefinition>();
             IgnoreUnitNames = new HashSet<string>();
-            TypeAliases = new Dictionary<string, string>();
             WellKnownMacros = new Dictionary<string, string>();
             FunctionProcessor = new FunctionProcessor(this);
             StructureProcessor = new StructureProcessor(this);
             EnumerationProcessor = new EnumerationProcessor(this);
-            MacroProcessor = new MacroProcessor(this);
         }
 
         public HashSet<string> IgnoreUnitNames { get; }
-        public Dictionary<string, string> TypeAliases { get; }
+        public Dictionary<string, string> TypeAliasMap { get; } = new Dictionary<string, string>
+        {
+            ["int64_t"] = "long",
+            ["UINT64_C"] = "ulong", 
+        };
+
         public Dictionary<string, string> WellKnownMacros { get; }
-        public MacroProcessor MacroProcessor { get; }
         public EnumerationProcessor EnumerationProcessor { get; }
         public StructureProcessor StructureProcessor { get; }
         public FunctionProcessor FunctionProcessor { get; }
 
         public Dictionary<string, FunctionExport> FunctionExportMap { get; init; }
-        public IReadOnlyList<IDefinition> Units => _units;
+
+        public List<IDefinition> Units { get; init; } = new ();
 
         public bool IsKnownUnitName(string name)
         {
-            return _units.Any(x => x.Name == name);
+            return Units.Any(x => x.Name == name);
         }
 
         public void AddUnit(IDefinition definition)
@@ -47,38 +47,51 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             {
                 // for
                 case FunctionDefinitionBase df:
-                {
-                    // check for existing functions with same parameters
-                    // we care about the parameters, as we want to allow functions with same name but different parameters (overloads)
-                    var existingWithSameName = _units.OfType<FunctionDefinitionBase>().Where(x => x.Name == definition.Name);
-                    var existingWithSameParameters = existingWithSameName.Where(v => v.Parameters.SequenceEqual(df.Parameters)).ToList();
-
-                    foreach (var d in existingWithSameParameters)
                     {
-                        _units.Remove(d);
-                    }
+                        // check for existing functions with same parameters
+                        // we care about the parameters, as we want to allow functions with same name but different parameters (overloads)
+                        var existingWithSameName = Units.OfType<FunctionDefinitionBase>().Where(x => x.Name == definition.Name);
+                        var existingWithSameParameters = existingWithSameName.Where(v => v.Parameters.SequenceEqual(df.Parameters)).ToList();
 
-                    break;
-                }
+                        foreach (var d in existingWithSameParameters)
+                        {
+                            Units.Remove(d);
+                        }
+
+                        break;
+                    }
                 default:
-                {
-                    // don't allow adding if existing definition with same name
-                    var existing = _units.FirstOrDefault(x => x.Name == definition.Name);
-                    if (existing != null)
-                        _units.Remove(existing);
-                    break;
-                }
+                    {
+                        // don't allow adding if existing definition with same name
+                        var existing = Units.FirstOrDefault(x => x.Name == definition.Name);
+                        if (existing != null)
+                            Units.Remove(existing);
+                        break;
+                    }
             }
-            _units.Add(definition);
+            Units.Add(definition);
         }
 
         public void Process(IEnumerable<TranslationUnit> units)
         {
+            MacroDefinitionRaw[] rawMacros = default;
+
             MetricHelper.RecordTime("Macro/Enumeration/Structure/Functions Process", () =>
             {
+                rawMacros = units.SelectMany(unit => unit.PreprocessedEntities
+                    .OfType<MacroDefinition>()
+                    .Where(x => !string.IsNullOrWhiteSpace(x.Expression))
+                    .Select(macro => new MacroDefinitionRaw
+                    {
+                        Name = macro.Name,
+                        ExpressionText = macro.Expression
+                    }))
+                    .GroupBy(x => x.Name)
+                    .Select(x => x.Last())
+                    .ToArray();
+
                 foreach (var translationUnit in units)
                 {
-                    MacroProcessor.Process(translationUnit);
                     EnumerationProcessor.Process(translationUnit);
                     StructureProcessor.Process(translationUnit);
                     FunctionProcessor.Process(translationUnit);
@@ -87,9 +100,11 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
 
             MetricHelper.RecordTime("MacroPostProcess", () =>
             {
-                MacroDefinition[] macros = Units.OfType<MacroDefinition>().ToArray();
                 EnumerationDefinition[] enums = Units.OfType<EnumerationDefinition>().ToArray();
-                MacroPostProcessor.Process(macros, enums, WellKnownMacros);
+                foreach (Definitions.MacroDefinition def in MacroPostProcessor.Process(rawMacros, enums, TypeAliasMap, WellKnownMacros))
+                {
+                    AddUnit(def);
+                }
             });
         }
     }

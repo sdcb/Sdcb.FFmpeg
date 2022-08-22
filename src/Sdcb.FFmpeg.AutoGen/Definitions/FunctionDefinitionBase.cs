@@ -10,7 +10,7 @@ namespace Sdcb.FFmpeg.AutoGen.Definitions
         public TypeDefinition ReturnType { get; set; }
         public FunctionParameter[] Parameters { get; set; }
         public string ReturnComment { get; set; }
-        public string Content { get; set; }
+        public string XmlDocument { get; set; }
         public string Name { get; set; }
         public Obsoletion Obsoletion { get; set; }
 
@@ -19,7 +19,7 @@ namespace Sdcb.FFmpeg.AutoGen.Definitions
             && EqualityComparer<TypeDefinition>.Default.Equals(ReturnType, other.ReturnType)
             && Parameters.SequenceEqual(other.Parameters)
             && EqualityComparer<string>.Default.Equals(ReturnComment, other.ReturnComment)
-            && EqualityComparer<string>.Default.Equals(Content, other.Content)
+            && EqualityComparer<string>.Default.Equals(XmlDocument, other.XmlDocument)
             && EqualityComparer<string>.Default.Equals(Name, other.Name)
             && EqualityComparer<Obsoletion>.Default.Equals(Obsoletion, other.Obsoletion);
 
@@ -29,7 +29,7 @@ namespace Sdcb.FFmpeg.AutoGen.Definitions
             hashcode.Add(ReturnType);
             foreach (var item in Parameters) hashcode.Add(item);
             hashcode.Add(ReturnComment);
-            hashcode.Add(Content);
+            hashcode.Add(XmlDocument);
             hashcode.Add(Name);
             hashcode.Add(Obsoletion);
             hashcode.Add(base.GetHashCode());

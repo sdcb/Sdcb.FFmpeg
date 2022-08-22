@@ -37,7 +37,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             {
                 Name = name,
                 TypeName = TypeHelper.GetTypeName(enumeration.Type),
-                Content = enumeration.Comment?.BriefText,
+                XmlDocument = enumeration.Comment?.BriefText,
                 Obsoletion = ObsoletionHelper.CreateObsoletion(enumeration),
                 Items = enumeration.Items
                     .Select(x =>
@@ -46,7 +46,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                             Name = StringExtensions.EnumNameTransform(x.Name[commonPrefix.Length..]),
                             RawName = x.Name, 
                             Value = ConvertValue(x.Value, enumeration.BuiltinType.Type).ToString(),
-                            Content = x.Comment?.BriefText
+                            XmlDocument = x.Comment?.BriefText
                         })
                     .ToArray()
             };

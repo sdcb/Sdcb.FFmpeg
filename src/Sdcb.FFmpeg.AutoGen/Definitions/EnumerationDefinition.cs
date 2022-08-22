@@ -15,7 +15,7 @@ namespace Sdcb.FFmpeg.AutoGen.Definitions
         {
             HashCode hashcode = new();
             foreach (var item in Items) hashcode.Add(item);
-            hashcode.Add(Content);
+            hashcode.Add(XmlDocument);
             hashcode.Add(base.GetHashCode());
 
             return hashcode.ToHashCode();

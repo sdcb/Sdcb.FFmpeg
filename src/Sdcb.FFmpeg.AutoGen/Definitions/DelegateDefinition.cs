@@ -9,7 +9,7 @@ namespace Sdcb.FFmpeg.AutoGen.Definitions
         public string FunctionName { get; init; }
         public TypeDefinition ReturnType { get; init; }
         public FunctionParameter[] Parameters { get; init; }
-        public string Content { get; set; }
+        public string XmlDocument { get; set; }
 
         public virtual bool Equals(DelegateDefinition other) =>
             other is not null
@@ -17,7 +17,7 @@ namespace Sdcb.FFmpeg.AutoGen.Definitions
             && EqualityComparer<string>.Default.Equals(FunctionName, other.FunctionName)
             && EqualityComparer<TypeDefinition>.Default.Equals(ReturnType, other.ReturnType)
             && Parameters.SequenceEqual(other.Parameters)
-            && EqualityComparer<string>.Default.Equals(Content, other.Content);
+            && EqualityComparer<string>.Default.Equals(XmlDocument, other.XmlDocument);
 
         public override int GetHashCode()
         {
@@ -25,7 +25,7 @@ namespace Sdcb.FFmpeg.AutoGen.Definitions
             hashcode.Add(FunctionName);
             hashcode.Add(ReturnType);
             foreach (var item in Parameters) hashcode.Add(item);
-            hashcode.Add(Content);
+            hashcode.Add(XmlDocument);
             hashcode.Add(base.GetHashCode());
 
             return hashcode.ToHashCode();

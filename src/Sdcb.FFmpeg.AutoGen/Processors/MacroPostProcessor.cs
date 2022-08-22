@@ -18,16 +18,20 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
         private static readonly Regex EolEscapeRegex =
             new(@"\\\s*[\r\n|\r|\n]\s*", RegexOptions.Compiled | RegexOptions.Multiline);
 
-        public static void Process(IReadOnlyList<MacroDefinition> macros, IReadOnlyList<EnumerationDefinition> enums, Dictionary<string, string> wellKnownMacros)
+        public static IEnumerable<MacroDefinition> Process(
+            IReadOnlyList<MacroDefinitionRaw> macros, 
+            IReadOnlyList<EnumerationDefinition> enums, 
+            Dictionary<string, string> typeAliasMap, 
+            Dictionary<string, string> wellKnownMacros)
         {
             Func<string, IExpression> parser = ClangMacroParser.MakeParser();
             Stopwatch sw = Stopwatch.StartNew();
-            Dictionary<string, IExpression?> macroExpressionMap = macros
+            Dictionary<string, IExpression?> macroParsedMap = macros
                 .ToDictionary(k => k.Name, v =>
                 {
                     try
                     {
-                        return parser(v.Expression);
+                        return parser(v.ExpressionText);
                     }
                     catch (NotSupportedException e)
                     {
@@ -35,31 +39,41 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                         return null;
                     }
                 });
-            int goodCount = macroExpressionMap.Values.Count(x => x != null);
-            Console.WriteLine($"Parsing macro done, elapsed={sw.ElapsedMilliseconds}ms, total/good/failed={macroExpressionMap.Count}/{goodCount}/{macroExpressionMap.Count - goodCount}");
+            int goodCount = macroParsedMap.Values.Count(x => x != null);
+            Console.WriteLine($"Parsing macro done, elapsed={sw.ElapsedMilliseconds}ms, total/good/failed={macroParsedMap.Count}/{goodCount}/{macroParsedMap.Count - goodCount}");
             sw.Restart();
 
-            var rewriter = MakeRewriter(macroExpressionMap, enums);
-            var isConst = MakeIsConst(macroExpressionMap);
-            var typeDeductor = MakeDeduceType(macroExpressionMap, enums, wellKnownMacros);
-            foreach (MacroDefinition macro in macros)
+            Func<string, string> aliasTypeConverter = type => typeAliasMap.TryGetValue(type, out string? alias) ? alias : type;
+            var typeDeductor = MakeDeduceType(macroParsedMap, enums, wellKnownMacros, aliasTypeConverter);
+            var rewriter = MakeRewriter(macroParsedMap, enums, typeDeductor, aliasTypeConverter);
+            var isConst = MakeIsConst(macroParsedMap);
+
+            int validCount = 0;
+            foreach (MacroDefinition processed in macros
+                .Select(raw =>
+                {
+                    string cleanedExpr = CleanUp(raw.ExpressionText);
+
+                    if (!macroParsedMap.TryGetValue(raw.Name, out IExpression? expression) || expression == null)
+                    {
+                        return MacroDefinition.FromFailed(raw.Name, cleanedExpr);
+                    }
+
+                    string? type = typeDeductor(expression);
+                    if (type == null)
+                    {
+                        return MacroDefinition.FromFailed(raw.Name, cleanedExpr);
+                    }
+
+                    IExpression rewritedExpression = rewriter(expression);
+
+                    ++validCount;
+                    return MacroDefinition.FromSuccess(raw.Name, cleanedExpr, isConst(rewritedExpression), type, rewritedExpression.Serialize());
+                }))
             {
-                macro.Expression = CleanUp(macro.Expression);
-
-                if (!macroExpressionMap.TryGetValue(macro.Name, out var expression) || expression == null) continue;
-
-                string? type = typeDeductor(expression);
-                if (type == null) continue;
-
-                IExpression rewritedExpression = rewriter(expression);
-
-                macro.TypeName = type;
-                macro.Content = $"{macro.Name} = {macro.Expression}";
-                macro.Expression = rewritedExpression.Serialize();
-                macro.IsConst = isConst(rewritedExpression);
-                macro.IsValid = TypeHelper.IsKnownType(type);
+                yield return processed;
             }
-            Console.WriteLine($"Macro postprocess done, elapsed={sw.ElapsedMilliseconds}ms, total/valid={macros.Count}/{macros.Count(x => x.IsValid)}");
+            Console.WriteLine($"Macro postprocess done, elapsed={sw.ElapsedMilliseconds}ms, total/valid={macros.Count}/{validCount}");
         }
 
         static string CleanUp(string expression)
@@ -69,7 +83,11 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             return trimmed;
         }
 
-        static Func<IExpression, string?> MakeDeduceType(Dictionary<string, IExpression?> macroExpressionMap, IReadOnlyList<EnumerationDefinition> enums, Dictionary<string, string> wellKnownMacroMapping)
+        static Func<IExpression, string?> MakeDeduceType(
+            Dictionary<string, IExpression?> macroExpressionMap, 
+            IReadOnlyList<EnumerationDefinition> enums, 
+            Dictionary<string, string> wellKnownMacroMapping, 
+            Func<string, string> typeAliasConverter)
         {
             Dictionary<string, string> enumTypeMapping = enums
                 .SelectMany(k => k.Items.Select(v => new { Key = v.RawName, Value = k.TypeName }))
@@ -116,7 +134,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 ParentheseExpression p => DeduceType(p.Content),
                 StringConcatExpression => "string",
                 StringLiteralExpression => "string",
-                TypeConvertExpression tc => tc.DestType,
+                TypeConvertExpression tc => typeAliasConverter(tc.DestType),
             };
 
             string? DeduceTypeForId(IdentifierExpression expression)
@@ -135,7 +153,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             }
         }
 
-        static Func<IExpression, IExpression> MakeRewriter(Dictionary<string, IExpression?> macros, IReadOnlyList<EnumerationDefinition> enums)
+        static Func<IExpression, IExpression> MakeRewriter(Dictionary<string, IExpression?> macros, IReadOnlyList<EnumerationDefinition> enums, Func<IExpression, string?> typeDeducter, Func<string, string> aliasTypeConverter)
         {
             Dictionary<string, (EnumerationDefinition Enum, EnumerationItem Item)> enumMapping = enums
                 .SelectMany(x => x.Items.Select(v => new { Key = v.RawName, Enum = x, Item = v }))
@@ -160,7 +178,12 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 NegativeExpression e => new NegativeExpression(Rewrite(e.Val)),
                 ParentheseExpression p => Rewrite(p.Content),
                 StringConcatExpression e => new StringConcatExpression(e.Str, Rewrite(e.Exp)),
-                TypeConvertExpression tc => new TypeConvertExpression(tc.DestType, Rewrite(tc.Exp)),
+                TypeConvertExpression tc => Rewrite(tc.Exp) switch { var rewrited => (rewrited, typeDeducter(rewrited), aliasTypeConverter(tc.DestType)) } switch
+                {
+                    (var rewrited, var exprType, var destType) when exprType == destType => rewrited,
+                    (var rewrited, "ulong" , "long")  => new FunctionCallExpression("unchecked", new TypeConvertExpression("long", rewrited)),
+                    (var rewrited, _, var destType)  => new TypeConvertExpression(destType, rewrited),
+                }, 
                 var x => x, 
             };
         }

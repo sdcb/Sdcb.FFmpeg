@@ -36,7 +36,6 @@ namespace Sdcb.FFmpeg.AutoGen
                     .ToDictionary(x => x.Name)
             };
             astProcessor.IgnoreUnitNames.Add("__NSConstantString_tag");
-            astProcessor.TypeAliases.Add("int64_t", "long");
             astProcessor.WellKnownMacros.Add("FFERRTAG", "int");
             astProcessor.WellKnownMacros.Add("MKTAG", "int");
             astProcessor.WellKnownMacros.Add("UINT64_C", "ulong");

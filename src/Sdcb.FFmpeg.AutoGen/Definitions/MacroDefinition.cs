@@ -1,12 +1,45 @@
+using System;
+
 namespace Sdcb.FFmpeg.AutoGen.Definitions
 {
-    internal record MacroDefinition : IDefinition, ICanGenerateXmlDoc
+    internal record MacroDefinitionRaw : IDefinition
     {
-        public string Expression { get; set; }
-        public string TypeName { get; set; }
-        public bool IsValid { get; set; }
-        public bool IsConst { get; set; }
-        public string Content { get; set; }
         public string Name { get; init; }
+
+        public string ExpressionText { get; init; }
+    }
+
+    internal record MacroDefinition : MacroDefinitionRaw, ICanGenerateXmlDoc
+    {
+        public string TypeName { get; init; }
+        public bool IsValid { get; init; }
+        public bool IsConst { get; init; }
+
+        public string RawExpressionText { get; init; }
+
+        public virtual string XmlDocument => $"{Name} = {RawExpressionText}";
+
+        internal static MacroDefinition FromFailed(string name, string expressionText)
+        {
+            return new MacroDefinition
+            {
+                Name = name, 
+                ExpressionText = expressionText, 
+                IsValid = false, 
+            };
+        }
+
+        internal static MacroDefinition FromSuccess(string name, string rawExpressionText, bool isConst, string typeName, string expressionText)
+        {
+            return new MacroDefinition
+            {
+                Name = name,
+                RawExpressionText = rawExpressionText,
+                ExpressionText = expressionText,
+                IsValid = true,
+                IsConst = isConst, 
+                TypeName = typeName, 
+            };
+        }
     }
 }

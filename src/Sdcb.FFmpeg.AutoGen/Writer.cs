@@ -22,10 +22,10 @@ namespace Sdcb.FFmpeg.AutoGen
             {
                 WriteSummary(macro);
                 var constOrStatic = macro.IsConst ? "const" : "static readonly";
-                WriteLine($"public {constOrStatic} {macro.TypeName} {macro.Name} = {macro.Expression};");
+                WriteLine($"public {constOrStatic} {macro.TypeName} {macro.Name} = {macro.ExpressionText};");
             }
             else
-                WriteLine($"// public static {macro.Name} = {macro.Expression};");
+                WriteLine($"// public static {macro.Name} = {macro.ExpressionText};");
         }
 
         public void WriteMacroEnum(IGrouping<string, MacroDefinition> group, MacroEnumDef enumDef)
@@ -54,7 +54,7 @@ namespace Sdcb.FFmpeg.AutoGen
                 {
                     WriteSummary(macro);
                     string key = macroShortcutMapping[macro.Name];
-                    WriteLine($"{key} = {ExpressionTransform(macro.Expression, macroShortcutMapping)},");
+                    WriteLine($"{key} = {ExpressionTransform(macro.ExpressionText, macroShortcutMapping)},");
                     if (!i.IsLast)
                     {
                         WriteLine();
@@ -448,12 +448,12 @@ namespace Sdcb.FFmpeg.AutoGen
 
         private void WriteSummary(ICanGenerateXmlDoc value)
         {
-            if (!string.IsNullOrWhiteSpace(value.Content)) WriteLine($"/// <summary>{SecurityElement.Escape(value.Content.Trim())}</summary>");
+            if (!string.IsNullOrWhiteSpace(value.XmlDocument)) WriteLine($"/// <summary>{SecurityElement.Escape(value.XmlDocument.Trim())}</summary>");
         }
 
         private void WriteParam(ICanGenerateXmlDoc value, string name)
         {
-            if (!string.IsNullOrWhiteSpace(value.Content)) WriteLine($"/// <param name=\"{name}\">{SecurityElement.Escape(value.Content.Trim())}</param>");
+            if (!string.IsNullOrWhiteSpace(value.XmlDocument)) WriteLine($"/// <param name=\"{name}\">{SecurityElement.Escape(value.XmlDocument.Trim())}</param>");
         }
 
         private void WriteReturnComment(string content)

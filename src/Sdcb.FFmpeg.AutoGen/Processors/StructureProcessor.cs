@@ -47,7 +47,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             }
 
             if (@class.Comment != null)
-                definition.Content = @class.Comment?.BriefText;
+                definition.XmlDocument = @class.Comment?.BriefText;
 
             if (@class.IsIncomplete || definition.IsComplete) return;
 
@@ -82,7 +82,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 {
                     Name = field.Name,
                     FieldType = GetTypeDefinition(field.Type, typeName),
-                    Content = field.Comment?.BriefText,
+                    XmlDocument = field.Comment?.BriefText,
                     Obsoletion = ObsoletionHelper.CreateObsoletion(field)
                 });
             }
@@ -126,7 +126,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             {
                 Name = fieldName,
                 FieldType = new TypeDefinition { Name = fieldType },
-                Content = string.Join(" ", comments.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()))
+                XmlDocument = string.Join(" ", comments.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()))
             };
         }
 
