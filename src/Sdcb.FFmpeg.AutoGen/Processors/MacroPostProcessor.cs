@@ -108,7 +108,12 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 FunctionCallExpression func => func.FunctionName switch
                 {
                     "AV_VERSION" => "string",
-                    "AV_CHANNEL_LAYOUT_MASK" => "AVChannelLayout", 
+                    "AV_CHANNEL_LAYOUT_MASK" => "AVChannelLayout",
+                    "AV_PIX_FMT_NE" => func.Arguments.OfType<IdentifierExpression>().ToArray() switch
+                    {
+                        { Length: 2 } => "AVPixelFormat", 
+                        _ => null, 
+                    }, 
                     _ => null, 
                 }, 
                 IdentifierExpression id => DeduceTypeForId(id),
@@ -166,7 +171,12 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 BinaryExpression e => new BinaryExpression(Rewrite(e.Left), e.Op, Rewrite(e.Right)),
                 FunctionCallExpression func => func.FunctionName switch
                 {
-                    "AV_STRINGIFY" => IExpression.MakeStringLiteral(func.Arguments.OfType<IdentifierExpression>().Single().Name), 
+                    "AV_STRINGIFY" => IExpression.MakeStringLiteral(func.Arguments.OfType<IdentifierExpression>().Single().Name),
+                    "AV_PIX_FMT_NE" => func.Arguments.OfType<IdentifierExpression>().ToArray() switch
+                    {
+                        [var be, var le] => IExpression.MakeTypeConvert("AVPixelFormat", Rewrite(IExpression.MakeIdentifier($"AV_PIX_FMT_{le.Name}"))), 
+                        var x => IExpression.MakeIdentifier("true ? throw new Exception(\"Convert failed.\") : default")
+                    },
                     _ => new FunctionCallExpression(func.FunctionName, func.Arguments.Select(Rewrite).ToArray()),
                 },
                 IdentifierExpression id => id switch
