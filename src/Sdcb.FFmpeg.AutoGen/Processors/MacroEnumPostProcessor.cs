@@ -120,4 +120,14 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             }
         }
     }
+
+    public record MacroEnumDef(string Prefix, string EnumName, HashSet<string>? Only = default, HashSet<string>? Except = default)
+    {
+        public bool Match(string name) =>
+            name.StartsWith(Prefix) &&
+            (Except == null || !Except.Contains(name)) &&
+            (Only == null || Only.Contains(name));
+
+        public bool IsFlags => EnumName.EndsWith("s");
+    }
 }

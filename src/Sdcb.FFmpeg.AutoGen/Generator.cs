@@ -102,29 +102,6 @@ namespace Sdcb.FFmpeg.AutoGen
 
         public void WriteMacros(string outputFile)
         {
-            MacroEnumDef[] knownConstEnums = new MacroEnumDef[]
-            {
-                //new ("AV_CODEC_FLAG_", "AV_CODEC_FLAG"),
-                //new ("AV_CODEC_FLAG2_", "AV_CODEC_FLAG2"),
-                //new ("SLICE_FLAG_", "SLICE_FLAG"),
-                //new ("AV_CH_", "Channels"),
-                //new ("AV_CODEC_CAP_", "CodecCompability"),
-                //new ("FF_MB_DECISION_", "FFMacroblockDecision"),
-                //new ("FF_CMP_", "FFComparison"),
-                //new ("PARSER_FLAG_", "ParserFlags"),
-                //new ("AVIO_FLAG_", "AVIO_FLAG"),
-                //new ("FF_PROFILE_", "FFProfile"),
-                //new ("AVSEEK_FLAG_", "SeekFlags"),
-                //new ("AV_PIX_FMT_FLAG_", "PixelFormatFlags"),
-                //new ("AV_OPT_FLAG_", "AV_OPT_FLAG"),
-                //new ("AV_LOG_", "LogFlags", Only: new []{ "AV_LOG_SKIP_REPEATED", "AV_LOG_PRINT_LEVEL" }.ToHashSet()),
-                //new ("AV_LOG_", "LogLevel", Except: new []{ "AV_LOG_C" }.ToHashSet()),
-                //new ("AV_CPU_FLAG_", "CpuFlags"),
-                //new ("AV_PKT_FLAG_", "PacketFlags"),
-                //new ("AVFMT_FLAG_", "FormatFlags"), 
-            };
-            Dictionary<string, MacroEnumDef> knownConstEnumMapping = knownConstEnums.ToDictionary(k => k.EnumName, v => v);
-
             WriteInternal(outputFile,
                 (units, writer) =>
                 {
@@ -132,25 +109,9 @@ namespace Sdcb.FFmpeg.AutoGen
                     using (writer.BeginBlock())
                         units.OfType<MacroDefinition>()
                             .OrderBy(x => x.Name)
-                            .GroupBy(x => knownConstEnums.FirstOrDefault(known => known.Match(x.Name)) switch
+                            .ForEach((macro, i) =>
                             {
-                                null => null,
-                                MacroEnumDef prefix => prefix.EnumName,
-                            })
-                            .ForEach((group, i) =>
-                            {
-                                if (group.Key == null)
-                                {
-                                    foreach (MacroDefinition macro in group)
-                                    {
-                                        writer.WriteMacro(macro);
-                                    }
-                                }
-                                else
-                                {
-                                    writer.WriteMacroEnum(group, knownConstEnumMapping[group.Key]);
-                                    if (!i.IsLast) writer.WriteLine();
-                                }
+                                writer.WriteMacro(macro);
                             });
                 });
         }
@@ -321,15 +282,5 @@ namespace Sdcb.FFmpeg.AutoGen
             writer.WriteLine($"namespace {Namespace}");
             using (writer.BeginBlock()) execute(_astProcessor.Units, writer);
         }
-    }
-
-    public record MacroEnumDef(string Prefix, string EnumName, HashSet<string> Only = default, HashSet<string> Except = default)
-    {
-        public bool Match(string name) => 
-            name.StartsWith(Prefix) && 
-            (Except == null || !Except.Contains(name)) &&
-            (Only == null || Only.Contains(name));
-
-        public bool IsFlags => EnumName.EndsWith("s");
     }
 }
