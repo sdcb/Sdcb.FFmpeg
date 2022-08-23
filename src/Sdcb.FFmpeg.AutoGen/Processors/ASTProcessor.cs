@@ -12,7 +12,6 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
         public ASTProcessor()
         {
             IgnoreUnitNames = new HashSet<string>();
-            WellKnownMacros = new Dictionary<string, string>();
             FunctionProcessor = new FunctionProcessor(this);
             StructureProcessor = new StructureProcessor(this);
             EnumerationProcessor = new EnumerationProcessor(this);
@@ -22,17 +21,16 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
         public Dictionary<string, string> TypeAliasMap { get; } = new Dictionary<string, string>
         {
             ["int64_t"] = "long",
-            ["UINT64_C"] = "ulong", 
+            ["UINT64_C"] = "ulong",
         };
 
-        public Dictionary<string, string> WellKnownMacros { get; }
         public EnumerationProcessor EnumerationProcessor { get; }
         public StructureProcessor StructureProcessor { get; }
         public FunctionProcessor FunctionProcessor { get; }
 
         public Dictionary<string, FunctionExport> FunctionExportMap { get; init; }
 
-        public List<IDefinition> Units { get; init; } = new ();
+        public List<IDefinition> Units { get; init; } = new();
 
         public bool IsKnownUnitName(string name)
         {
@@ -100,10 +98,25 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
 
             MetricHelper.RecordTime("MacroPostProcess", () =>
             {
+                var wellKnownMacros = new Dictionary<string, string>();
+                wellKnownMacros.Add("FFERRTAG", "int");
+                wellKnownMacros.Add("MKTAG", "int");
+                wellKnownMacros.Add("UINT64_C", "ulong");
+                wellKnownMacros.Add("AV_VERSION_INT", "int");
+                wellKnownMacros.Add("AV_VERSION", "string");
+
                 EnumerationDefinition[] enums = Units.OfType<EnumerationDefinition>().ToArray();
-                foreach (Definitions.MacroDefinition def in MacroPostProcessor.Process(rawMacros, enums, TypeAliasMap, WellKnownMacros))
+                IEnumerable<Definitions.MacroDefinition> macros = MacroPostProcessor.Process(rawMacros, enums, TypeAliasMap, wellKnownMacros);
+
+                (IEnumerable<Definitions.MacroDefinition> processedMacros, IEnumerable<EnumerationDefinition> macroEnums) = MacroEnumPostProcessor.Process(macros);
+                foreach (EnumerationDefinition @enum in macroEnums)
                 {
-                    AddUnit(def);
+                    AddUnit(@enum);
+                }
+
+                foreach (Definitions.MacroDefinition macroDefinition in processedMacros)
+                {
+                    AddUnit(macroDefinition);
                 }
             });
         }

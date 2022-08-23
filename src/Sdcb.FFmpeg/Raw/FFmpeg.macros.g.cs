@@ -256,64 +256,6 @@ namespace Sdcb.FFmpeg.Raw
         public const int AV_CODEC_EXPORT_DATA_PRFT = 1 << 1;
         /// <summary>AV_CODEC_EXPORT_DATA_VIDEO_ENC_PARAMS = (1 &lt;&lt; 2)</summary>
         public const int AV_CODEC_EXPORT_DATA_VIDEO_ENC_PARAMS = 1 << 2;
-        /// <summary>AV_CODEC_FLAG_4MV = (1 &lt;&lt;  2)</summary>
-        public const int AV_CODEC_FLAG_4MV = 1 << 2;
-        /// <summary>AV_CODEC_FLAG_AC_PRED = (1 &lt;&lt; 24)</summary>
-        public const int AV_CODEC_FLAG_AC_PRED = 1 << 24;
-        /// <summary>AV_CODEC_FLAG_BITEXACT = (1 &lt;&lt; 23)</summary>
-        public const int AV_CODEC_FLAG_BITEXACT = 1 << 23;
-        /// <summary>AV_CODEC_FLAG_CLOSED_GOP = (1U &lt;&lt; 31)</summary>
-        public const int AV_CODEC_FLAG_CLOSED_GOP = 1 << 31;
-        /// <summary>AV_CODEC_FLAG_DROPCHANGED = (1 &lt;&lt;  5)</summary>
-        public const int AV_CODEC_FLAG_DROPCHANGED = 1 << 5;
-        /// <summary>AV_CODEC_FLAG_GLOBAL_HEADER = (1 &lt;&lt; 22)</summary>
-        public const int AV_CODEC_FLAG_GLOBAL_HEADER = 1 << 22;
-        /// <summary>AV_CODEC_FLAG_GRAY = (1 &lt;&lt; 13)</summary>
-        public const int AV_CODEC_FLAG_GRAY = 1 << 13;
-        /// <summary>AV_CODEC_FLAG_INTERLACED_DCT = (1 &lt;&lt; 18)</summary>
-        public const int AV_CODEC_FLAG_INTERLACED_DCT = 1 << 18;
-        /// <summary>AV_CODEC_FLAG_INTERLACED_ME = (1 &lt;&lt; 29)</summary>
-        public const int AV_CODEC_FLAG_INTERLACED_ME = 1 << 29;
-        /// <summary>AV_CODEC_FLAG_LOOP_FILTER = (1 &lt;&lt; 11)</summary>
-        public const int AV_CODEC_FLAG_LOOP_FILTER = 1 << 11;
-        /// <summary>AV_CODEC_FLAG_LOW_DELAY = (1 &lt;&lt; 19)</summary>
-        public const int AV_CODEC_FLAG_LOW_DELAY = 1 << 19;
-        /// <summary>AV_CODEC_FLAG_OUTPUT_CORRUPT = (1 &lt;&lt;  3)</summary>
-        public const int AV_CODEC_FLAG_OUTPUT_CORRUPT = 1 << 3;
-        /// <summary>AV_CODEC_FLAG_PASS1 = (1 &lt;&lt;  9)</summary>
-        public const int AV_CODEC_FLAG_PASS1 = 1 << 9;
-        /// <summary>AV_CODEC_FLAG_PASS2 = (1 &lt;&lt; 10)</summary>
-        public const int AV_CODEC_FLAG_PASS2 = 1 << 10;
-        /// <summary>AV_CODEC_FLAG_PSNR = (1 &lt;&lt; 15)</summary>
-        public const int AV_CODEC_FLAG_PSNR = 1 << 15;
-        /// <summary>AV_CODEC_FLAG_QPEL = (1 &lt;&lt;  4)</summary>
-        public const int AV_CODEC_FLAG_QPEL = 1 << 4;
-        /// <summary>AV_CODEC_FLAG_QSCALE = (1 &lt;&lt;  1)</summary>
-        public const int AV_CODEC_FLAG_QSCALE = 1 << 1;
-        /// <summary>AV_CODEC_FLAG_TRUNCATED = (1 &lt;&lt; 16)</summary>
-        public const int AV_CODEC_FLAG_TRUNCATED = 1 << 16;
-        /// <summary>AV_CODEC_FLAG_UNALIGNED = (1 &lt;&lt;  0)</summary>
-        public const int AV_CODEC_FLAG_UNALIGNED = 1 << 0;
-        /// <summary>AV_CODEC_FLAG2_CHUNKS = (1 &lt;&lt; 15)</summary>
-        public const int AV_CODEC_FLAG2_CHUNKS = 1 << 15;
-        /// <summary>AV_CODEC_FLAG2_DROP_FRAME_TIMECODE = (1 &lt;&lt; 13)</summary>
-        public const int AV_CODEC_FLAG2_DROP_FRAME_TIMECODE = 1 << 13;
-        /// <summary>AV_CODEC_FLAG2_EXPORT_MVS = (1 &lt;&lt; 28)</summary>
-        public const int AV_CODEC_FLAG2_EXPORT_MVS = 1 << 28;
-        /// <summary>AV_CODEC_FLAG2_FAST = (1 &lt;&lt;  0)</summary>
-        public const int AV_CODEC_FLAG2_FAST = 1 << 0;
-        /// <summary>AV_CODEC_FLAG2_IGNORE_CROP = (1 &lt;&lt; 16)</summary>
-        public const int AV_CODEC_FLAG2_IGNORE_CROP = 1 << 16;
-        /// <summary>AV_CODEC_FLAG2_LOCAL_HEADER = (1 &lt;&lt;  3)</summary>
-        public const int AV_CODEC_FLAG2_LOCAL_HEADER = 1 << 3;
-        /// <summary>AV_CODEC_FLAG2_NO_OUTPUT = (1 &lt;&lt;  2)</summary>
-        public const int AV_CODEC_FLAG2_NO_OUTPUT = 1 << 2;
-        /// <summary>AV_CODEC_FLAG2_RO_FLUSH_NOOP = (1 &lt;&lt; 30)</summary>
-        public const int AV_CODEC_FLAG2_RO_FLUSH_NOOP = 1 << 30;
-        /// <summary>AV_CODEC_FLAG2_SHOW_ALL = (1 &lt;&lt; 22)</summary>
-        public const int AV_CODEC_FLAG2_SHOW_ALL = 1 << 22;
-        /// <summary>AV_CODEC_FLAG2_SKIP_MANUAL = (1 &lt;&lt; 29)</summary>
-        public const int AV_CODEC_FLAG2_SKIP_MANUAL = 1 << 29;
         /// <summary>AV_CODEC_ID_H265 = AV_CODEC_ID_HEVC</summary>
         public static readonly int AV_CODEC_ID_H265 = (int)AVCodecID.Hevc;
         /// <summary>AV_CODEC_ID_H266 = AV_CODEC_ID_VVC</summary>
@@ -485,19 +427,6 @@ namespace Sdcb.FFmpeg.Raw
         // public static AV_IS_OUTPUT_DEVICE = (category) (((category) == AV_CLASS_CATEGORY_DEVICE_VIDEO_OUTPUT) || ((category) == AV_CLASS_CATEGORY_DEVICE_AUDIO_OUTPUT) || ((category) == AV_CLASS_CATEGORY_DEVICE_OUTPUT));
         // public static AV_JOIN = (a, b) AV_GLUE(a, b);
         // public static AV_LOG_C = (x) ((x) << 8);
-        public const int AV_LOG_DEBUG = 48;
-        public const int AV_LOG_ERROR = 16;
-        public const int AV_LOG_FATAL = 8;
-        public const int AV_LOG_INFO = 32;
-        /// <summary>AV_LOG_MAX_OFFSET = (AV_LOG_TRACE - AV_LOG_QUIET)</summary>
-        public const int AV_LOG_MAX_OFFSET = AV_LOG_TRACE - AV_LOG_QUIET;
-        public const int AV_LOG_PANIC = 0;
-        public const int AV_LOG_PRINT_LEVEL = 2;
-        public const int AV_LOG_QUIET = -8;
-        public const int AV_LOG_SKIP_REPEATED = 1;
-        public const int AV_LOG_TRACE = 56;
-        public const int AV_LOG_VERBOSE = 40;
-        public const int AV_LOG_WARNING = 24;
         // public static av_mod_uintp2 = av_mod_uintp2_c;
         // public static AV_NE = (be, le) (le);
         // public static av_noinline = __declspec(noinline);
@@ -508,23 +437,6 @@ namespace Sdcb.FFmpeg.Raw
         public const int AV_NUM_DATA_POINTERS = 8;
         /// <summary>AV_OPT_ALLOW_NULL = (1 &lt;&lt; 2)</summary>
         public const int AV_OPT_ALLOW_NULL = 1 << 2;
-        public const int AV_OPT_FLAG_AUDIO_PARAM = 8;
-        /// <summary>AV_OPT_FLAG_BSF_PARAM = (1&lt;&lt;8)</summary>
-        public const int AV_OPT_FLAG_BSF_PARAM = 1 << 8;
-        /// <summary>AV_OPT_FLAG_CHILD_CONSTS = (1&lt;&lt;18)</summary>
-        public const int AV_OPT_FLAG_CHILD_CONSTS = 1 << 18;
-        public const int AV_OPT_FLAG_DECODING_PARAM = 2;
-        /// <summary>AV_OPT_FLAG_DEPRECATED = (1&lt;&lt;17)</summary>
-        public const int AV_OPT_FLAG_DEPRECATED = 1 << 17;
-        public const int AV_OPT_FLAG_ENCODING_PARAM = 1;
-        public const int AV_OPT_FLAG_EXPORT = 64;
-        /// <summary>AV_OPT_FLAG_FILTERING_PARAM = (1&lt;&lt;16)</summary>
-        public const int AV_OPT_FLAG_FILTERING_PARAM = 1 << 16;
-        public const int AV_OPT_FLAG_READONLY = 128;
-        /// <summary>AV_OPT_FLAG_RUNTIME_PARAM = (1&lt;&lt;15)</summary>
-        public const int AV_OPT_FLAG_RUNTIME_PARAM = 1 << 15;
-        public const int AV_OPT_FLAG_SUBTITLE_PARAM = 32;
-        public const int AV_OPT_FLAG_VIDEO_PARAM = 16;
         /// <summary>AV_OPT_MULTI_COMPONENT_RANGE = (1 &lt;&lt; 12)</summary>
         public const int AV_OPT_MULTI_COMPONENT_RANGE = 1 << 12;
         /// <summary>AV_OPT_SEARCH_CHILDREN = (1 &lt;&lt; 0)</summary>
@@ -836,12 +748,6 @@ namespace Sdcb.FFmpeg.Raw
         public const uint AVFMTCTX_UNSEEKABLE = 0x0002;
         public const uint AVINDEX_DISCARD_FRAME = 0x0002;
         public const uint AVINDEX_KEYFRAME = 0x0001;
-        public const uint AVIO_FLAG_DIRECT = 0x8000;
-        public const int AVIO_FLAG_NONBLOCK = 8;
-        public const int AVIO_FLAG_READ = 1;
-        /// <summary>AVIO_FLAG_READ_WRITE = (AVIO_FLAG_READ|AVIO_FLAG_WRITE)</summary>
-        public const int AVIO_FLAG_READ_WRITE = AVIO_FLAG_READ | AVIO_FLAG_WRITE;
-        public const int AVIO_FLAG_WRITE = 2;
         // public static avio_print = (s, ...) avio_print_string_array(s, (const char*[]){__VA_ARGS__, NULL});
         /// <summary>AVIO_SEEKABLE_NORMAL = (1 &lt;&lt; 0)</summary>
         public const int AVIO_SEEKABLE_NORMAL = 1 << 0;
@@ -1313,5 +1219,181 @@ namespace Sdcb.FFmpeg.Raw
         public const uint SWS_SRC_V_CHR_DROP_MASK = 0x30000;
         public const int SWS_SRC_V_CHR_DROP_SHIFT = 16;
         public const int SWS_X = 8;
+        /// <summary>Macro enum, prefix: AV_CODEC_FLAG_</summary>
+        public enum AV_CODEC_FLAG
+        {
+            /// <summary>AV_CODEC_FLAG_4MV = (1 &lt;&lt;  2)</summary>
+            _4MV = 1 << 2,
+            
+            /// <summary>AV_CODEC_FLAG_AC_PRED = (1 &lt;&lt; 24)</summary>
+            AcPred = 1 << 24,
+            
+            /// <summary>AV_CODEC_FLAG_BITEXACT = (1 &lt;&lt; 23)</summary>
+            Bitexact = 1 << 23,
+            
+            /// <summary>AV_CODEC_FLAG_CLOSED_GOP = (1U &lt;&lt; 31)</summary>
+            ClosedGop = 1 << 31,
+            
+            /// <summary>AV_CODEC_FLAG_DROPCHANGED = (1 &lt;&lt;  5)</summary>
+            Dropchanged = 1 << 5,
+            
+            /// <summary>AV_CODEC_FLAG_GLOBAL_HEADER = (1 &lt;&lt; 22)</summary>
+            GlobalHeader = 1 << 22,
+            
+            /// <summary>AV_CODEC_FLAG_GRAY = (1 &lt;&lt; 13)</summary>
+            Gray = 1 << 13,
+            
+            /// <summary>AV_CODEC_FLAG_INTERLACED_DCT = (1 &lt;&lt; 18)</summary>
+            InterlacedDct = 1 << 18,
+            
+            /// <summary>AV_CODEC_FLAG_INTERLACED_ME = (1 &lt;&lt; 29)</summary>
+            InterlacedMe = 1 << 29,
+            
+            /// <summary>AV_CODEC_FLAG_LOOP_FILTER = (1 &lt;&lt; 11)</summary>
+            LoopFilter = 1 << 11,
+            
+            /// <summary>AV_CODEC_FLAG_LOW_DELAY = (1 &lt;&lt; 19)</summary>
+            LowDelay = 1 << 19,
+            
+            /// <summary>AV_CODEC_FLAG_OUTPUT_CORRUPT = (1 &lt;&lt;  3)</summary>
+            OutputCorrupt = 1 << 3,
+            
+            /// <summary>AV_CODEC_FLAG_PASS1 = (1 &lt;&lt;  9)</summary>
+            Pass1 = 1 << 9,
+            
+            /// <summary>AV_CODEC_FLAG_PASS2 = (1 &lt;&lt; 10)</summary>
+            Pass2 = 1 << 10,
+            
+            /// <summary>AV_CODEC_FLAG_PSNR = (1 &lt;&lt; 15)</summary>
+            Psnr = 1 << 15,
+            
+            /// <summary>AV_CODEC_FLAG_QPEL = (1 &lt;&lt;  4)</summary>
+            Qpel = 1 << 4,
+            
+            /// <summary>AV_CODEC_FLAG_QSCALE = (1 &lt;&lt;  1)</summary>
+            Qscale = 1 << 1,
+            
+            /// <summary>AV_CODEC_FLAG_TRUNCATED = (1 &lt;&lt; 16)</summary>
+            Truncated = 1 << 16,
+            
+            /// <summary>AV_CODEC_FLAG_UNALIGNED = (1 &lt;&lt;  0)</summary>
+            Unaligned = 1 << 0,
+        }
+        
+        /// <summary>Macro enum, prefix: AV_CODEC_FLAG2_</summary>
+        public enum AV_CODEC_FLAG2
+        {
+            /// <summary>AV_CODEC_FLAG2_CHUNKS = (1 &lt;&lt; 15)</summary>
+            Chunks = 1 << 15,
+            
+            /// <summary>AV_CODEC_FLAG2_DROP_FRAME_TIMECODE = (1 &lt;&lt; 13)</summary>
+            DropFrameTimecode = 1 << 13,
+            
+            /// <summary>AV_CODEC_FLAG2_EXPORT_MVS = (1 &lt;&lt; 28)</summary>
+            ExportMvs = 1 << 28,
+            
+            /// <summary>AV_CODEC_FLAG2_FAST = (1 &lt;&lt;  0)</summary>
+            Fast = 1 << 0,
+            
+            /// <summary>AV_CODEC_FLAG2_IGNORE_CROP = (1 &lt;&lt; 16)</summary>
+            IgnoreCrop = 1 << 16,
+            
+            /// <summary>AV_CODEC_FLAG2_LOCAL_HEADER = (1 &lt;&lt;  3)</summary>
+            LocalHeader = 1 << 3,
+            
+            /// <summary>AV_CODEC_FLAG2_NO_OUTPUT = (1 &lt;&lt;  2)</summary>
+            NoOutput = 1 << 2,
+            
+            /// <summary>AV_CODEC_FLAG2_RO_FLUSH_NOOP = (1 &lt;&lt; 30)</summary>
+            RoFlushNoop = 1 << 30,
+            
+            /// <summary>AV_CODEC_FLAG2_SHOW_ALL = (1 &lt;&lt; 22)</summary>
+            ShowAll = 1 << 22,
+            
+            /// <summary>AV_CODEC_FLAG2_SKIP_MANUAL = (1 &lt;&lt; 29)</summary>
+            SkipManual = 1 << 29,
+        }
+        
+        /// <summary>Macro enum, prefix: AV_LOG_</summary>
+        public enum LogLevel
+        {
+            Debug = 48,
+            
+            Error = 16,
+            
+            Fatal = 8,
+            
+            Info = 32,
+            
+            /// <summary>AV_LOG_MAX_OFFSET = (AV_LOG_TRACE - AV_LOG_QUIET)</summary>
+            MaxOffset = Trace - Quiet,
+            
+            Panic = 0,
+            
+            Quiet = -8,
+            
+            Trace = 56,
+            
+            Verbose = 40,
+            
+            Warning = 24,
+        }
+        
+        /// <summary>Macro enum, prefix: AV_LOG_</summary>
+        [Flags]
+        public enum LogFlags
+        {
+            PrintLevel = 2,
+            
+            SkipRepeated = 1,
+        }
+        
+        /// <summary>Macro enum, prefix: AV_OPT_FLAG_</summary>
+        public enum AV_OPT_FLAG
+        {
+            AudioParam = 8,
+            
+            /// <summary>AV_OPT_FLAG_BSF_PARAM = (1&lt;&lt;8)</summary>
+            BsfParam = 1 << 8,
+            
+            /// <summary>AV_OPT_FLAG_CHILD_CONSTS = (1&lt;&lt;18)</summary>
+            ChildConsts = 1 << 18,
+            
+            DecodingParam = 2,
+            
+            /// <summary>AV_OPT_FLAG_DEPRECATED = (1&lt;&lt;17)</summary>
+            Deprecated = 1 << 17,
+            
+            EncodingParam = 1,
+            
+            Export = 64,
+            
+            /// <summary>AV_OPT_FLAG_FILTERING_PARAM = (1&lt;&lt;16)</summary>
+            FilteringParam = 1 << 16,
+            
+            Readonly = 128,
+            
+            /// <summary>AV_OPT_FLAG_RUNTIME_PARAM = (1&lt;&lt;15)</summary>
+            RuntimeParam = 1 << 15,
+            
+            SubtitleParam = 32,
+            
+            VideoParam = 16,
+        }
+        
+        /// <summary>Macro enum, prefix: AVIO_FLAG_</summary>
+        public enum AVIO_FLAG : uint
+        {
+            Direct = 0x8000,
+            
+            Nonblock = 8,
+            
+            Read = 1,
+            
+            /// <summary>AVIO_FLAG_READ_WRITE = (AVIO_FLAG_READ|AVIO_FLAG_WRITE)</summary>
+            ReadWrite = Read | Write,
+            
+            Write = 2,
+        }
     }
 }
