@@ -2,7 +2,7 @@
 
 namespace Sdcb.FFmpeg.AutoGen.ClangMarcroParsers.Units
 {
-    public record NumberLiteralExpression(NumberLiteral Number) : IExpression
+    public record NumberExpression(NumberLiteral Number) : IExpression
     {
         public string Serialize() => Number.String;
     }

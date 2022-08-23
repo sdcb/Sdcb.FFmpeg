@@ -43,13 +43,13 @@ namespace Sdcb.FFmpeg.AutoGen.ClangMarcroParsers
                     var parentheseN = Between(CharP('(').And(WS), Many(term, CharP(',').And(WS)), CharP(')').And(WS));
 
                     return Choice(
-                        Try(Between(CharP('(').And(WS), typeSyntax, CharP(')'))).And(term).And(WS).Map((id, val) => IExpression.MakeTypeConvert(id, val)),
-                        Try(identifier.And(parentheseN)).Map((id, val) => IExpression.MakeFunctionCall(id, val.ToArray())),
-                        Between('\'', AnyChar, '\'').And(WS).Map(x => IExpression.MakeCharLiteral(x)),
-                        Between('"', ManyChars(NoneOf("\"")), '"').And(WS).Map(x => IExpression.MakeStringLiteral(x)),
-                        NumberLiteral(numberLiteralOptions, "Number").And(WS).Map(x => IExpression.MakeNumberLiteral(x)),
+                        Try(Between(CharP('(').And(WS), typeSyntax, CharP(')'))).And(term).And(WS).Map((id, val) => IExpression.MakeTypeCast(id, val)),
+                        Try(identifier.And(parentheseN)).Map((id, val) => IExpression.MakeCall(id, val.ToArray())),
+                        Between('\'', AnyChar, '\'').And(WS).Map(x => IExpression.MakeChar(x)),
+                        Between('"', ManyChars(NoneOf("\"")), '"').And(WS).Map(x => IExpression.MakeString(x)),
+                        NumberLiteral(numberLiteralOptions, "Number").And(WS).Map(x => IExpression.MakeNumber(x)),
                         parenthese1.Map(x => IExpression.MakeParenthese(x)),
-                        typeSyntax.And(parenthese1).Map((id, val) => IExpression.MakeTypeConvert(id, val)),
+                        typeSyntax.And(parenthese1).Map((id, val) => IExpression.MakeTypeCast(id, val)),
                         identifier.Map(x => IExpression.MakeIdentifier(x))
                     ).Label("expression");
                 })

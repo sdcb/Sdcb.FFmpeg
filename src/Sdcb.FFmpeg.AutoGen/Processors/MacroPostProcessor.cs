@@ -116,8 +116,8 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                         (string left, string right) => TypeHelper.CalculatePrecedence(left) < TypeHelper.CalculatePrecedence(left) ? left : right,
                     }
                 },
-                CharLiteralExpression => "char",
-                FunctionCallExpression func => func.FunctionName switch
+                CharExpression => "char",
+                CallExpression func => func.FunctionName switch
                 {
                     "AV_VERSION" => "string",
                     "AV_VERSION_INT" => "uint",
@@ -146,7 +146,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                     "ulong" => "long", 
                     var x => x, 
                 },
-                NumberLiteralExpression e => e.Number switch
+                NumberExpression e => e.Number switch
                 {
                     { Info: NumberLiteralResultFlags.IsDecimal | NumberLiteralResultFlags.HasIntegerPart } x => "int",
                     { Info: NumberLiteralResultFlags.IsDecimal | NumberLiteralResultFlags.HasIntegerPart | NumberLiteralResultFlags.HasMinusSign } x => "int",
@@ -161,8 +161,8 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 },
                 ParentheseExpression p => DeduceType(p.Content),
                 StringConcatExpression => "string",
-                StringLiteralExpression => "string",
-                TypeConvertExpression tc => typeAliasConverter(tc.DestType),
+                StringExpression => "string",
+                TypeCastExpression tc => typeAliasConverter(tc.DestType),
             };
         }
 
@@ -177,30 +177,30 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             IExpression Rewrite(IExpression src) => src switch
             {
                 BinaryExpression e => new BinaryExpression(Rewrite(e.Left), e.Op, Rewrite(e.Right)),
-                FunctionCallExpression func => func.FunctionName switch
+                CallExpression func => func.FunctionName switch
                 {
-                    "AV_STRINGIFY" => IExpression.MakeStringLiteral(func.Arguments.OfType<IdentifierExpression>().Single().Name),
+                    "AV_STRINGIFY" => IExpression.MakeString(func.Arguments.OfType<IdentifierExpression>().Single().Name),
                     "AV_PIX_FMT_NE" => func.Arguments.OfType<IdentifierExpression>().ToArray() switch
                     {
-                        [var be, var le] => IExpression.MakeTypeConvert("AVPixelFormat", Rewrite(IExpression.MakeIdentifier($"AV_PIX_FMT_{le.Name}"))), 
+                        [var be, var le] => IExpression.MakeTypeCast("AVPixelFormat", Rewrite(IExpression.MakeIdentifier($"AV_PIX_FMT_{le.Name}"))), 
                         var x => IExpression.MakeIdentifier("true ? throw new Exception(\"Convert failed.\") : default")
                     },
-                    _ => new FunctionCallExpression(func.FunctionName, func.Arguments.Select(Rewrite).ToArray()),
+                    _ => new CallExpression(func.FunctionName, func.Arguments.Select(Rewrite).ToArray()),
                 },
                 IdentifierExpression id => id switch
                 {
                     var _ when macros.TryGetValue(id.Name, out IExpression? value) && value != null => id,
-                    var _ when enumMapping.TryGetValue(id.Name, out (EnumerationDefinition Enum, EnumerationItem Item) v) => IExpression.MakeTypeConvert(v.Enum.TypeName, IExpression.MakeIdentifier($"{v.Enum.Name}.{v.Item.Name}")),
+                    var _ when enumMapping.TryGetValue(id.Name, out (EnumerationDefinition Enum, EnumerationItem Item) v) => IExpression.MakeTypeCast(v.Enum.TypeName, IExpression.MakeIdentifier($"{v.Enum.Name}.{v.Item.Name}")),
                     var x => x,
                 },
                 NegativeExpression e => new NegativeExpression(Rewrite(e.Val)),
                 ParentheseExpression p => Rewrite(p.Content),
                 StringConcatExpression e => new StringConcatExpression(e.Str, Rewrite(e.Exp)),
-                TypeConvertExpression tc => Rewrite(tc.Exp) switch { var rewrited => (rewrited, typeDeducter(null, rewrited), aliasTypeConverter(tc.DestType)) } switch
+                TypeCastExpression tc => Rewrite(tc.Exp) switch { var rewrited => (rewrited, typeDeducter(null, rewrited), aliasTypeConverter(tc.DestType)) } switch
                 {
                     (var rewrited, var exprType, var destType) when exprType == destType => rewrited,
-                    (var rewrited, "ulong" , "long")  => new FunctionCallExpression("unchecked", new TypeConvertExpression("long", rewrited)),
-                    (var rewrited, _, var destType)  => new TypeConvertExpression(destType, rewrited),
+                    (var rewrited, "ulong" , "long")  => new CallExpression("unchecked", new TypeCastExpression("long", rewrited)),
+                    (var rewrited, _, var destType)  => new TypeCastExpression(destType, rewrited),
                 }, 
                 var x => x, 
             };
@@ -213,15 +213,15 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             bool IsConst(IExpression expression) => expression switch
             {
                 BinaryExpression e => IsConst(e.Left) && IsConst(e.Right), 
-                CharLiteralExpression => true,
-                FunctionCallExpression func => false,
+                CharExpression => true,
+                CallExpression func => false,
                 IdentifierExpression id => macroExpressionMap!.TryGetValue(id.Name, out var nested) && nested != null && IsConst(nested),
                 NegativeExpression e => IsConst(e.Val),
-                NumberLiteralExpression => true, 
+                NumberExpression => true, 
                 ParentheseExpression p => IsConst(p.Content),
                 StringConcatExpression p => IsConst(p.Exp),
-                StringLiteralExpression => true,
-                TypeConvertExpression => false,
+                StringExpression => true,
+                TypeCastExpression => false,
                 _ => throw new NotSupportedException()
             };
         }
