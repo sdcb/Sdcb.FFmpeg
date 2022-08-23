@@ -17,6 +17,7 @@ namespace Sdcb.FFmpeg.AutoGen.ClangMarcroParsers.Units
         public static IExpression MakeParenthese(IExpression val) => new ParentheseExpression(val);
         public static IExpression MakeCall(string functionName, IExpression[] args) => new CallExpression(functionName, args);
         public static IExpression MakeTypeCast(string destType, IExpression exp) => new TypeCastExpression(destType, exp);
+        public static IExpression MakeTenary(IExpression conditional, IExpression trueResult, IExpression falseResult) => new TernaryExpression(conditional, trueResult, falseResult);
 
         public static IExpression FromImplicitBinary(IExpression left, IExpression right)
         {

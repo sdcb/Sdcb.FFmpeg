@@ -182,7 +182,10 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                     "AV_STRINGIFY" => IExpression.MakeString(func.Arguments.OfType<IdentifierExpression>().Single().Name),
                     "AV_PIX_FMT_NE" => func.Arguments.OfType<IdentifierExpression>().ToArray() switch
                     {
-                        [var be, var le] => IExpression.MakeTypeCast("AVPixelFormat", Rewrite(IExpression.MakeIdentifier($"AV_PIX_FMT_{le.Name}"))), 
+                        [var be, var le] => IExpression.MakeTypeCast("AVPixelFormat", IExpression.MakeTenary(
+                            IExpression.MakeIdentifier("BitConverter.IsLittleEndian"),
+                            Rewrite(IExpression.MakeIdentifier($"AV_PIX_FMT_{le.Name}")),
+                            Rewrite(IExpression.MakeIdentifier($"AV_PIX_FMT_{be.Name}")))), 
                         var x => IExpression.MakeIdentifier("true ? throw new Exception(\"Convert failed.\") : default")
                     },
                     _ => new CallExpression(func.FunctionName, func.Arguments.Select(Rewrite).ToArray()),
