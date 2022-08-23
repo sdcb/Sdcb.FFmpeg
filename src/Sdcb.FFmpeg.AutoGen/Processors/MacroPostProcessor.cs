@@ -21,8 +21,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
         public static IEnumerable<MacroDefinition> Process(
             IReadOnlyList<MacroDefinitionRaw> macros, 
             IReadOnlyList<EnumerationDefinition> enums, 
-            Dictionary<string, string> typeAliasMap, 
-            Dictionary<string, string> wellKnownMacros)
+            Dictionary<string, string> typeAliasMap)
         {
             Func<string, IExpression> parser = ClangMacroParser.MakeParser();
             Stopwatch sw = Stopwatch.StartNew();
@@ -44,7 +43,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             sw.Restart();
 
             Func<string, string> aliasTypeConverter = type => typeAliasMap.TryGetValue(type, out string? alias) ? alias : type;
-            var typeDeductor = MakeDeduceType(macroParsedMap, enums, wellKnownMacros, aliasTypeConverter);
+            var typeDeductor = MakeDeduceType(macroParsedMap, enums, aliasTypeConverter);
             var rewriter = MakeRewriter(macroParsedMap, enums, typeDeductor, aliasTypeConverter);
             var isConst = MakeIsConst(macroParsedMap);
 
@@ -86,7 +85,6 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
         static Func<string?, IExpression, string?> MakeDeduceType(
             Dictionary<string, IExpression?> macroExpressionMap, 
             IReadOnlyList<EnumerationDefinition> enums, 
-            Dictionary<string, string> wellKnownMacroMapping, 
             Func<string, string> typeAliasConverter)
         {
             Dictionary<string, string> enumTypeMapping = enums
@@ -136,7 +134,6 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                     {
                         var x when macroExpressionMap.TryGetValue(id.Name, out IExpression? nested) && nested != null => DeduceType(nested),
                         var x when enumTypeMapping.TryGetValue(id.Name, out string? val) => val,
-                        var x when wellKnownMacroMapping.TryGetValue(id.Name, out string? alias) => alias,
                         _ => null,
                     }
                 },

@@ -10,7 +10,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
     {
         public static (IEnumerable<MacroDefinition>, IEnumerable<EnumerationDefinition>) Process(IEnumerable<MacroDefinition> macros)
         {
-            throw new NotImplementedException();
+            return (macros, new EnumerationDefinition[0]);
         }
     }
 }

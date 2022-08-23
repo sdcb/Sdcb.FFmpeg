@@ -98,15 +98,8 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
 
             MetricHelper.RecordTime("MacroPostProcess", () =>
             {
-                var wellKnownMacros = new Dictionary<string, string>();
-                wellKnownMacros.Add("FFERRTAG", "int");
-                wellKnownMacros.Add("MKTAG", "int");
-                wellKnownMacros.Add("UINT64_C", "ulong");
-                wellKnownMacros.Add("AV_VERSION_INT", "int");
-                wellKnownMacros.Add("AV_VERSION", "string");
-
                 EnumerationDefinition[] enums = Units.OfType<EnumerationDefinition>().ToArray();
-                IEnumerable<Definitions.MacroDefinition> macros = MacroPostProcessor.Process(rawMacros, enums, TypeAliasMap, wellKnownMacros);
+                IEnumerable<Definitions.MacroDefinition> macros = MacroPostProcessor.Process(rawMacros, enums, TypeAliasMap);
 
                 (IEnumerable<Definitions.MacroDefinition> processedMacros, IEnumerable<EnumerationDefinition> macroEnums) = MacroEnumPostProcessor.Process(macros);
                 foreach (EnumerationDefinition @enum in macroEnums)
