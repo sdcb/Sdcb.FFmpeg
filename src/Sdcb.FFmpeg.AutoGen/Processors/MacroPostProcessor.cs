@@ -102,7 +102,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
 
             return (id, expr) => NameTransform(id) switch
             {
-                var x when x is not null => x,
+                { } x => x,
                 _ => DeduceType(expr),
             };
 
