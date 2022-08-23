@@ -70,14 +70,11 @@ namespace Sdcb.FFmpeg.Raw
         public static int FFERRTAG<T1, T2, T3, T4>(T1 a, T2 b, T3 c, T4 d)
             => -MKTAG(a, b, c, d);
 
-        public static int AV_VERSION_INT<T1, T2, T3>(T1 a, T2 b, T3 c) =>
-            (Convert.ToInt32(a) << 16) | (Convert.ToInt32(b) << 8) | Convert.ToInt32(c);
+        public static uint AV_VERSION_INT(uint a, uint b, uint c) => (a << 16) | (b << 8) | c;
 
-        public static string AV_VERSION_DOT<T1, T2, T3>(T1 a, T2 b, T3 c)
-            => $"{a}.{b}.{c}";
+        public static string AV_VERSION_DOT<T1, T2, T3>(T1 a, T2 b, T3 c) => $"{a}.{b}.{c}";
 
-        public static string AV_VERSION<T1, T2, T3>(T1 a, T2 b, T3 c)
-            => AV_VERSION_DOT(a, b, c);
+        public static string AV_VERSION<T1, T2, T3>(T1 a, T2 b, T3 c) => AV_VERSION_DOT(a, b, c);
 
         public static AVChannelLayout AV_CHANNEL_LAYOUT_MASK(int nb, int channel) => new AVChannelLayout 
         { 

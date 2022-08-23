@@ -59,7 +59,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                         return MacroDefinition.FromFailed(raw.Name, cleanedExpr);
                     }
 
-                    string? type = typeDeductor(expression);
+                    string? type = typeDeductor(raw.Name, expression);
                     if (type == null)
                     {
                         return MacroDefinition.FromFailed(raw.Name, cleanedExpr);
@@ -83,7 +83,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             return trimmed;
         }
 
-        static Func<IExpression, string?> MakeDeduceType(
+        static Func<string?, IExpression, string?> MakeDeduceType(
             Dictionary<string, IExpression?> macroExpressionMap, 
             IReadOnlyList<EnumerationDefinition> enums, 
             Dictionary<string, string> wellKnownMacroMapping, 
@@ -92,7 +92,19 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             Dictionary<string, string> enumTypeMapping = enums
                 .SelectMany(k => k.Items.Select(v => new { Key = v.RawName, Value = k.TypeName }))
                 .ToDictionary(k => k.Key, v => v.Value);
-            return DeduceType;
+
+            string? NameTransform(string? name) => name switch
+            {
+                null => null, 
+                var x when x.Contains("_VERSION_") => "uint",
+                _ => null,
+            };
+
+            return (id, expr) => NameTransform(id) switch
+            {
+                var x when x is not null => x,
+                _ => DeduceType(expr),
+            };
 
             string? DeduceType(IExpression expression) => expression switch
             {
@@ -108,6 +120,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 FunctionCallExpression func => func.FunctionName switch
                 {
                     "AV_VERSION" => "string",
+                    "AV_VERSION_INT" => "uint",
                     "AV_CHANNEL_LAYOUT_MASK" => "AVChannelLayout",
                     "AV_PIX_FMT_NE" => func.Arguments.OfType<IdentifierExpression>().ToArray() switch
                     {
@@ -116,7 +129,17 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                     }, 
                     _ => null, 
                 }, 
-                IdentifierExpression id => DeduceTypeForId(id),
+                IdentifierExpression id => id.Name switch { _ => (id.Name, NameTransform(id.Name)) } switch
+                {
+                    (_, string typeName) => typeName,
+                    (string name, _) => name switch
+                    {
+                        var x when macroExpressionMap.TryGetValue(id.Name, out IExpression? nested) && nested != null => DeduceType(nested),
+                        var x when enumTypeMapping.TryGetValue(id.Name, out string? val) => val,
+                        var x when wellKnownMacroMapping.TryGetValue(id.Name, out string? alias) => alias,
+                        _ => null,
+                    }
+                },
                 NegativeExpression e => DeduceType(e.Val) switch
                 {
                     "uint" => "int", 
@@ -141,24 +164,9 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 StringLiteralExpression => "string",
                 TypeConvertExpression tc => typeAliasConverter(tc.DestType),
             };
-
-            string? DeduceTypeForId(IdentifierExpression expression)
-            {
-                if (macroExpressionMap.TryGetValue(expression.Name, out IExpression? nested) && nested != null)
-                {
-                    return DeduceType(nested);
-                }
-
-                if (enumTypeMapping.TryGetValue(expression.Name, out string? val))
-                {
-                    return val;
-                }
-
-                return wellKnownMacroMapping.TryGetValue(expression.Name, out string? alias) ? alias : null;
-            }
         }
 
-        static Func<IExpression, IExpression> MakeRewriter(Dictionary<string, IExpression?> macros, IReadOnlyList<EnumerationDefinition> enums, Func<IExpression, string?> typeDeducter, Func<string, string> aliasTypeConverter)
+        static Func<IExpression, IExpression> MakeRewriter(Dictionary<string, IExpression?> macros, IReadOnlyList<EnumerationDefinition> enums, Func<string?, IExpression, string?> typeDeducter, Func<string, string> aliasTypeConverter)
         {
             Dictionary<string, (EnumerationDefinition Enum, EnumerationItem Item)> enumMapping = enums
                 .SelectMany(x => x.Items.Select(v => new { Key = v.RawName, Enum = x, Item = v }))
@@ -188,7 +196,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 NegativeExpression e => new NegativeExpression(Rewrite(e.Val)),
                 ParentheseExpression p => Rewrite(p.Content),
                 StringConcatExpression e => new StringConcatExpression(e.Str, Rewrite(e.Exp)),
-                TypeConvertExpression tc => Rewrite(tc.Exp) switch { var rewrited => (rewrited, typeDeducter(rewrited), aliasTypeConverter(tc.DestType)) } switch
+                TypeConvertExpression tc => Rewrite(tc.Exp) switch { var rewrited => (rewrited, typeDeducter(null, rewrited), aliasTypeConverter(tc.DestType)) } switch
                 {
                     (var rewrited, var exprType, var destType) when exprType == destType => rewrited,
                     (var rewrited, "ulong" , "long")  => new FunctionCallExpression("unchecked", new TypeConvertExpression("long", rewrited)),
