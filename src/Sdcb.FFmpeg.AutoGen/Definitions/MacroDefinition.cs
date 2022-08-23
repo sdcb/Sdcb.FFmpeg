@@ -17,7 +17,7 @@ namespace Sdcb.FFmpeg.AutoGen.Definitions
 
         public string RawExpressionText { get; init; }
 
-        public virtual string XmlDocument => $"{Name} = {RawExpressionText}";
+        public virtual string XmlDocument => RawExpressionText == ExpressionText ? "" : $"{Name} = {RawExpressionText}";
 
         internal static MacroDefinition FromFailed(string name, string expressionText)
         {
