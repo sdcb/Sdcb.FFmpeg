@@ -7,6 +7,8 @@ namespace Sdcb.FFmpeg.AutoGen.Definitions
     {
         public EnumerationItem[] Items { get; init; }
 
+        public bool IsFlags { get; init; }
+
         public virtual bool Equals(EnumerationDefinition other) =>
             other is not null
             && Equals(Items, other.Items) && base.Equals(other);

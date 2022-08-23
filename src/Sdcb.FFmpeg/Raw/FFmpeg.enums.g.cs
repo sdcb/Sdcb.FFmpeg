@@ -6,6 +6,103 @@ using System.Runtime.InteropServices;
 #pragma warning disable CS0108
 namespace Sdcb.FFmpeg.Raw
 {
+    /// <summary>Macro enum, prefix: AV_CODEC_FLAG_</summary>
+    public enum AV_CODEC_FLAG : 
+    {
+        /// <summary>AV_CODEC_FLAG_UNALIGNED</summary>
+        Unaligned = 1 << 0,
+        /// <summary>AV_CODEC_FLAG_QSCALE</summary>
+        Qscale = 1 << 1,
+        /// <summary>AV_CODEC_FLAG_4MV</summary>
+        _4MV = 1 << 2,
+        /// <summary>AV_CODEC_FLAG_OUTPUT_CORRUPT</summary>
+        OutputCorrupt = 1 << 3,
+        /// <summary>AV_CODEC_FLAG_QPEL</summary>
+        Qpel = 1 << 4,
+        /// <summary>AV_CODEC_FLAG_DROPCHANGED</summary>
+        Dropchanged = 1 << 5,
+        /// <summary>AV_CODEC_FLAG_PASS1</summary>
+        Pass1 = 1 << 9,
+        /// <summary>AV_CODEC_FLAG_PASS2</summary>
+        Pass2 = 1 << 10,
+        /// <summary>AV_CODEC_FLAG_LOOP_FILTER</summary>
+        LoopFilter = 1 << 11,
+        /// <summary>AV_CODEC_FLAG_GRAY</summary>
+        Gray = 1 << 13,
+        /// <summary>AV_CODEC_FLAG_PSNR</summary>
+        Psnr = 1 << 15,
+        /// <summary>AV_CODEC_FLAG_TRUNCATED</summary>
+        Truncated = 1 << 16,
+        /// <summary>AV_CODEC_FLAG_INTERLACED_DCT</summary>
+        InterlacedDct = 1 << 18,
+        /// <summary>AV_CODEC_FLAG_LOW_DELAY</summary>
+        LowDelay = 1 << 19,
+        /// <summary>AV_CODEC_FLAG_GLOBAL_HEADER</summary>
+        GlobalHeader = 1 << 22,
+        /// <summary>AV_CODEC_FLAG_BITEXACT</summary>
+        Bitexact = 1 << 23,
+        /// <summary>AV_CODEC_FLAG_AC_PRED</summary>
+        AcPred = 1 << 24,
+        /// <summary>AV_CODEC_FLAG_INTERLACED_ME</summary>
+        InterlacedMe = 1 << 29,
+        /// <summary>AV_CODEC_FLAG_CLOSED_GOP</summary>
+        ClosedGop = 1 << 31,
+    }
+    
+    /// <summary>Macro enum, prefix: AV_CODEC_FLAG2_</summary>
+    public enum AV_CODEC_FLAG2 : 
+    {
+        /// <summary>AV_CODEC_FLAG2_FAST</summary>
+        Fast = 1 << 0,
+        /// <summary>AV_CODEC_FLAG2_NO_OUTPUT</summary>
+        NoOutput = 1 << 2,
+        /// <summary>AV_CODEC_FLAG2_LOCAL_HEADER</summary>
+        LocalHeader = 1 << 3,
+        /// <summary>AV_CODEC_FLAG2_DROP_FRAME_TIMECODE</summary>
+        DropFrameTimecode = 1 << 13,
+        /// <summary>AV_CODEC_FLAG2_CHUNKS</summary>
+        Chunks = 1 << 15,
+        /// <summary>AV_CODEC_FLAG2_IGNORE_CROP</summary>
+        IgnoreCrop = 1 << 16,
+        /// <summary>AV_CODEC_FLAG2_SHOW_ALL</summary>
+        ShowAll = 1 << 22,
+        /// <summary>AV_CODEC_FLAG2_EXPORT_MVS</summary>
+        ExportMvs = 1 << 28,
+        /// <summary>AV_CODEC_FLAG2_SKIP_MANUAL</summary>
+        SkipManual = 1 << 29,
+        /// <summary>AV_CODEC_FLAG2_RO_FLUSH_NOOP</summary>
+        RoFlushNoop = 1 << 30,
+    }
+    
+    /// <summary>Macro enum, prefix: AV_OPT_FLAG_</summary>
+    public enum AV_OPT_FLAG : 
+    {
+        /// <summary>AV_OPT_FLAG_ENCODING_PARAM</summary>
+        EncodingParam = 1,
+        /// <summary>AV_OPT_FLAG_DECODING_PARAM</summary>
+        DecodingParam = 2,
+        /// <summary>AV_OPT_FLAG_AUDIO_PARAM</summary>
+        AudioParam = 8,
+        /// <summary>AV_OPT_FLAG_VIDEO_PARAM</summary>
+        VideoParam = 16,
+        /// <summary>AV_OPT_FLAG_SUBTITLE_PARAM</summary>
+        SubtitleParam = 32,
+        /// <summary>AV_OPT_FLAG_EXPORT</summary>
+        Export = 64,
+        /// <summary>AV_OPT_FLAG_READONLY</summary>
+        Readonly = 128,
+        /// <summary>AV_OPT_FLAG_BSF_PARAM</summary>
+        BsfParam = 1 << 8,
+        /// <summary>AV_OPT_FLAG_RUNTIME_PARAM</summary>
+        RuntimeParam = 1 << 15,
+        /// <summary>AV_OPT_FLAG_FILTERING_PARAM</summary>
+        FilteringParam = 1 << 16,
+        /// <summary>AV_OPT_FLAG_DEPRECATED</summary>
+        Deprecated = 1 << 17,
+        /// <summary>AV_OPT_FLAG_CHILD_CONSTS</summary>
+        ChildConsts = 1 << 18,
+    }
+    
     public enum AVActiveFormatDescription : int
     {
         Same = 8,
@@ -981,6 +1078,21 @@ namespace Sdcb.FFmpeg.Raw
         To = 1,
     }
     
+    /// <summary>Macro enum, prefix: AVIO_FLAG_</summary>
+    public enum AVIO_FLAG :  : uint
+    {
+        /// <summary>AVIO_FLAG_READ</summary>
+        Read = 1,
+        /// <summary>AVIO_FLAG_WRITE</summary>
+        Write = 2,
+        /// <summary>AVIO_FLAG_READ_WRITE</summary>
+        ReadWrite = Read | Write,
+        /// <summary>AVIO_FLAG_NONBLOCK</summary>
+        Nonblock = 8,
+        /// <summary>AVIO_FLAG_DIRECT</summary>
+        Direct = 0x8000,
+    }
+    
     /// <summary>Different data types that can be returned via the AVIO write_data_type callback.</summary>
     public enum AVIODataMarkerType : int
     {
@@ -1696,6 +1808,41 @@ namespace Sdcb.FFmpeg.Raw
         _24HOURSMAX = 2,
         /// <summary>negative time values are allowed</summary>
         Allownegative = 4,
+    }
+    
+    /// <summary>Macro enum, prefix: AV_LOG_</summary>
+    [Flags]
+    public enum LogFlags : 
+    {
+        /// <summary>AV_LOG_SKIP_REPEATED</summary>
+        SkipRepeated = 1,
+        /// <summary>AV_LOG_PRINT_LEVEL</summary>
+        PrintLevel = 2,
+    }
+    
+    /// <summary>Macro enum, prefix: AV_LOG_</summary>
+    public enum LogLevel : 
+    {
+        /// <summary>AV_LOG_QUIET</summary>
+        Quiet = -8,
+        /// <summary>AV_LOG_PANIC</summary>
+        Panic = 0,
+        /// <summary>AV_LOG_FATAL</summary>
+        Fatal = 8,
+        /// <summary>AV_LOG_ERROR</summary>
+        Error = 16,
+        /// <summary>AV_LOG_WARNING</summary>
+        Warning = 24,
+        /// <summary>AV_LOG_INFO</summary>
+        Info = 32,
+        /// <summary>AV_LOG_VERBOSE</summary>
+        Verbose = 40,
+        /// <summary>AV_LOG_DEBUG</summary>
+        Debug = 48,
+        /// <summary>AV_LOG_TRACE</summary>
+        Trace = 56,
+        /// <summary>AV_LOG_MAX_OFFSET</summary>
+        MaxOffset = Trace - Quiet,
     }
     
     /// <summary>Dithering algorithms</summary>

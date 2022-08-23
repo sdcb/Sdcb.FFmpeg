@@ -97,6 +97,7 @@ namespace Sdcb.FFmpeg.AutoGen
         {
             WriteSummary(enumeration);
             WriteObsoletion(enumeration);
+            if (enumeration.IsFlags) WriteLine("[Flags]");
             WriteLine($"public enum {enumeration.Name} : {enumeration.TypeName}");
 
             using (BeginBlock())
