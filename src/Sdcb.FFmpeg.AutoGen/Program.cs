@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using Sdcb.FFmpeg.AutoGen.Processors;
 
 namespace Sdcb.FFmpeg.AutoGen
@@ -24,10 +25,10 @@ namespace Sdcb.FFmpeg.AutoGen
             }
 
             var existingInlineFunctions =
-                ExistingInlineFunctionsHelper.LoadInlineFunctions(Path.Combine(options.OutputDir,
-                    "FFmpeg.functions.inline.g.cs"));
+                MetricHelper.RecordTime("Loading inline functions", () => ExistingInlineFunctionsHelper.LoadInlineFunctions(Path.Combine(options.OutputDir,
+                    "FFmpeg.functions.inline.g.cs")));
 
-            var exports = FunctionExportHelper.LoadFunctionExports(options.FFmpegBinDir).ToArray();
+            var exports = MetricHelper.RecordTime("Loading functions", () => FunctionExportHelper.LoadFunctionExports(options.FFmpegBinDir).ToArray());
 
             var astProcessor = new ASTProcessor
             {

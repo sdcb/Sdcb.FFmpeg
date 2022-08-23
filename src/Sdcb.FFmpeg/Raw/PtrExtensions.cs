@@ -7,12 +7,12 @@ namespace Sdcb.FFmpeg.Raw
     internal static class PtrExtensions
     {
 #if NET6_0_OR_GREATER
-        public static string PtrToStringUTF8(this IntPtr ptr)
+        public static string? PtrToStringUTF8(this IntPtr ptr)
         {
             return Marshal.PtrToStringUTF8(ptr);
         }
 #else
-        public unsafe static string PtrToStringUTF8(this IntPtr ptr)
+        public unsafe static string? PtrToStringUTF8(this IntPtr ptr)
         {
             if (ptr == IntPtr.Zero)
                 return null;

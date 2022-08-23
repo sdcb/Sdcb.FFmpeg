@@ -33,7 +33,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                     {
                         return parser(v.ExpressionText);
                     }
-                    catch (NotSupportedException e)
+                    catch (NotSupportedException )
                     {
                         //Console.WriteLine(e.ToString());
                         return null;
