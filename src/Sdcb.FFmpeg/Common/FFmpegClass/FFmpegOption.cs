@@ -43,7 +43,7 @@ namespace Sdcb.FFmpeg.Common
 
         public double Max => _p->max;
 
-        public OptionFlags Flags => (OptionFlags)_p->flags;
+        public AV_OPT_FLAG Flags => (AV_OPT_FLAG)_p->flags;
 
         public string? Unit => Marshal.PtrToStringAnsi((IntPtr)_p->unit);
     }

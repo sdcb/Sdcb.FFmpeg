@@ -16,16 +16,18 @@ namespace Sdcb.FFmpeg.AutoGen
 
         public bool SuppressUnmanagedCodeSecurity { get; init; }
 
-        public void WriteMacro(MacroDefinition macro)
+        public void WriteMacro(MacroDefinitionBase macro)
         {
-            if (macro.IsValid)
+            if (macro is MacroDefinitionGood good)
             {
                 WriteSummary(macro);
-                var constOrStatic = macro.IsConst ? "const" : "static readonly";
-                WriteLine($"public {constOrStatic} {macro.TypeName} {macro.Name} = {macro.ExpressionText};");
+                var constOrStatic = good.IsConst ? "const" : "static readonly";
+                WriteLine($"public {constOrStatic} {good.TypeName} {macro.Name} = {good.ExpressionText};");
             }
             else
-                WriteLine($"// public static {macro.Name} = {macro.ExpressionText};");
+            {
+                WriteLine($"// public static {macro.Name} = {macro.RawExpressionText};");
+            }   
         }
 
         public void WriteEnumeration(EnumerationDefinition enumeration)

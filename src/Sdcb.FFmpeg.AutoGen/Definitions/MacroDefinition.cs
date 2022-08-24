@@ -1,45 +1,31 @@
+#nullable enable
+using Sdcb.FFmpeg.AutoGen.ClangMarcroParsers.Units;
 using System;
 
 namespace Sdcb.FFmpeg.AutoGen.Definitions
 {
-    internal record MacroDefinitionRaw : IDefinition
-    {
-        public string Name { get; init; }
+    internal record MacroDefinitionRaw(string Name, string RawExpressionText) : IDefinition;
 
-        public string ExpressionText { get; init; }
+    internal record MacroDefinitionBase(string Name, string RawExpressionText) : IDefinition, ICanGenerateXmlDoc
+    {
+        public virtual bool IsValid => false;
+        
+        public virtual string XmlDocument => $"{Name} = {RawExpressionText}";
+
+        internal static MacroDefinitionBase FromFailed(string name, string rawExpressionText)
+        {
+            return new MacroDefinitionBase(name, rawExpressionText);
+        }
+
+        internal static MacroDefinitionGood FromSuccess(string name, string rawExpressionText, string typeName, bool isConst, string expressionText)
+        {
+            return new MacroDefinitionGood(name, rawExpressionText, isConst, typeName, expressionText);
+        }
     }
 
-    internal record MacroDefinition : MacroDefinitionRaw, ICanGenerateXmlDoc
+    internal record MacroDefinitionGood(string Name, string RawExpressionText, bool IsConst, string TypeName, string ExpressionText) : MacroDefinitionBase(Name, RawExpressionText)
     {
-        public string TypeName { get; init; }
-        public bool IsValid { get; init; }
-        public bool IsConst { get; init; }
-
-        public string RawExpressionText { get; init; }
-
-        public virtual string XmlDocument => RawExpressionText == ExpressionText ? "" : $"{Name} = {RawExpressionText}";
-
-        internal static MacroDefinition FromFailed(string name, string expressionText)
-        {
-            return new MacroDefinition
-            {
-                Name = name, 
-                ExpressionText = expressionText, 
-                IsValid = false, 
-            };
-        }
-
-        internal static MacroDefinition FromSuccess(string name, string rawExpressionText, bool isConst, string typeName, string expressionText)
-        {
-            return new MacroDefinition
-            {
-                Name = name,
-                RawExpressionText = rawExpressionText,
-                ExpressionText = expressionText,
-                IsValid = true,
-                IsConst = isConst, 
-                TypeName = typeName, 
-            };
-        }
+        public override bool IsValid => true;
+        public override string XmlDocument => RawExpressionText == ExpressionText ? "" : $"{Name} = {RawExpressionText}";
     }
 }

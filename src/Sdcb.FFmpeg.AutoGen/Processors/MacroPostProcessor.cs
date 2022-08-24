@@ -18,61 +18,102 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
         private static readonly Regex EolEscapeRegex =
             new(@"\\\s*[\r\n|\r|\n]\s*", RegexOptions.Compiled | RegexOptions.Multiline);
 
-        public static IEnumerable<MacroDefinition> Process(
-            IReadOnlyList<MacroDefinitionRaw> macros, 
-            IReadOnlyList<EnumerationDefinition> enums, 
-            Dictionary<string, string> typeAliasMap)
+        private static Dictionary<string, string> TypeAliasMap = new()
+        {
+            ["int64_t"] = "long",
+            ["UINT64_C"] = "ulong",
+        };
+
+        public static (IEnumerable<MacroDefinitionBase>, Dictionary<string, IExpression?>) Process(
+            IReadOnlyList<MacroDefinitionRaw> macros,
+            IReadOnlyList<EnumerationDefinition> enums)
         {
             Func<string, IExpression> parser = ClangMacroParser.MakeParser();
-            Stopwatch sw = Stopwatch.StartNew();
             Dictionary<string, IExpression?> macroParsedMap = macros
                 .ToDictionary(k => k.Name, v =>
                 {
                     try
                     {
-                        return parser(v.ExpressionText);
+                        return parser(v.RawExpressionText);
                     }
-                    catch (NotSupportedException )
+                    catch (NotSupportedException)
                     {
                         //Console.WriteLine(e.ToString());
                         return null;
                     }
                 });
+
+            return (ProcessInternal(macros, enums, macroParsedMap), macroParsedMap);
+        }
+
+        private static IEnumerable<MacroDefinitionBase> ProcessInternal(
+            IReadOnlyList<MacroDefinitionRaw> macros, 
+            IReadOnlyList<EnumerationDefinition> enums,
+            Dictionary<string, IExpression?> macroParsedMap)
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+            
             int goodCount = macroParsedMap.Values.Count(x => x != null);
             Console.WriteLine($"Parsing macro done, elapsed={sw.ElapsedMilliseconds}ms, total/good/failed={macroParsedMap.Count}/{goodCount}/{macroParsedMap.Count - goodCount}");
             sw.Restart();
 
-            Func<string, string> aliasTypeConverter = type => typeAliasMap.TryGetValue(type, out string? alias) ? alias : type;
+            Func<string, string> aliasTypeConverter = type => TypeAliasMap.TryGetValue(type, out string? alias) ? alias : type;
             var typeDeductor = MakeDeduceType(macroParsedMap, enums, aliasTypeConverter);
             var rewriter = MakeRewriter(macroParsedMap, enums, typeDeductor, aliasTypeConverter);
-            var isConst = MakeIsConst(macroParsedMap);
+            var isConster = MakeIsConst(macroParsedMap);
 
             int validCount = 0;
-            foreach (MacroDefinition processed in macros
+            foreach (MacroDefinitionBase processed in macros
                 .Select(raw =>
                 {
-                    string cleanedExpr = CleanUp(raw.ExpressionText);
+                    string cleanedExpr = CleanUp(raw.RawExpressionText);
 
                     if (!macroParsedMap.TryGetValue(raw.Name, out IExpression? expression) || expression == null)
                     {
-                        return MacroDefinition.FromFailed(raw.Name, cleanedExpr);
+                        return MacroDefinitionBase.FromFailed(raw.Name, cleanedExpr);
                     }
 
                     string? type = typeDeductor(raw.Name, expression);
                     if (type == null)
                     {
-                        return MacroDefinition.FromFailed(raw.Name, cleanedExpr);
+                        return MacroDefinitionBase.FromFailed(raw.Name, cleanedExpr);
                     }
 
-                    IExpression rewritedExpression = rewriter(expression);
-
                     ++validCount;
-                    return MacroDefinition.FromSuccess(raw.Name, cleanedExpr, isConst(rewritedExpression), type, rewritedExpression.Serialize());
+                    IExpression rewrited = rewriter(expression);
+                    return MacroDefinitionBase.FromSuccess(raw.Name, cleanedExpr, type, isConster(rewrited), rewrited.Serialize());
                 }))
             {
                 yield return processed;
             }
             Console.WriteLine($"Macro postprocess done, elapsed={sw.ElapsedMilliseconds}ms, total/valid={macros.Count}/{validCount}");
+        }
+
+        public static IEnumerable<IDefinition> MakeExpression(
+            IEnumerable<MacroDefinitionBase> processedMacros, 
+            IReadOnlyList<EnumerationDefinition> enums,
+            Dictionary<string, IExpression?> macroParsedMap)
+        {
+            HashSet<string> names = processedMacros.Select(x => x.Name).ToHashSet();
+            Func<string, string> aliasTypeConverter = type => TypeAliasMap.TryGetValue(type, out string? alias) ? alias : type;
+            var typeDeductor = MakeDeduceType(macroParsedMap!, enums, aliasTypeConverter);
+            var rewriter = MakeRewriter(macroParsedMap.Where(x => names.Contains(x.Key)).ToDictionary(k => k.Key, v => v.Value), enums, typeDeductor, aliasTypeConverter);
+
+            foreach (MacroDefinitionBase processedMacro in processedMacros)
+            {
+                if (processedMacro is MacroDefinitionGood good)
+                {
+                    IExpression expr = macroParsedMap[good.Name]!;
+                    yield return good with 
+                    { 
+                        ExpressionText = rewriter(expr).Serialize(), 
+                    };
+                }
+                else
+                {
+                    yield return processedMacro;
+                }
+            }
         }
 
         static string CleanUp(string expression)
@@ -160,6 +201,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 StringConcatExpression => "string",
                 StringExpression => "string",
                 TypeCastExpression tc => typeAliasConverter(tc.DestType),
+                TernaryExpression te => DeduceType(te.trueResult), 
             };
         }
 

@@ -1,7 +1,9 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
+using Sdcb.FFmpeg.AutoGen.ClangMarcroParsers.Units;
 using Sdcb.FFmpeg.AutoGen.Definitions;
 using MacroDefinition = CppSharp.AST.MacroDefinition;
 
@@ -9,26 +11,22 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
 {
     internal class ASTProcessor
     {
-        public ASTProcessor()
+        public ASTProcessor(Dictionary<string, FunctionExport> functionExportMap)
         {
             IgnoreUnitNames = new HashSet<string>();
             FunctionProcessor = new FunctionProcessor(this);
             StructureProcessor = new StructureProcessor(this);
             EnumerationProcessor = new EnumerationProcessor(this);
+            FunctionExportMap = functionExportMap;
         }
 
         public HashSet<string> IgnoreUnitNames { get; }
-        public Dictionary<string, string> TypeAliasMap { get; } = new Dictionary<string, string>
-        {
-            ["int64_t"] = "long",
-            ["UINT64_C"] = "ulong",
-        };
 
         public EnumerationProcessor EnumerationProcessor { get; }
         public StructureProcessor StructureProcessor { get; }
         public FunctionProcessor FunctionProcessor { get; }
 
-        public Dictionary<string, FunctionExport> FunctionExportMap { get; init; }
+        public Dictionary<string, FunctionExport> FunctionExportMap { get; }
 
         public List<IDefinition> Units { get; init; } = new();
 
@@ -72,18 +70,15 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
 
         public void Process(IEnumerable<TranslationUnit> units)
         {
-            MacroDefinitionRaw[] rawMacros = default;
+            MacroDefinitionRaw[]? rawMacros = default;
 
             MetricHelper.RecordTime("Macro/Enumeration/Structure/Functions Process", () =>
             {
                 rawMacros = units.SelectMany(unit => unit.PreprocessedEntities
-                    .OfType<MacroDefinition>()
-                    .Where(x => !string.IsNullOrWhiteSpace(x.Expression))
-                    .Select(macro => new MacroDefinitionRaw
-                    {
-                        Name = macro.Name,
-                        ExpressionText = macro.Expression
-                    }))
+                        .OfType<MacroDefinition>()
+                        .Where(x => !string.IsNullOrWhiteSpace(x.Expression))
+                        .Select(macro => new MacroDefinitionRaw(macro.Name, macro.Expression))
+                    )
                     .GroupBy(x => x.Name)
                     .Select(x => x.Last())
                     .ToArray();
@@ -98,16 +93,17 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
 
             MetricHelper.RecordTime("MacroPostProcess", () =>
             {
-                EnumerationDefinition[] enums = Units.OfType<EnumerationDefinition>().ToArray();
-                IEnumerable<Definitions.MacroDefinition> macros = MacroPostProcessor.Process(rawMacros, enums, TypeAliasMap);
+                List<EnumerationDefinition> enums = Units.OfType<EnumerationDefinition>().ToList();
+                (IEnumerable<MacroDefinitionBase> macros, Dictionary<string, IExpression?> macroParsedMap) = MacroPostProcessor.Process(rawMacros!, enums);
 
-                (IEnumerable<Definitions.MacroDefinition> processedMacros, IEnumerable<EnumerationDefinition> macroEnums) = MacroEnumPostProcessor.Process(macros);
+                (IEnumerable<MacroDefinitionBase> processedMacros, IEnumerable<EnumerationDefinition> macroEnums) = MacroEnumPostProcessor.Process(macros);
+                enums.AddRange(macroEnums);
                 foreach (EnumerationDefinition @enum in macroEnums)
                 {
                     AddUnit(@enum);
                 }
 
-                foreach (Definitions.MacroDefinition macroDefinition in processedMacros)
+                foreach (MacroDefinitionBase macroDefinition in MacroPostProcessor.MakeExpression(processedMacros, enums, macroParsedMap))
                 {
                     AddUnit(macroDefinition);
                 }

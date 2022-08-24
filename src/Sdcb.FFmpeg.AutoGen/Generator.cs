@@ -9,7 +9,6 @@ using CppSharp.Parser;
 using Sdcb.FFmpeg.AutoGen.Definitions;
 using Sdcb.FFmpeg.AutoGen.Processors;
 using ClangParser = CppSharp.ClangParser;
-using MacroDefinition = Sdcb.FFmpeg.AutoGen.Definitions.MacroDefinition;
 
 namespace Sdcb.FFmpeg.AutoGen
 {
@@ -107,12 +106,14 @@ namespace Sdcb.FFmpeg.AutoGen
                 {
                     writer.WriteLine($"public unsafe static partial class {ClassName}");
                     using (writer.BeginBlock())
-                        units.OfType<MacroDefinition>()
+                    {
+                        units.OfType<MacroDefinitionBase>()
                             .OrderBy(x => x.Name)
                             .ForEach((macro, i) =>
                             {
                                 writer.WriteMacro(macro);
                             });
+                    }   
                 });
         }
 

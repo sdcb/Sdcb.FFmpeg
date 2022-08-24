@@ -6,8 +6,133 @@ using System.Runtime.InteropServices;
 #pragma warning disable CS0108
 namespace Sdcb.FFmpeg.Raw
 {
+    /// <summary>Macro enum, prefix: AV_CH_</summary>
+    [Flags]
+    public enum AV_CH : int
+    {
+        /// <summary>AV_CH_FRONT_LEFT</summary>
+        FrontLeft = 1 << (int)AVChannel.FrontLeft,
+        /// <summary>AV_CH_FRONT_RIGHT</summary>
+        FrontRight = 1 << (int)AVChannel.FrontRight,
+        /// <summary>AV_CH_FRONT_CENTER</summary>
+        FrontCenter = 1 << (int)AVChannel.FrontCenter,
+        /// <summary>AV_CH_LOW_FREQUENCY</summary>
+        LowFrequency = 1 << (int)AVChannel.LowFrequency,
+        /// <summary>AV_CH_BACK_LEFT</summary>
+        BackLeft = 1 << (int)AVChannel.BackLeft,
+        /// <summary>AV_CH_BACK_RIGHT</summary>
+        BackRight = 1 << (int)AVChannel.BackRight,
+        /// <summary>AV_CH_FRONT_LEFT_OF_CENTER</summary>
+        FrontLeftOfCenter = 1 << (int)AVChannel.FrontLeftOfCenter,
+        /// <summary>AV_CH_FRONT_RIGHT_OF_CENTER</summary>
+        FrontRightOfCenter = 1 << (int)AVChannel.FrontRightOfCenter,
+        /// <summary>AV_CH_BACK_CENTER</summary>
+        BackCenter = 1 << (int)AVChannel.BackCenter,
+        /// <summary>AV_CH_SIDE_LEFT</summary>
+        SideLeft = 1 << (int)AVChannel.SideLeft,
+        /// <summary>AV_CH_SIDE_RIGHT</summary>
+        SideRight = 1 << (int)AVChannel.SideRight,
+        /// <summary>AV_CH_TOP_CENTER</summary>
+        TopCenter = 1 << (int)AVChannel.TopCenter,
+        /// <summary>AV_CH_TOP_FRONT_LEFT</summary>
+        TopFrontLeft = 1 << (int)AVChannel.TopFrontLeft,
+        /// <summary>AV_CH_TOP_FRONT_CENTER</summary>
+        TopFrontCenter = 1 << (int)AVChannel.TopFrontCenter,
+        /// <summary>AV_CH_TOP_FRONT_RIGHT</summary>
+        TopFrontRight = 1 << (int)AVChannel.TopFrontRight,
+        /// <summary>AV_CH_TOP_BACK_LEFT</summary>
+        TopBackLeft = 1 << (int)AVChannel.TopBackLeft,
+        /// <summary>AV_CH_TOP_BACK_CENTER</summary>
+        TopBackCenter = 1 << (int)AVChannel.TopBackCenter,
+        /// <summary>AV_CH_TOP_BACK_RIGHT</summary>
+        TopBackRight = 1 << (int)AVChannel.TopBackRight,
+        /// <summary>AV_CH_STEREO_LEFT</summary>
+        StereoLeft = 1 << (int)AVChannel.StereoLeft,
+        /// <summary>AV_CH_STEREO_RIGHT</summary>
+        StereoRight = 1 << (int)AVChannel.StereoRight,
+        /// <summary>AV_CH_WIDE_LEFT</summary>
+        WideLeft = 1 << (int)AVChannel.WideLeft,
+        /// <summary>AV_CH_WIDE_RIGHT</summary>
+        WideRight = 1 << (int)AVChannel.WideRight,
+        /// <summary>AV_CH_SURROUND_DIRECT_LEFT</summary>
+        SurroundDirectLeft = 1 << (int)AVChannel.SurroundDirectLeft,
+        /// <summary>AV_CH_SURROUND_DIRECT_RIGHT</summary>
+        SurroundDirectRight = 1 << (int)AVChannel.SurroundDirectRight,
+        /// <summary>AV_CH_LOW_FREQUENCY_2</summary>
+        LowFrequency_2 = 1 << (int)AVChannel.LowFrequency_2,
+        /// <summary>AV_CH_TOP_SIDE_LEFT</summary>
+        TopSideLeft = 1 << (int)AVChannel.TopSideLeft,
+        /// <summary>AV_CH_TOP_SIDE_RIGHT</summary>
+        TopSideRight = 1 << (int)AVChannel.TopSideRight,
+        /// <summary>AV_CH_BOTTOM_FRONT_CENTER</summary>
+        BottomFrontCenter = 1 << (int)AVChannel.BottomFrontCenter,
+        /// <summary>AV_CH_BOTTOM_FRONT_LEFT</summary>
+        BottomFrontLeft = 1 << (int)AVChannel.BottomFrontLeft,
+        /// <summary>AV_CH_BOTTOM_FRONT_RIGHT</summary>
+        BottomFrontRight = 1 << (int)AVChannel.BottomFrontRight,
+        /// <summary>AV_CH_LAYOUT_MONO</summary>
+        LayoutMono = FrontCenter,
+        /// <summary>AV_CH_LAYOUT_STEREO</summary>
+        LayoutStereo = FrontLeft | FrontRight,
+        /// <summary>AV_CH_LAYOUT_2POINT1</summary>
+        Layout_2POINT1 = LayoutStereo | LowFrequency,
+        /// <summary>AV_CH_LAYOUT_2_1</summary>
+        Layout_2_1 = LayoutStereo | BackCenter,
+        /// <summary>AV_CH_LAYOUT_SURROUND</summary>
+        LayoutSurround = LayoutStereo | FrontCenter,
+        /// <summary>AV_CH_LAYOUT_3POINT1</summary>
+        Layout_3POINT1 = LayoutSurround | LowFrequency,
+        /// <summary>AV_CH_LAYOUT_4POINT0</summary>
+        Layout_4POINT0 = LayoutSurround | BackCenter,
+        /// <summary>AV_CH_LAYOUT_4POINT1</summary>
+        Layout_4POINT1 = Layout_4POINT0 | LowFrequency,
+        /// <summary>AV_CH_LAYOUT_2_2</summary>
+        Layout_2_2 = LayoutStereo | SideLeft | SideRight,
+        /// <summary>AV_CH_LAYOUT_QUAD</summary>
+        LayoutQuad = LayoutStereo | BackLeft | BackRight,
+        /// <summary>AV_CH_LAYOUT_5POINT0</summary>
+        Layout_5POINT0 = LayoutSurround | SideLeft | SideRight,
+        /// <summary>AV_CH_LAYOUT_5POINT1</summary>
+        Layout_5POINT1 = Layout_5POINT0 | LowFrequency,
+        /// <summary>AV_CH_LAYOUT_5POINT0_BACK</summary>
+        Layout_5POINT0Back = LayoutSurround | BackLeft | BackRight,
+        /// <summary>AV_CH_LAYOUT_5POINT1_BACK</summary>
+        Layout_5POINT1Back = Layout_5POINT0Back | LowFrequency,
+        /// <summary>AV_CH_LAYOUT_6POINT0</summary>
+        Layout_6POINT0 = Layout_5POINT0 | BackCenter,
+        /// <summary>AV_CH_LAYOUT_6POINT0_FRONT</summary>
+        Layout_6POINT0Front = Layout_2_2 | FrontLeftOfCenter | FrontRightOfCenter,
+        /// <summary>AV_CH_LAYOUT_HEXAGONAL</summary>
+        LayoutHexagonal = Layout_5POINT0Back | BackCenter,
+        /// <summary>AV_CH_LAYOUT_6POINT1</summary>
+        Layout_6POINT1 = Layout_5POINT1 | BackCenter,
+        /// <summary>AV_CH_LAYOUT_6POINT1_BACK</summary>
+        Layout_6POINT1Back = Layout_5POINT1Back | BackCenter,
+        /// <summary>AV_CH_LAYOUT_6POINT1_FRONT</summary>
+        Layout_6POINT1Front = Layout_6POINT0Front | LowFrequency,
+        /// <summary>AV_CH_LAYOUT_7POINT0</summary>
+        Layout_7POINT0 = Layout_5POINT0 | BackLeft | BackRight,
+        /// <summary>AV_CH_LAYOUT_7POINT0_FRONT</summary>
+        Layout_7POINT0Front = Layout_5POINT0 | FrontLeftOfCenter | FrontRightOfCenter,
+        /// <summary>AV_CH_LAYOUT_7POINT1</summary>
+        Layout_7POINT1 = Layout_5POINT1 | BackLeft | BackRight,
+        /// <summary>AV_CH_LAYOUT_7POINT1_WIDE</summary>
+        Layout_7POINT1Wide = Layout_5POINT1 | FrontLeftOfCenter | FrontRightOfCenter,
+        /// <summary>AV_CH_LAYOUT_7POINT1_WIDE_BACK</summary>
+        Layout_7POINT1WideBack = Layout_5POINT1Back | FrontLeftOfCenter | FrontRightOfCenter,
+        /// <summary>AV_CH_LAYOUT_OCTAGONAL</summary>
+        LayoutOctagonal = Layout_5POINT0 | BackLeft | BackCenter | BackRight,
+        /// <summary>AV_CH_LAYOUT_HEXADECAGONAL</summary>
+        LayoutHexadecagonal = LayoutOctagonal | WideLeft | WideRight | TopBackLeft | TopBackRight | TopBackCenter | TopFrontCenter | TopFrontLeft | TopFrontRight,
+        /// <summary>AV_CH_LAYOUT_STEREO_DOWNMIX</summary>
+        LayoutStereoDownmix = StereoLeft | StereoRight,
+        /// <summary>AV_CH_LAYOUT_22POINT2</summary>
+        Layout_22POINT2 = Layout_5POINT1Back | FrontLeftOfCenter | FrontRightOfCenter | BackCenter | LowFrequency_2 | SideLeft | SideRight | TopFrontLeft | TopFrontRight | TopFrontCenter | TopCenter | TopBackLeft | TopBackRight | TopSideLeft | TopSideRight | TopBackCenter | BottomFrontCenter | BottomFrontLeft | BottomFrontRight,
+    }
+    
     /// <summary>Macro enum, prefix: AV_CODEC_FLAG_</summary>
-    public enum AV_CODEC_FLAG : 
+    [Flags]
+    public enum AV_CODEC_FLAG : int
     {
         /// <summary>AV_CODEC_FLAG_UNALIGNED</summary>
         Unaligned = 1 << 0,
@@ -50,7 +175,8 @@ namespace Sdcb.FFmpeg.Raw
     }
     
     /// <summary>Macro enum, prefix: AV_CODEC_FLAG2_</summary>
-    public enum AV_CODEC_FLAG2 : 
+    [Flags]
+    public enum AV_CODEC_FLAG2 : int
     {
         /// <summary>AV_CODEC_FLAG2_FAST</summary>
         Fast = 1 << 0,
@@ -75,7 +201,8 @@ namespace Sdcb.FFmpeg.Raw
     }
     
     /// <summary>Macro enum, prefix: AV_OPT_FLAG_</summary>
-    public enum AV_OPT_FLAG : 
+    [Flags]
+    public enum AV_OPT_FLAG : int
     {
         /// <summary>AV_OPT_FLAG_ENCODING_PARAM</summary>
         EncodingParam = 1,
@@ -101,6 +228,16 @@ namespace Sdcb.FFmpeg.Raw
         Deprecated = 1 << 17,
         /// <summary>AV_OPT_FLAG_CHILD_CONSTS</summary>
         ChildConsts = 1 << 18,
+    }
+    
+    /// <summary>Macro enum, prefix: AV_OPT_SEARCH_</summary>
+    [Flags]
+    public enum AV_OPT_SEARCH : int
+    {
+        /// <summary>AV_OPT_SEARCH_CHILDREN</summary>
+        Children = 1 << 0,
+        /// <summary>AV_OPT_SEARCH_FAKE_OBJ</summary>
+        FakeObj = 1 << 1,
     }
     
     public enum AVActiveFormatDescription : int
@@ -1079,7 +1216,8 @@ namespace Sdcb.FFmpeg.Raw
     }
     
     /// <summary>Macro enum, prefix: AVIO_FLAG_</summary>
-    public enum AVIO_FLAG :  : uint
+    [Flags]
+    public enum AVIO_FLAG : int
     {
         /// <summary>AVIO_FLAG_READ</summary>
         Read = 1,
@@ -1811,8 +1949,7 @@ namespace Sdcb.FFmpeg.Raw
     }
     
     /// <summary>Macro enum, prefix: AV_LOG_</summary>
-    [Flags]
-    public enum LogFlags : 
+    public enum LogFlags : int
     {
         /// <summary>AV_LOG_SKIP_REPEATED</summary>
         SkipRepeated = 1,
@@ -1821,7 +1958,7 @@ namespace Sdcb.FFmpeg.Raw
     }
     
     /// <summary>Macro enum, prefix: AV_LOG_</summary>
-    public enum LogLevel : 
+    public enum LogLevel : int
     {
         /// <summary>AV_LOG_QUIET</summary>
         Quiet = -8,

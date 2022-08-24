@@ -28,14 +28,11 @@ namespace Sdcb.FFmpeg.AutoGen
                 MetricHelper.RecordTime("Loading inline functions", () => ExistingInlineFunctionsHelper.LoadInlineFunctions(Path.Combine(options.OutputDir,
                     "FFmpeg.functions.inline.g.cs")));
 
-            var exports = MetricHelper.RecordTime("Loading functions", () => FunctionExportHelper.LoadFunctionExports(options.FFmpegBinDir).ToArray());
+            FunctionExport[] exports = MetricHelper.RecordTime("Loading functions", () => FunctionExportHelper.LoadFunctionExports(options.FFmpegBinDir).ToArray());
 
-            var astProcessor = new ASTProcessor
-            {
-                FunctionExportMap = exports
+            ASTProcessor astProcessor = new (exports
                     .GroupBy(x => x.Name).Select(x => x.First()) // Eliminate duplicated names
-                    .ToDictionary(x => x.Name)
-            };
+                    .ToDictionary(x => x.Name));
             astProcessor.IgnoreUnitNames.Add("__NSConstantString_tag");
 
             var defines = new[] { "__STDC_CONSTANT_MACROS" };

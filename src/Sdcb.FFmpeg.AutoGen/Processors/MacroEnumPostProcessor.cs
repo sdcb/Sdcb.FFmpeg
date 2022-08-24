@@ -9,32 +9,33 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
 {
     internal static class MacroEnumPostProcessor
     {
-        public static (IReadOnlyList<MacroDefinition>, IReadOnlyList<EnumerationDefinition>) Process(IEnumerable<MacroDefinition> macros)
+        public static (IReadOnlyList<MacroDefinitionBase>, IReadOnlyList<EnumerationDefinition>) Process(IEnumerable<MacroDefinitionBase> macros)
         {
             MacroEnumDef[] knownConstEnums = new MacroEnumDef[]
             {
-                            new ("AV_CODEC_FLAG_", "AV_CODEC_FLAG"),
-                            new ("AV_CODEC_FLAG2_", "AV_CODEC_FLAG2"),
-                            //new ("SLICE_FLAG_", "SLICE_FLAG"),
-                            //new ("AV_CH_", "Channels"),
-                            //new ("AV_CODEC_CAP_", "CodecCompability"),
-                            //new ("FF_MB_DECISION_", "FFMacroblockDecision"),
-                            //new ("FF_CMP_", "FFComparison"),
-                            //new ("PARSER_FLAG_", "ParserFlags"),
-                            new ("AVIO_FLAG_", "AVIO_FLAG"),
-                            //new ("FF_PROFILE_", "FFProfile"),
-                            //new ("AVSEEK_FLAG_", "SeekFlags"),
-                            //new ("AV_PIX_FMT_FLAG_", "PixelFormatFlags"),
-                            new ("AV_OPT_FLAG_", "AV_OPT_FLAG"),
-                            new ("AV_LOG_", "LogFlags", Only: new []{ "AV_LOG_SKIP_REPEATED", "AV_LOG_PRINT_LEVEL" }.ToHashSet()),
-                            new ("AV_LOG_", "LogLevel", Except: new []{ "AV_LOG_C" }.ToHashSet()),
+                new ("AV_CODEC_FLAG_", "AV_CODEC_FLAG", IsFlags: true),
+                new ("AV_CODEC_FLAG2_", "AV_CODEC_FLAG2", IsFlags: true),
+                //new ("SLICE_FLAG_", "SLICE_FLAG"),
+                new ("AV_CH_", "AV_CH", IsFlags: true, Except: HashSet("AV_CH_LAYOUT_NATIVE")),
+                //new ("AV_CODEC_CAP_", "CodecCompability"),
+                //new ("FF_MB_DECISION_", "FFMacroblockDecision"),
+                //new ("FF_CMP_", "FFComparison"),
+                //new ("PARSER_FLAG_", "ParserFlags"),
+                new ("AVIO_FLAG_", "AVIO_FLAG", IsFlags: true),
+                //new ("FF_PROFILE_", "FFProfile"),
+                //new ("AVSEEK_FLAG_", "SeekFlags"),
+                //new ("AV_PIX_FMT_FLAG_", "PixelFormatFlags"),
+                new ("AV_OPT_FLAG_", "AV_OPT_FLAG", IsFlags: true),
+                new ("AV_OPT_SEARCH_", "AV_OPT_SEARCH", IsFlags: true),
+                new ("AV_LOG_", "LogFlags", Only: HashSet("AV_LOG_SKIP_REPEATED", "AV_LOG_PRINT_LEVEL")),
+                new ("AV_LOG_", "LogLevel", Except: HashSet("AV_LOG_C")),
                 //new ("AV_CPU_FLAG_", "CpuFlags"),
                 //new ("AV_PKT_FLAG_", "PacketFlags"),
                 //new ("AVFMT_FLAG_", "FormatFlags"), 
             };
             Dictionary<string, MacroEnumDef> knownConstEnumMapping = knownConstEnums.ToDictionary(k => k.EnumName, v => v);
 
-            List<MacroDefinition> processedMacros = new();
+            List<MacroDefinitionBase> processedMacros = new();
             List<EnumerationDefinition> macroEnums = new();
             macros
                 .GroupBy(x => knownConstEnums.FirstOrDefault(known => known.Match(x.Name)) switch
@@ -57,18 +58,11 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             return (processedMacros, macroEnums);
         }
 
-        private static EnumerationDefinition MakeMacroEnum(IGrouping<string, MacroDefinition> group, MacroEnumDef enumDef)
+        private static HashSet<string> HashSet(params string[] strings) => strings.ToHashSet();
+
+        private static EnumerationDefinition MakeMacroEnum(IGrouping<string, MacroDefinitionBase> group, MacroEnumDef enumDef)
         {
-            List<MacroDefinition> macros = group.ToList();
-            HashSet<string> allTypes = macros
-                .Select(x => x.TypeName)
-                .Distinct()
-                .ToHashSet();
-            string typeExpr = DetectBestTypeForEnum(allTypes) switch
-            {
-                "int" => "",
-                var x => $" : {x}",
-            };
+            List<MacroDefinitionGood> macros = group.OfType<MacroDefinitionGood>().ToList();
 
             Dictionary<string, string> macroShortcutMapping = macros
                 .OrderByDescending(k => k.Name.Length)
@@ -79,9 +73,11 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 Name = enumDef.EnumName, 
                 XmlDocument = $"Macro enum, prefix: {enumDef.Prefix}", 
                 IsFlags = enumDef.IsFlags,
-                TypeName = typeExpr, 
+                TypeName = DeterminBestTypeForMacroEnum(macros
+                    .Select(x => x.TypeName)
+                    .ToHashSet()), 
                 Obsoletion = new Obsoletion { IsObsolete = false }, 
-                Items = group.Select(macro => new EnumerationItem
+                Items = macros.Select(macro => new EnumerationItem
                 {
                     Name = macroShortcutMapping[macro.Name], 
                     RawName = macro.Name, 
@@ -99,16 +95,16 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 return expression;
             }
 
-            static string DetectBestTypeForEnum(HashSet<string> allTypes)
+            static string DeterminBestTypeForMacroEnum(HashSet<string> allTypes)
             {
                 string[] priorities = new[]
                 {
-                    "ulong",
                     "long",
-                    "uint",
+                    "ulong",
                     "int",
-                    "ushort",
+                    "uint",
                     "short",
+                    "ushort",
                 };
 
                 foreach (string prior in priorities)
@@ -121,13 +117,11 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
         }
     }
 
-    public record MacroEnumDef(string Prefix, string EnumName, HashSet<string>? Only = default, HashSet<string>? Except = default)
+    public record MacroEnumDef(string Prefix, string EnumName, HashSet<string>? Only = default, HashSet<string>? Except = default, bool IsFlags = false)
     {
         public bool Match(string name) =>
             name.StartsWith(Prefix) &&
             (Except == null || !Except.Contains(name)) &&
             (Only == null || Only.Contains(name));
-
-        public bool IsFlags => EnumName.EndsWith("s");
     }
 }
