@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <PackageId>Sdcb.FFmpeg</PackageId>
-        <VersionPrefix>5.0.1</VersionPrefix>
-        <VersionSuffix>preview-3</VersionSuffix>
+        <VersionPrefix>5.1</VersionPrefix>
+        <VersionSuffix>preview-1</VersionSuffix>
         <LangVersion>latest</LangVersion>
         <!-- Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
         <IncludeSymbols>true</IncludeSymbols>
