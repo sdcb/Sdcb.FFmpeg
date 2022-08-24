@@ -1,4 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using Sdcb.FFmpeg.NuGetBuilder;
 using System.Diagnostics;
 using System.IO.Compression;
 using System.Xml;
@@ -7,9 +8,9 @@ using System.Xml.XPath;
 
 string solutionDir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory)
     .Parent?.Parent?.Parent?.Parent?.Parent?.FullName ?? throw new Exception();
-string downloadVersion = "5.0.1";
-string version = "5.0.1";
-await SetupFFmpegBinaries(solutionDir, $"https://github.com/GyanD/codexffmpeg/releases/download/{downloadVersion}/ffmpeg-{downloadVersion}-full_build-shared.zip");
+
+string version = "5.1";
+await SetupFFmpegBinaries(solutionDir, DownloadUrlBuilder.Url);
 
 const string namePrefix = "Sdcb.FFmpeg.runtime";
 

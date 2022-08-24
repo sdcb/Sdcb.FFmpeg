@@ -23,9 +23,9 @@ namespace Sdcb.FFmpeg.Common
         /// <see cref="av_opt_find(void*, string, string, int, int)"/>
         /// </summary>
         /// <returns></returns>
-        public FFmpegOption? Find(string name, string unit, OptionFlags optionFlags = default, OptionSearchFlags searchFlags = default)
+        public FFmpegOption? Find(string name, string unit, AV_OPT_FLAG AV_OPT_FLAG = default, AV_OPT_SEARCH searchFlags = default)
         {
-            AVOption* val = av_opt_find(_obj, name, unit, (int)optionFlags, (int)searchFlags);
+            AVOption* val = av_opt_find(_obj, name, unit, (int)AV_OPT_FLAG, (int)searchFlags);
             if (val == null) return null;
             return new FFmpegOption(val);
         }
@@ -33,86 +33,87 @@ namespace Sdcb.FFmpeg.Common
         /// <summary>
         /// <see cref="av_opt_find2(void*, string, string, int, int, void**)"/>
         /// </summary>
-        public (FFmpegOption? option, IntPtr @object) Find2(string name, string unit, OptionFlags optionFlags = default, OptionSearchFlags searchFlags = default)
+        public (FFmpegOption? option, IntPtr @object) Find2(string name, string unit, AV_OPT_FLAG AV_OPT_FLAG = default, AV_OPT_SEARCH searchFlags = default)
         {
             void* obj;
-            AVOption* val = av_opt_find2(_obj, name, unit, (int)optionFlags, (int)searchFlags, &obj);
+            AVOption* val = av_opt_find2(_obj, name, unit, (int)AV_OPT_FLAG, (int)searchFlags, &obj);
             if (val == null) return (null, IntPtr.Zero);
             return (new FFmpegOption(val), (IntPtr)obj);
         }
 
-        public void SetDefaults(OptionFlags mask = default, OptionFlags flags = default) => av_opt_set_defaults2(_obj, (int)mask, (int)flags);
+        public void SetDefaults(AV_OPT_FLAG mask = default, AV_OPT_FLAG flags = default) => av_opt_set_defaults2(_obj, (int)mask, (int)flags);
 
         /// <summary>
         /// <see cref="av_opt_set(void*, string, string, int)"/>
         /// </summary>
-        public void Set(string name, string value, OptionSearchFlags searchFlags = default) => 
+        public void Set(string name, string value, AV_OPT_SEARCH searchFlags = default) => 
             av_opt_set(_obj, name, value, (int)searchFlags).ThrowIfError();
 
         /// <summary>
         /// <see cref="av_opt_set_int(void*, string, long, int)"/>
         /// </summary>
-        public void Set(string name, long value, OptionSearchFlags searchFlags = default) => 
+        public void Set(string name, long value, AV_OPT_SEARCH searchFlags = default) => 
             av_opt_set_int(_obj, name, value, (int)searchFlags).ThrowIfError();
 
         /// <summary>
         /// <see cref="av_opt_set_double(void*, string, double, int)"/>
         /// </summary>
-        public void Set(string name, double value, OptionSearchFlags searchFlags = default) => 
+        public void Set(string name, double value, AV_OPT_SEARCH searchFlags = default) => 
             av_opt_set_double(_obj, name, value, (int)searchFlags).ThrowIfError();
 
         /// <summary>
         /// <see cref="av_opt_set_q(void*, string, AVRational, int)"/>
         /// </summary>
-        public void Set(string name, AVRational value, OptionSearchFlags searchFlags = default) => 
+        public void Set(string name, AVRational value, AV_OPT_SEARCH searchFlags = default) => 
             av_opt_set_q(_obj, name, value, (int)searchFlags).ThrowIfError();
 
         /// <summary>
         /// <see cref="av_opt_set_bin(void*, string, byte*, int, int)"/>
         /// </summary>
-        public void Set(string name, DataPointer value, OptionSearchFlags searchFlags = default) => 
+        public void Set(string name, DataPointer value, AV_OPT_SEARCH searchFlags = default) => 
             av_opt_set_bin(_obj, name, (byte*)value.Pointer, value.Length, (int)searchFlags).ThrowIfError();
 
         /// <summary>
         /// <see cref="av_opt_set_image_size(void*, string, int, int, int)"/>
         /// </summary>
-        public void Set(string name, int width, int height, OptionSearchFlags searchFlags = default) => 
+        public void Set(string name, int width, int height, AV_OPT_SEARCH searchFlags = default) => 
             av_opt_set_image_size(_obj, name, width, height, (int)searchFlags).ThrowIfError();
 
         /// <summary>
         /// <see cref="av_opt_set_pixel_fmt(void*, string, AVPixelFormat, int)"/>
         /// </summary>
-        public void Set(string name, AVPixelFormat value, OptionSearchFlags searchFlags = default) => 
+        public void Set(string name, AVPixelFormat value, AV_OPT_SEARCH searchFlags = default) => 
             av_opt_set_pixel_fmt(_obj, name, value, (int)searchFlags).ThrowIfError();
 
         /// <summary>
         /// <see cref="av_opt_set_sample_fmt(void*, string, AVSampleFormat, int)"/>
         /// </summary>
-        public void Set(string name, AVSampleFormat value, OptionSearchFlags searchFlags = default) => 
+        public void Set(string name, AVSampleFormat value, AV_OPT_SEARCH searchFlags = default) => 
             av_opt_set_sample_fmt(_obj, name, (AVSampleFormat)value, (int)searchFlags).ThrowIfError();
 
         /// <summary>
         /// <see cref="av_opt_set_video_rate(void*, string, AVRational, int)"/>
         /// </summary>
-        public void SetVideoRate(string name, AVRational value, OptionSearchFlags searchFlags = default) => 
+        public void SetVideoRate(string name, AVRational value, AV_OPT_SEARCH searchFlags = default) => 
             av_opt_set_video_rate(_obj, name, value, (int)searchFlags).ThrowIfError();
 
         /// <summary>
         /// <see cref="av_opt_set_channel_layout(void*, string, long, int)"/>
         /// </summary>
-        public void Set(string name, Channels value, OptionSearchFlags searchFlags = default) => 
+        [Obsolete]
+        public void Set(string name, AV_CH value, AV_OPT_SEARCH searchFlags = default) => 
             av_opt_set_channel_layout(_obj, name, (long)value, (int)searchFlags).ThrowIfError();
 
         /// <summary>
         /// <see cref="av_opt_set_dict_val(void*, string, AVDictionary*, int)"/>
         /// </summary>
-        public void Set(string name, AVDictionary* value, OptionSearchFlags searchFlags = default) => 
+        public void Set(string name, AVDictionary* value, AV_OPT_SEARCH searchFlags = default) => 
             av_opt_set_dict_val(_obj, name, value, (int)searchFlags).ThrowIfError();
 
         /// <summary>
         /// <see cref="av_opt_get(void*, string, int, byte**)"/>
         /// </summary>
-        public DisposableNativeString GetData(string name, OptionSearchFlags searchFlags = default)
+        public DisposableNativeString GetData(string name, AV_OPT_SEARCH searchFlags = default)
         {
             byte* outVal;
             av_opt_get(_obj, name, (int)searchFlags, &outVal).ThrowIfError($"name: {name}");
@@ -122,7 +123,7 @@ namespace Sdcb.FFmpeg.Common
         /// <summary>
         /// <see cref="av_opt_get_int(void*, string, int, long*)"/>
         /// </summary>
-        public long GetInt64(string name, OptionSearchFlags searchFlags = default)
+        public long GetInt64(string name, AV_OPT_SEARCH searchFlags = default)
         {
             long val;
             av_opt_get_int(_obj, name, (int)searchFlags, &val).ThrowIfError();
@@ -132,7 +133,7 @@ namespace Sdcb.FFmpeg.Common
         /// <summary>
         /// <see cref="av_opt_get_double(void*, string, int, double*)"/>
         /// </summary>
-        public double GetDouble(string name, OptionSearchFlags searchFlags = default)
+        public double GetDouble(string name, AV_OPT_SEARCH searchFlags = default)
         {
             double val;
             av_opt_get_double(_obj, name, (int)searchFlags, &val).ThrowIfError();
@@ -142,7 +143,7 @@ namespace Sdcb.FFmpeg.Common
         /// <summary>
         /// <see cref="av_opt_get_q(void*, string, int, AVRational*)"/>
         /// </summary>
-        public AVRational GetRational(string name, OptionSearchFlags searchFlags = default)
+        public AVRational GetRational(string name, AV_OPT_SEARCH searchFlags = default)
         {
             AVRational rational;
             av_opt_get_q(_obj, name, (int)searchFlags, &rational).ThrowIfError();
@@ -152,7 +153,7 @@ namespace Sdcb.FFmpeg.Common
         /// <summary>
         /// <see cref="av_opt_get_image_size(void*, string, int, int*, int*)"/>
         /// </summary>
-        public (int width, int height) GetImageSize(string name, OptionSearchFlags searchFlags = default)
+        public (int width, int height) GetImageSize(string name, AV_OPT_SEARCH searchFlags = default)
         {
             int width, height;
             av_opt_get_image_size(_obj, name, (int)searchFlags, &width, &height).ThrowIfError();
@@ -162,7 +163,7 @@ namespace Sdcb.FFmpeg.Common
         /// <summary>
         /// <see cref="av_opt_get_pixel_fmt(void*, string, int, AVPixelFormat*)"/>
         /// </summary>
-        public AVPixelFormat GetPixelFormat(string name, OptionSearchFlags searchFlags = default)
+        public AVPixelFormat GetPixelFormat(string name, AV_OPT_SEARCH searchFlags = default)
         {
             AVPixelFormat pixelFormat;
             av_opt_get_pixel_fmt(_obj, name, (int)searchFlags, &pixelFormat);
@@ -172,7 +173,7 @@ namespace Sdcb.FFmpeg.Common
         /// <summary>
         /// <see cref="av_opt_get_video_rate(void*, string, int, AVRational*)"/>
         /// </summary>
-        public AVRational GetVideoRate(string name, OptionSearchFlags searchFlags = default)
+        public AVRational GetVideoRate(string name, AV_OPT_SEARCH searchFlags = default)
         {
             AVRational rational;
             av_opt_get_video_rate(_obj, name, (int)searchFlags, &rational).ThrowIfError();
@@ -182,17 +183,18 @@ namespace Sdcb.FFmpeg.Common
         /// <summary>
         /// <see cref="av_opt_get_channel_layout(void*, string, int, long*)"/>
         /// </summary>
-        public Channels GetChannelLayout(string name, OptionSearchFlags searchFlags = default)
+        [Obsolete]
+        public AV_CH GetChannelLayout(string name, AV_OPT_SEARCH searchFlags = default)
         {
             long channelLayout;
             av_opt_get_channel_layout(_obj, name, (int)searchFlags, &channelLayout);
-            return (Channels)channelLayout;
+            return (AV_CH)channelLayout;
         }
 
         /// <summary>
         /// <see cref="av_opt_get_dict_val(void*, string, int, AVDictionary**)"/>
         /// </summary>
-        public AVDictionary* GetDictionary(string name, OptionSearchFlags searchFlags = default)
+        public AVDictionary* GetDictionary(string name, AV_OPT_SEARCH searchFlags = default)
         {
             AVDictionary* dict;
             av_opt_get_dict_val(_obj, name, (int)searchFlags, &dict);

@@ -53,7 +53,7 @@ namespace Sdcb.FFmpeg.AutoGen
         [Option("using-online-ffmpeg-binaries", Required = false, Default = true)]
         public bool UsingOnlineFFmpegBinaries { get; set; }
 
-        [Option("ffmpeg-binary-url", Required = false, Default = "https://github.com/GyanD/codexffmpeg/releases/download/5.0.1/ffmpeg-5.0.1-full_build-shared.zip")]
+        [Option("ffmpeg-binary-url", Required = false, Default = NuGetBuilder.DownloadUrlBuilder.Url)]
         public string FFmpegBinaryUrl { get; set; }
 
         public static CliOptions ParseArgumentsStrict(string[] args)

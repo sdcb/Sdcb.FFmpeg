@@ -28,21 +28,12 @@ namespace Sdcb.FFmpeg.AutoGen
                 MetricHelper.RecordTime("Loading inline functions", () => ExistingInlineFunctionsHelper.LoadInlineFunctions(Path.Combine(options.OutputDir,
                     "FFmpeg.functions.inline.g.cs")));
 
-            var exports = MetricHelper.RecordTime("Loading functions", () => FunctionExportHelper.LoadFunctionExports(options.FFmpegBinDir).ToArray());
+            FunctionExport[] exports = MetricHelper.RecordTime("Loading functions", () => FunctionExportHelper.LoadFunctionExports(options.FFmpegBinDir).ToArray());
 
-            var astProcessor = new ASTProcessor
-            {
-                FunctionExportMap = exports
+            ASTProcessor astProcessor = new (exports
                     .GroupBy(x => x.Name).Select(x => x.First()) // Eliminate duplicated names
-                    .ToDictionary(x => x.Name)
-            };
+                    .ToDictionary(x => x.Name));
             astProcessor.IgnoreUnitNames.Add("__NSConstantString_tag");
-            astProcessor.TypeAliases.Add("int64_t", typeof(long));
-            astProcessor.WellKnownMacros.Add("FFERRTAG", typeof(int));
-            astProcessor.WellKnownMacros.Add("MKTAG", typeof(int));
-            astProcessor.WellKnownMacros.Add("UINT64_C", typeof(ulong));
-            astProcessor.WellKnownMacros.Add("AV_VERSION_INT", typeof(int));
-            astProcessor.WellKnownMacros.Add("AV_VERSION", typeof(string));
 
             var defines = new[] { "__STDC_CONSTANT_MACROS" };
 

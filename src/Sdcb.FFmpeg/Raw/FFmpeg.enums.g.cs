@@ -6,6 +6,240 @@ using System.Runtime.InteropServices;
 #pragma warning disable CS0108
 namespace Sdcb.FFmpeg.Raw
 {
+    /// <summary>Macro enum, prefix: AV_CH_</summary>
+    [Flags]
+    public enum AV_CH : int
+    {
+        /// <summary>AV_CH_FRONT_LEFT</summary>
+        FrontLeft = 1 << (int)AVChannel.FrontLeft,
+        /// <summary>AV_CH_FRONT_RIGHT</summary>
+        FrontRight = 1 << (int)AVChannel.FrontRight,
+        /// <summary>AV_CH_FRONT_CENTER</summary>
+        FrontCenter = 1 << (int)AVChannel.FrontCenter,
+        /// <summary>AV_CH_LOW_FREQUENCY</summary>
+        LowFrequency = 1 << (int)AVChannel.LowFrequency,
+        /// <summary>AV_CH_BACK_LEFT</summary>
+        BackLeft = 1 << (int)AVChannel.BackLeft,
+        /// <summary>AV_CH_BACK_RIGHT</summary>
+        BackRight = 1 << (int)AVChannel.BackRight,
+        /// <summary>AV_CH_FRONT_LEFT_OF_CENTER</summary>
+        FrontLeftOfCenter = 1 << (int)AVChannel.FrontLeftOfCenter,
+        /// <summary>AV_CH_FRONT_RIGHT_OF_CENTER</summary>
+        FrontRightOfCenter = 1 << (int)AVChannel.FrontRightOfCenter,
+        /// <summary>AV_CH_BACK_CENTER</summary>
+        BackCenter = 1 << (int)AVChannel.BackCenter,
+        /// <summary>AV_CH_SIDE_LEFT</summary>
+        SideLeft = 1 << (int)AVChannel.SideLeft,
+        /// <summary>AV_CH_SIDE_RIGHT</summary>
+        SideRight = 1 << (int)AVChannel.SideRight,
+        /// <summary>AV_CH_TOP_CENTER</summary>
+        TopCenter = 1 << (int)AVChannel.TopCenter,
+        /// <summary>AV_CH_TOP_FRONT_LEFT</summary>
+        TopFrontLeft = 1 << (int)AVChannel.TopFrontLeft,
+        /// <summary>AV_CH_TOP_FRONT_CENTER</summary>
+        TopFrontCenter = 1 << (int)AVChannel.TopFrontCenter,
+        /// <summary>AV_CH_TOP_FRONT_RIGHT</summary>
+        TopFrontRight = 1 << (int)AVChannel.TopFrontRight,
+        /// <summary>AV_CH_TOP_BACK_LEFT</summary>
+        TopBackLeft = 1 << (int)AVChannel.TopBackLeft,
+        /// <summary>AV_CH_TOP_BACK_CENTER</summary>
+        TopBackCenter = 1 << (int)AVChannel.TopBackCenter,
+        /// <summary>AV_CH_TOP_BACK_RIGHT</summary>
+        TopBackRight = 1 << (int)AVChannel.TopBackRight,
+        /// <summary>AV_CH_STEREO_LEFT</summary>
+        StereoLeft = 1 << (int)AVChannel.StereoLeft,
+        /// <summary>AV_CH_STEREO_RIGHT</summary>
+        StereoRight = 1 << (int)AVChannel.StereoRight,
+        /// <summary>AV_CH_WIDE_LEFT</summary>
+        WideLeft = 1 << (int)AVChannel.WideLeft,
+        /// <summary>AV_CH_WIDE_RIGHT</summary>
+        WideRight = 1 << (int)AVChannel.WideRight,
+        /// <summary>AV_CH_SURROUND_DIRECT_LEFT</summary>
+        SurroundDirectLeft = 1 << (int)AVChannel.SurroundDirectLeft,
+        /// <summary>AV_CH_SURROUND_DIRECT_RIGHT</summary>
+        SurroundDirectRight = 1 << (int)AVChannel.SurroundDirectRight,
+        /// <summary>AV_CH_LOW_FREQUENCY_2</summary>
+        LowFrequency_2 = 1 << (int)AVChannel.LowFrequency_2,
+        /// <summary>AV_CH_TOP_SIDE_LEFT</summary>
+        TopSideLeft = 1 << (int)AVChannel.TopSideLeft,
+        /// <summary>AV_CH_TOP_SIDE_RIGHT</summary>
+        TopSideRight = 1 << (int)AVChannel.TopSideRight,
+        /// <summary>AV_CH_BOTTOM_FRONT_CENTER</summary>
+        BottomFrontCenter = 1 << (int)AVChannel.BottomFrontCenter,
+        /// <summary>AV_CH_BOTTOM_FRONT_LEFT</summary>
+        BottomFrontLeft = 1 << (int)AVChannel.BottomFrontLeft,
+        /// <summary>AV_CH_BOTTOM_FRONT_RIGHT</summary>
+        BottomFrontRight = 1 << (int)AVChannel.BottomFrontRight,
+        /// <summary>AV_CH_LAYOUT_MONO</summary>
+        LayoutMono = FrontCenter,
+        /// <summary>AV_CH_LAYOUT_STEREO</summary>
+        LayoutStereo = FrontLeft | FrontRight,
+        /// <summary>AV_CH_LAYOUT_2POINT1</summary>
+        Layout_2POINT1 = LayoutStereo | LowFrequency,
+        /// <summary>AV_CH_LAYOUT_2_1</summary>
+        Layout_2_1 = LayoutStereo | BackCenter,
+        /// <summary>AV_CH_LAYOUT_SURROUND</summary>
+        LayoutSurround = LayoutStereo | FrontCenter,
+        /// <summary>AV_CH_LAYOUT_3POINT1</summary>
+        Layout_3POINT1 = LayoutSurround | LowFrequency,
+        /// <summary>AV_CH_LAYOUT_4POINT0</summary>
+        Layout_4POINT0 = LayoutSurround | BackCenter,
+        /// <summary>AV_CH_LAYOUT_4POINT1</summary>
+        Layout_4POINT1 = Layout_4POINT0 | LowFrequency,
+        /// <summary>AV_CH_LAYOUT_2_2</summary>
+        Layout_2_2 = LayoutStereo | SideLeft | SideRight,
+        /// <summary>AV_CH_LAYOUT_QUAD</summary>
+        LayoutQuad = LayoutStereo | BackLeft | BackRight,
+        /// <summary>AV_CH_LAYOUT_5POINT0</summary>
+        Layout_5POINT0 = LayoutSurround | SideLeft | SideRight,
+        /// <summary>AV_CH_LAYOUT_5POINT1</summary>
+        Layout_5POINT1 = Layout_5POINT0 | LowFrequency,
+        /// <summary>AV_CH_LAYOUT_5POINT0_BACK</summary>
+        Layout_5POINT0Back = LayoutSurround | BackLeft | BackRight,
+        /// <summary>AV_CH_LAYOUT_5POINT1_BACK</summary>
+        Layout_5POINT1Back = Layout_5POINT0Back | LowFrequency,
+        /// <summary>AV_CH_LAYOUT_6POINT0</summary>
+        Layout_6POINT0 = Layout_5POINT0 | BackCenter,
+        /// <summary>AV_CH_LAYOUT_6POINT0_FRONT</summary>
+        Layout_6POINT0Front = Layout_2_2 | FrontLeftOfCenter | FrontRightOfCenter,
+        /// <summary>AV_CH_LAYOUT_HEXAGONAL</summary>
+        LayoutHexagonal = Layout_5POINT0Back | BackCenter,
+        /// <summary>AV_CH_LAYOUT_6POINT1</summary>
+        Layout_6POINT1 = Layout_5POINT1 | BackCenter,
+        /// <summary>AV_CH_LAYOUT_6POINT1_BACK</summary>
+        Layout_6POINT1Back = Layout_5POINT1Back | BackCenter,
+        /// <summary>AV_CH_LAYOUT_6POINT1_FRONT</summary>
+        Layout_6POINT1Front = Layout_6POINT0Front | LowFrequency,
+        /// <summary>AV_CH_LAYOUT_7POINT0</summary>
+        Layout_7POINT0 = Layout_5POINT0 | BackLeft | BackRight,
+        /// <summary>AV_CH_LAYOUT_7POINT0_FRONT</summary>
+        Layout_7POINT0Front = Layout_5POINT0 | FrontLeftOfCenter | FrontRightOfCenter,
+        /// <summary>AV_CH_LAYOUT_7POINT1</summary>
+        Layout_7POINT1 = Layout_5POINT1 | BackLeft | BackRight,
+        /// <summary>AV_CH_LAYOUT_7POINT1_WIDE</summary>
+        Layout_7POINT1Wide = Layout_5POINT1 | FrontLeftOfCenter | FrontRightOfCenter,
+        /// <summary>AV_CH_LAYOUT_7POINT1_WIDE_BACK</summary>
+        Layout_7POINT1WideBack = Layout_5POINT1Back | FrontLeftOfCenter | FrontRightOfCenter,
+        /// <summary>AV_CH_LAYOUT_OCTAGONAL</summary>
+        LayoutOctagonal = Layout_5POINT0 | BackLeft | BackCenter | BackRight,
+        /// <summary>AV_CH_LAYOUT_HEXADECAGONAL</summary>
+        LayoutHexadecagonal = LayoutOctagonal | WideLeft | WideRight | TopBackLeft | TopBackRight | TopBackCenter | TopFrontCenter | TopFrontLeft | TopFrontRight,
+        /// <summary>AV_CH_LAYOUT_STEREO_DOWNMIX</summary>
+        LayoutStereoDownmix = StereoLeft | StereoRight,
+        /// <summary>AV_CH_LAYOUT_22POINT2</summary>
+        Layout_22POINT2 = Layout_5POINT1Back | FrontLeftOfCenter | FrontRightOfCenter | BackCenter | LowFrequency_2 | SideLeft | SideRight | TopFrontLeft | TopFrontRight | TopFrontCenter | TopCenter | TopBackLeft | TopBackRight | TopSideLeft | TopSideRight | TopBackCenter | BottomFrontCenter | BottomFrontLeft | BottomFrontRight,
+    }
+    
+    /// <summary>Macro enum, prefix: AV_CODEC_FLAG_</summary>
+    [Flags]
+    public enum AV_CODEC_FLAG : int
+    {
+        /// <summary>AV_CODEC_FLAG_UNALIGNED</summary>
+        Unaligned = 1 << 0,
+        /// <summary>AV_CODEC_FLAG_QSCALE</summary>
+        Qscale = 1 << 1,
+        /// <summary>AV_CODEC_FLAG_4MV</summary>
+        _4MV = 1 << 2,
+        /// <summary>AV_CODEC_FLAG_OUTPUT_CORRUPT</summary>
+        OutputCorrupt = 1 << 3,
+        /// <summary>AV_CODEC_FLAG_QPEL</summary>
+        Qpel = 1 << 4,
+        /// <summary>AV_CODEC_FLAG_DROPCHANGED</summary>
+        Dropchanged = 1 << 5,
+        /// <summary>AV_CODEC_FLAG_PASS1</summary>
+        Pass1 = 1 << 9,
+        /// <summary>AV_CODEC_FLAG_PASS2</summary>
+        Pass2 = 1 << 10,
+        /// <summary>AV_CODEC_FLAG_LOOP_FILTER</summary>
+        LoopFilter = 1 << 11,
+        /// <summary>AV_CODEC_FLAG_GRAY</summary>
+        Gray = 1 << 13,
+        /// <summary>AV_CODEC_FLAG_PSNR</summary>
+        Psnr = 1 << 15,
+        /// <summary>AV_CODEC_FLAG_TRUNCATED</summary>
+        Truncated = 1 << 16,
+        /// <summary>AV_CODEC_FLAG_INTERLACED_DCT</summary>
+        InterlacedDct = 1 << 18,
+        /// <summary>AV_CODEC_FLAG_LOW_DELAY</summary>
+        LowDelay = 1 << 19,
+        /// <summary>AV_CODEC_FLAG_GLOBAL_HEADER</summary>
+        GlobalHeader = 1 << 22,
+        /// <summary>AV_CODEC_FLAG_BITEXACT</summary>
+        Bitexact = 1 << 23,
+        /// <summary>AV_CODEC_FLAG_AC_PRED</summary>
+        AcPred = 1 << 24,
+        /// <summary>AV_CODEC_FLAG_INTERLACED_ME</summary>
+        InterlacedMe = 1 << 29,
+        /// <summary>AV_CODEC_FLAG_CLOSED_GOP</summary>
+        ClosedGop = 1 << 31,
+    }
+    
+    /// <summary>Macro enum, prefix: AV_CODEC_FLAG2_</summary>
+    [Flags]
+    public enum AV_CODEC_FLAG2 : int
+    {
+        /// <summary>AV_CODEC_FLAG2_FAST</summary>
+        Fast = 1 << 0,
+        /// <summary>AV_CODEC_FLAG2_NO_OUTPUT</summary>
+        NoOutput = 1 << 2,
+        /// <summary>AV_CODEC_FLAG2_LOCAL_HEADER</summary>
+        LocalHeader = 1 << 3,
+        /// <summary>AV_CODEC_FLAG2_DROP_FRAME_TIMECODE</summary>
+        DropFrameTimecode = 1 << 13,
+        /// <summary>AV_CODEC_FLAG2_CHUNKS</summary>
+        Chunks = 1 << 15,
+        /// <summary>AV_CODEC_FLAG2_IGNORE_CROP</summary>
+        IgnoreCrop = 1 << 16,
+        /// <summary>AV_CODEC_FLAG2_SHOW_ALL</summary>
+        ShowAll = 1 << 22,
+        /// <summary>AV_CODEC_FLAG2_EXPORT_MVS</summary>
+        ExportMvs = 1 << 28,
+        /// <summary>AV_CODEC_FLAG2_SKIP_MANUAL</summary>
+        SkipManual = 1 << 29,
+        /// <summary>AV_CODEC_FLAG2_RO_FLUSH_NOOP</summary>
+        RoFlushNoop = 1 << 30,
+    }
+    
+    /// <summary>Macro enum, prefix: AV_OPT_FLAG_</summary>
+    [Flags]
+    public enum AV_OPT_FLAG : int
+    {
+        /// <summary>AV_OPT_FLAG_ENCODING_PARAM</summary>
+        EncodingParam = 1,
+        /// <summary>AV_OPT_FLAG_DECODING_PARAM</summary>
+        DecodingParam = 2,
+        /// <summary>AV_OPT_FLAG_AUDIO_PARAM</summary>
+        AudioParam = 8,
+        /// <summary>AV_OPT_FLAG_VIDEO_PARAM</summary>
+        VideoParam = 16,
+        /// <summary>AV_OPT_FLAG_SUBTITLE_PARAM</summary>
+        SubtitleParam = 32,
+        /// <summary>AV_OPT_FLAG_EXPORT</summary>
+        Export = 64,
+        /// <summary>AV_OPT_FLAG_READONLY</summary>
+        Readonly = 128,
+        /// <summary>AV_OPT_FLAG_BSF_PARAM</summary>
+        BsfParam = 1 << 8,
+        /// <summary>AV_OPT_FLAG_RUNTIME_PARAM</summary>
+        RuntimeParam = 1 << 15,
+        /// <summary>AV_OPT_FLAG_FILTERING_PARAM</summary>
+        FilteringParam = 1 << 16,
+        /// <summary>AV_OPT_FLAG_DEPRECATED</summary>
+        Deprecated = 1 << 17,
+        /// <summary>AV_OPT_FLAG_CHILD_CONSTS</summary>
+        ChildConsts = 1 << 18,
+    }
+    
+    /// <summary>Macro enum, prefix: AV_OPT_SEARCH_</summary>
+    [Flags]
+    public enum AV_OPT_SEARCH : int
+    {
+        /// <summary>AV_OPT_SEARCH_CHILDREN</summary>
+        Children = 1 << 0,
+        /// <summary>AV_OPT_SEARCH_FAKE_OBJ</summary>
+        FakeObj = 1 << 1,
+    }
+    
     public enum AVActiveFormatDescription : int
     {
         Same = 8,
@@ -59,6 +293,74 @@ namespace Sdcb.FFmpeg.Raw
         Karaoke = 8,
         /// <summary>Not part of ABI</summary>
         Nb = 9,
+    }
+    
+    /// <summary>@{</summary>
+    public enum AVChannel : int
+    {
+        None = -1,
+        FrontLeft = 0,
+        FrontRight = 1,
+        FrontCenter = 2,
+        LowFrequency = 3,
+        BackLeft = 4,
+        BackRight = 5,
+        FrontLeftOfCenter = 6,
+        FrontRightOfCenter = 7,
+        BackCenter = 8,
+        SideLeft = 9,
+        SideRight = 10,
+        TopCenter = 11,
+        TopFrontLeft = 12,
+        TopFrontCenter = 13,
+        TopFrontRight = 14,
+        TopBackLeft = 15,
+        TopBackCenter = 16,
+        TopBackRight = 17,
+        /// <summary>Stereo downmix.</summary>
+        StereoLeft = 29,
+        /// <summary>See above.</summary>
+        StereoRight = 30,
+        /// <summary>See above.</summary>
+        WideLeft = 31,
+        /// <summary>See above.</summary>
+        WideRight = 32,
+        /// <summary>See above.</summary>
+        SurroundDirectLeft = 33,
+        /// <summary>See above.</summary>
+        SurroundDirectRight = 34,
+        /// <summary>See above.</summary>
+        LowFrequency_2 = 35,
+        /// <summary>See above.</summary>
+        TopSideLeft = 36,
+        /// <summary>See above.</summary>
+        TopSideRight = 37,
+        /// <summary>See above.</summary>
+        BottomFrontCenter = 38,
+        /// <summary>See above.</summary>
+        BottomFrontLeft = 39,
+        /// <summary>See above.</summary>
+        BottomFrontRight = 40,
+        /// <summary>Channel is empty can be safely skipped.</summary>
+        Unused = 512,
+        /// <summary>Channel contains data, but its position is unknown.</summary>
+        Unknown = 768,
+        /// <summary>Range of channels between AV_CHAN_AMBISONIC_BASE and AV_CHAN_AMBISONIC_END represent Ambisonic components using the ACN system.</summary>
+        AmbisonicBase = 1024,
+        /// <summary>Range of channels between AV_CHAN_AMBISONIC_BASE and AV_CHAN_AMBISONIC_END represent Ambisonic components using the ACN system.</summary>
+        AmbisonicEnd = 2047,
+    }
+    
+    public enum AVChannelOrder : int
+    {
+        /// <summary>Only the channel count is specified, without any further information about the channel order.</summary>
+        Unspec = 0,
+        /// <summary>The native channel order, i.e. the channels are in the same order in which they are defined in the AVChannel enum. This supports up to 63 different channels.</summary>
+        Native = 1,
+        /// <summary>The channel order does not correspond to any other predefined order and is stored as an explicit map. For example, this could be used to support layouts with 64 or more channels, or with empty/skipped (AV_CHAN_SILENCE) channels at arbitrary positions.</summary>
+        Custom = 2,
+        /// <summary>The audio is represented as the decomposition of the sound field into spherical harmonics. Each channel corresponds to a single expansion component. Channels are ordered according to ACN (Ambisonic Channel Number).</summary>
+        Ambisonic = 3,
     }
     
     /// <summary>Location of chroma samples.</summary>
@@ -363,6 +665,10 @@ namespace Sdcb.FFmpeg.Raw
         SimbiosisImx = 255,
         SgaVideo = 256,
         Gem = 257,
+        Vbn = 258,
+        Jpegxl = 259,
+        Qoi = 260,
+        Phm = 261,
         /// <summary>A dummy id pointing at the start of audio codecs</summary>
         FirstAudio = 65536,
         PcmS16le = 65536,
@@ -562,6 +868,7 @@ namespace Sdcb.FFmpeg.Raw
         Hca = 86109,
         Fastaudio = 86110,
         Msnsiren = 86111,
+        Dfpwm = 86112,
         /// <summary>A dummy ID pointing at the start of subtitle codecs.</summary>
         FirstSubtitle = 94208,
         DvdSubtitle = 94208,
@@ -873,6 +1180,8 @@ namespace Sdcb.FFmpeg.Raw
         DoviRpuBuffer = 23,
         /// <summary>Parsed Dolby Vision metadata, suitable for passing to a software implementation. The payload is the AVDOVIMetadata struct defined in libavutil/dovi_meta.h.</summary>
         DoviMetadata = 24,
+        /// <summary>HDR Vivid dynamic metadata associated with a video frame. The payload is an AVDynamicHDRVivid type and contains information for color volume transform - CUVA 005.1-2021.</summary>
+        DynamicHdrVivid = 25,
     }
     
     /// <summary>Option for overlapping elliptical pixel selectors in an image.</summary>
@@ -904,6 +1213,22 @@ namespace Sdcb.FFmpeg.Raw
         From = 0,
         /// <summary>Transfer the data to the queried hw frame.</summary>
         To = 1,
+    }
+    
+    /// <summary>Macro enum, prefix: AVIO_FLAG_</summary>
+    [Flags]
+    public enum AVIO_FLAG : int
+    {
+        /// <summary>AVIO_FLAG_READ</summary>
+        Read = 1,
+        /// <summary>AVIO_FLAG_WRITE</summary>
+        Write = 2,
+        /// <summary>AVIO_FLAG_READ_WRITE</summary>
+        ReadWrite = Read | Write,
+        /// <summary>AVIO_FLAG_NONBLOCK</summary>
+        Nonblock = 8,
+        /// <summary>AVIO_FLAG_DIRECT</summary>
+        Direct = 0x8000,
     }
     
     /// <summary>Different data types that can be returned via the AVIO write_data_type callback.</summary>
@@ -991,6 +1316,7 @@ namespace Sdcb.FFmpeg.Raw
         Color = 16,
         ChannelLayout = 17,
         Bool = 18,
+        Chlayout = 19,
     }
     
     /// <summary>Types and functions for working with AVPacket. @{</summary>
@@ -1509,7 +1835,7 @@ namespace Sdcb.FFmpeg.Raw
         P410le = 201,
         /// <summary>interleaved chroma YUV 4:2:2, 32bpp, big-endian</summary>
         P216be = 202,
-        /// <summary>interleaved chroma YUV 4:2:2, 32bpp, liddle-endian</summary>
+        /// <summary>interleaved chroma YUV 4:2:2, 32bpp, little-endian</summary>
         P216le = 203,
         /// <summary>interleaved chroma YUV 4:4:4, 48bpp, big-endian</summary>
         P416be = 204,
@@ -1620,6 +1946,40 @@ namespace Sdcb.FFmpeg.Raw
         _24HOURSMAX = 2,
         /// <summary>negative time values are allowed</summary>
         Allownegative = 4,
+    }
+    
+    /// <summary>Macro enum, prefix: AV_LOG_</summary>
+    public enum LogFlags : int
+    {
+        /// <summary>AV_LOG_SKIP_REPEATED</summary>
+        SkipRepeated = 1,
+        /// <summary>AV_LOG_PRINT_LEVEL</summary>
+        PrintLevel = 2,
+    }
+    
+    /// <summary>Macro enum, prefix: AV_LOG_</summary>
+    public enum LogLevel : int
+    {
+        /// <summary>AV_LOG_QUIET</summary>
+        Quiet = -8,
+        /// <summary>AV_LOG_PANIC</summary>
+        Panic = 0,
+        /// <summary>AV_LOG_FATAL</summary>
+        Fatal = 8,
+        /// <summary>AV_LOG_ERROR</summary>
+        Error = 16,
+        /// <summary>AV_LOG_WARNING</summary>
+        Warning = 24,
+        /// <summary>AV_LOG_INFO</summary>
+        Info = 32,
+        /// <summary>AV_LOG_VERBOSE</summary>
+        Verbose = 40,
+        /// <summary>AV_LOG_DEBUG</summary>
+        Debug = 48,
+        /// <summary>AV_LOG_TRACE</summary>
+        Trace = 56,
+        /// <summary>AV_LOG_MAX_OFFSET</summary>
+        MaxOffset = Trace - Quiet,
     }
     
     /// <summary>Dithering algorithms</summary>

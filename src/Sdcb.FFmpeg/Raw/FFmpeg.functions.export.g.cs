@@ -665,6 +665,10 @@ namespace Sdcb.FFmpeg.Raw
         [DllImport("avfilter-8", EntryPoint = "av_abuffersink_params_alloc", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern AVABufferSinkParams* av_abuffersink_params_alloc();
         
+        [DllImport("avfilter-8", EntryPoint = "av_buffersink_get_ch_layout", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int av_buffersink_get_ch_layout(AVFilterContext* ctx, AVChannelLayout* ch_layout);
+        
+        [Obsolete("")]
         [DllImport("avfilter-8", EntryPoint = "av_buffersink_get_channel_layout", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern ulong av_buffersink_get_channel_layout(AVFilterContext* ctx);
         
@@ -1888,6 +1892,10 @@ namespace Sdcb.FFmpeg.Raw
         [DllImport("avformat-59", EntryPoint = "avio_skip", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern long avio_skip(AVIOContext* s, long offset);
         
+        /// <summary>Writes a formatted string to the context taking a va_list.</summary>
+        [DllImport("avformat-59", EntryPoint = "avio_vprintf", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int avio_vprintf(AVIOContext* s, [MarshalAs(UnmanagedType.LPUTF8Str)] string fmt, byte* ap);
+        
         [DllImport("avformat-59", EntryPoint = "avio_w8", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern void avio_w8(AVIOContext* s, int b);
         
@@ -2036,6 +2044,7 @@ namespace Sdcb.FFmpeg.Raw
         public static extern int av_audio_fifo_write(AVAudioFifo* af, ref void* data, int nb_samples);
         
         /// <summary>Append a description of a channel layout to a bprint buffer.</summary>
+        [Obsolete("use av_channel_layout_describe()")]
         [DllImport("avutil-57", EntryPoint = "av_bprint_channel_layout", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern void av_bprint_channel_layout(AVBPrint* bp, int nb_channels, ulong channel_layout);
         
@@ -2158,9 +2167,120 @@ namespace Sdcb.FFmpeg.Raw
         [DllImport("avutil-57", EntryPoint = "av_calloc", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern void* av_calloc(ulong nmemb, ulong size);
         
+        /// <summary>Get a human readable string describing a given channel.</summary>
+        /// <param name="buf">pre-allocated buffer where to put the generated string</param>
+        /// <param name="buf_size">size in bytes of the buffer.</param>
+        [DllImport("avutil-57", EntryPoint = "av_channel_description", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int av_channel_description(byte* buf, ulong buf_size, AVChannel channel);
+        
+        /// <summary>bprint variant of av_channel_description().</summary>
+        [DllImport("avutil-57", EntryPoint = "av_channel_description_bprint", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern void av_channel_description_bprint(AVBPrint* bp, AVChannel channel_id);
+        
+        /// <summary>This is the inverse function of av_channel_name().</summary>
+        [DllImport("avutil-57", EntryPoint = "av_channel_from_string", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern AVChannel av_channel_from_string([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+        
+        /// <summary>Get the channel with the given index in a channel layout.</summary>
+        /// <param name="channel_layout">input channel layout</param>
+        [DllImport("avutil-57", EntryPoint = "av_channel_layout_channel_from_index", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern AVChannel av_channel_layout_channel_from_index(AVChannelLayout* channel_layout, uint idx);
+        
+        /// <summary>Get a channel described by the given string.</summary>
+        /// <param name="channel_layout">input channel layout</param>
+        [DllImport("avutil-57", EntryPoint = "av_channel_layout_channel_from_string", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern AVChannel av_channel_layout_channel_from_string(AVChannelLayout* channel_layout, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+        
+        /// <summary>Check whether a channel layout is valid, i.e. can possibly describe audio data.</summary>
+        /// <param name="channel_layout">input channel layout</param>
+        [DllImport("avutil-57", EntryPoint = "av_channel_layout_check", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int av_channel_layout_check(AVChannelLayout* channel_layout);
+        
+        /// <summary>Check whether two channel layouts are semantically the same, i.e. the same channels are present on the same positions in both.</summary>
+        /// <param name="chl">input channel layout</param>
+        /// <param name="chl1">input channel layout</param>
+        [DllImport("avutil-57", EntryPoint = "av_channel_layout_compare", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int av_channel_layout_compare(AVChannelLayout* chl, AVChannelLayout* chl1);
+        
+        /// <summary>Make a copy of a channel layout. This differs from just assigning src to dst in that it allocates and copies the map for AV_CHANNEL_ORDER_CUSTOM.</summary>
+        /// <param name="dst">destination channel layout</param>
+        /// <param name="src">source channel layout</param>
+        [DllImport("avutil-57", EntryPoint = "av_channel_layout_copy", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int av_channel_layout_copy(AVChannelLayout* dst, AVChannelLayout* src);
+        
+        /// <summary>Get the default channel layout for a given number of channels.</summary>
+        /// <param name="nb_channels">number of channels</param>
+        [DllImport("avutil-57", EntryPoint = "av_channel_layout_default", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern void av_channel_layout_default(AVChannelLayout* ch_layout, int nb_channels);
+        
+        /// <summary>Get a human-readable string describing the channel layout properties. The string will be in the same format that is accepted by av_channel_layout_from_string(), allowing to rebuild the same channel layout, except for opaque pointers.</summary>
+        /// <param name="channel_layout">channel layout to be described</param>
+        /// <param name="buf">pre-allocated buffer where to put the generated string</param>
+        /// <param name="buf_size">size in bytes of the buffer.</param>
+        [DllImport("avutil-57", EntryPoint = "av_channel_layout_describe", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int av_channel_layout_describe(AVChannelLayout* channel_layout, byte* buf, ulong buf_size);
+        
+        /// <summary>bprint variant of av_channel_layout_describe().</summary>
+        [DllImport("avutil-57", EntryPoint = "av_channel_layout_describe_bprint", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int av_channel_layout_describe_bprint(AVChannelLayout* channel_layout, AVBPrint* bp);
+        
         /// <summary>Get the channel with the given index in channel_layout.</summary>
+        [Obsolete("use av_channel_layout_channel_from_index()")]
         [DllImport("avutil-57", EntryPoint = "av_channel_layout_extract_channel", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern ulong av_channel_layout_extract_channel(ulong channel_layout, int index);
+        
+        /// <summary>Initialize a native channel layout from a bitmask indicating which channels are present.</summary>
+        /// <param name="channel_layout">the layout structure to be initialized</param>
+        /// <param name="mask">bitmask describing the channel layout</param>
+        [DllImport("avutil-57", EntryPoint = "av_channel_layout_from_mask", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int av_channel_layout_from_mask(AVChannelLayout* channel_layout, ulong mask);
+        
+        /// <summary>Initialize a channel layout from a given string description. The input string can be represented by: - the formal channel layout name (returned by av_channel_layout_describe()) - single or multiple channel names (returned by av_channel_name(), eg. &quot;FL&quot;, or concatenated with &quot;+&quot;, each optionally containing a custom name after a &quot;&quot;, eg. &quot;FL+FR+LFE&quot;) - a decimal or hexadecimal value of a native channel layout (eg. &quot;4&quot; or &quot;0x4&quot;) - the number of channels with default layout (eg. &quot;4c&quot;) - the number of unordered channels (eg. &quot;4C&quot; or &quot;4 channels&quot;) - the ambisonic order followed by optional non-diegetic channels (eg. &quot;ambisonic 2+stereo&quot;)</summary>
+        /// <param name="channel_layout">input channel layout</param>
+        /// <param name="str">string describing the channel layout</param>
+        [DllImport("avutil-57", EntryPoint = "av_channel_layout_from_string", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int av_channel_layout_from_string(AVChannelLayout* channel_layout, [MarshalAs(UnmanagedType.LPUTF8Str)] string str);
+        
+        /// <summary>Get the index of a given channel in a channel layout. In case multiple channels are found, only the first match will be returned.</summary>
+        /// <param name="channel_layout">input channel layout</param>
+        [DllImport("avutil-57", EntryPoint = "av_channel_layout_index_from_channel", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int av_channel_layout_index_from_channel(AVChannelLayout* channel_layout, AVChannel channel);
+        
+        /// <summary>Get the index in a channel layout of a channel described by the given string. In case multiple channels are found, only the first match will be returned.</summary>
+        /// <param name="channel_layout">input channel layout</param>
+        [DllImport("avutil-57", EntryPoint = "av_channel_layout_index_from_string", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int av_channel_layout_index_from_string(AVChannelLayout* channel_layout, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+        
+        /// <summary>Iterate over all standard channel layouts.</summary>
+        /// <param name="opaque">a pointer where libavutil will store the iteration state. Must point to NULL to start the iteration.</param>
+        [DllImport("avutil-57", EntryPoint = "av_channel_layout_standard", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern AVChannelLayout* av_channel_layout_standard(void** opaque);
+        
+        /// <summary>Iterate over all standard channel layouts.</summary>
+        /// <param name="opaque">a pointer where libavutil will store the iteration state. Must point to NULL to start the iteration.</param>
+        [DllImport("avutil-57", EntryPoint = "av_channel_layout_standard", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern AVChannelLayout* av_channel_layout_standard(ref void* opaque);
+        
+        /// <summary>Find out what channels from a given set are present in a channel layout, without regard for their positions.</summary>
+        /// <param name="channel_layout">input channel layout</param>
+        /// <param name="mask">a combination of AV_CH_* representing a set of channels</param>
+        [DllImport("avutil-57", EntryPoint = "av_channel_layout_subset", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern ulong av_channel_layout_subset(AVChannelLayout* channel_layout, ulong mask);
+        
+        /// <summary>Free any allocated data in the channel layout and reset the channel count to 0.</summary>
+        /// <param name="channel_layout">the layout structure to be uninitialized</param>
+        [DllImport("avutil-57", EntryPoint = "av_channel_layout_uninit", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern void av_channel_layout_uninit(AVChannelLayout* channel_layout);
+        
+        /// <summary>Get a human readable string in an abbreviated form describing a given channel. This is the inverse function of av_channel_from_string().</summary>
+        /// <param name="buf">pre-allocated buffer where to put the generated string</param>
+        /// <param name="buf_size">size in bytes of the buffer.</param>
+        [DllImport("avutil-57", EntryPoint = "av_channel_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int av_channel_name(byte* buf, ulong buf_size, AVChannel channel);
+        
+        /// <summary>bprint variant of av_channel_name().</summary>
+        [DllImport("avutil-57", EntryPoint = "av_channel_name_bprint", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern void av_channel_name_bprint(AVBPrint* bp, AVChannel channel_id);
         
         /// <summary>Returns the AVChromaLocation value for name or an AVError if not found.</summary>
         [DllImport("avutil-57", EntryPoint = "av_chroma_location_from_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -2401,98 +2521,6 @@ namespace Sdcb.FFmpeg.Raw
         [DllImport("avutil-57", EntryPoint = "av_fast_realloc", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern void* av_fast_realloc(void* ptr, uint* size, ulong min_size);
         
-        /// <summary>Initialize an AVFifoBuffer.</summary>
-        /// <param name="size">of FIFO</param>
-        [DllImport("avutil-57", EntryPoint = "av_fifo_alloc", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVFifoBuffer* av_fifo_alloc(uint size);
-        
-        /// <summary>Initialize an AVFifoBuffer.</summary>
-        /// <param name="nmemb">number of elements</param>
-        /// <param name="size">size of the single element</param>
-        [DllImport("avutil-57", EntryPoint = "av_fifo_alloc_array", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern AVFifoBuffer* av_fifo_alloc_array(ulong nmemb, ulong size);
-        
-        /// <summary>Read and discard the specified amount of data from an AVFifoBuffer.</summary>
-        /// <param name="f">AVFifoBuffer to read from</param>
-        /// <param name="size">amount of data to read in bytes</param>
-        [DllImport("avutil-57", EntryPoint = "av_fifo_drain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern void av_fifo_drain(AVFifoBuffer* f, int size);
-        
-        /// <summary>Free an AVFifoBuffer.</summary>
-        /// <param name="f">AVFifoBuffer to free</param>
-        [DllImport("avutil-57", EntryPoint = "av_fifo_free", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern void av_fifo_free(AVFifoBuffer* f);
-        
-        /// <summary>Free an AVFifoBuffer and reset pointer to NULL.</summary>
-        /// <param name="f">AVFifoBuffer to free</param>
-        [DllImport("avutil-57", EntryPoint = "av_fifo_freep", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern void av_fifo_freep(AVFifoBuffer** f);
-        
-        /// <summary>Free an AVFifoBuffer and reset pointer to NULL.</summary>
-        /// <param name="f">AVFifoBuffer to free</param>
-        [DllImport("avutil-57", EntryPoint = "av_fifo_freep", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern void av_fifo_freep(ref AVFifoBuffer* f);
-        
-        /// <summary>Feed data from an AVFifoBuffer to a user-supplied callback. Similar as av_fifo_gereric_read but without discarding data.</summary>
-        /// <param name="f">AVFifoBuffer to read from</param>
-        /// <param name="dest">data destination</param>
-        /// <param name="buf_size">number of bytes to read</param>
-        /// <param name="func">generic read function</param>
-        [DllImport("avutil-57", EntryPoint = "av_fifo_generic_peek", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_fifo_generic_peek(AVFifoBuffer* f, void* dest, int buf_size, av_fifo_generic_peek_func_func func);
-        
-        /// <summary>Feed data at specific position from an AVFifoBuffer to a user-supplied callback. Similar as av_fifo_gereric_read but without discarding data.</summary>
-        /// <param name="f">AVFifoBuffer to read from</param>
-        /// <param name="dest">data destination</param>
-        /// <param name="offset">offset from current read position</param>
-        /// <param name="buf_size">number of bytes to read</param>
-        /// <param name="func">generic read function</param>
-        [DllImport("avutil-57", EntryPoint = "av_fifo_generic_peek_at", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_fifo_generic_peek_at(AVFifoBuffer* f, void* dest, int offset, int buf_size, av_fifo_generic_peek_at_func_func func);
-        
-        /// <summary>Feed data from an AVFifoBuffer to a user-supplied callback.</summary>
-        /// <param name="f">AVFifoBuffer to read from</param>
-        /// <param name="dest">data destination</param>
-        /// <param name="buf_size">number of bytes to read</param>
-        /// <param name="func">generic read function</param>
-        [DllImport("avutil-57", EntryPoint = "av_fifo_generic_read", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_fifo_generic_read(AVFifoBuffer* f, void* dest, int buf_size, av_fifo_generic_read_func_func func);
-        
-        /// <summary>Feed data from a user-supplied callback to an AVFifoBuffer.</summary>
-        /// <param name="f">AVFifoBuffer to write to</param>
-        /// <param name="src">data source; non-const since it may be used as a modifiable context by the function defined in func</param>
-        /// <param name="size">number of bytes to write</param>
-        /// <param name="func">generic write function; the first parameter is src, the second is dest_buf, the third is dest_buf_size. func must return the number of bytes written to dest_buf, or &lt; = 0 to indicate no more data available to write. If func is NULL, src is interpreted as a simple byte array for source data.</param>
-        [DllImport("avutil-57", EntryPoint = "av_fifo_generic_write", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_fifo_generic_write(AVFifoBuffer* f, void* src, int size, av_fifo_generic_write_func_func func);
-        
-        /// <summary>Enlarge an AVFifoBuffer. In case of reallocation failure, the old FIFO is kept unchanged. The new fifo size may be larger than the requested size.</summary>
-        /// <param name="f">AVFifoBuffer to resize</param>
-        /// <param name="additional_space">the amount of space in bytes to allocate in addition to av_fifo_size()</param>
-        [DllImport("avutil-57", EntryPoint = "av_fifo_grow", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_fifo_grow(AVFifoBuffer* f, uint additional_space);
-        
-        /// <summary>Resize an AVFifoBuffer. In case of reallocation failure, the old FIFO is kept unchanged.</summary>
-        /// <param name="f">AVFifoBuffer to resize</param>
-        /// <param name="size">new AVFifoBuffer size in bytes</param>
-        [DllImport("avutil-57", EntryPoint = "av_fifo_realloc2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_fifo_realloc2(AVFifoBuffer* f, uint size);
-        
-        /// <summary>Reset the AVFifoBuffer to the state right after av_fifo_alloc, in particular it is emptied.</summary>
-        /// <param name="f">AVFifoBuffer to reset</param>
-        [DllImport("avutil-57", EntryPoint = "av_fifo_reset", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern void av_fifo_reset(AVFifoBuffer* f);
-        
-        /// <summary>Return the amount of data in bytes in the AVFifoBuffer, that is the amount of data you can read from it.</summary>
-        /// <param name="f">AVFifoBuffer to read from</param>
-        [DllImport("avutil-57", EntryPoint = "av_fifo_size", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_fifo_size(AVFifoBuffer* f);
-        
-        /// <summary>Return the amount of space in bytes in the AVFifoBuffer, that is the amount of data you can write into it.</summary>
-        /// <param name="f">AVFifoBuffer to write into</param>
-        [DllImport("avutil-57", EntryPoint = "av_fifo_space", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_fifo_space(AVFifoBuffer* f);
-        
         /// <summary>Read the file with name filename, and put its content in a newly allocated buffer or map it with mmap() when available. In case of success set *bufptr to the read or mmapped buffer, and *size to the size in bytes of the buffer in *bufptr. Unlike mmap this function succeeds with zero sized files, in this case *bufptr will be set to NULL and *size will be set to 0. The returned buffer must be released with av_file_unmap().</summary>
         /// <param name="log_offset">loglevel offset used for logging</param>
         /// <param name="log_ctx">context used for logging</param>
@@ -2523,6 +2551,7 @@ namespace Sdcb.FFmpeg.Raw
         public static extern int av_find_nearest_q_idx(AVRational q, AVRational* q_list);
         
         /// <summary>Open a file using a UTF-8 filename. The API of this function matches POSIX fopen(), errors are returned through errno.</summary>
+        [Obsolete("Avoid using it, as on Windows, the FILE* allocated by this function may be allocated with a different CRT than the caller who uses the FILE*. No replacement provided in public API.")]
         [DllImport("avutil-57", EntryPoint = "av_fopen_utf8", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern _iobuf* av_fopen_utf8([MarshalAs(UnmanagedType.LPUTF8Str)] string path, [MarshalAs(UnmanagedType.LPUTF8Str)] string mode);
         
@@ -2659,30 +2688,36 @@ namespace Sdcb.FFmpeg.Raw
         
         /// <summary>Get the description of a given channel.</summary>
         /// <param name="channel">a channel layout with a single channel</param>
+        [Obsolete("use av_channel_description()")]
         [DllImport("avutil-57", EntryPoint = "av_get_channel_description", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(ConstCharPtrMarshaler))]
         public static extern string av_get_channel_description(ulong channel);
         
         /// <summary>Return a channel layout id that matches name, or 0 if no match is found.</summary>
+        [Obsolete("use av_channel_layout_from_string()")]
         [DllImport("avutil-57", EntryPoint = "av_get_channel_layout", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern ulong av_get_channel_layout([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
         
         /// <summary>Get the index of a channel in channel_layout.</summary>
         /// <param name="channel">a channel layout describing exactly one channel which must be present in channel_layout.</param>
+        [Obsolete("use av_channel_layout_index_from_channel()")]
         [DllImport("avutil-57", EntryPoint = "av_get_channel_layout_channel_index", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int av_get_channel_layout_channel_index(ulong channel_layout, ulong channel);
         
         /// <summary>Return the number of channels in the channel layout.</summary>
+        [Obsolete("use AVChannelLayout.nb_channels")]
         [DllImport("avutil-57", EntryPoint = "av_get_channel_layout_nb_channels", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int av_get_channel_layout_nb_channels(ulong channel_layout);
         
         /// <summary>Return a description of a channel layout. If nb_channels is &lt;= 0, it is guessed from the channel_layout.</summary>
         /// <param name="buf">put here the string containing the channel layout</param>
         /// <param name="buf_size">size in bytes of the buffer</param>
+        [Obsolete("use av_channel_layout_describe()")]
         [DllImport("avutil-57", EntryPoint = "av_get_channel_layout_string", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern void av_get_channel_layout_string(byte* buf, int buf_size, int nb_channels, ulong channel_layout);
         
         /// <summary>Get the name of a given channel.</summary>
+        [Obsolete("use av_channel_name()")]
         [DllImport("avutil-57", EntryPoint = "av_get_channel_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(ConstCharPtrMarshaler))]
         public static extern string av_get_channel_name(ulong channel);
@@ -2698,6 +2733,7 @@ namespace Sdcb.FFmpeg.Raw
         public static extern int av_get_cpu_flags();
         
         /// <summary>Return default channel layout for a given number of channels.</summary>
+        [Obsolete("use av_channel_layout_default()")]
         [DllImport("avutil-57", EntryPoint = "av_get_default_channel_layout", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern long av_get_default_channel_layout(int nb_channels);
         
@@ -2705,6 +2741,7 @@ namespace Sdcb.FFmpeg.Raw
         /// <param name="name">channel layout specification string</param>
         /// <param name="channel_layout">parsed channel layout (0 if unknown)</param>
         /// <param name="nb_channels">number of channels</param>
+        [Obsolete("use av_channel_layout_from_string()")]
         [DllImport("avutil-57", EntryPoint = "av_get_extended_channel_layout", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int av_get_extended_channel_layout([MarshalAs(UnmanagedType.LPUTF8Str)] string name, ulong* channel_layout, int* nb_channels);
         
@@ -2773,6 +2810,7 @@ namespace Sdcb.FFmpeg.Raw
         /// <param name="index">index in an internal list, starting at 0</param>
         /// <param name="layout">channel layout mask</param>
         /// <param name="name">name of the layout</param>
+        [Obsolete("use av_channel_layout_standard()")]
         [DllImport("avutil-57", EntryPoint = "av_get_standard_channel_layout", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int av_get_standard_channel_layout(uint index, ulong* layout, byte** name);
         
@@ -2780,6 +2818,7 @@ namespace Sdcb.FFmpeg.Raw
         /// <param name="index">index in an internal list, starting at 0</param>
         /// <param name="layout">channel layout mask</param>
         /// <param name="name">name of the layout</param>
+        [Obsolete("use av_channel_layout_standard()")]
         [DllImport("avutil-57", EntryPoint = "av_get_standard_channel_layout", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int av_get_standard_channel_layout(uint index, ulong* layout, ref byte* name);
         
@@ -3386,8 +3425,12 @@ namespace Sdcb.FFmpeg.Raw
         [DllImport("avutil-57", EntryPoint = "av_opt_get", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int av_opt_get(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, int search_flags, ref byte* out_val);
         
+        [Obsolete("")]
         [DllImport("avutil-57", EntryPoint = "av_opt_get_channel_layout", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int av_opt_get_channel_layout(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, int search_flags, long* ch_layout);
+        
+        [DllImport("avutil-57", EntryPoint = "av_opt_get_chlayout", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int av_opt_get_chlayout(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, int search_flags, AVChannelLayout* layout);
         
         /// <param name="out_val">The returned dictionary is a copy of the actual value and must be freed with av_dict_free() by the caller</param>
         [DllImport("avutil-57", EntryPoint = "av_opt_get_dict_val", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -3512,8 +3555,12 @@ namespace Sdcb.FFmpeg.Raw
         [DllImport("avutil-57", EntryPoint = "av_opt_set_bin", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int av_opt_set_bin(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, byte* val, int size, int search_flags);
         
+        [Obsolete("")]
         [DllImport("avutil-57", EntryPoint = "av_opt_set_channel_layout", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int av_opt_set_channel_layout(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, long ch_layout, int search_flags);
+        
+        [DllImport("avutil-57", EntryPoint = "av_opt_set_chlayout", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int av_opt_set_chlayout(void* obj, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, AVChannelLayout* layout, int search_flags);
         
         /// <summary>Set the values of all AVOption fields to their default values.</summary>
         /// <param name="s">an AVOption-enabled struct (its first member must be a pointer to AVClass)</param>
@@ -3693,7 +3740,7 @@ namespace Sdcb.FFmpeg.Raw
         [DllImport("avutil-57", EntryPoint = "av_reallocp", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int av_reallocp(void* ptr, ulong size);
         
-        /// <summary>Allocate, reallocate, or free an array through a pointer to a pointer.</summary>
+        /// <summary>Allocate, reallocate an array through a pointer to a pointer.</summary>
         /// <param name="ptr">Pointer to a pointer to a memory block already allocated with av_realloc(), or a pointer to `NULL`. The pointer is updated on success, or freed on failure.</param>
         /// <param name="nmemb">Number of elements</param>
         /// <param name="size">Size of the single element</param>
@@ -4120,8 +4167,35 @@ namespace Sdcb.FFmpeg.Raw
         /// <param name="in_sample_rate">input sample rate (frequency in Hz)</param>
         /// <param name="log_offset">logging level offset</param>
         /// <param name="log_ctx">parent logging context, can be NULL</param>
+        [Obsolete("use ")]
         [DllImport("swresample-4", EntryPoint = "swr_alloc_set_opts", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern SwrContext* swr_alloc_set_opts(SwrContext* s, long out_ch_layout, AVSampleFormat out_sample_fmt, int out_sample_rate, long in_ch_layout, AVSampleFormat in_sample_fmt, int in_sample_rate, int log_offset, void* log_ctx);
+        
+        /// <summary>Allocate SwrContext if needed and set/reset common parameters.</summary>
+        /// <param name="ps">Pointer to an existing Swr context if available, or to NULL if not. On success, *ps will be set to the allocated context.</param>
+        /// <param name="out_ch_layout">output channel layout (e.g. AV_CHANNEL_LAYOUT_*)</param>
+        /// <param name="out_sample_fmt">output sample format (AV_SAMPLE_FMT_*).</param>
+        /// <param name="out_sample_rate">output sample rate (frequency in Hz)</param>
+        /// <param name="in_ch_layout">input channel layout (e.g. AV_CHANNEL_LAYOUT_*)</param>
+        /// <param name="in_sample_fmt">input sample format (AV_SAMPLE_FMT_*).</param>
+        /// <param name="in_sample_rate">input sample rate (frequency in Hz)</param>
+        /// <param name="log_offset">logging level offset</param>
+        /// <param name="log_ctx">parent logging context, can be NULL</param>
+        [DllImport("swresample-4", EntryPoint = "swr_alloc_set_opts2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int swr_alloc_set_opts2(SwrContext** ps, AVChannelLayout* out_ch_layout, AVSampleFormat out_sample_fmt, int out_sample_rate, AVChannelLayout* in_ch_layout, AVSampleFormat in_sample_fmt, int in_sample_rate, int log_offset, void* log_ctx);
+        
+        /// <summary>Allocate SwrContext if needed and set/reset common parameters.</summary>
+        /// <param name="ps">Pointer to an existing Swr context if available, or to NULL if not. On success, *ps will be set to the allocated context.</param>
+        /// <param name="out_ch_layout">output channel layout (e.g. AV_CHANNEL_LAYOUT_*)</param>
+        /// <param name="out_sample_fmt">output sample format (AV_SAMPLE_FMT_*).</param>
+        /// <param name="out_sample_rate">output sample rate (frequency in Hz)</param>
+        /// <param name="in_ch_layout">input channel layout (e.g. AV_CHANNEL_LAYOUT_*)</param>
+        /// <param name="in_sample_fmt">input sample format (AV_SAMPLE_FMT_*).</param>
+        /// <param name="in_sample_rate">input sample rate (frequency in Hz)</param>
+        /// <param name="log_offset">logging level offset</param>
+        /// <param name="log_ctx">parent logging context, can be NULL</param>
+        [DllImport("swresample-4", EntryPoint = "swr_alloc_set_opts2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int swr_alloc_set_opts2(ref SwrContext* ps, AVChannelLayout* out_ch_layout, AVSampleFormat out_sample_fmt, int out_sample_rate, AVChannelLayout* in_ch_layout, AVSampleFormat in_sample_fmt, int in_sample_rate, int log_offset, void* log_ctx);
         
         /// <summary>Generate a channel mixing matrix.</summary>
         /// <param name="in_layout">input channel layout</param>
@@ -4134,8 +4208,21 @@ namespace Sdcb.FFmpeg.Raw
         /// <param name="stride">distance between adjacent input channels in the matrix array</param>
         /// <param name="matrix_encoding">matrixed stereo downmix mode (e.g. dplii)</param>
         /// <param name="log_ctx">parent logging context, can be NULL</param>
+        [Obsolete("use ")]
         [DllImport("swresample-4", EntryPoint = "swr_build_matrix", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int swr_build_matrix(ulong in_layout, ulong out_layout, double center_mix_level, double surround_mix_level, double lfe_mix_level, double rematrix_maxval, double rematrix_volume, double* matrix, int stride, AVMatrixEncoding matrix_encoding, void* log_ctx);
+        
+        /// <summary>Generate a channel mixing matrix.</summary>
+        /// <param name="in_layout">input channel layout</param>
+        /// <param name="out_layout">output channel layout</param>
+        /// <param name="center_mix_level">mix level for the center channel</param>
+        /// <param name="surround_mix_level">mix level for the surround channel(s)</param>
+        /// <param name="lfe_mix_level">mix level for the low-frequency effects channel</param>
+        /// <param name="matrix">mixing coefficients; matrix[i + stride * o] is the weight of input channel i in output channel o.</param>
+        /// <param name="stride">distance between adjacent input channels in the matrix array</param>
+        /// <param name="matrix_encoding">matrixed stereo downmix mode (e.g. dplii)</param>
+        [DllImport("swresample-4", EntryPoint = "swr_build_matrix2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int swr_build_matrix2(AVChannelLayout* in_layout, AVChannelLayout* out_layout, double center_mix_level, double surround_mix_level, double lfe_mix_level, double maxval, double rematrix_volume, double* matrix, long stride, AVMatrixEncoding matrix_encoding, void* log_context);
         
         /// <summary>Closes the context so that swr_is_initialized() returns 0.</summary>
         /// <param name="s">Swr context to be closed</param>

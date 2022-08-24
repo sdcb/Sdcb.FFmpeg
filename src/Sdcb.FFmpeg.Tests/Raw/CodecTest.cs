@@ -10,7 +10,7 @@ namespace Sdcb.FFmpeg.Tests.Raw
         {
             uint version = ffmpeg.avcodec_version();
             uint major = version >> 16;
-            Assert.Equal(59u, major);
+            Assert.Equal(ffmpeg.LIBAVCODEC_VERSION_MAJOR, major);
         }
 
         [Fact]

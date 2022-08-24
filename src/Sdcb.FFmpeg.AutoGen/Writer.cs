@@ -16,150 +16,36 @@ namespace Sdcb.FFmpeg.AutoGen
 
         public bool SuppressUnmanagedCodeSecurity { get; init; }
 
-        public void WriteMacro(MacroDefinition macro)
+        public void WriteMacro(MacroDefinitionBase macro)
         {
-            if (macro.IsValid)
+            if (macro is MacroDefinitionGood good)
             {
                 WriteSummary(macro);
-                var constOrStatic = macro.IsConst ? "const" : "static readonly";
-                WriteLine($"public {constOrStatic} {macro.TypeName} {macro.Name} = {macro.Expression};");
+                var constOrStatic = good.IsConst ? "const" : "static readonly";
+                WriteLine($"public {constOrStatic} {good.TypeName} {macro.Name} = {good.ExpressionText};");
             }
             else
-                WriteLine($"// public static {macro.Name} = {macro.Expression};");
+            {
+                WriteLine($"// public static {macro.Name} = {macro.RawExpressionText};");
+            }   
         }
-
-        public void WriteMacroEnum(IGrouping<string, MacroDefinition> group, MacroEnumDef enumDef)
-        {
-            List<MacroDefinition> macros = group.ToList();
-            HashSet<string> allTypes = macros
-                .Select(x => x.TypeName)
-                .Distinct()
-                .ToHashSet();
-            string typeExpr = DetectBestTypeForEnum(allTypes) switch
-            {
-                "int" => "",
-                var x => $" : {x}",
-            };
-
-            Dictionary<string, string> macroShortcutMapping = macros
-                .OrderByDescending(k => k.Name.Length)
-                .ToDictionary(k => k.Name, v => EnumNameTransform(v.Name[enumDef.Prefix.Length..]));
-
-            WriteLine($"/// <summary>Macro enum, prefix: {enumDef.Prefix}</summary>");
-            if (enumDef.IsFlags) WriteLine($"[Flags]");
-            WriteLine($"public enum {enumDef.EnumName}{typeExpr}");
-            using (BeginBlock())
-            {
-                group.ForEach((macro, i) =>
-                {
-                    WriteSummary(macro);
-                    string key = macroShortcutMapping[macro.Name];
-                    WriteLine($"{key} = {ExpressionTransform(macro.Expression, macroShortcutMapping)},");
-                    if (!i.IsLast)
-                    {
-                        WriteLine();
-                    }
-                });
-            }
-
-
-            static string ExpressionTransform(string expression, Dictionary<string, string> mapping)
-            {
-                foreach (KeyValuePair<string, string> kv in mapping)
-                {
-                    expression = expression.Replace(kv.Key, kv.Value);
-                }
-                return expression;
-            }
-
-            static string DetectBestTypeForEnum(HashSet<string> allTypes)
-            {
-                string[] priorities = new[]
-                {
-                    "ulong",
-                    "long",
-                    "uint",
-                    "int",
-                    "ushort",
-                    "short",
-                };
-
-                foreach (string prior in priorities)
-                {
-                    if (allTypes.Contains(prior))
-                        return prior;
-                }
-                return "int";
-            }
-        }
-
-        private static readonly HashSet<string> _csharpKeywords = ("abstract,as,base,bool,break,byte,case," +
-                    "catch,char,checked,class,const,continue,decimal,default,delegate,do," +
-                    "double,else,enum,event,explicit,extern,false,finally,fixed,float,for," +
-                    "foreach,goto,if,implicit,in,int,interface,internal,is,lock,long,namespace," +
-                    "new,null,object,operator,out,override,params,private,protected,public," +
-                    "readonly,ref,return,sbyte,sealed,short,sizeof,stackalloc,static,string," +
-                    "struct,switch,this,throw,true,try,typeof,uint,ulong,unchecked,unsafe," +
-                    "ushort,using,virtual,void,volatile,while").Split(',').ToHashSet();
 
         public void WriteEnumeration(EnumerationDefinition enumeration)
         {
             WriteSummary(enumeration);
             WriteObsoletion(enumeration);
+            if (enumeration.IsFlags) WriteLine("[Flags]");
             WriteLine($"public enum {enumeration.Name} : {enumeration.TypeName}");
 
             using (BeginBlock())
             {
-                string commonPrefix = CommonPrefixOf(enumeration.Items.Select(i => i.Name));
-
                 foreach (var item in enumeration.Items)
                 {
                     WriteSummary(item);
-                    string key = EnumNameTransform(item.Name.Substring(commonPrefix.Length));
-                    WriteLine($"{key} = {item.Value},");
+                    WriteLine($"{item.Name} = {item.Value},");
                 }
             }
-        }
-
-        private static string EnumNameTransform(string name) => CSharpKeywordTransform(string.Concat(name
-            .Split('_')
-            .Select(x => x switch
-            {
-                var _ when char.IsDigit(x[0]) => $"_{x}",
-                _ => char.ToUpper(x[0]) + x[1..].ToLower(),
-            })));
-
-        private static bool IsCSharpKeyword(string key) => _csharpKeywords.Contains(key);
-
-        private static string CSharpKeywordTransform(string syntax) => syntax switch
-        {
-            _ when IsCSharpKeyword(syntax) => "@" + syntax,
-            _ => syntax
-        };
-
-        public static string CommonPrefixOf(IEnumerable<string> strings)
-        {
-            string commonPrefix = strings.FirstOrDefault() ?? "";
-
-            foreach (var s in strings)
-            {
-                var potentialMatchLength = Math.Min(s.Length, commonPrefix.Length);
-
-                if (potentialMatchLength < commonPrefix.Length)
-                    commonPrefix = commonPrefix.Substring(0, potentialMatchLength);
-
-                for (var i = 0; i < potentialMatchLength; i++)
-                {
-                    if (s[i] != commonPrefix[i])
-                    {
-                        commonPrefix = commonPrefix.Substring(0, i);
-                        break;
-                    }
-                }
-            }
-
-            return commonPrefix;
-        }
+        }        
 
         public void WriteStructure(StructureDefinition structure)
         {
@@ -175,7 +61,7 @@ namespace Sdcb.FFmpeg.AutoGen
                     WriteSummary(field);
                     WriteObsoletion(field);
                     if (structure.IsUnion) WriteLine("[FieldOffset(0)]");
-                    WriteLine($"public {field.FieldType.Name} {CSharpKeywordTransform(field.Name)};");
+                    WriteLine($"public {field.FieldType.Name} {StringExtensions.CSharpKeywordTransform(field.Name)};");
                 }
         }
 
@@ -493,19 +379,19 @@ namespace Sdcb.FFmpeg.AutoGen
                     var sb = new StringBuilder();
                     if (withAttributes && x.Type.Attributes.Any()) sb.Append($"{string.Join("", x.Type.Attributes)} ");
                     if (x.Type.ByReference) sb.Append("ref ");
-                    sb.Append($"{x.Type.Name} {CSharpKeywordTransform(x.Name)}");
+                    sb.Append($"{x.Type.Name} {StringExtensions.CSharpKeywordTransform(x.Name)}");
                     return sb.ToString();
                 }));
         }
 
         private void WriteSummary(ICanGenerateXmlDoc value)
         {
-            if (!string.IsNullOrWhiteSpace(value.Content)) WriteLine($"/// <summary>{SecurityElement.Escape(value.Content.Trim())}</summary>");
+            if (!string.IsNullOrWhiteSpace(value.XmlDocument)) WriteLine($"/// <summary>{SecurityElement.Escape(value.XmlDocument.Trim())}</summary>");
         }
 
         private void WriteParam(ICanGenerateXmlDoc value, string name)
         {
-            if (!string.IsNullOrWhiteSpace(value.Content)) WriteLine($"/// <param name=\"{name}\">{SecurityElement.Escape(value.Content.Trim())}</param>");
+            if (!string.IsNullOrWhiteSpace(value.XmlDocument)) WriteLine($"/// <param name=\"{name}\">{SecurityElement.Escape(value.XmlDocument.Trim())}</param>");
         }
 
         private void WriteReturnComment(string content)
@@ -516,8 +402,10 @@ namespace Sdcb.FFmpeg.AutoGen
         private void WriteObsoletion(IObsoletionAware obsoletionAware)
         {
             var obsoletion = obsoletionAware.Obsoletion;
-            if (obsoletion.IsObsolete) WriteLine($"[Obsolete(\"{obsoletion.Message}\")]");
+            if (obsoletion.IsObsolete) WriteLine($"[Obsolete(\"{DoubleQuoteEscape(obsoletion.Message)}\")]");
         }
+
+        static string DoubleQuoteEscape(string val) => val.Replace("\"", "\\\"");
 
         private void Write(string value)
         {

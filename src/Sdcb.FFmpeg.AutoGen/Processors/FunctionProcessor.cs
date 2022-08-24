@@ -40,7 +40,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             {
                 inline.Name = functionName;
                 inline.ReturnType = GetReturnTypeName(function.ReturnType.Type, functionName);
-                inline.Content = function.Comment?.BriefText;
+                inline.XmlDocument = function.Comment?.BriefText;
                 inline.ReturnComment = GetReturnComment(function);
                 inline.Parameters = function.Parameters.Select((x, i) => GetParameter(function, x, i, useByRefForDoubleIndirection, useWrapperForFixedArray)).ToArray();
                 inline.Obsoletion = ObsoletionHelper.CreateObsoletion(function);
@@ -100,7 +100,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             {
                 Name = name,
                 Type = GetParameterType(parameter.Type, $"{function.Name}_{name}", useByRefForDoubleIndirection, useWrapperForFixedArray),
-                Content = GetParamComment(function, parameter.Name)
+                XmlDocument = GetParamComment(function, parameter.Name)
             };
         }
 

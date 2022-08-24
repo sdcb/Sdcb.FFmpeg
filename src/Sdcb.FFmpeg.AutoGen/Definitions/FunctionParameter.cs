@@ -4,6 +4,6 @@ namespace Sdcb.FFmpeg.AutoGen.Definitions
     {
         public string Name { get; init; }
         public TypeDefinition Type { get; init; }
-        public string Content { get; set; }
+        public string XmlDocument { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Sdcb.FFmpeg.Common;
+using Sdcb.FFmpeg.Raw;
 using Xunit;
 using Xunit.Abstractions;
-using static Sdcb.FFmpeg.Raw.ffmpeg;
 
 namespace Sdcb.FFmpeg.Tests.Common
 {
