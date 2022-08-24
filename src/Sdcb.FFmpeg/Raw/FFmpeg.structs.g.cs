@@ -11,15 +11,6 @@ namespace Sdcb.FFmpeg.Raw
         public void* _Placeholder;
     }
     
-    /// <summary>Rational number (pair of numerator and denominator).</summary>
-    public unsafe struct AVRational
-    {
-        /// <summary>Numerator</summary>
-        public int num;
-        /// <summary>Denominator</summary>
-        public int den;
-    }
-    
     /// <summary>Describe the class of an AVClass context structure. That is an arbitrary struct of which the first field is a pointer to an AVClass struct (e.g. AVCodecContext, AVFormatContext etc.).</summary>
     public unsafe struct AVClass
     {

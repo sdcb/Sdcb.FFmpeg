@@ -86,6 +86,7 @@ async Task SetupFFmpegBinaries(string solutionDir, string ffmpegBinaryUrl)
     string zippedFilename = new Uri(ffmpegBinaryUrl).Segments.Last();
     string FFmpegDir = Path.Combine(solutionDir, "FFmpeg-binary-cache");
     string FFmpegBinDir = Path.Combine(FFmpegDir, "bin/x64");
+    string FFmpegIncludeDir = Path.Combine(FFmpegDir, "include");
     Directory.CreateDirectory(FFmpegDir);
 
     string destinationCacheFile = Path.Combine(FFmpegDir, zippedFilename);
@@ -116,6 +117,7 @@ async Task SetupFFmpegBinaries(string solutionDir, string ffmpegBinaryUrl)
     {
         using ZipArchive zip = ZipFile.OpenRead(destinationCacheFile);
         ExtractPrefixToDest(zip, "/bin/", FFmpegBinDir);
+        ExtractPrefixToDest(zip, "/include/", FFmpegIncludeDir);
 
         static void ExtractPrefixToDest(ZipArchive zip, string prefix, string dest)
         {

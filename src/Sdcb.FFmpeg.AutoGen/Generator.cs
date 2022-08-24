@@ -185,11 +185,12 @@ namespace Sdcb.FFmpeg.AutoGen
 
         public void WriteStructures(string outputFile)
         {
+            HashSet<string> ignoreIds = new[] { "AVRational" }.ToHashSet();
             WriteInternal(outputFile,
                 (units, writer) =>
                 {
                     units.OfType<StructureDefinition>()
-                        .Where(x => x.IsComplete)
+                        .Where(x => x.IsComplete && !ignoreIds.Contains(x.Name))
                         .ToList()
                         .ForEach(x =>
                         {
