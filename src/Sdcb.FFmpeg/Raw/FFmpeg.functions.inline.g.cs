@@ -175,13 +175,13 @@ namespace Sdcb.FFmpeg.Raw
         /// <returns>One of the following values: - 0 if `a == b` - 1 if `a &gt; b` - -1 if `a &lt; b` - `INT_MIN` if one of the values is of the form `0 / 0`</returns>
         public static int av_cmp_q(AVRational a, AVRational b)
         {
-            long tmp = a.num * (long)b.den - b.num * (long)a.den;
+            long tmp = a.Num * (long)b.Den - b.Num * (long)a.Den;
             if (tmp != 0)
-                return (int)((tmp ^ a.den ^ b.den) >> 63) | 1;
-            else if (b.den != 0 && a.den != 0)
+                return (int)((tmp ^ a.Den ^ b.Den) >> 63) | 1;
+            else if (b.Den != 0 && a.Den != 0)
                 return 0;
-            else if (a.num != 0 && b.num != 0)
-                return (a.num >> 31) - (b.num >> 31);
+            else if (a.Num != 0 && b.Num != 0)
+                return (a.Num >> 31) - (b.Num >> 31);
             else
                 return (-2147483647 - 1);
         }
@@ -225,7 +225,7 @@ namespace Sdcb.FFmpeg.Raw
         /// <returns>1 / q</returns>
         public static AVRational av_inv_q(AVRational q)
         {
-            var r = new AVRational { @num = q.den, @den = q.num };
+            var r = new AVRational { Num = q.Den, Den = q.Num };
             return r;
         }
         // original body hash: sXbO4D7vmayAx56EFqz9C0kakcSPSryJHdk0hr0MOFY=
@@ -247,7 +247,7 @@ namespace Sdcb.FFmpeg.Raw
         /// <summary>Create an AVRational.</summary>
         public static AVRational av_make_q(int num, int den)
         {
-            var r = new AVRational { @num = num, @den = den };
+            var r = new AVRational { Num = num, Den = den };
             return r;
         }
         // original body hash: IAPYNNcg3GX0PGxINeLQhb41dH921lPVKcnqxCk7ERA=
@@ -300,7 +300,7 @@ namespace Sdcb.FFmpeg.Raw
         /// <returns>`a` in floating-point form</returns>
         public static double av_q2d(AVRational a)
         {
-            return a.num / (double)a.den;
+            return a.Num / (double)a.Den;
         }
         // original body hash: j4R2BS8nF6czcUDVk5kKi9nLEdlTI/NRDYtnc1KFeyE=
         
