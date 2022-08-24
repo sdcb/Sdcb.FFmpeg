@@ -1,5 +1,4 @@
-﻿using Sdcb.FFmpeg.Raw;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using static Sdcb.FFmpeg.Raw.ffmpeg;
 

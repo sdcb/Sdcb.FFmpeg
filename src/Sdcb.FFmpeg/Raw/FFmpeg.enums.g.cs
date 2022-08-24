@@ -200,6 +200,32 @@ namespace Sdcb.FFmpeg.Raw
         RoFlushNoop = 1 << 30,
     }
     
+    /// <summary>Macro enum, prefix: AV_DICT_</summary>
+    [Flags]
+    public enum AV_DICT_READ : int
+    {
+        /// <summary>AV_DICT_MATCH_CASE</summary>
+        MatchCase = 1,
+        /// <summary>AV_DICT_IGNORE_SUFFIX</summary>
+        IgnoreSuffix = 2,
+    }
+    
+    /// <summary>Macro enum, prefix: AV_DICT_</summary>
+    [Flags]
+    public enum AV_DICT_WRITE : int
+    {
+        /// <summary>AV_DICT_DONT_STRDUP_KEY</summary>
+        DontStrdupKey = 4,
+        /// <summary>AV_DICT_DONT_STRDUP_VAL</summary>
+        DontStrdupVal = 8,
+        /// <summary>AV_DICT_DONT_OVERWRITE</summary>
+        DontOverwrite = 16,
+        /// <summary>AV_DICT_APPEND</summary>
+        Append = 32,
+        /// <summary>AV_DICT_MULTIKEY</summary>
+        Multikey = 64,
+    }
+    
     /// <summary>Macro enum, prefix: AV_OPT_FLAG_</summary>
     [Flags]
     public enum AV_OPT_FLAG : int

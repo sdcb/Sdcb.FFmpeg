@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Sdcb.FFmpeg.Raw
+namespace Sdcb.FFmpeg
 {
     internal static class PtrExtensions
     {

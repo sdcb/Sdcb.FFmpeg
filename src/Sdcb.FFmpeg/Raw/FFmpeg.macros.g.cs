@@ -218,13 +218,6 @@ namespace Sdcb.FFmpeg.Raw
         public const int AV_CPU_FLAG_VFPV3 = 1 << 4;
         public const uint AV_CPU_FLAG_VSX = 0x0002;
         public const uint AV_CPU_FLAG_XOP = 0x0400;
-        public const int AV_DICT_APPEND = 32;
-        public const int AV_DICT_DONT_OVERWRITE = 16;
-        public const int AV_DICT_DONT_STRDUP_KEY = 4;
-        public const int AV_DICT_DONT_STRDUP_VAL = 8;
-        public const int AV_DICT_IGNORE_SUFFIX = 2;
-        public const int AV_DICT_MATCH_CASE = 1;
-        public const int AV_DICT_MULTIKEY = 64;
         /// <summary>AV_DISPOSITION_ATTACHED_PIC = (1 &lt;&lt; 10)</summary>
         public const int AV_DISPOSITION_ATTACHED_PIC = 1 << 10;
         /// <summary>AV_DISPOSITION_CAPTIONS = (1 &lt;&lt; 16)</summary>

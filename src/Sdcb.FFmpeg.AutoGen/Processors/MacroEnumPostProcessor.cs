@@ -29,6 +29,8 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 new ("AV_OPT_SEARCH_", "AV_OPT_SEARCH", IsFlags: true),
                 new ("AV_LOG_", "LogFlags", Only: HashSet("AV_LOG_SKIP_REPEATED", "AV_LOG_PRINT_LEVEL")),
                 new ("AV_LOG_", "LogLevel", Except: HashSet("AV_LOG_C")),
+                new ("AV_DICT_", "AV_DICT_READ", Only: HashSet("AV_DICT_MATCH_CASE", "AV_DICT_IGNORE_SUFFIX"), IsFlags: true),
+                new ("AV_DICT_", "AV_DICT_WRITE", IsFlags: true),
                 //new ("AV_CPU_FLAG_", "CpuFlags"),
                 //new ("AV_PKT_FLAG_", "PacketFlags"),
                 //new ("AVFMT_FLAG_", "FormatFlags"), 
