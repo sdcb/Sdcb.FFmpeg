@@ -78,7 +78,7 @@ namespace Sdcb.FFmpeg.Common
             }
 
             AVDictionary* ptr = this;
-            av_dict_set(&ptr, key, value, (int)AV_DICT_WRITE.DontOverwrite).ThrowIfError();
+            av_dict_set(&ptr, key, value, default).ThrowIfError();
             handle = (IntPtr)ptr;
         }
 
@@ -179,7 +179,32 @@ namespace Sdcb.FFmpeg.Common
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         #endregion
 
-        public void Set(string key, string value, AV_DICT_WRITE flags = AV_DICT_WRITE.DontOverwrite)
+        public IEnumerable<KeyValuePair<string, string>> QueryPrefix(string prefix, bool caseSensitive = true)
+        {
+            IntPtr opaque = IntPtr.Zero;
+            while (true)
+            {
+                opaque = av_dict_get_safe(this, opaque);
+                if (opaque == IntPtr.Zero) yield break;
+
+                yield return GenerateResult(opaque);
+            }
+
+            static KeyValuePair<string, string> GenerateResult(IntPtr ptr)
+            {
+                var entry = (AVDictionaryEntry*)ptr;
+                return new KeyValuePair<string, string>(
+                    PtrExtensions.PtrToStringUTF8((IntPtr)entry->key)!,
+                    PtrExtensions.PtrToStringUTF8((IntPtr)entry->value)!);
+            }
+
+            IntPtr av_dict_get_safe(MediaDictionary dict, IntPtr prev)
+            {
+                return (IntPtr)av_dict_get(dict, prefix, (AVDictionaryEntry*)prev, (int)((caseSensitive ? AV_DICT_READ.MatchCase : default) | AV_DICT_READ.IgnoreSuffix));
+            }
+        }
+
+        public void Set(string key, string value, AV_DICT_WRITE flags = default)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
             if (value == null) throw new ArgumentNullException(nameof(value)); // in AVDictionary, value is also not-null.
