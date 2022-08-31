@@ -13,9 +13,9 @@ namespace Sdcb.FFmpeg.Codecs;
 /// </summary>
 public unsafe partial class Packet : SafeHandle
 {
-    protected AVPacket* Pointer => this;
+    protected AVPacket* _ptr => (AVPacket*)handle;
     
-    public static implicit operator AVPacket*(Packet data) => data != null ? data.Pointer : null;
+    public static implicit operator AVPacket*(Packet data) => data != null ? (AVPacket*)data.handle : null;
     
     protected Packet(AVPacket* ptr, bool isOwner): base(NativeUtils.NotNull((IntPtr)ptr), isOwner)
     {
@@ -31,8 +31,8 @@ public unsafe partial class Packet : SafeHandle
     /// </summary>
     public AVBufferRef* Buf
     {
-        get => Pointer->buf;
-        set => Pointer->buf = value;
+        get => _ptr->buf;
+        set => _ptr->buf = value;
     }
     
     /// <summary>
@@ -41,8 +41,8 @@ public unsafe partial class Packet : SafeHandle
     /// </summary>
     public long Pts
     {
-        get => Pointer->pts;
-        set => Pointer->pts = value;
+        get => _ptr->pts;
+        set => _ptr->pts = value;
     }
     
     /// <summary>
@@ -51,8 +51,8 @@ public unsafe partial class Packet : SafeHandle
     /// </summary>
     public long Dts
     {
-        get => Pointer->dts;
-        set => Pointer->dts = value;
+        get => _ptr->dts;
+        set => _ptr->dts = value;
     }
     
     /// <summary>
@@ -61,8 +61,8 @@ public unsafe partial class Packet : SafeHandle
     /// </summary>
     public IntPtr Data
     {
-        get => (IntPtr)Pointer->data;
-        set => Pointer->data = (byte*)value;
+        get => (IntPtr)_ptr->data;
+        set => _ptr->data = (byte*)value;
     }
     
     /// <summary>
@@ -70,8 +70,8 @@ public unsafe partial class Packet : SafeHandle
     /// </summary>
     public int Size
     {
-        get => Pointer->size;
-        set => Pointer->size = value;
+        get => _ptr->size;
+        set => _ptr->size = value;
     }
     
     /// <summary>
@@ -79,8 +79,8 @@ public unsafe partial class Packet : SafeHandle
     /// </summary>
     public int StreamIndex
     {
-        get => Pointer->stream_index;
-        set => Pointer->stream_index = value;
+        get => _ptr->stream_index;
+        set => _ptr->stream_index = value;
     }
     
     /// <summary>
@@ -89,8 +89,8 @@ public unsafe partial class Packet : SafeHandle
     /// </summary>
     public int Flags
     {
-        get => Pointer->flags;
-        set => Pointer->flags = value;
+        get => _ptr->flags;
+        set => _ptr->flags = value;
     }
     
     /// <summary>
@@ -99,8 +99,8 @@ public unsafe partial class Packet : SafeHandle
     /// </summary>
     public AVPacketSideData* SideData
     {
-        get => Pointer->side_data;
-        set => Pointer->side_data = value;
+        get => _ptr->side_data;
+        set => _ptr->side_data = value;
     }
     
     /// <summary>
@@ -108,8 +108,8 @@ public unsafe partial class Packet : SafeHandle
     /// </summary>
     public int SideDataElems
     {
-        get => Pointer->side_data_elems;
-        set => Pointer->side_data_elems = value;
+        get => _ptr->side_data_elems;
+        set => _ptr->side_data_elems = value;
     }
     
     /// <summary>
@@ -118,8 +118,8 @@ public unsafe partial class Packet : SafeHandle
     /// </summary>
     public long Duration
     {
-        get => Pointer->duration;
-        set => Pointer->duration = value;
+        get => _ptr->duration;
+        set => _ptr->duration = value;
     }
     
     /// <summary>
@@ -128,8 +128,8 @@ public unsafe partial class Packet : SafeHandle
     /// </summary>
     public long Position
     {
-        get => Pointer->pos;
-        set => Pointer->pos = value;
+        get => _ptr->pos;
+        set => _ptr->pos = value;
     }
     
     /// <summary>
@@ -139,8 +139,8 @@ public unsafe partial class Packet : SafeHandle
     /// </summary>
     public IntPtr Opaque
     {
-        get => (IntPtr)Pointer->opaque;
-        set => Pointer->opaque = (void*)value;
+        get => (IntPtr)_ptr->opaque;
+        set => _ptr->opaque = (void*)value;
     }
     
     /// <summary>
@@ -149,8 +149,8 @@ public unsafe partial class Packet : SafeHandle
     /// </summary>
     public AVBufferRef* OpaqueRef
     {
-        get => Pointer->opaque_ref;
-        set => Pointer->opaque_ref = value;
+        get => _ptr->opaque_ref;
+        set => _ptr->opaque_ref = value;
     }
     
     /// <summary>
@@ -159,7 +159,7 @@ public unsafe partial class Packet : SafeHandle
     /// </summary>
     public AVRational TimeBase
     {
-        get => Pointer->time_base;
-        set => Pointer->time_base = value;
+        get => _ptr->time_base;
+        set => _ptr->time_base = value;
     }
 }

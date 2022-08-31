@@ -11,9 +11,10 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
     {
         public static void WriteAll(string outputDir, IEnumerable<StructureDefinition> structures)
         {
-            Dictionary<string, ClassTransformDefinition> knownClasses = new[]
+            Dictionary<string, G2TransformDefinition> knownClasses = new G2TransformDefinition[]
             {
                 new ClassTransformDefinition("AVPacket", "Packet", ClassCategories.Codecs),
+                new StructTransformDefinition("AVPacketSideData", "PacketSideData", ClassCategories.Codecs), 
             }.ToDictionary(k => k.OldName, v => v);
 
             foreach (StructureDefinition structure in structures.Where(x => knownClasses.ContainsKey(x.Name)))

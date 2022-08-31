@@ -10,7 +10,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2;
 
 internal class G2ClassWriter
 {
-    internal static void WriteOne(StructureDefinition structure, ClassTransformDefinition def, string outputDir)
+    internal static void WriteOne(StructureDefinition structure, G2TransformDefinition def, string outputDir)
     {
         using FileStream fileStream = File.OpenWrite(def.GetDestFile(outputDir));
         using StreamWriter streamWriter = new(fileStream);
@@ -18,10 +18,10 @@ internal class G2ClassWriter
         WriteFileHeader(ind, def.Namespace);
         ind.WriteLine();
         WriteXmlComment(ind, BuildCommentForStructure(structure));
-        ind.WriteLine($"public unsafe partial class {def.NewName} : SafeHandle");
+        WriteDefinitionLine(def, ind);
         using (BeginBlock(ind))
         {
-            WriteCommonClassHeaders(structure, def, ind);
+            WriteCommonHeaders(def, ind);
             ind.WriteLine();
             foreach (StructureField field in structure.Fields)
             {
@@ -32,18 +32,55 @@ internal class G2ClassWriter
         fileStream.SetLength(fileStream.Position);
     }
 
-    private static void WriteCommonClassHeaders(StructureDefinition structure, ClassTransformDefinition def, IndentedTextWriter ind)
+    private static void WriteDefinitionLine(G2TransformDefinition def, IndentedTextWriter ind)
     {
-        ind.WriteLine($"protected {def.OldName}* Pointer => this;");
-        ind.WriteLine();
-        ind.WriteLine($"public static implicit operator {structure.Name}*({def.NewName} data) => data != null ? data.Pointer : null;");
-        ind.WriteLine();
-        ind.WriteLine($"protected {def.NewName}({structure.Name}* ptr, bool isOwner): base(NativeUtils.NotNull((IntPtr)ptr), isOwner)");
-        using (BeginBlock(ind)) { }
-        ind.WriteLine();
-        ind.WriteLine($"public static {def.NewName} FromNative({structure.Name}* ptr, bool isOwner) => new {def.NewName}(ptr, isOwner);");
-        ind.WriteLine();
-        ind.WriteLine($"public override bool IsInvalid => handle == IntPtr.Zero;");
+        if (def is ClassTransformDefinition)
+        {
+            ind.WriteLine($"public unsafe partial class {def.NewName} : SafeHandle");
+        }
+        else if (def is StructTransformDefinition)
+        {
+            ind.WriteLine($"public unsafe partial struct {def.NewName}");
+        }
+    }
+
+    private static void WriteCommonHeaders(G2TransformDefinition def, IndentedTextWriter ind)
+    {
+        if (def is ClassTransformDefinition)
+        {
+            ind.WriteLine($"protected {def.OldName}* _ptr => ({def.OldName}*)handle;");
+            ind.WriteLine();
+            ind.WriteLine($"public static implicit operator {def.OldName}*({def.NewName} data) => data != null ? ({def.OldName}*)data.handle : null;");
+            ind.WriteLine();
+            ind.WriteLine($"protected {def.NewName}({def.OldName}* ptr, bool isOwner): base(NativeUtils.NotNull((IntPtr)ptr), isOwner)");
+            using (BeginBlock(ind)) { }
+            ind.WriteLine();
+            ind.WriteLine($"public static {def.NewName} FromNative({def.OldName}* ptr, bool isOwner) => new {def.NewName}(ptr, isOwner);");
+            ind.WriteLine();
+            ind.WriteLine($"public override bool IsInvalid => handle == IntPtr.Zero;");
+        }
+        else if (def is StructTransformDefinition)
+        {
+            ind.WriteLine($"private {def.OldName}* _ptr;");
+            ind.WriteLine();
+            ind.WriteLine($"public static implicit operator {def.OldName}*({def.NewName}? data)");
+            ind.WriteLine($"    => data.HasValue ? ({def.OldName}*)data.Value._ptr : null;");
+            ind.WriteLine();
+            ind.WriteLine($"private {def.NewName}({def.OldName}* ptr)");
+            using (BeginBlock(ind))
+            {
+                ind.WriteLine(@"if (ptr == null)");
+                ind.WriteLine(@"{");
+                ind.WriteLine(@"    throw new ArgumentNullException(nameof(ptr));");
+                ind.WriteLine(@"}");
+                ind.WriteLine(@"_ptr = ptr;");
+            }
+            ind.WriteLine();
+            ind.WriteLine($"public static {def.NewName} FromNative({def.OldName}* ptr) => new {def.NewName}(ptr);");
+            ind.WriteLine($"public static {def.NewName} FromNative(IntPtr ptr) => new {def.NewName}(({def.OldName}*)ptr);");
+            ind.WriteLine($"internal static {def.NewName}? FromNativeOrNull({def.OldName}* ptr)");
+            ind.WriteLine($"    => ptr != null ? new {def.NewName}?(new {def.NewName}(ptr)) : null;");
+        }
     }
 
     private static void WriteProperties(StructureDefinition structure, IndentedTextWriter ind, StructureField field)
@@ -55,13 +92,13 @@ internal class G2ClassWriter
         {
             if (isTypeChanged)
             {
-                ind.WriteLine($"get => ({newType})Pointer->{field.Name};");
-                ind.WriteLine($"set => Pointer->{field.Name} = ({field.FieldType.Name})value;"); 
+                ind.WriteLine($"get => ({newType})_ptr->{field.Name};");
+                ind.WriteLine($"set => _ptr->{field.Name} = ({field.FieldType.Name})value;"); 
             }
             else
             {
-                ind.WriteLine($"get => Pointer->{field.Name};");
-                ind.WriteLine($"set => Pointer->{field.Name} = value;");
+                ind.WriteLine($"get => _ptr->{field.Name};");
+                ind.WriteLine($"set => _ptr->{field.Name} = value;");
             }
         }
     }
