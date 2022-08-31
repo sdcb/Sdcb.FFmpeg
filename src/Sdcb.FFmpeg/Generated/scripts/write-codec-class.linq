@@ -9,7 +9,7 @@
 #load ".\write-class"
 #nullable enable
 
-string baseDir = Path.GetFullPath(Path.Combine(Util.CurrentQuery.Location, @"..\MediaCodecs"));
+string baseDir = Path.GetFullPath(Path.Combine(Util.CurrentQuery.Location, @"..\Codecs"));
 Directory.CreateDirectory(baseDir);
 Environment.CurrentDirectory = baseDir;
 
