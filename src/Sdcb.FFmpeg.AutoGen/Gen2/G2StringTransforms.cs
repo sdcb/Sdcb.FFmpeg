@@ -30,19 +30,5 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 false => name,
             };
         }
-
-        private static readonly Dictionary<string, string> _g2TypeMappings = new()
-        {
-            ["void*"] = "IntPtr",
-            ["byte*"] = "IntPtr", 
-        };
-        public static (string, bool) TypeTransform(string name)
-        {
-            return _g2TypeMappings.TryGetValue(name, out var result) switch
-            {
-                true => (result, true),
-                false => (name, false),
-            };
-        }
     }
 }

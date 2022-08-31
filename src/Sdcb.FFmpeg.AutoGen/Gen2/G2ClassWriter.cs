@@ -10,7 +10,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2;
 
 internal class G2ClassWriter
 {
-    internal static void WriteOne(StructureDefinition structure, G2TransformDefinition def, string outputDir)
+    internal static void WriteOne(StructureDefinition structure, G2TransformDefinition def, string outputDir, G2TypeConverter typeConverter)
     {
         using FileStream fileStream = File.OpenWrite(def.GetDestFile(outputDir));
         using StreamWriter streamWriter = new(fileStream);
@@ -25,7 +25,7 @@ internal class G2ClassWriter
             ind.WriteLine();
             foreach (StructureField field in structure.Fields)
             {
-                WriteProperties(structure, ind, field);
+                WriteProperties(structure, ind, field, typeConverter);
                 if (field != structure.Fields.Last()) ind.WriteLine();
             }
         }
@@ -83,9 +83,9 @@ internal class G2ClassWriter
         }
     }
 
-    private static void WriteProperties(StructureDefinition structure, IndentedTextWriter ind, StructureField field)
+    private static void WriteProperties(StructureDefinition structure, IndentedTextWriter ind, StructureField field, G2TypeConverter typeConverter)
     {
-        (string newType, bool isTypeChanged) = G2StringTransforms.TypeTransform(field.FieldType.Name);
+        (string newType, bool isTypeChanged) = typeConverter(field.FieldType.Name);
         WriteXmlComment(ind, BuildCommentForField(structure, field, isTypeChanged));
         ind.WriteLine($"public {newType} {G2StringTransforms.NameTransform(field.Name)}");
         using (BeginBlock(ind))

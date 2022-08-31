@@ -94,13 +94,14 @@ public unsafe partial class Packet : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVPacketSideData*</para>
     /// <para>Additional packet data that can be provided by the container. Packet can contain several types of side information.</para>
     /// <see cref="AVPacket.side_data" />
     /// </summary>
-    public AVPacketSideData* SideData
+    public PacketSideData SideData
     {
-        get => _ptr->side_data;
-        set => _ptr->side_data = value;
+        get => PacketSideData.FromNative(_ptr->side_data);
+        set => _ptr->side_data = (AVPacketSideData*)value;
     }
     
     /// <summary>

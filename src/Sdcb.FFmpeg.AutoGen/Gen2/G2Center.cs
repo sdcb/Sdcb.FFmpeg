@@ -17,9 +17,11 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 new StructTransformDefinition("AVPacketSideData", "PacketSideData", ClassCategories.Codecs), 
             }.ToDictionary(k => k.OldName, v => v);
 
+            G2TypeConverter typeConverter = G2TypeConvert.Create(knownClasses);
+
             foreach (StructureDefinition structure in structures.Where(x => knownClasses.ContainsKey(x.Name)))
             {
-                G2ClassWriter.WriteOne(structure, knownClasses[structure.Name], outputDir);
+                G2ClassWriter.WriteOne(structure, knownClasses[structure.Name], outputDir, typeConverter);
             }
         }
     }
