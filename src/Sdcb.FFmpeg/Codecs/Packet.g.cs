@@ -1,5 +1,5 @@
 // This file was genereated from Sdcb.FFmpeg.AutoGen, DO NOT CHANGE DIRECTLY.
-
+#nullable enable
 using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Raw;
 using System;
@@ -22,6 +22,8 @@ public unsafe partial class Packet : SafeHandle
     }
     
     public static Packet FromNative(AVPacket* ptr, bool isOwner) => new Packet(ptr, isOwner);
+    
+    public static Packet? FromNativeOrNull(AVPacket* ptr, bool isOwner) => ptr == null ? null : new Packet(ptr, isOwner);
     
     public override bool IsInvalid => handle == IntPtr.Zero;
     
@@ -98,9 +100,9 @@ public unsafe partial class Packet : SafeHandle
     /// <para>Additional packet data that can be provided by the container. Packet can contain several types of side information.</para>
     /// <see cref="AVPacket.side_data" />
     /// </summary>
-    public PacketSideData SideData
+    public PacketSideData? SideData
     {
-        get => PacketSideData.FromNative(_ptr->side_data);
+        get => PacketSideData.FromNativeOrNull(_ptr->side_data);
         set => _ptr->side_data = (AVPacketSideData*)value;
     }
     

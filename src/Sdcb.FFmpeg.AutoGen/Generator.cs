@@ -10,6 +10,8 @@ using Sdcb.FFmpeg.AutoGen.Definitions;
 using Sdcb.FFmpeg.AutoGen.Processors;
 using ClangParser = CppSharp.ClangParser;
 
+#nullable disable
+
 namespace Sdcb.FFmpeg.AutoGen
 {
     internal class Generator

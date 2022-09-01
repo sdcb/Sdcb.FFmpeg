@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+#nullable disable
+
 namespace Sdcb.FFmpeg.AutoGen.Definitions
 {
     internal record DelegateDefinition : TypeDefinition, ICanGenerateXmlDoc

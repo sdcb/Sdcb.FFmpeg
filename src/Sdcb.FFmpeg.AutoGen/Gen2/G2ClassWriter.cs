@@ -10,7 +10,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2;
 
 internal class G2ClassWriter
 {
-    internal static void WriteOne(StructureDefinition structure, G2TransformDefinition def, string outputDir, G2TypeConverter typeConverter)
+    internal static void WriteOne(StructureDefinition structure, G2TransformDef def, string outputDir, G2TypeConverter typeConverter)
     {
         using FileStream fileStream = File.OpenWrite(def.GetDestFile(outputDir));
         using StreamWriter streamWriter = new(fileStream);
@@ -23,30 +23,31 @@ internal class G2ClassWriter
         {
             WriteCommonHeaders(def, ind);
             ind.WriteLine();
+            G2TypeConverter thisTypeConverter = G2TypeConvert.Combine(def.TypeConversions, typeConverter);
             foreach (StructureField field in structure.Fields)
             {
-                WriteProperties(structure, ind, field, typeConverter);
+                WriteProperties(structure, ind, field, thisTypeConverter);
                 if (field != structure.Fields.Last()) ind.WriteLine();
             }
         }
         fileStream.SetLength(fileStream.Position);
     }
 
-    private static void WriteDefinitionLine(G2TransformDefinition def, IndentedTextWriter ind)
+    private static void WriteDefinitionLine(G2TransformDef def, IndentedTextWriter ind)
     {
-        if (def is ClassTransformDefinition)
+        if (def is ClassTransformDef)
         {
             ind.WriteLine($"public unsafe partial class {def.NewName} : SafeHandle");
         }
-        else if (def is StructTransformDefinition)
+        else if (def is StructTransformDef)
         {
             ind.WriteLine($"public unsafe partial struct {def.NewName}");
         }
     }
 
-    private static void WriteCommonHeaders(G2TransformDefinition def, IndentedTextWriter ind)
+    private static void WriteCommonHeaders(G2TransformDef def, IndentedTextWriter ind)
     {
-        if (def is ClassTransformDefinition)
+        if (def is ClassTransformDef)
         {
             ind.WriteLine($"protected {def.OldName}* _ptr => ({def.OldName}*)handle;");
             ind.WriteLine();
@@ -57,9 +58,11 @@ internal class G2ClassWriter
             ind.WriteLine();
             ind.WriteLine($"public static {def.NewName} FromNative({def.OldName}* ptr, bool isOwner) => new {def.NewName}(ptr, isOwner);");
             ind.WriteLine();
+            ind.WriteLine($"public static {def.NewName}? FromNativeOrNull({def.OldName}* ptr, bool isOwner) => ptr == null ? null : new {def.NewName}(ptr, isOwner);");
+            ind.WriteLine();
             ind.WriteLine($"public override bool IsInvalid => handle == IntPtr.Zero;");
         }
-        else if (def is StructTransformDefinition)
+        else if (def is StructTransformDef)
         {
             ind.WriteLine($"private {def.OldName}* _ptr;");
             ind.WriteLine();
@@ -85,21 +88,11 @@ internal class G2ClassWriter
 
     private static void WriteProperties(StructureDefinition structure, IndentedTextWriter ind, StructureField field, G2TypeConverter typeConverter)
     {
-        (string newType, bool isTypeChanged) = typeConverter(field.FieldType.Name);
-        WriteXmlComment(ind, BuildCommentForField(structure, field, isTypeChanged));
-        ind.WriteLine($"public {newType} {G2StringTransforms.NameTransform(field.Name)}");
-        using (BeginBlock(ind))
+        TypeCastDef typeCastDef = typeConverter(field.FieldType.Name);
+        WriteXmlComment(ind, BuildCommentForField(structure, field, typeCastDef.IsChanged));
+        foreach (string line in typeCastDef.GetPropertyBody(field.Name))
         {
-            if (isTypeChanged)
-            {
-                ind.WriteLine($"get => ({newType})_ptr->{field.Name};");
-                ind.WriteLine($"set => _ptr->{field.Name} = ({field.FieldType.Name})value;"); 
-            }
-            else
-            {
-                ind.WriteLine($"get => _ptr->{field.Name};");
-                ind.WriteLine($"set => _ptr->{field.Name} = value;");
-            }
+            ind.WriteLine(line);
         }
     }
 
@@ -152,7 +145,7 @@ internal class G2ClassWriter
     static void WriteFileHeader(IndentedTextWriter ind, string destNamespace)
     {
         ind.WriteLine($@"// This file was genereated from Sdcb.FFmpeg.AutoGen, DO NOT CHANGE DIRECTLY.
-
+#nullable enable
 using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Raw;
 using System;

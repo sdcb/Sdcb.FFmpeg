@@ -1,5 +1,5 @@
 // This file was genereated from Sdcb.FFmpeg.AutoGen, DO NOT CHANGE DIRECTLY.
-
+#nullable enable
 using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Raw;
 using System;

@@ -11,10 +11,10 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
     {
         public static void WriteAll(string outputDir, IEnumerable<StructureDefinition> structures)
         {
-            Dictionary<string, G2TransformDefinition> knownClasses = new G2TransformDefinition[]
+            Dictionary<string, G2TransformDef> knownClasses = new G2TransformDef[]
             {
-                new ClassTransformDefinition("AVPacket", "Packet", ClassCategories.Codecs),
-                new StructTransformDefinition("AVPacketSideData", "PacketSideData", ClassCategories.Codecs), 
+                G2TransformDef.MakeClass(ClassCategories.Codecs, "AVPacket", "Packet"),
+                G2TransformDef.MakeStruct(ClassCategories.Codecs, "AVPacketSideData", "PacketSideData"), 
             }.ToDictionary(k => k.OldName, v => v);
 
             G2TypeConverter typeConverter = G2TypeConvert.Create(knownClasses);

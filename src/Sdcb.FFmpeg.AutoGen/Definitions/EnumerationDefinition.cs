@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace Sdcb.FFmpeg.AutoGen.Definitions
 {
     internal record EnumerationDefinition : NamedDefinition, IDefinition

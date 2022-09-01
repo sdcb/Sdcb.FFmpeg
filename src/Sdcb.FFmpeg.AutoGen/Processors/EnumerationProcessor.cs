@@ -5,6 +5,8 @@ using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using Sdcb.FFmpeg.AutoGen.Definitions;
 
+#nullable disable
+
 namespace Sdcb.FFmpeg.AutoGen.Processors
 {
     internal class EnumerationProcessor

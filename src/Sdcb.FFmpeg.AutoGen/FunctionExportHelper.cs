@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Sdcb.FFmpeg.AutoGen
@@ -17,7 +16,7 @@ namespace Sdcb.FFmpeg.AutoGen
             {
                 var libraryFullName = Path.GetFileNameWithoutExtension(libraryPath);
                 var libraryNameParts = libraryFullName.Split('-');
-                string libraryName = null;
+                string? libraryName = null;
                 int libraryVersion = 0;
 
                 switch (libraryNameParts.Length)
@@ -37,7 +36,7 @@ namespace Sdcb.FFmpeg.AutoGen
                 }
 
                 var exports = GetExports(libraryPath);
-                foreach (var export in exports) yield return new FunctionExport { LibraryName = libraryName, LibraryVersion = libraryVersion, Name = export };
+                foreach (var export in exports) yield return new FunctionExport(export, libraryName, libraryVersion);
             }
         }
 
@@ -72,14 +71,14 @@ namespace Sdcb.FFmpeg.AutoGen
 
         [DllImport("dbghelp", SetLastError = true, CharSet = CharSet.Unicode)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool SymInitialize(IntPtr hProcess, string userSearchPath, [MarshalAs(UnmanagedType.Bool)] bool fInvadeProcess);
+        private static extern bool SymInitialize(IntPtr hProcess, string? userSearchPath, [MarshalAs(UnmanagedType.Bool)] bool fInvadeProcess);
 
         [DllImport("dbghelp", SetLastError = true, CharSet = CharSet.Unicode)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SymCleanup(IntPtr hProcess);
 
         [DllImport("dbghelp", SetLastError = true, CharSet = CharSet.Unicode)]
-        private static extern ulong SymLoadModuleEx(IntPtr hProcess, IntPtr hFile, string imageName, string moduleName, long baseOfDll, int dllSize, IntPtr data, int flags);
+        private static extern ulong SymLoadModuleEx(IntPtr hProcess, IntPtr hFile, string imageName, string? moduleName, long baseOfDll, int dllSize, IntPtr data, int flags);
 
         [DllImport("dbghelp", SetLastError = true, CharSet = CharSet.Unicode)]
         [return: MarshalAs(UnmanagedType.Bool)]

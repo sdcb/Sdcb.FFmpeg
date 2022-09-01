@@ -6,6 +6,8 @@ using CppSharp.AST.Extensions;
 using Sdcb.FFmpeg.AutoGen.Definitions;
 using Type = CppSharp.AST.Type;
 
+#nullable disable
+
 namespace Sdcb.FFmpeg.AutoGen.Processors
 {
     internal class StructureProcessor
