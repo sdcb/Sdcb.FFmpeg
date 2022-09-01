@@ -4,7 +4,7 @@ using static Sdcb.FFmpeg.Raw.ffmpeg;
 
 namespace Sdcb.FFmpeg.Common
 {
-    public class FFmpegException : Exception
+	public class FFmpegException : Exception
 	{
 		public FFmpegException(string message) : base(message)
 		{
@@ -25,26 +25,5 @@ namespace Sdcb.FFmpeg.Common
 		}
 
 		public unsafe static FFmpegException NoMemory(string message) => FromErrorCode(AVERROR(ENOMEM), message);
-	}
-
-	internal static class FFmpegValidation
-    {
-		public static int ThrowIfError(this int errorCode, string? message = null)
-        {
-			if (errorCode < 0)
-            {
-				throw FFmpegException.FromErrorCode(errorCode, message);
-            }
-			return errorCode;
-        }
-
-		public static long ThrowIfError(this long errorCode, string? message = null)
-		{
-			if (errorCode < 0)
-			{
-				throw FFmpegException.FromErrorCode((int)errorCode, message);
-			}
-			return errorCode;
-		}
 	}
 }

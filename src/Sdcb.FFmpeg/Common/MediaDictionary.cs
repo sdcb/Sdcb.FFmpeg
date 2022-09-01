@@ -239,5 +239,11 @@ namespace Sdcb.FFmpeg.Common
             Free();
             return true;
         }
+
+        public void Reset(AVDictionary* dict)
+        {
+            Free();
+            handle = (IntPtr)dict;
+        }
     }
 }
