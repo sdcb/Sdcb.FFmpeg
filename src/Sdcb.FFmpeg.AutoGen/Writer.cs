@@ -402,10 +402,8 @@ namespace Sdcb.FFmpeg.AutoGen
         private void WriteObsoletion(IObsoletionAware obsoletionAware)
         {
             var obsoletion = obsoletionAware.Obsoletion;
-            if (obsoletion.IsObsolete) WriteLine($"[Obsolete(\"{DoubleQuoteEscape(obsoletion.Message)}\")]");
+            if (obsoletion.IsObsolete) WriteLine($"[Obsolete(\"{StringExtensions.DoubleQuoteEscape(obsoletion.Message)}\")]");
         }
-
-        static string DoubleQuoteEscape(string val) => val.Replace("\"", "\\\"");
 
         private void Write(string value)
         {

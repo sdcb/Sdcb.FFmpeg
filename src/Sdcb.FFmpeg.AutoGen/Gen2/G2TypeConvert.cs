@@ -83,10 +83,12 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
         public virtual IEnumerable<string> GetPropertyBody(string fieldName)
         {
+            string transformedName = StringExtensions.CSharpKeywordTransform(fieldName);
+
             yield return $"public {ReturnType} {G2StringTransforms.NameTransform(fieldName)}";
             yield return "{";
-            yield return $"    get => {GetPropertyGetter($"{_ptr}->{fieldName}")};";
-            yield return $"    set => {_ptr}->{fieldName} = {PropertySetter};";
+            yield return $"    get => {GetPropertyGetter($"{_ptr}->{transformedName}")};";
+            yield return $"    set => {_ptr}->{transformedName} = {PropertySetter};";
             yield return "}";
         }
 

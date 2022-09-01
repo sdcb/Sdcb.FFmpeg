@@ -7,6 +7,8 @@ namespace Sdcb.FFmpeg.AutoGen
 {
     internal class StringExtensions
     {
+        public static string DoubleQuoteEscape(string val) => val.Replace("\"", "\\\"");
+
         public static string EnumNameTransform(string name) => string.Concat(name
             .Split('_')
             .Select(x => x switch

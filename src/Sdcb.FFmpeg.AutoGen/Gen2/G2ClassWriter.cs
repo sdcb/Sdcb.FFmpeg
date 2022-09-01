@@ -90,6 +90,10 @@ internal class G2ClassWriter
     {
         TypeCastDef typeCastDef = typeConverter(field.FieldType.Name);
         WriteXmlComment(ind, BuildCommentForField(structure, field, typeCastDef.IsChanged));
+        if (field.Obsoletion.IsObsolete)
+        {
+            ind.WriteLine($"[Obsolete(\"{StringExtensions.DoubleQuoteEscape(field.Obsoletion.Message)}\")]");
+        }
         foreach (string line in typeCastDef.GetPropertyBody(field.Name))
         {
             ind.WriteLine(line);
@@ -113,7 +117,7 @@ internal class G2ClassWriter
                 .Select(line => new XElement("para", line))
         });
 
-        contents.Add(new XElement("see", new XAttribute("cref", $"{structure.Name}.{field.Name}")));
+        contents.Add(new XElement("see", new XAttribute("cref", $"{structure.Name}.{StringExtensions.CSharpKeywordTransform(field.Name)}")));
 
         return new XElement("summary", contents);
     }
