@@ -8,10 +8,11 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
     {
         public static G2TypeConverter Create(Dictionary<string, G2TransformDef> knownDefinitions)
         {
-            Dictionary<string, string> commonTypeMaps = new()
+            Dictionary<string, TypeCastDef> commonConverters = new()
             {
-                ["void*"] = "IntPtr",
-                ["byte*"] = "IntPtr",
+                ["AVClass*"] = TypeCastDef.StaticCastStruct("AVClass*", "FFmpegClass", nullable: false),
+                ["void*"] = TypeCastDef.Force("void*", "IntPtr"),
+                ["byte*"] = TypeCastDef.Force("byte*", "IntPtr"),
             };
 
             Dictionary<string, G2TransformDef> knownMappings = knownDefinitions
@@ -26,9 +27,9 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                     ClassTransformDef => TypeCastDef.StaticCastClass(oldType, knownType.NewName, nullable: true, isOwner: false),
                     StructTransformDef => TypeCastDef.StaticCastStruct(oldType, knownType.NewName, nullable: true),
                 },
-                false => commonTypeMaps.TryGetValue(oldType, out string? commonType) switch
+                false => commonConverters.TryGetValue(oldType, out TypeCastDef? commonType) switch
                 {
-                    true => TypeCastDef.Force(oldType, commonType),
+                    true => commonType,
                     false => TypeCastDef.NotChanged(oldType),
                 }
             };

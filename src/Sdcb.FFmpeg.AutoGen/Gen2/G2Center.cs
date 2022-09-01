@@ -14,8 +14,9 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             Dictionary<string, G2TransformDef> knownClasses = new G2TransformDef[]
             {
                 G2TransformDef.MakeClass(ClassCategories.Codecs, "AVPacket", "Packet"),
-                G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecParameters", "CodecParameters"),
                 G2TransformDef.MakeClass(ClassCategories.Codecs, "AVFrame", "Frame"),
+                G2TransformDef.MakeStruct(ClassCategories.Codecs, "AVCodec", "Codec"),
+                G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecParameters", "CodecParameters"),
                 G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecContext", "CodecContext"),
                 G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecParserContext", "CodecParserContext"),
                 G2TransformDef.MakeStruct(ClassCategories.Codecs, "AVPacketSideData", "PacketSideData"), 

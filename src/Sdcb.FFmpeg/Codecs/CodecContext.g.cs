@@ -28,13 +28,14 @@ public unsafe partial class CodecContext : SafeHandle
     public override bool IsInvalid => handle == IntPtr.Zero;
     
     /// <summary>
+    /// <para>original type: AVClass*</para>
     /// <para>information on struct for av_log - set by avcodec_alloc_context3</para>
     /// <see cref="AVCodecContext.av_class" />
     /// </summary>
-    public AVClass* AvClass
+    public FFmpegClass AvClass
     {
-        get => _ptr->av_class;
-        set => _ptr->av_class = value;
+        get => FFmpegClass.FromNative(_ptr->av_class);
+        set => _ptr->av_class = (AVClass*)value;
     }
     
     /// <summary>
@@ -56,12 +57,13 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVCodec*</para>
     /// <see cref="AVCodecContext.codec" />
     /// </summary>
-    public AVCodec* Codec
+    public Codec? Codec
     {
-        get => _ptr->codec;
-        set => _ptr->codec = value;
+        get => Codec.FromNativeOrNull(_ptr->codec);
+        set => _ptr->codec = (AVCodec*)value;
     }
     
     /// <summary>
