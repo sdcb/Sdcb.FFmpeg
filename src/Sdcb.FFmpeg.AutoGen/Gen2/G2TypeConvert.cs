@@ -8,39 +8,43 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
     {
         public static G2TypeConverter Create(Dictionary<string, G2TransformDef> knownDefinitions)
         {
-            Dictionary<string, TypeCastDef> commonConverters = new()
+            Dictionary<string, TypeCastDef> commonConverters = new[]
             {
-                ["AVClass*"] = TypeCastDef.StaticCastStruct("AVClass*", "FFmpegClass", nullable: false),
-                ["void*"] = TypeCastDef.Force("void*", "IntPtr"),
-                ["byte*"] = TypeCastDef.Force("byte*", "IntPtr"),
-            };
+                TypeCastDef.StaticCastStruct("AVCodec*", "Codec", nullable: false),
+                TypeCastDef.StaticCastStruct("AVClass*", "FFmpegClass", nullable: false),
+                TypeCastDef.Force("void*", "IntPtr"),
+                TypeCastDef.Force("byte*", "IntPtr"),
+            }.ToDictionary(k => k.OldType, v => v);
 
             Dictionary<string, G2TransformDef> knownMappings = knownDefinitions
                 .ToDictionary(k => k.Key + '*', v => v.Value);
 
             return Convert;
 
-            TypeCastDef Convert(string oldType) => knownMappings.TryGetValue(oldType, out G2TransformDef? knownType) switch
+            TypeCastDef Convert(string oldType) => commonConverters.TryGetValue(oldType, out TypeCastDef? commonType) switch
             {
-                true => knownType switch
+                true => commonType,
+                false => knownMappings.TryGetValue(oldType, out G2TransformDef? knownType) switch
                 {
-                    ClassTransformDef => TypeCastDef.StaticCastClass(oldType, knownType.NewName, nullable: true, isOwner: false),
-                    StructTransformDef => TypeCastDef.StaticCastStruct(oldType, knownType.NewName, nullable: true),
-                },
-                false => commonConverters.TryGetValue(oldType, out TypeCastDef? commonType) switch
-                {
-                    true => commonType,
+                    true => knownType switch
+                    {
+                        ClassTransformDef => TypeCastDef.StaticCastClass(oldType, knownType.NewName, nullable: true, isOwner: false),
+                        StructTransformDef => TypeCastDef.StaticCastStruct(oldType, knownType.NewName, nullable: true),
+                    },
                     false => TypeCastDef.NotChanged(oldType),
                 }
             };
         }
 
-        public static G2TypeConverter Combine(Dictionary<string, TypeCastDef> specialConverters, G2TypeConverter baseConverter)
+        public static G2TypeConverter Combine(TypeCastDef[] specialConverters, G2TypeConverter baseConverter)
         {
+            Dictionary<string, TypeCastDef> specialConverterMapping = specialConverters
+                .ToDictionary(k => k.OldType, v => v);
+
             return Convert;
             TypeCastDef Convert(string oldType)
             {
-                return specialConverters.TryGetValue(oldType, out TypeCastDef? converted) switch
+                return specialConverterMapping.TryGetValue(oldType, out TypeCastDef? converted) switch
                 {
                     true => converted,
                     false => baseConverter(oldType),

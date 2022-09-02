@@ -117,9 +117,9 @@ public unsafe partial class CodecContext : SafeHandle
         int pts = 0;
         foreach (Frame frame in frames)
         {
-            if (makeSequential && Codec.Value.Type == AVMediaType.Video)
+            if (makeSequential && Codec.Type == AVMediaType.Video)
                 frame.Pts = pts++;
-            else if (makeSequential && SampleRate > 0 && Codec.Value.Type == AVMediaType.Audio)
+            else if (makeSequential && SampleRate > 0 && Codec.Type == AVMediaType.Audio)
                 frame.Pts = (pts += FrameSize);
 
             foreach (var _ in EncodeFrame(frame, packet))
@@ -132,7 +132,7 @@ public unsafe partial class CodecContext : SafeHandle
 
     internal Frame CreateVideoFrame() => Frame.CreateWritableVideo(Width, Height, PixelFormat);
     internal Frame CreateAudioFrame() => Frame.CreateWritableAudio(SampleFormat, ChannelLayout, SampleRate,
-        Codec.Value.Capabilities.HasFlag(CodecCompability.VariableFrameSize) ? 10000 : FrameSize);
+        Codec.Capabilities.HasFlag(CodecCompability.VariableFrameSize) ? 10000 : FrameSize);
 
     public Frame CreateFrame() => Width > 0 ? CreateVideoFrame() : CreateAudioFrame();
 

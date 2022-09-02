@@ -60,9 +60,9 @@ public unsafe partial class CodecContext : SafeHandle
     /// <para>original type: AVCodec*</para>
     /// <see cref="AVCodecContext.codec" />
     /// </summary>
-    public Codec? Codec
+    public Codec Codec
     {
-        get => Codec.FromNativeOrNull(_ptr->codec);
+        get => Codec.FromNative(_ptr->codec);
         set => _ptr->codec = (AVCodec*)value;
     }
     
