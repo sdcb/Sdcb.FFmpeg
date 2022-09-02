@@ -20,6 +20,9 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
         private static readonly Dictionary<string, string> _g2KeywordMappings = new()
         {
             ["Pos"] = "Position",
+            ["Pix"] = "Pixel",
+            ["Fmt"] = "Format",
+            ["Fmts"] = "Formats",
         };
 
         private static string KeywordTransform(string name)

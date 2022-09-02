@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 #pragma warning disable CS8509 // switch 表达式不会处理属于其输入类型的所有可能值(它并非详尽无遗)。
@@ -8,55 +10,87 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
     {
         public static G2TypeConverter Create(Dictionary<string, G2TransformDef> knownDefinitions)
         {
-            Dictionary<string, TypeCastDef> commonConverters = new[]
+            Indexer commonConverters = MakeIndexer(new[]
             {
                 TypeCastDef.StaticCastStruct("AVCodec*", "Codec", nullable: false),
                 TypeCastDef.StaticCastStruct("AVClass*", "FFmpegClass", nullable: false),
                 TypeCastDef.Force("void*", "IntPtr"),
                 TypeCastDef.Force("byte*", "IntPtr"),
-            }.ToDictionary(k => k.OldType, v => v);
+            });
 
             Dictionary<string, G2TransformDef> knownMappings = knownDefinitions
                 .ToDictionary(k => k.Key + '*', v => v.Value);
 
             return Convert;
 
-            TypeCastDef Convert(string oldType) => commonConverters.TryGetValue(oldType, out TypeCastDef? commonType) switch
+            TypeCastDef Convert(string srcType, string srcName) => commonConverters(srcType, srcName, out TypeCastDef? commonType) switch
             {
                 true => commonType,
-                false => knownMappings.TryGetValue(oldType, out G2TransformDef? knownType) switch
+                false => knownMappings.TryGetValue(srcType, out G2TransformDef? knownType) switch
                 {
                     true => knownType switch
                     {
-                        ClassTransformDef => TypeCastDef.StaticCastClass(oldType, knownType.NewName, nullable: true, isOwner: false),
-                        StructTransformDef => TypeCastDef.StaticCastStruct(oldType, knownType.NewName, nullable: true),
+                        ClassTransformDef => TypeCastDef.StaticCastClass(srcType, knownType.NewName, nullable: true, isOwner: false),
+                        StructTransformDef => TypeCastDef.StaticCastStruct(srcType, knownType.NewName, nullable: true),
                     },
-                    false => TypeCastDef.NotChanged(oldType),
+                    false => TypeCastDef.NotChanged(srcType),
                 }
             };
         }
 
         public static G2TypeConverter Combine(TypeCastDef[] specialConverters, G2TypeConverter baseConverter)
         {
-            Dictionary<string, TypeCastDef> specialConverterMapping = specialConverters
-                .ToDictionary(k => k.OldType, v => v);
+            Indexer specialConverterMapping = MakeIndexer(specialConverters);
 
             return Convert;
-            TypeCastDef Convert(string oldType)
+            TypeCastDef Convert(string oldType, string name)
             {
-                return specialConverterMapping.TryGetValue(oldType, out TypeCastDef? converted) switch
+                return specialConverterMapping(oldType, name, out TypeCastDef? converted) switch
                 {
                     true => converted,
-                    false => baseConverter(oldType),
+                    false => baseConverter(oldType, name),
                 };
             }
         }
+
+        static Indexer MakeIndexer(TypeCastDef[] data)
+        {
+            Dictionary<string, TypeCastDef> nameMapping = data
+                .Where(x => x.FieldName != null)
+                .ToDictionary(k => k.FieldName!, v => v);
+
+            Dictionary<string, TypeCastDef> typeMapping = data
+                .Where(x => x.FieldName == null)
+                .ToDictionary(k => k.OldType, v => v);
+
+            return Indexer;
+
+            bool Indexer(string srcType, string srcName, [NotNullWhen(returnValue: true)] out TypeCastDef? value)
+            {
+                if (nameMapping.TryGetValue(srcName, out TypeCastDef? nameValue))
+                {
+                    value = nameValue;
+                    return true;
+                }
+                else if (typeMapping.TryGetValue(srcType, out TypeCastDef? typeValue))
+                {
+                    value = typeValue;
+                    return true;
+                }
+                value = null;
+                return false;
+            }
+        }
+
+        private delegate bool Indexer(string srcType, string srcName, [NotNullWhen(returnValue: true)] out TypeCastDef? value);
     }
 
-    internal delegate TypeCastDef G2TypeConverter(string srcType);
+    internal delegate TypeCastDef G2TypeConverter(string srcType, string srcName);
 
     internal record TypeCastDef(string OldType, string NewType)
     {
+        public string? FieldName { get; init; }
+
         public bool IsChanged => OldType != NewType;
 
         public static TypeCastDef NotChanged(string type) => new TypeCastDef(type, type);

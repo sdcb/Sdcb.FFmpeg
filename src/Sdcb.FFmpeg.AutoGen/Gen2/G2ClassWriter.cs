@@ -88,7 +88,7 @@ internal class G2ClassWriter
 
     private static void WriteProperties(StructureDefinition structure, IndentedTextWriter ind, StructureField field, G2TypeConverter typeConverter)
     {
-        TypeCastDef typeCastDef = typeConverter(field.FieldType.Name);
+        TypeCastDef typeCastDef = typeConverter(field.FieldType.Name, field.Name);
         WriteXmlComment(ind, BuildCommentForField(structure, field, typeCastDef.IsChanged));
         if (field.Obsoletion.IsObsolete)
         {

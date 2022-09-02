@@ -130,6 +130,54 @@ namespace Sdcb.FFmpeg.Raw
         Layout_22POINT2 = Layout_5POINT1Back | FrontLeftOfCenter | FrontRightOfCenter | BackCenter | LowFrequency_2 | SideLeft | SideRight | TopFrontLeft | TopFrontRight | TopFrontCenter | TopCenter | TopBackLeft | TopBackRight | TopSideLeft | TopSideRight | TopBackCenter | BottomFrontCenter | BottomFrontLeft | BottomFrontRight,
     }
     
+    /// <summary>Macro enum, prefix: AV_CODEC_CAP_</summary>
+    [Flags]
+    public enum AV_CODEC_CAP : int
+    {
+        /// <summary>AV_CODEC_CAP_DRAW_HORIZ_BAND</summary>
+        DrawHorizBand = 1 << 0,
+        /// <summary>AV_CODEC_CAP_DR1</summary>
+        Dr1 = 1 << 1,
+        /// <summary>AV_CODEC_CAP_TRUNCATED</summary>
+        Truncated = 1 << 3,
+        /// <summary>AV_CODEC_CAP_DELAY</summary>
+        Delay = 1 << 5,
+        /// <summary>AV_CODEC_CAP_SMALL_LAST_FRAME</summary>
+        SmallLastFrame = 1 << 6,
+        /// <summary>AV_CODEC_CAP_SUBFRAMES</summary>
+        Subframes = 1 << 8,
+        /// <summary>AV_CODEC_CAP_EXPERIMENTAL</summary>
+        Experimental = 1 << 9,
+        /// <summary>AV_CODEC_CAP_CHANNEL_CONF</summary>
+        ChannelConf = 1 << 10,
+        /// <summary>AV_CODEC_CAP_FRAME_THREADS</summary>
+        FrameThreads = 1 << 12,
+        /// <summary>AV_CODEC_CAP_SLICE_THREADS</summary>
+        SliceThreads = 1 << 13,
+        /// <summary>AV_CODEC_CAP_PARAM_CHANGE</summary>
+        ParamChange = 1 << 14,
+        /// <summary>AV_CODEC_CAP_OTHER_THREADS</summary>
+        OtherThreads = 1 << 15,
+        /// <summary>AV_CODEC_CAP_AUTO_THREADS</summary>
+        AutoThreads = OtherThreads,
+        /// <summary>AV_CODEC_CAP_VARIABLE_FRAME_SIZE</summary>
+        VariableFrameSize = 1 << 16,
+        /// <summary>AV_CODEC_CAP_AVOID_PROBING</summary>
+        AvoidProbing = 1 << 17,
+        /// <summary>AV_CODEC_CAP_INTRA_ONLY</summary>
+        IntraOnly = 0x40000000,
+        /// <summary>AV_CODEC_CAP_LOSSLESS</summary>
+        Lossless = 0x80000000,
+        /// <summary>AV_CODEC_CAP_HARDWARE</summary>
+        Hardware = 1 << 18,
+        /// <summary>AV_CODEC_CAP_HYBRID</summary>
+        Hybrid = 1 << 19,
+        /// <summary>AV_CODEC_CAP_ENCODER_REORDERED_OPAQUE</summary>
+        EncoderReorderedOpaque = 1 << 20,
+        /// <summary>AV_CODEC_CAP_ENCODER_FLUSH</summary>
+        EncoderFlush = 1 << 21,
+    }
+    
     /// <summary>Macro enum, prefix: AV_CODEC_FLAG_</summary>
     [Flags]
     public enum AV_CODEC_FLAG : int

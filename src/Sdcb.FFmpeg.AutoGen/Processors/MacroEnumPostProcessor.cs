@@ -17,7 +17,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 new ("AV_CODEC_FLAG2_", "AV_CODEC_FLAG2", IsFlags: true),
                 //new ("SLICE_FLAG_", "SLICE_FLAG"),
                 new ("AV_CH_", "AV_CH", IsFlags: true, Except: HashSet("AV_CH_LAYOUT_NATIVE")),
-                //new ("AV_CODEC_CAP_", "CodecCompability"),
+                new ("AV_CODEC_CAP_", "AV_CODEC_CAP", IsFlags: true),
                 //new ("FF_MB_DECISION_", "FFMacroblockDecision"),
                 //new ("FF_CMP_", "FFComparison"),
                 //new ("PARSER_FLAG_", "ParserFlags"),

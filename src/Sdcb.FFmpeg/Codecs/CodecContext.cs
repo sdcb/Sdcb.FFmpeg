@@ -71,7 +71,7 @@ public unsafe partial class CodecContext : SafeHandle
     /// <summary>
     /// <see cref="avcodec_send_frame(AVCodecContext*, AVFrame*)"/>
     /// </summary>
-    public void SendFrame(Frame? frame) => avcodec_send_frame(this, frame).ThrowIfError("Error sending a frame for encoding");
+    public void SendFrame(Frame? frame) => avcodec_send_frame(this, frame != null ? (AVFrame*)frame : null).ThrowIfError("Error sending a frame for encoding");
 
     /// <summary>
     /// <see cref="avcodec_receive_frame(AVCodecContext*, AVFrame*)"/>
@@ -131,8 +131,8 @@ public unsafe partial class CodecContext : SafeHandle
     }
 
     internal Frame CreateVideoFrame() => Frame.CreateWritableVideo(Width, Height, PixelFormat);
-    internal Frame CreateAudioFrame() => Frame.CreateWritableAudio(SampleFormat, ChannelLayout, SampleRate,
-        Codec.Capabilities.HasFlag(CodecCompability.VariableFrameSize) ? 10000 : FrameSize);
+    internal Frame CreateAudioFrame() => Frame.CreateWritableAudio(SampleFormat, ChLayout, SampleRate,
+        Codec.Capabilities.HasFlag(AV_CODEC_CAP.VariableFrameSize) ? 10000 : FrameSize);
 
     public Frame CreateFrame() => Width > 0 ? CreateVideoFrame() : CreateAudioFrame();
 

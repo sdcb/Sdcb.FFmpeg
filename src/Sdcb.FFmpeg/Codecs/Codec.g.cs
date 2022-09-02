@@ -73,13 +73,14 @@ public unsafe partial struct Codec
     }
     
     /// <summary>
+    /// <para>original type: int</para>
     /// <para>Codec capabilities. see AV_CODEC_CAP_*</para>
     /// <see cref="AVCodec.capabilities" />
     /// </summary>
-    public int Capabilities
+    public AV_CODEC_CAP Capabilities
     {
-        get => _ptr->capabilities;
-        set => _ptr->capabilities = value;
+        get => (AV_CODEC_CAP)_ptr->capabilities;
+        set => _ptr->capabilities = (int)value;
     }
     
     /// <summary>
@@ -106,7 +107,7 @@ public unsafe partial struct Codec
     /// <para>array of supported pixel formats, or NULL if unknown, array is terminated by -1</para>
     /// <see cref="AVCodec.pix_fmts" />
     /// </summary>
-    public AVPixelFormat* PixFmts
+    public AVPixelFormat* PixelFormats
     {
         get => _ptr->pix_fmts;
         set => _ptr->pix_fmts = value;
@@ -126,7 +127,7 @@ public unsafe partial struct Codec
     /// <para>array of supported sample formats, or NULL if unknown, array is terminated by -1</para>
     /// <see cref="AVCodec.sample_fmts" />
     /// </summary>
-    public AVSampleFormat* SampleFmts
+    public AVSampleFormat* SampleFormats
     {
         get => _ptr->sample_fmts;
         set => _ptr->sample_fmts = value;

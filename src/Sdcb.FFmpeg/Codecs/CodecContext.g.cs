@@ -280,7 +280,7 @@ public unsafe partial class CodecContext : SafeHandle
     /// <para>Pixel format, see AV_PIX_FMT_xxx. May be set by the demuxer if known from headers. May be overridden by the decoder if it knows better.</para>
     /// <see cref="AVCodecContext.pix_fmt" />
     /// </summary>
-    public AVPixelFormat PixFmt
+    public AVPixelFormat PixelFormat
     {
         get => _ptr->pix_fmt;
         set => _ptr->pix_fmt = value;
@@ -771,7 +771,7 @@ public unsafe partial class CodecContext : SafeHandle
     /// <para>sample format</para>
     /// <see cref="AVCodecContext.sample_fmt" />
     /// </summary>
-    public AVSampleFormat SampleFmt
+    public AVSampleFormat SampleFormat
     {
         get => _ptr->sample_fmt;
         set => _ptr->sample_fmt = value;
@@ -853,7 +853,7 @@ public unsafe partial class CodecContext : SafeHandle
     /// <para>desired sample format - encoding: Not used. - decoding: Set by user. Decoder will decode to this format if it can.</para>
     /// <see cref="AVCodecContext.request_sample_fmt" />
     /// </summary>
-    public AVSampleFormat RequestSampleFmt
+    public AVSampleFormat RequestSampleFormat
     {
         get => _ptr->request_sample_fmt;
         set => _ptr->request_sample_fmt = value;
@@ -1336,7 +1336,7 @@ public unsafe partial class CodecContext : SafeHandle
     /// <para>Nominal unaccelerated pixel format, see AV_PIX_FMT_xxx. - encoding: unused. - decoding: Set by libavcodec before calling get_format()</para>
     /// <see cref="AVCodecContext.sw_pix_fmt" />
     /// </summary>
-    public AVPixelFormat SwPixFmt
+    public AVPixelFormat SwPixelFormat
     {
         get => _ptr->sw_pix_fmt;
         set => _ptr->sw_pix_fmt = value;
