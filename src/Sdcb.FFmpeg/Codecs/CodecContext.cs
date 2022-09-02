@@ -61,7 +61,7 @@ public unsafe partial class CodecContext : SafeHandle
     /// <summary>
     /// <see cref="avcodec_send_packet(AVCodecContext*, AVPacket*)"/>
     /// </summary>
-    public void SendPacket(Packet? packet) => avcodec_send_packet(this, packet).ThrowIfError("Error sending a packet for decoding");
+    public void SendPacket(Packet? packet) => avcodec_send_packet(this, packet != null ? (AVPacket*)packet : null).ThrowIfError("Error sending a packet for decoding");
 
     /// <summary>
     /// <see cref="avcodec_receive_packet(AVCodecContext*, AVPacket*)"/>
