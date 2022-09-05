@@ -132,7 +132,7 @@ namespace Sdcb.FFmpeg.Raw
     
     /// <summary>Macro enum, prefix: AV_CODEC_CAP_</summary>
     [Flags]
-    public enum AV_CODEC_CAP : int
+    public enum AV_CODEC_CAP : uint
     {
         /// <summary>AV_CODEC_CAP_DRAW_HORIZ_BAND</summary>
         DrawHorizBand = 1 << 0,
@@ -1291,7 +1291,7 @@ namespace Sdcb.FFmpeg.Raw
     
     /// <summary>Macro enum, prefix: AVIO_FLAG_</summary>
     [Flags]
-    public enum AVIO_FLAG : int
+    public enum AVIO_FLAG : uint
     {
         /// <summary>AVIO_FLAG_READ</summary>
         Read = 1,

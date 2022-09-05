@@ -165,7 +165,8 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                     {
                         { Length: 2 } => "AVPixelFormat", 
                         _ => null, 
-                    }, 
+                    },
+                    "FFERRTAG" => "int", 
                     _ => null, 
                 }, 
                 IdentifierExpression id => id.Name switch { _ => (id.Name, NameTransform(id.Name)) } switch

@@ -101,12 +101,12 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             {
                 string[] priorities = new[]
                 {
-                    "long",
                     "ulong",
-                    "int",
+                    "long",
                     "uint",
-                    "short",
+                    "int",
                     "ushort",
+                    "short",
                 };
 
                 foreach (string prior in priorities)

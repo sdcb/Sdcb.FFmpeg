@@ -34,15 +34,16 @@ public unsafe partial class CodecParserContext : SafeHandle
 
     public IEnumerable<DataPointer> Parse(CodecContext codecContext, Stream sourceStream, int bufferSize = 4096, long pts = NoPts, long dts = NoPts, long pos = 0)
     {
-        IntPtr buffer = AllocZero(bufferSize + AV_INPUT_BUFFER_PADDING_SIZE);
+        byte[] data = new byte[bufferSize + AV_INPUT_BUFFER_PADDING_SIZE];
+        GCHandle dataHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
         try
         {
             while (true)
             {
-                int thisBufferLength = sourceStream.Read(ToSpan(buffer, bufferSize));
+                int thisBufferLength = sourceStream.Read(data, 0, bufferSize);
                 if (thisBufferLength == 0) break;
 
-                DataPointer thisBuffer = new DataPointer(buffer, thisBufferLength);
+                DataPointer thisBuffer = new DataPointer(dataHandle.AddrOfPinnedObject(), thisBufferLength);
                 while (thisBuffer.Length > 0)
                 {
                     int offset = Parse(codecContext, thisBuffer, out DataPointer dataPointer, pts, dts, pos);
@@ -53,12 +54,8 @@ public unsafe partial class CodecParserContext : SafeHandle
         }
         finally
         {
-            Free(buffer);
+            dataHandle.Free();
         }
-
-        static Span<byte> ToSpan(IntPtr buffer, int length) => new Span<byte>((void*)buffer, length);
-        static IntPtr AllocZero(int size) => NativeUtils.NotNull((IntPtr)av_mallocz((ulong)size));
-        static void Free(IntPtr ptr) => av_free((void*)ptr);
     }
 
     /// <summary>
