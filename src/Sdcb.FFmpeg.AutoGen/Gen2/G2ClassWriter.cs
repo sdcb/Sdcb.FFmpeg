@@ -10,12 +10,14 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2;
 
 internal class G2ClassWriter
 {
+    internal const string NsBase = "Sdcb.FFmpeg";
+
     internal static void WriteOne(StructureDefinition structure, G2TransformDef def, string outputDir, G2TypeConverter typeConverter)
     {
         using FileStream fileStream = File.OpenWrite(def.GetDestFile(outputDir));
         using StreamWriter streamWriter = new(fileStream);
         using IndentedTextWriter ind = new IndentedTextWriter(streamWriter);
-        WriteFileHeader(ind, def.Namespace);
+        WriteFileHeader(ind, def);
         ind.WriteLine();
         WriteXmlComment(ind, BuildCommentForStructure(structure));
         WriteDefinitionLine(def, ind);
@@ -146,16 +148,27 @@ internal class G2ClassWriter
         }
     }
 
-    static void WriteFileHeader(IndentedTextWriter ind, string destNamespace)
+    static void WriteFileHeader(IndentedTextWriter ind, G2TransformDef def)
     {
+        IEnumerable<string> otherNss = Enum
+            .GetNames<ClassCategories>()
+            .Where(x => x != def.ClassCategory.ToString());
+
+
         ind.WriteLine($@"// This file was genereated from Sdcb.FFmpeg.AutoGen, DO NOT CHANGE DIRECTLY.
 #nullable enable
-using Sdcb.FFmpeg.Common;
-using Sdcb.FFmpeg.Raw;
+using {NsBase}.Common;");
+
+        foreach (string otherNs in otherNss)
+        {
+            ind.WriteLine($"using {NsBase}.{otherNs};");
+        }
+
+        ind.WriteLine($@"using {NsBase}.Raw;
 using System;
 using System.Runtime.InteropServices;
 
-namespace {destNamespace};");
+namespace {def.Namespace};");
     }
 
     static IDisposable BeginBlock(IndentedTextWriter ind, bool inline = false)

@@ -22,7 +22,13 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecParameters", "CodecParameters"),
                 G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecContext", "CodecContext"),
                 G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecParserContext", "CodecParserContext"),
-                G2TransformDef.MakeStruct(ClassCategories.Codecs, "AVPacketSideData", "PacketSideData"), 
+                G2TransformDef.MakeStruct(ClassCategories.Codecs, "AVPacketSideData", "PacketSideData"),
+
+                G2TransformDef.MakeClass(ClassCategories.Formats, "AVFormatContext", "FormatContext"),
+                G2TransformDef.MakeStruct(ClassCategories.Formats, "AVProgram", "MediaProgram"),
+                G2TransformDef.MakeStruct(ClassCategories.Formats, "AVStream", "MediaStream"),
+                G2TransformDef.MakeStruct(ClassCategories.Formats, "AVInputFormat", "InputFormat"),
+                G2TransformDef.MakeStruct(ClassCategories.Formats, "AVOutputFormat", "OutputFormat"),
             }.ToDictionary(k => k.OldName, v => v);
 
             G2TypeConverter typeConverter = G2TypeConvert.Create(knownClasses);

@@ -621,17 +621,11 @@ namespace Sdcb.FFmpeg.Raw
         public const int AVPROBE_SCORE_RETRY = AVPROBE_SCORE_MAX / 4;
         /// <summary>AVPROBE_SCORE_STREAM_RETRY = (AVPROBE_SCORE_MAX/4-1)</summary>
         public const int AVPROBE_SCORE_STREAM_RETRY = AVPROBE_SCORE_MAX / 4 - 1;
-        public const int AVSEEK_FLAG_ANY = 4;
-        public const int AVSEEK_FLAG_BACKWARD = 1;
-        public const int AVSEEK_FLAG_BYTE = 2;
-        public const int AVSEEK_FLAG_FRAME = 8;
         public const uint AVSEEK_FORCE = 0x20000;
         public const uint AVSEEK_SIZE = 0x10000;
         public const uint AVSTREAM_EVENT_FLAG_METADATA_UPDATED = 0x0001;
         /// <summary>AVSTREAM_EVENT_FLAG_NEW_PACKETS = (1 &lt;&lt; 1)</summary>
         public const int AVSTREAM_EVENT_FLAG_NEW_PACKETS = 1 << 1;
-        public const int AVSTREAM_INIT_IN_INIT_OUTPUT = 1;
-        public const int AVSTREAM_INIT_IN_WRITE_HEADER = 0;
         // public static AVUNERROR = (e) (-(e));
         // public static DECLARE_ALIGNED = (n,t,v)      t __attribute__ ((aligned (n))) v;
         // public static DECLARE_ASM_ALIGNED = (n,t,v)  t av_used __attribute__ ((aligned (n))) v;

@@ -1968,12 +1968,36 @@ namespace Sdcb.FFmpeg.Raw
         Nb = 12,
     }
     
+    /// <summary>Macro enum, prefix: AVSEEK_FLAG_</summary>
+    [Flags]
+    public enum AVSEEK_FLAG : int
+    {
+        /// <summary>AVSEEK_FLAG_BACKWARD</summary>
+        Backward = 1,
+        /// <summary>AVSEEK_FLAG_BYTE</summary>
+        Byte = 2,
+        /// <summary>AVSEEK_FLAG_ANY</summary>
+        Any = 4,
+        /// <summary>AVSEEK_FLAG_FRAME</summary>
+        Frame = 8,
+    }
+    
     public enum AVSideDataParamChangeFlags : int
     {
         ChannelCount = 1,
         ChannelLayout = 2,
         SampleRate = 4,
         Dimensions = 8,
+    }
+    
+    /// <summary>Macro enum, prefix: AVSTREAM_INIT_IN_</summary>
+    [Flags]
+    public enum AVSTREAM_INIT_IN : int
+    {
+        /// <summary>AVSTREAM_INIT_IN_WRITE_HEADER</summary>
+        WriteHeader = 0,
+        /// <summary>AVSTREAM_INIT_IN_INIT_OUTPUT</summary>
+        InitOutput = 1,
     }
     
     /// <summary>@}</summary>
