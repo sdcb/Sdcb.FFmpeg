@@ -28,7 +28,7 @@ internal class G2ClassWriter
             G2TypeConverter thisTypeConverter = G2TypeConvert.Combine(def.TypeConversions, typeConverter);
             foreach (StructureField field in structure.Fields)
             {
-                WriteProperties(structure, ind, field, thisTypeConverter);
+                WriteProperties(structure, ind, field, def, thisTypeConverter);
                 if (field != structure.Fields.Last()) ind.WriteLine();
             }
         }
@@ -88,7 +88,7 @@ internal class G2ClassWriter
         }
     }
 
-    private static void WriteProperties(StructureDefinition structure, IndentedTextWriter ind, StructureField field, G2TypeConverter typeConverter)
+    private static void WriteProperties(StructureDefinition structure, IndentedTextWriter ind, StructureField field, G2TransformDef def, G2TypeConverter typeConverter)
     {
         TypeCastDef typeCastDef = typeConverter(field.FieldType.Name, field.Name);
         WriteXmlComment(ind, BuildCommentForField(structure, field, typeCastDef.IsChanged));
@@ -96,7 +96,7 @@ internal class G2ClassWriter
         {
             ind.WriteLine($"[Obsolete(\"{StringExtensions.DoubleQuoteEscape(field.Obsoletion.Message)}\")]");
         }
-        foreach (string line in typeCastDef.GetPropertyBody(field.Name))
+        foreach (string line in typeCastDef.GetPropertyBody(field.Name, isReadonly: def.IsReadonlyForField(field.Name)))
         {
             ind.WriteLine(line);
         }
@@ -166,6 +166,7 @@ using {NsBase}.Common;");
 
         ind.WriteLine($@"using {NsBase}.Raw;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace {def.Namespace};");

@@ -4,6 +4,7 @@ using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Formats;
 using Sdcb.FFmpeg.Raw;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Sdcb.FFmpeg.Codecs;
@@ -38,10 +39,9 @@ public unsafe partial struct Codec
     /// <para>Name of the codec implementation. The name is globally unique among encoders and among decoders (but an encoder and a decoder can share the same name). This is the primary way to find a codec from the user perspective.</para>
     /// <see cref="AVCodec.name" />
     /// </summary>
-    public IntPtr Name
+    public string Name
     {
-        get => (IntPtr)_ptr->name;
-        set => _ptr->name = (byte*)value;
+        get => Marshal.PtrToStringUTF8((IntPtr)_ptr->name)!;
     }
     
     /// <summary>
@@ -49,10 +49,9 @@ public unsafe partial struct Codec
     /// <para>Descriptive name for the codec, meant to be more human readable than name. You should use the NULL_IF_CONFIG_SMALL() macro to define it.</para>
     /// <see cref="AVCodec.long_name" />
     /// </summary>
-    public IntPtr LongName
+    public string LongName
     {
-        get => (IntPtr)_ptr->long_name;
-        set => _ptr->long_name = (byte*)value;
+        get => Marshal.PtrToStringUTF8((IntPtr)_ptr->long_name)!;
     }
     
     /// <summary>
@@ -61,7 +60,6 @@ public unsafe partial struct Codec
     public AVMediaType Type
     {
         get => _ptr->type;
-        set => _ptr->type = value;
     }
     
     /// <summary>
@@ -70,7 +68,6 @@ public unsafe partial struct Codec
     public AVCodecID Id
     {
         get => _ptr->id;
-        set => _ptr->id = value;
     }
     
     /// <summary>
@@ -81,7 +78,6 @@ public unsafe partial struct Codec
     public AV_CODEC_CAP Capabilities
     {
         get => (AV_CODEC_CAP)_ptr->capabilities;
-        set => _ptr->capabilities = (int)value;
     }
     
     /// <summary>
@@ -91,27 +87,34 @@ public unsafe partial struct Codec
     public byte MaxLowres
     {
         get => _ptr->max_lowres;
-        set => _ptr->max_lowres = value;
     }
     
     /// <summary>
+    /// <para>original type: AVRational*</para>
     /// <para>array of supported framerates, or NULL if any, array is terminated by {0,0}</para>
     /// <see cref="AVCodec.supported_framerates" />
     /// </summary>
-    public AVRational* SupportedFramerates
+    public IEnumerable<AVRational> SupportedFramerates
     {
-        get => _ptr->supported_framerates;
-        set => _ptr->supported_framerates = value;
+        get => NativeUtils.ReadSequence(
+			            p: (IntPtr)_ptr->supported_framerates,
+			            unitSize: sizeof(AVRational),
+			            exitCondition: p => ((AVRational*)p)->Num == 0,
+                        valGetter: p => *(AVRational*)p)!;
     }
     
     /// <summary>
+    /// <para>original type: AVPixelFormat*</para>
     /// <para>array of supported pixel formats, or NULL if unknown, array is terminated by -1</para>
     /// <see cref="AVCodec.pix_fmts" />
     /// </summary>
-    public AVPixelFormat* PixelFormats
+    public IEnumerable<AVPixelFormat> PixelFormats
     {
-        get => _ptr->pix_fmts;
-        set => _ptr->pix_fmts = value;
+        get => NativeUtils.ReadSequence(
+			            p: (IntPtr)_ptr->pix_fmts,
+			            unitSize: sizeof(AVPixelFormat),
+			            exitCondition: p => *(AVPixelFormat*)p == AVPixelFormat.None, 
+                        valGetter: p => *(AVPixelFormat*)p)!;
     }
     
     /// <summary>
@@ -121,7 +124,6 @@ public unsafe partial struct Codec
     public int* SupportedSamplerates
     {
         get => _ptr->supported_samplerates;
-        set => _ptr->supported_samplerates = value;
     }
     
     /// <summary>
@@ -131,7 +133,6 @@ public unsafe partial struct Codec
     public AVSampleFormat* SampleFormats
     {
         get => _ptr->sample_fmts;
-        set => _ptr->sample_fmts = value;
     }
     
     /// <summary>
@@ -141,7 +142,6 @@ public unsafe partial struct Codec
     public ulong* ChannelLayouts
     {
         get => _ptr->channel_layouts;
-        set => _ptr->channel_layouts = value;
     }
     
     /// <summary>
@@ -152,7 +152,6 @@ public unsafe partial struct Codec
     public FFmpegClass PrivClass
     {
         get => FFmpegClass.FromNative(_ptr->priv_class);
-        set => _ptr->priv_class = (AVClass*)value;
     }
     
     /// <summary>
@@ -162,7 +161,6 @@ public unsafe partial struct Codec
     public AVProfile* Profiles
     {
         get => _ptr->profiles;
-        set => _ptr->profiles = value;
     }
     
     /// <summary>
@@ -173,7 +171,6 @@ public unsafe partial struct Codec
     public IntPtr WrapperName
     {
         get => (IntPtr)_ptr->wrapper_name;
-        set => _ptr->wrapper_name = (byte*)value;
     }
     
     /// <summary>
@@ -183,6 +180,5 @@ public unsafe partial struct Codec
     public AVChannelLayout* ChLayouts
     {
         get => _ptr->ch_layouts;
-        set => _ptr->ch_layouts = value;
     }
 }

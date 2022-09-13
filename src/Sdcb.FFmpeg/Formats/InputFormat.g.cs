@@ -4,6 +4,7 @@ using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Codecs;
 using Sdcb.FFmpeg.Raw;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Sdcb.FFmpeg.Formats;

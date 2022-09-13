@@ -38,7 +38,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             };
         }
 
-        public static G2TypeConverter Combine(TypeCastDef[] specialConverters, G2TypeConverter baseConverter)
+        public static G2TypeConverter Combine(IEnumerable<TypeCastDef> specialConverters, G2TypeConverter baseConverter)
         {
             Indexer specialConverterMapping = MakeIndexer(specialConverters);
 
@@ -53,7 +53,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             }
         }
 
-        static Indexer MakeIndexer(TypeCastDef[] data)
+        static Indexer MakeIndexer(IEnumerable<TypeCastDef> data)
         {
             Dictionary<string, TypeCastDef> nameMapping = data
                 .Where(x => x.FieldName != null)
@@ -101,6 +101,10 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
         public static TypeCastDef StaticCastStruct(string oldType, string newType, bool nullable) => new TypeStaticCastDef(oldType, newType, nullable, IsClass: false);
 
+        public static TypeCastDef CustomReadonly(string oldType, string newType, string readFormat, bool nullable) => new FunctionCallCastDef(oldType, newType, readFormat, nullable);
+
+        public static TypeCastDef Utf8String(bool nullable) => CustomReadonly("byte*", "string", $"Marshal.PtrToStringUTF8((IntPtr){{0}})", nullable);
+
         protected virtual string GetPropertyGetter(string expression)
         {
             return IsChanged switch
@@ -118,16 +122,18 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
         protected virtual string ReturnType => NewType;
 
-        private const string _ptr = "_ptr";
-
-        public virtual IEnumerable<string> GetPropertyBody(string fieldName)
+        public virtual IEnumerable<string> GetPropertyBody(string fieldName, bool isReadonly)
         {
+            const string _ptr = "_ptr";
             string transformedName = StringExtensions.CSharpKeywordTransform(fieldName);
 
             yield return $"public {ReturnType} {G2StringTransforms.NameTransform(fieldName)}";
             yield return "{";
             yield return $"    get => {GetPropertyGetter($"{_ptr}->{transformedName}")};";
-            yield return $"    set => {_ptr}->{transformedName} = {PropertySetter};";
+            if (!isReadonly)
+            {
+                yield return $"    set => {_ptr}->{transformedName} = {PropertySetter};";
+            }
             yield return "}";
         }
 
@@ -149,6 +155,17 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             {
                 true => $"value != null ? {base.PropertySetter} : null",
                 false => base.PropertySetter,
+            };
+        }
+
+        private record FunctionCallCastDef(string OldType, string NewType, string ReadCallFormat, bool Nullable) : TypeCastDef(OldType, NewType)
+        {
+            protected override string ReturnType => Nullable ? NewType + '?' : NewType;
+
+            protected override string GetPropertyGetter(string expression) => Nullable switch
+            {
+                true => $"{{0}} != null ? {string.Format(ReadCallFormat, expression)}! : null", 
+                false => string.Format(ReadCallFormat, expression) + "!", 
             };
         }
     }
