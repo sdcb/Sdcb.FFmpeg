@@ -144,6 +144,12 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             protected override string ReturnType => Nullable ? NewType + '?' : NewType;
 
             protected override string GetPropertyGetter(string expression) => $"{NewType}.{StaticMethod}({expression}{AdditionalText})";
+
+            protected override string PropertySetter => (IsClass && Nullable) switch
+            {
+                true => $"value != null ? {base.PropertySetter} : null",
+                false => base.PropertySetter,
+            };
         }
     }
 }

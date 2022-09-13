@@ -2122,4 +2122,73 @@ namespace Sdcb.FFmpeg.Raw
         Kaiser = 2,
     }
     
+    /// <summary>Macro enum, prefix: SWS_</summary>
+    [Flags]
+    public enum SWS : uint
+    {
+        /// <summary>SWS_FAST_BILINEAR</summary>
+        FastBilinear = 1,
+        /// <summary>SWS_BILINEAR</summary>
+        Bilinear = 2,
+        /// <summary>SWS_BICUBIC</summary>
+        Bicubic = 4,
+        /// <summary>SWS_X</summary>
+        X = 8,
+        /// <summary>SWS_POINT</summary>
+        Point = 0x10,
+        /// <summary>SWS_AREA</summary>
+        Area = 0x20,
+        /// <summary>SWS_BICUBLIN</summary>
+        Bicublin = 0x40,
+        /// <summary>SWS_GAUSS</summary>
+        Gauss = 0x80,
+        /// <summary>SWS_SINC</summary>
+        Sinc = 0x100,
+        /// <summary>SWS_LANCZOS</summary>
+        Lanczos = 0x200,
+        /// <summary>SWS_SPLINE</summary>
+        Spline = 0x400,
+        /// <summary>SWS_SRC_V_CHR_DROP_MASK</summary>
+        SrcVChrDropMask = 0x30000,
+        /// <summary>SWS_SRC_V_CHR_DROP_SHIFT</summary>
+        SrcVChrDropShift = 16,
+        /// <summary>SWS_PARAM_DEFAULT</summary>
+        ParamDefault = 123456,
+        /// <summary>SWS_PRINT_INFO</summary>
+        PrintInfo = 0x1000,
+        /// <summary>SWS_FULL_CHR_H_INT</summary>
+        FullChrHInt = 0x2000,
+        /// <summary>SWS_FULL_CHR_H_INP</summary>
+        FullChrHInp = 0x4000,
+        /// <summary>SWS_DIRECT_BGR</summary>
+        DirectBgr = 0x8000,
+        /// <summary>SWS_ACCURATE_RND</summary>
+        AccurateRnd = 0x40000,
+        /// <summary>SWS_BITEXACT</summary>
+        Bitexact = 0x80000,
+        /// <summary>SWS_ERROR_DIFFUSION</summary>
+        ErrorDiffusion = 0x800000,
+    }
+    
+    /// <summary>Macro enum, prefix: SWS_CS_</summary>
+    public enum SWS_CS : int
+    {
+        /// <summary>SWS_CS_ITU709</summary>
+        Itu709 = 1,
+        /// <summary>SWS_CS_FCC</summary>
+        Fcc = 4,
+        /// <summary>SWS_CS_ITU601</summary>
+        Itu601 = 5,
+        /// <summary>SWS_CS_ITU624</summary>
+        Itu624 = 5,
+        /// <summary>SWS_CS_SMPTE170M</summary>
+        Smpte170m = 5,
+        /// <summary>SWS_CS_SMPTE240M</summary>
+        Smpte240m = 7,
+        /// <summary>SWS_CS_DEFAULT</summary>
+        Default = 5,
+        /// <summary>SWS_CS_BT2020</summary>
+        Bt2020 = 9,
+    }
+    
 }

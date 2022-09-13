@@ -35,6 +35,8 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 //new ("AV_CPU_FLAG_", "CpuFlags"),
                 //new ("AV_PKT_FLAG_", "PacketFlags"),
                 //new ("AVFMT_FLAG_", "FormatFlags"), 
+                new ("SWS_CS_", "SWS_CS"),
+                new ("SWS_", "SWS", IsFlags: true, Except: HashSet("SWS_MAX_REDUCE_CUTOFF")),
             };
             Dictionary<string, MacroEnumDef> knownConstEnumMapping = knownConstEnums.ToDictionary(k => k.EnumName, v => v);
 

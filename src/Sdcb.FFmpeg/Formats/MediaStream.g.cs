@@ -211,7 +211,7 @@ public unsafe partial struct MediaStream
     public CodecParameters? Codecpar
     {
         get => CodecParameters.FromNativeOrNull(_ptr->codecpar, false);
-        set => _ptr->codecpar = (AVCodecParameters*)value;
+        set => _ptr->codecpar = value != null ? (AVCodecParameters*)value : null;
     }
     
     /// <summary>

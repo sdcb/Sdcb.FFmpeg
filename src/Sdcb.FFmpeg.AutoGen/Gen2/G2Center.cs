@@ -26,7 +26,10 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
                 G2TransformDef.MakeClass(ClassCategories.Formats, "AVFormatContext", "FormatContext"),
                 G2TransformDef.MakeStruct(ClassCategories.Formats, "AVProgram", "MediaProgram"),
-                G2TransformDef.MakeStruct(ClassCategories.Formats, "AVStream", "MediaStream"),
+                G2TransformDef.MakeStruct(ClassCategories.Formats, "AVStream", "MediaStream", new TypeCastDef[]
+                {
+                    TypeCastDef.StaticCastClass("AVCodecParameters*", "CodecParameters", nullable: true, isOwner: false),
+                }),
                 G2TransformDef.MakeStruct(ClassCategories.Formats, "AVInputFormat", "InputFormat"),
                 G2TransformDef.MakeStruct(ClassCategories.Formats, "AVOutputFormat", "OutputFormat"),
             }.ToDictionary(k => k.OldName, v => v);

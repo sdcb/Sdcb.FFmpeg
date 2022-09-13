@@ -1041,35 +1041,6 @@ namespace Sdcb.FFmpeg.Raw
         public const uint SLICE_FLAG_ALLOW_PLANE = 0x0004;
         public const uint SLICE_FLAG_CODED_ORDER = 0x0001;
         public const int SWR_FLAG_RESAMPLE = 1;
-        public const uint SWS_ACCURATE_RND = 0x40000;
-        public const uint SWS_AREA = 0x20;
-        public const int SWS_BICUBIC = 4;
-        public const uint SWS_BICUBLIN = 0x40;
-        public const int SWS_BILINEAR = 2;
-        public const uint SWS_BITEXACT = 0x80000;
-        public const int SWS_CS_BT2020 = 9;
-        public const int SWS_CS_DEFAULT = 5;
-        public const int SWS_CS_FCC = 4;
-        public const int SWS_CS_ITU601 = 5;
-        public const int SWS_CS_ITU624 = 5;
-        public const int SWS_CS_ITU709 = 1;
-        public const int SWS_CS_SMPTE170M = 5;
-        public const int SWS_CS_SMPTE240M = 7;
-        public const uint SWS_DIRECT_BGR = 0x8000;
-        public const uint SWS_ERROR_DIFFUSION = 0x800000;
-        public const int SWS_FAST_BILINEAR = 1;
-        public const uint SWS_FULL_CHR_H_INP = 0x4000;
-        public const uint SWS_FULL_CHR_H_INT = 0x2000;
-        public const uint SWS_GAUSS = 0x80;
-        public const uint SWS_LANCZOS = 0x200;
         public const double SWS_MAX_REDUCE_CUTOFF = 0.002;
-        public const int SWS_PARAM_DEFAULT = 123456;
-        public const uint SWS_POINT = 0x10;
-        public const uint SWS_PRINT_INFO = 0x1000;
-        public const uint SWS_SINC = 0x100;
-        public const uint SWS_SPLINE = 0x400;
-        public const uint SWS_SRC_V_CHR_DROP_MASK = 0x30000;
-        public const int SWS_SRC_V_CHR_DROP_SHIFT = 16;
-        public const int SWS_X = 8;
     }
 }

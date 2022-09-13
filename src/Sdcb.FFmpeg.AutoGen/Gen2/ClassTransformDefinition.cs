@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace Sdcb.FFmpeg.AutoGen.Gen2
 {
@@ -11,7 +6,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
     {
         public string GetDestFolder(string outputDir) => Path.Combine(Path.GetDirectoryName(outputDir)!, ClassCategory.ToString());
         public string GetDestFile(string outputDir) => Path.Combine(GetDestFolder(outputDir), $"{NewName}.g.cs");
-        public string Namespace => $"Sdcb.FFmpeg.{ClassCategory}";
+        public string Namespace => $"{G2ClassWriter.NsBase}.{ClassCategory}";
 
         public static ClassTransformDef MakeClass(ClassCategories category, string oldName, string newName, TypeCastDef[]? typeConversions = null) =>
             new ClassTransformDef(category, oldName, newName, typeConversions ?? new TypeCastDef[0]);
