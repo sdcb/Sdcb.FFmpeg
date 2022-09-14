@@ -103,6 +103,12 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
         public static TypeCastDef CustomReadonly(string oldType, string newType, string readFormat, bool nullable) => new FunctionCallCastDef(oldType, newType, readFormat, nullable);
 
+        public static TypeCastDef ReadSequence(string elementType, string exitCondition = "p == default") => new FunctionCallCastDef(elementType + '*', $"IEnumerable<{elementType}>", $@"NativeUtils.ReadSequence(
+            p: (IntPtr){{0}},
+            unitSize: sizeof({elementType}),
+            exitCondition: p => *({elementType}*){exitCondition}, 
+            valGetter: p => *({elementType}*)p)", Nullable: false);
+
         public static TypeCastDef Utf8String(bool nullable) => CustomReadonly("byte*", "string", $"Marshal.PtrToStringUTF8((IntPtr){{0}})", nullable);
 
         protected virtual string GetPropertyGetter(string expression)

@@ -97,10 +97,10 @@ public unsafe partial struct Codec
     public IEnumerable<AVRational> SupportedFramerates
     {
         get => NativeUtils.ReadSequence(
-			            p: (IntPtr)_ptr->supported_framerates,
-			            unitSize: sizeof(AVRational),
-			            exitCondition: p => ((AVRational*)p)->Num == 0,
-                        valGetter: p => *(AVRational*)p)!;
+            p: (IntPtr)_ptr->supported_framerates,
+            unitSize: sizeof(AVRational),
+            exitCondition: p => *(AVRational*)p == default, 
+            valGetter: p => *(AVRational*)p)!;
     }
     
     /// <summary>
@@ -111,37 +111,52 @@ public unsafe partial struct Codec
     public IEnumerable<AVPixelFormat> PixelFormats
     {
         get => NativeUtils.ReadSequence(
-			            p: (IntPtr)_ptr->pix_fmts,
-			            unitSize: sizeof(AVPixelFormat),
-			            exitCondition: p => *(AVPixelFormat*)p == AVPixelFormat.None, 
-                        valGetter: p => *(AVPixelFormat*)p)!;
+            p: (IntPtr)_ptr->pix_fmts,
+            unitSize: sizeof(AVPixelFormat),
+            exitCondition: p => *(AVPixelFormat*)p == AVPixelFormat.None, 
+            valGetter: p => *(AVPixelFormat*)p)!;
     }
     
     /// <summary>
+    /// <para>original type: int*</para>
     /// <para>array of supported audio samplerates, or NULL if unknown, array is terminated by 0</para>
     /// <see cref="AVCodec.supported_samplerates" />
     /// </summary>
-    public int* SupportedSamplerates
+    public IEnumerable<int> SupportedSamplerates
     {
-        get => _ptr->supported_samplerates;
+        get => NativeUtils.ReadSequence(
+            p: (IntPtr)_ptr->supported_samplerates,
+            unitSize: sizeof(int),
+            exitCondition: p => *(int*)p == default, 
+            valGetter: p => *(int*)p)!;
     }
     
     /// <summary>
+    /// <para>original type: AVSampleFormat*</para>
     /// <para>array of supported sample formats, or NULL if unknown, array is terminated by -1</para>
     /// <see cref="AVCodec.sample_fmts" />
     /// </summary>
-    public AVSampleFormat* SampleFormats
+    public IEnumerable<AVSampleFormat> SampleFormats
     {
-        get => _ptr->sample_fmts;
+        get => NativeUtils.ReadSequence(
+            p: (IntPtr)_ptr->sample_fmts,
+            unitSize: sizeof(AVSampleFormat),
+            exitCondition: p => *(AVSampleFormat*)p == default, 
+            valGetter: p => *(AVSampleFormat*)p)!;
     }
     
     /// <summary>
+    /// <para>original type: ulong*</para>
     /// <para>array of support channel layouts, or NULL if unknown. array is terminated by 0</para>
     /// <see cref="AVCodec.channel_layouts" />
     /// </summary>
-    public ulong* ChannelLayouts
+    public IEnumerable<ulong> ChannelLayouts
     {
-        get => _ptr->channel_layouts;
+        get => NativeUtils.ReadSequence(
+            p: (IntPtr)_ptr->channel_layouts,
+            unitSize: sizeof(ulong),
+            exitCondition: p => *(ulong*)p == default, 
+            valGetter: p => *(ulong*)p)!;
     }
     
     /// <summary>
@@ -155,12 +170,17 @@ public unsafe partial struct Codec
     }
     
     /// <summary>
+    /// <para>original type: AVProfile*</para>
     /// <para>array of recognized profiles, or NULL if unknown, array is terminated by {FF_PROFILE_UNKNOWN}</para>
     /// <see cref="AVCodec.profiles" />
     /// </summary>
-    public AVProfile* Profiles
+    public IEnumerable<AVProfile> Profiles
     {
-        get => _ptr->profiles;
+        get => NativeUtils.ReadSequence(
+            p: (IntPtr)_ptr->profiles,
+            unitSize: sizeof(AVProfile),
+            exitCondition: p => *(AVProfile*)p switch { { profile: 0 } => true, _ => false }, 
+            valGetter: p => *(AVProfile*)p)!;
     }
     
     /// <summary>
@@ -168,17 +188,22 @@ public unsafe partial struct Codec
     /// <para>Group name of the codec implementation. This is a short symbolic name of the wrapper backing this codec. A wrapper uses some kind of external implementation for the codec, such as an external library, or a codec implementation provided by the OS or the hardware. If this field is NULL, this is a builtin, libavcodec native codec. If non-NULL, this will be the suffix in AVCodec.name in most cases (usually AVCodec.name will be of the form "&lt;codec_name&gt;_&lt;wrapper_name&gt;").</para>
     /// <see cref="AVCodec.wrapper_name" />
     /// </summary>
-    public IntPtr WrapperName
+    public string WrapperName
     {
-        get => (IntPtr)_ptr->wrapper_name;
+        get => Marshal.PtrToStringUTF8((IntPtr)_ptr->wrapper_name)!;
     }
     
     /// <summary>
+    /// <para>original type: AVChannelLayout*</para>
     /// <para>Array of supported channel layouts, terminated with a zeroed layout.</para>
     /// <see cref="AVCodec.ch_layouts" />
     /// </summary>
-    public AVChannelLayout* ChLayouts
+    public IEnumerable<AVChannelLayout> ChLayouts
     {
-        get => _ptr->ch_layouts;
+        get => NativeUtils.ReadSequence(
+            p: (IntPtr)_ptr->ch_layouts,
+            unitSize: sizeof(AVChannelLayout),
+            exitCondition: p => *(AVChannelLayout*)p switch { { order: AVChannelOrder.Unspec, nb_channels: 0 } => true, _ => false }, 
+            valGetter: p => *(AVChannelLayout*)p)!;
     }
 }

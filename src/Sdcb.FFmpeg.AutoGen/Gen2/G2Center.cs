@@ -13,6 +13,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
         {
             Dictionary<string, G2TransformDef> knownClasses = new G2TransformDef[]
             {
+                // codecs
                 G2TransformDef.MakeClass(ClassCategories.Codecs, "AVPacket", "Packet"),
                 G2TransformDef.MakeClass(ClassCategories.Codecs, "AVFrame", "Frame"),
                 G2TransformDef.MakeReadonlyStruct(ClassCategories.Codecs, "AVCodec", "Codec", new FieldDef[]
@@ -20,22 +21,22 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                     new FieldDef("capabilities", TypeCastDef.Force("int", "AV_CODEC_CAP")),
                     new FieldDef("name", TypeCastDef.Utf8String(nullable: false)), 
                     new FieldDef("long_name", TypeCastDef.Utf8String(nullable: false)), 
-                    new FieldDef("supported_framerates", TypeCastDef.CustomReadonly("AVRational*", "IEnumerable<AVRational>", $@"NativeUtils.ReadSequence(
-                        p: (IntPtr){{0}},
-                        unitSize: sizeof(AVRational),
-                        exitCondition: p => ((AVRational*)p)->Num == 0,
-                        valGetter: p => *(AVRational*)p)", nullable: false)),
-                    new FieldDef("pix_fmts", TypeCastDef.CustomReadonly("AVPixelFormat*", "IEnumerable<AVPixelFormat>", $@"NativeUtils.ReadSequence(
-                        p: (IntPtr){{0}},
-                        unitSize: sizeof(AVPixelFormat),
-                        exitCondition: p => *(AVPixelFormat*)p == AVPixelFormat.None, 
-                        valGetter: p => *(AVPixelFormat*)p)", nullable: false)),
+                    new FieldDef("supported_framerates", TypeCastDef.ReadSequence("AVRational")),
+                    new FieldDef("pix_fmts", TypeCastDef.ReadSequence("AVPixelFormat", "p == AVPixelFormat.None")),
+                    new FieldDef("supported_samplerates", TypeCastDef.ReadSequence("int")),
+                    new FieldDef("sample_fmts", TypeCastDef.ReadSequence("AVSampleFormat")),
+                    new FieldDef("channel_layouts", TypeCastDef.ReadSequence("ulong")), 
+                    new FieldDef("profiles", TypeCastDef.ReadSequence("AVProfile", FormatEscape("p switch { { profile: 0 } => true, _ => false }"))),
+                    new FieldDef("wrapper_name", TypeCastDef.Utf8String(nullable: false)),
+                    new FieldDef("ch_layouts", TypeCastDef.ReadSequence("AVChannelLayout", FormatEscape("p switch { { order: AVChannelOrder.Unspec, nb_channels: 0 } => true, _ => false }"))),
+                    // sample_fmts
                 }),
                 G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecParameters", "CodecParameters"),
                 G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecContext", "CodecContext"),
                 G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecParserContext", "CodecParserContext"),
                 G2TransformDef.MakeStruct(ClassCategories.Codecs, "AVPacketSideData", "PacketSideData"), 
 
+                // formats
                 G2TransformDef.MakeClass(ClassCategories.Formats, "AVFormatContext", "FormatContext"),
                 G2TransformDef.MakeStruct(ClassCategories.Formats, "AVProgram", "MediaProgram"),
                 G2TransformDef.MakeStruct(ClassCategories.Formats, "AVStream", "MediaStream", new FieldDef[]
@@ -52,6 +53,11 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             {
                 G2ClassWriter.WriteOne(structure, knownClasses[structure.Name], outputDir, typeConverter);
             }
+        }
+
+        private static string FormatEscape(string src)
+        {
+            return src.Replace("{", "{{").Replace("}", "}}");
         }
     }
 }
