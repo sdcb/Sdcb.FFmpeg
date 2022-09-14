@@ -110,7 +110,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             exitCondition: p => *({elementType}*){exitCondition}, 
             valGetter: p => *({elementType}*)p)", Nullable: false);
 
-        public static TypeCastDef Utf8String(bool nullable) => CustomReadonly("byte*", "string", $"Marshal.PtrToStringUTF8((IntPtr){{0}})", nullable);
+        public static TypeCastDef Utf8String(bool nullable) => CustomReadonly("byte*", "string", $"PtrExtensions.PtrToStringUTF8((IntPtr){{0}})", nullable);
 
         protected virtual string GetPropertyGetter(string expression)
         {
@@ -134,14 +134,18 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             const string _ptr = "_ptr";
             string transformedName = StringExtensions.CSharpKeywordTransform(fieldName);
 
-            yield return $"public {ReturnType} {G2StringTransforms.NameTransform(fieldName)}";
-            yield return "{";
-            yield return $"    get => {GetPropertyGetter($"{_ptr}->{transformedName}")};";
-            if (!isReadonly)
+            if (isReadonly)
             {
-                yield return $"    set => {_ptr}->{transformedName} = {PropertySetter};";
+                yield return $"public {ReturnType} {G2StringTransforms.NameTransform(fieldName)} => {GetPropertyGetter($"{_ptr}->{transformedName}")};";
             }
-            yield return "}";
+            else
+            {
+                yield return $"public {ReturnType} {G2StringTransforms.NameTransform(fieldName)}";
+                yield return "{";
+                yield return $"    get => {GetPropertyGetter($"{_ptr}->{transformedName}")};";
+                yield return $"    set => {_ptr}->{transformedName} = {PropertySetter};";
+                yield return "}";
+            }
         }
 
         private record TypeStaticCastDef(string OldType, string NewType, bool Nullable, bool IsClass, bool IsOwner = false) : TypeCastDef(OldType, NewType)

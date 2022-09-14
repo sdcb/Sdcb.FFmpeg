@@ -2,12 +2,9 @@
 using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Formats;
 using Sdcb.FFmpeg.Raw;
-using System;
-using System.Collections.Generic;
+using Sdcb.FFmpeg.Swscales;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sdcb.FFmpeg.Toolboxs.Extensions;
 
@@ -66,14 +63,14 @@ public unsafe static class FrameExtensions
         codecContext.Open(codec);
         mediaStream.Codecpar!.CopyFrom(codecContext);
 
-        if ((PixelFormat)frame.Format == codecContext.PixelFormat)
+        if ((AVPixelFormat)frame.Format == codecContext.PixelFormat)
         {
             WriteAction(frame, fc, codecContext);
         }
         else
         {
             using var tempFrame = Frame.CreateWritableVideo(frame.Width, frame.Height, codecContext.PixelFormat);
-            using var frameConverter = new FrameConverter();
+            using var frameConverter = new VideoFrameConverter();
             frameConverter.ConvertFrame(frame, tempFrame);
             WriteAction(tempFrame, fc, codecContext);
         }
