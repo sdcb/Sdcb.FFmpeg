@@ -1,4 +1,5 @@
 ﻿using Sdcb.FFmpeg.AutoGen.Definitions;
+using Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs;
 using System;
 using System.Collections.Generic;
 using System.IO;

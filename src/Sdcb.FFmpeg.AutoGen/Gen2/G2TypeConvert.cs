@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs;
 
 #pragma warning disable CS8509 // switch 表达式不会处理属于其输入类型的所有可能值(它并非详尽无遗)。
 namespace Sdcb.FFmpeg.AutoGen.Gen2

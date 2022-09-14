@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Sdcb.FFmpeg.AutoGen.Gen2
+namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
 {
     internal record IndentManager
     {

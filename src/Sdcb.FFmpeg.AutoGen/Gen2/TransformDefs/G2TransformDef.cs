@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using static FParsec.Primitives;
 
-namespace Sdcb.FFmpeg.AutoGen.Gen2
+namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
 {
     internal abstract record G2TransformDef(ClassCategories ClassCategory, string OldName, string NewName, FieldDef[] FieldDefs, bool AllReadOnly = false)
     {

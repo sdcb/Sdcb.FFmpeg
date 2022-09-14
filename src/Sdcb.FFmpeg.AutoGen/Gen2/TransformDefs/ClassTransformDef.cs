@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Sdcb.FFmpeg.AutoGen.Gen2
+namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
 {
     internal record ClassTransformDef(ClassCategories ClassCategory, string OldName, string NewName, FieldDef[] FieldDefs, bool AllReadOnly)
         : G2TransformDef(ClassCategory, OldName, NewName, FieldDefs, AllReadOnly)
