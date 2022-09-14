@@ -74,13 +74,14 @@ public unsafe partial class FormatContext : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVIOContext*</para>
     /// <para>I/O context.</para>
     /// <see cref="AVFormatContext.pb" />
     /// </summary>
-    public AVIOContext* Pb
+    public IOContext? Pb
     {
-        get => _ptr->pb;
-        set => _ptr->pb = value;
+        get => IOContext.FromNativeOrNull(_ptr->pb, false);
+        set => _ptr->pb = value != null ? (AVIOContext*)value : null;
     }
     
     /// <summary>

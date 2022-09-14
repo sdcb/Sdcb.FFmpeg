@@ -47,6 +47,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 }),
                 G2TransformDef.MakeStruct(ClassCategories.Formats, "AVInputFormat", "InputFormat"),
                 G2TransformDef.MakeStruct(ClassCategories.Formats, "AVOutputFormat", "OutputFormat"),
+                G2TransformDef.MakeClass(ClassCategories.Formats, "AVIOContext", "IOContext"),
             }.ToDictionary(k => k.OldName, v => v);
 
             G2TypeConverter typeConverter = G2TypeConvert.Create(knownClasses);
