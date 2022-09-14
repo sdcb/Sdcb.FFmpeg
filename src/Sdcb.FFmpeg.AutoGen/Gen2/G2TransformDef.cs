@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using static FParsec.Primitives;
 
 namespace Sdcb.FFmpeg.AutoGen.Gen2
 {
@@ -27,47 +28,58 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
         public static StructTransformDef MakeReadonlyStruct(ClassCategories category, string oldName, string newName, FieldDef[]? typeConversions = null) =>
             new StructTransformDef(category, oldName, newName, typeConversions ?? new FieldDef[0], AllReadOnly: true);
 
-        internal bool IsReadonlyForField(string name)
-        {
-            FieldDef? def = FieldDefs.FirstOrDefault(x => x.Name == name);
-            if (def != null && def.ReadOnly != null) return def.ReadOnly.Value;
-
-            return AllReadOnly;
-        }
-
         public virtual IEnumerable<string> GenerateOneCode(StructureDefinition structure, G2TypeConverter typeConverter)
         {
-            const string Ind = "    ";
+            IndentManager indentManager = new IndentManager();
+            Func<string, string> ind = indentManager.Wrap;
 
             foreach (string line in GetFileHeader())
             {
-                yield return line;
+                yield return ind(line);
             }
-            yield return "";
+            yield return ind("");
             foreach (string line in GetDefinitionComment(structure))
             {
-                yield return line;
+                yield return ind(line);
             }
-            yield return DefinitionLineCode;
-            yield return "{";
+            yield return ind(DefinitionLineCode);
+            yield return ind("{");
+            using (indentManager.BeginScope())
             {
-
+                ReadonlyIndexer readonlyIndexer = MakeReadonlyIndexer();
                 foreach (string line in GetCommonHeaderCode())
                 {
-                    yield return Ind + line;
+                    yield return ind(line);
                 }
-                yield return Ind;
+                yield return ind("");
                 G2TypeConverter thisTypeConverter = G2TypeConvert.Combine(TypeConversions, typeConverter);
                 foreach (StructureField field in structure.Fields)
                 {
-                    foreach (string line in GetPropertyCode(structure, field, thisTypeConverter))
+                    foreach (string line in GetPropertyCode(structure, field, thisTypeConverter, readonlyIndexer))
                     {
-                        yield return Ind + line;
+                        yield return ind(line);
                     }
-                    if (field != structure.Fields.Last()) yield return Ind;
+                    if (field != structure.Fields.Last()) yield return ind("");
                 }
             }
-            yield return "}";
+            yield return ind("}");
+        }
+
+        protected delegate bool ReadonlyIndexer(string field);
+
+        private ReadonlyIndexer MakeReadonlyIndexer()
+        {
+            Dictionary<string, bool> cache = FieldDefs
+                .Where(x => x.ReadOnly != null)
+                .ToDictionary(k => k.Name, v => v.ReadOnly!.Value);
+
+            return Indexer;
+
+            bool Indexer(string field) => cache.TryGetValue(field, out bool isReadonly) switch
+            {
+                true => isReadonly,
+                false => AllReadOnly,
+            };
         }
 
         protected virtual IEnumerable<string> GetFileHeader()
@@ -94,7 +106,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
         {
             return BuildXmlComment(BuildCommentForStructure(structure));
         }
-        protected virtual IEnumerable<string> GetPropertyCode(StructureDefinition structure, StructureField field, G2TypeConverter typeConverter)
+        protected virtual IEnumerable<string> GetPropertyCode(StructureDefinition structure, StructureField field, G2TypeConverter typeConverter, ReadonlyIndexer readonlyIndexer)
         {
             TypeCastDef typeCastDef = typeConverter(field.FieldType.Name, field.Name);
             foreach (string line in BuildXmlComment(BuildCommentForField(structure, field, typeCastDef.IsChanged)))
@@ -105,7 +117,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             {
                 yield return $"[Obsolete(\"{StringExtensions.DoubleQuoteEscape(field.Obsoletion.Message)}\")]";
             }
-            foreach (string line in typeCastDef.GetPropertyBody(field.Name, isReadonly: IsReadonlyForField(field.Name)))
+            foreach (string line in typeCastDef.GetPropertyBody(field.Name, isReadonly: readonlyIndexer(field.Name)))
             {
                 yield return line;
             }
