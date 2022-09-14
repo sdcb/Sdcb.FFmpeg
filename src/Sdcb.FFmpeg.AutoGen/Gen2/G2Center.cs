@@ -1,6 +1,7 @@
 ﻿using Sdcb.FFmpeg.AutoGen.Definitions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,7 +52,8 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
             foreach (StructureDefinition structure in structures.Where(x => knownClasses.ContainsKey(x.Name)))
             {
-                G2ClassWriter.WriteOne(structure, knownClasses[structure.Name], outputDir, typeConverter);
+                G2TransformDef def = knownClasses[structure.Name];
+                File.WriteAllLines(def.GetDestFile(outputDir), def.GenerateOneCode(structure, typeConverter));
             }
         }
 
