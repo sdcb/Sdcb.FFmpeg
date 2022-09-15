@@ -52,13 +52,13 @@ public unsafe static class FrameExtensions
     {
         Codec codec = Codec.FindEncoder(fc.OutputFormat.VideoCodec);
         var mediaStream = new MediaStream(fc);
-        using CodecContext codecContext = new CodecContext(codec)
+        using CodecContext codecContext = CodecContext.FromCodec(codec);
         {
-            PixelFormat = codec.PixelFormats.First(),
-            Width = frame.Width,
-            Height = frame.Height,
-            TimeBase = new AVRational(1, 25),
-            Flags = fc.OutputFormat.Flags.HasFlag(FormatOutputFlag.Globalheader) ? AV_CODEC_FLAG.GlobalHeader : default,
+            codecContext.PixelFormat = codec.PixelFormats.First();
+            codecContext.Width = frame.Width;
+            codecContext.Height = frame.Height;
+            codecContext.TimeBase = new AVRational(1, 25);
+            codecContext.Flags = fc.OutputFormat.Flags.HasFlag(AVFMT.Globalheader) ? AV_CODEC_FLAG.GlobalHeader : default;
         };
         codecContext.Open(codec);
         mediaStream.Codecpar!.CopyFrom(codecContext);

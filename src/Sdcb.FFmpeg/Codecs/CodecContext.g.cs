@@ -159,13 +159,14 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: int</para>
     /// <para>AV_CODEC_FLAG_*. - encoding: Set by user. - decoding: Set by user.</para>
     /// <see cref="AVCodecContext.flags" />
     /// </summary>
-    public int Flags
+    public AV_CODEC_FLAG Flags
     {
-        get => _ptr->flags;
-        set => _ptr->flags = value;
+        get => (AV_CODEC_FLAG)_ptr->flags;
+        set => _ptr->flags = (int)value;
     }
     
     /// <summary>

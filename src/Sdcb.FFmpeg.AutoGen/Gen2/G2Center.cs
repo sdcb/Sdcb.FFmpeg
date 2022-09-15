@@ -53,6 +53,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecContext", "CodecContext", new FieldDef[]
             {
                 FieldDef.CreateNullable("coded_side_data"),
+                FieldDef.CreateTypeCast("flags", TypeCastDef.Force("int", "AV_CODEC_FLAG")),
             }),
             G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecParserContext", "CodecParserContext"),
             G2TransformDef.MakeStruct(ClassCategories.Codecs, "AVPacketSideData", "PacketSideData"), 
@@ -71,7 +72,10 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateNullable("side_data"), 
             }),
             G2TransformDef.MakeStruct(ClassCategories.Formats, "AVInputFormat", "InputFormat"),
-            G2TransformDef.MakeStruct(ClassCategories.Formats, "AVOutputFormat", "OutputFormat"),
+            G2TransformDef.MakeStruct(ClassCategories.Formats, "AVOutputFormat", "OutputFormat", new FieldDef[]
+            {
+                FieldDef.CreateTypeCast("flags", TypeCastDef.Force("int", "AVFMT")),
+            }),
             G2TransformDef.MakeClass(ClassCategories.Formats, "AVIOContext", "IOContext", new FieldDef[]
             {
                 FieldDef.CreateHide("seek"),

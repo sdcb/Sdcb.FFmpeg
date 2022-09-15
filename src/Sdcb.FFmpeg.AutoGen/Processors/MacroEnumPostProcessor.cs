@@ -41,7 +41,9 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 MacroEnumDef.MakeFlags("AVSTREAM_INIT_IN_"),
                 //("AV_CPU_FLAG_", "CpuFlags"),
                 //("AV_PKT_FLAG_", "PacketFlags"),
-                //("AVFMT_FLAG_", "FormatFlags"), 
+                MacroEnumDef.MakeFlags("AVFMT_FLAG_"),
+                MacroEnumDef.MakeFlags("AVFMT_AVOID_NEG_TS_"),
+                MacroEnumDef.MakeFlags("AVFMT_"),
                 MacroEnumDef.MakeFlags("SWS_CS_"),
                 MacroEnumDef.MakeFlagsExcept("SWS_", HashSet("SWS_MAX_REDUCE_CUTOFF")),
             };

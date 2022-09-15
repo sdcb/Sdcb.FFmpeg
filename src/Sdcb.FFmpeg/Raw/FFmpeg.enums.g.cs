@@ -1201,6 +1201,102 @@ namespace Sdcb.FFmpeg.Raw
         Init = 2,
     }
     
+    /// <summary>Macro enum, prefix: AVFMT_</summary>
+    [Flags]
+    public enum AVFMT : uint
+    {
+        /// <summary>AVFMT_NOFILE</summary>
+        Nofile = 0x0001,
+        /// <summary>AVFMT_NEEDNUMBER</summary>
+        Neednumber = 0x0002,
+        /// <summary>AVFMT_EXPERIMENTAL</summary>
+        Experimental = 0x0004,
+        /// <summary>AVFMT_SHOW_IDS</summary>
+        ShowIds = 0x0008,
+        /// <summary>AVFMT_GLOBALHEADER</summary>
+        Globalheader = 0x0040,
+        /// <summary>AVFMT_NOTIMESTAMPS</summary>
+        Notimestamps = 0x0080,
+        /// <summary>AVFMT_GENERIC_INDEX</summary>
+        GenericIndex = 0x0100,
+        /// <summary>AVFMT_TS_DISCONT</summary>
+        TsDiscont = 0x0200,
+        /// <summary>AVFMT_VARIABLE_FPS</summary>
+        VariableFps = 0x0400,
+        /// <summary>AVFMT_NODIMENSIONS</summary>
+        Nodimensions = 0x0800,
+        /// <summary>AVFMT_NOSTREAMS</summary>
+        Nostreams = 0x1000,
+        /// <summary>AVFMT_NOBINSEARCH</summary>
+        Nobinsearch = 0x2000,
+        /// <summary>AVFMT_NOGENSEARCH</summary>
+        Nogensearch = 0x4000,
+        /// <summary>AVFMT_NO_BYTE_SEEK</summary>
+        NoByteSeek = 0x8000,
+        /// <summary>AVFMT_ALLOW_FLUSH</summary>
+        AllowFlush = 0x10000,
+        /// <summary>AVFMT_TS_NONSTRICT</summary>
+        TsNonstrict = 0x20000,
+        /// <summary>AVFMT_TS_NEGATIVE</summary>
+        TsNegative = 0x40000,
+        /// <summary>AVFMT_SEEK_TO_PTS</summary>
+        SeekToPts = 0x4000000,
+        /// <summary>AVFMT_EVENT_FLAG_METADATA_UPDATED</summary>
+        EventFlagMetadataUpdated = 0x0001,
+    }
+    
+    /// <summary>Macro enum, prefix: AVFMT_AVOID_NEG_TS_</summary>
+    [Flags]
+    public enum AVFMT_AVOID_NEG_TS : int
+    {
+        /// <summary>AVFMT_AVOID_NEG_TS_AUTO</summary>
+        Auto = -1,
+        /// <summary>AVFMT_AVOID_NEG_TS_DISABLED</summary>
+        Disabled = 0,
+        /// <summary>AVFMT_AVOID_NEG_TS_MAKE_NON_NEGATIVE</summary>
+        MakeNonNegative = 1,
+        /// <summary>AVFMT_AVOID_NEG_TS_MAKE_ZERO</summary>
+        MakeZero = 2,
+    }
+    
+    /// <summary>Macro enum, prefix: AVFMT_FLAG_</summary>
+    [Flags]
+    public enum AVFMT_FLAG : uint
+    {
+        /// <summary>AVFMT_FLAG_GENPTS</summary>
+        Genpts = 0x0001,
+        /// <summary>AVFMT_FLAG_IGNIDX</summary>
+        Ignidx = 0x0002,
+        /// <summary>AVFMT_FLAG_NONBLOCK</summary>
+        Nonblock = 0x0004,
+        /// <summary>AVFMT_FLAG_IGNDTS</summary>
+        Igndts = 0x0008,
+        /// <summary>AVFMT_FLAG_NOFILLIN</summary>
+        Nofillin = 0x0010,
+        /// <summary>AVFMT_FLAG_NOPARSE</summary>
+        Noparse = 0x0020,
+        /// <summary>AVFMT_FLAG_NOBUFFER</summary>
+        Nobuffer = 0x0040,
+        /// <summary>AVFMT_FLAG_CUSTOM_IO</summary>
+        CustomIo = 0x0080,
+        /// <summary>AVFMT_FLAG_DISCARD_CORRUPT</summary>
+        DiscardCorrupt = 0x0100,
+        /// <summary>AVFMT_FLAG_FLUSH_PACKETS</summary>
+        FlushPackets = 0x0200,
+        /// <summary>AVFMT_FLAG_BITEXACT</summary>
+        Bitexact = 0x0400,
+        /// <summary>AVFMT_FLAG_SORT_DTS</summary>
+        SortDts = 0x10000,
+        /// <summary>AVFMT_FLAG_PRIV_OPT</summary>
+        PrivOpt = 0x20000,
+        /// <summary>AVFMT_FLAG_FAST_SEEK</summary>
+        FastSeek = 0x80000,
+        /// <summary>AVFMT_FLAG_SHORTEST</summary>
+        Shortest = 0x100000,
+        /// <summary>AVFMT_FLAG_AUTO_BSF</summary>
+        AutoBsf = 0x200000,
+    }
+    
     /// <summary>@{ AVFrame is an abstraction for reference-counted raw multimedia data.</summary>
     public enum AVFrameSideDataType : int
     {
