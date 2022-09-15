@@ -189,13 +189,14 @@ public partial class IOContext : SafeHandle
     /// <summary>
     /// <see cref="avio_seek(AVIOContext*, long, int)"/>
     /// </summary>
-    public unsafe long Seek(long offset, MediaIOSeek origin)
+    public unsafe long Seek(long offset, AVSEEK origin)
     {
         return avio_seek(this, offset, (int)origin).ThrowIfError();
     }
 
     /// <summary>
-    /// <see cref="avio_seek_time(AVIOContext*, -1, long, int)"/>
+    /// <para>stream_index: -1</para>
+    /// <see cref="avio_seek_time(AVIOContext*, int, long, int)"/>
     /// </summary>
     public unsafe long SeekTime(long timestamp, int flags) => avio_seek_time(this, -1, timestamp, flags);
 

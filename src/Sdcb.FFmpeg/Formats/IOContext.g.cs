@@ -113,15 +113,6 @@ public unsafe partial class IOContext : SafeHandle
     }
     
     /// <summary>
-    /// <see cref="AVIOContext.seek" />
-    /// </summary>
-    public AVIOContext_seek_func Seek
-    {
-        get => _ptr->seek;
-        set => _ptr->seek = value;
-    }
-    
-    /// <summary>
     /// <para>position in the file of the current buffer</para>
     /// <see cref="AVIOContext.pos" />
     /// </summary>

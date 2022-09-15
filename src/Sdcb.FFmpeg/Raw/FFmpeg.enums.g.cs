@@ -1968,6 +1968,22 @@ namespace Sdcb.FFmpeg.Raw
         Nb = 12,
     }
     
+    /// <summary>Macro enum, prefix: AVSEEK_</summary>
+    [Flags]
+    public enum AVSEEK : uint
+    {
+        /// <summary>SEEK_SET</summary>
+        Begin = 0,
+        /// <summary>SEEK_CUR</summary>
+        Current = 1,
+        /// <summary>SEEK_END</summary>
+        End = 2,
+        /// <summary>AVSEEK_SIZE</summary>
+        Size = 0x10000,
+        /// <summary>AVSEEK_FORCE</summary>
+        Force = 0x20000,
+    }
+    
     /// <summary>Macro enum, prefix: AVSEEK_FLAG_</summary>
     [Flags]
     public enum AVSEEK_FLAG : int
@@ -2171,6 +2187,7 @@ namespace Sdcb.FFmpeg.Raw
     }
     
     /// <summary>Macro enum, prefix: SWS_CS_</summary>
+    [Flags]
     public enum SWS_CS : int
     {
         /// <summary>SWS_CS_ITU709</summary>

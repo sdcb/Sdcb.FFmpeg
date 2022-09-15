@@ -1,6 +1,7 @@
 ﻿using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Raw;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -13,18 +14,18 @@ public partial class IOContext
     /// <summary>
     /// <see cref="avio_open2(AVIOContext**, string, int, AVIOInterruptCB*, AVDictionary**)"/>
     /// </summary>
-    public static unsafe IOContext Open(string url, IOFlags flags = IOFlags.Read, MediaDictionary? options = null)
+    public static unsafe IOContext Open(string url, AVIO_FLAG flags = AVIO_FLAG.Read, MediaDictionary? options = null)
     {
         AVIOContext* ctx = null;
         AVDictionary* dictPtr = options;
         avio_open2(&ctx, url, (int)flags, null, &dictPtr).ThrowIfError();
-        options.Reset(dictPtr);
+        options?.Reset(dictPtr);
 
         return new IOContext(ctx, isOwner: true);
     }
 
-    public static unsafe IOContext OpenRead(string url, MediaDictionary? options = null) => Open(url, IOFlags.Read, options);
-    public static unsafe IOContext OpenWrite(string url, MediaDictionary? options = null) => Open(url, IOFlags.Write, options);
+    public static unsafe IOContext OpenRead(string url, MediaDictionary? options = null) => Open(url, AVIO_FLAG.Read, options);
+    public static unsafe IOContext OpenWrite(string url, MediaDictionary? options = null) => Open(url, AVIO_FLAG.Write, options);
 
     /// <summary>
     /// <see cref="avio_open_dyn_buf(AVIOContext**)"/>
@@ -73,21 +74,49 @@ public partial class IOContext
 
         int Read(void* opaque, byte* buffer, int length)
         {
+#if NET48_OR_GREATER
+            byte[] data = ArrayPool<byte>.Shared.Rent(length);
+            try
+            {
+                Marshal.Copy((IntPtr)buffer, data, 0, length);
+                int c = stream.Read(data, 0, length);
+                return c == 0 ? AVERROR_EOF : c;
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(data);
+            }
+#else
             int c = stream.Read(new Span<byte>(buffer, length));
             return c == 0 ? AVERROR_EOF : c;
+#endif
         }
         int Write(void* opaque, byte* buffer, int length)
         {
+#if NET48_OR_GREATER
+            byte[] data = ArrayPool<byte>.Shared.Rent(length);
+            try
+            {
+                Marshal.Copy((IntPtr)buffer, data, 0, length);
+                stream.Write(data, 0, length);
+                return length;
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(data);
+            }
+#else
             stream.Write(new Span<byte>(buffer, length));
             return length;
+#endif
         }
-        long Seek(void* opaque, long position, int origin) => (MediaIOSeek)origin switch
+        long Seek(void* opaque, long position, int origin) => (AVSEEK)origin switch
         {
-            MediaIOSeek.Begin => stream.Seek(position, SeekOrigin.Begin),
-            MediaIOSeek.Current => stream.Seek(position, SeekOrigin.Current),
-            MediaIOSeek.End => stream.Seek(position, SeekOrigin.End),
-            MediaIOSeek.Size => stream.Length,
-            _ => throw new NotSupportedException(),
+            AVSEEK.Begin => stream.Seek(position, SeekOrigin.Begin),
+            AVSEEK.Current => stream.Seek(position, SeekOrigin.Current),
+            AVSEEK.End => stream.Seek(position, SeekOrigin.End),
+            AVSEEK.Size => stream.Length,
+            _ => throw new NotSupportedException($"AVSEEK value: {origin} not supported."),
         };
     }
 
@@ -99,7 +128,7 @@ public partial class IOContext
     /// <summary>
     /// <see cref="avio_check(string, int)"/>
     /// </summary>
-    public static IOFlags Check(string url, IOFlags flags) => (IOFlags)avio_check(url, (int)flags).ThrowIfError();
+    public static AVIO_FLAG Check(string url, AVIO_FLAG flags) => (AVIO_FLAG)avio_check(url, (int)flags).ThrowIfError();
 
     /// <summary>
     /// <see cref="avio_enum_protocols(void**, int)"/>

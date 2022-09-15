@@ -13,7 +13,7 @@ public unsafe static class FrameExtensions
     public static void WriteImageTo(this Frame frame, string url, OutputFormat? format = null, string? formatName = null)
     {
         using FormatContext fc = FormatContext.AllocOutput(format, formatName, url);
-        using MediaIO io = MediaIO.OpenWrite(url);
+        using IOContext io = IOContext.OpenWrite(url);
         fc.IO = io;
 
         WriteImageTo(frame, fc);
@@ -22,7 +22,7 @@ public unsafe static class FrameExtensions
     public static void WriteImageTo(this Frame frame, Stream stream, OutputFormat? format = null, string? formatName = null, bool leaveOpen = false)
     {
         using FormatContext fc = FormatContext.AllocOutput(format, formatName);
-        using MediaIO io = MediaIO.WriteStream(stream);
+        using IOContext io = IOContext.WriteStream(stream);
         fc.IO = io;
 
         WriteImageTo(frame, fc);
@@ -35,7 +35,7 @@ public unsafe static class FrameExtensions
     public static DisposableDataPointer Encode(this Frame frame, OutputFormat? format = null, string? formatName = null)
     {
         using FormatContext fc = FormatContext.AllocOutput(format, formatName);
-        using DynamicMediaIO io = MediaIO.OpenDynamic();
+        using DynamicIOContext io = IOContext.OpenDynamic();
         fc.IO = io;
         WriteImageTo(frame, fc);
 
