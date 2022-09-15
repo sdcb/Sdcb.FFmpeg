@@ -451,7 +451,7 @@ public unsafe partial class Frame : SafeHandle
     /// <para>For hwaccel-format frames, this should be a reference to the AVHWFramesContext describing the frame.</para>
     /// <see cref="AVFrame.hw_frames_ctx" />
     /// </summary>
-    public AVBufferRef* HwFramesCtx
+    public AVBufferRef* HwFramesContext
     {
         get => _ptr->hw_frames_ctx;
         set => _ptr->hw_frames_ctx = value;

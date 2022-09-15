@@ -14,7 +14,7 @@ public unsafe static class FrameExtensions
     {
         using FormatContext fc = FormatContext.AllocOutput(format, formatName, url);
         using IOContext io = IOContext.OpenWrite(url);
-        fc.IO = io;
+        fc.Pb = io;
 
         WriteImageTo(frame, fc);
     }
@@ -23,7 +23,7 @@ public unsafe static class FrameExtensions
     {
         using FormatContext fc = FormatContext.AllocOutput(format, formatName);
         using IOContext io = IOContext.WriteStream(stream);
-        fc.IO = io;
+        fc.Pb = io;
 
         WriteImageTo(frame, fc);
         if (!leaveOpen)
@@ -36,7 +36,7 @@ public unsafe static class FrameExtensions
     {
         using FormatContext fc = FormatContext.AllocOutput(format, formatName);
         using DynamicIOContext io = IOContext.OpenDynamic();
-        fc.IO = io;
+        fc.Pb = io;
         WriteImageTo(frame, fc);
 
         return io.GetBufferAndClose();
@@ -50,7 +50,7 @@ public unsafe static class FrameExtensions
 
     private static void WriteImageTo(Frame frame, FormatContext fc)
     {
-        Codec codec = Codec.FindEncoder(fc.OutputFormat.VideoCodec);
+        Codec codec = Codec.FindEncoder(fc.OFormat.VideoCodec);
         var mediaStream = new MediaStream(fc);
         using CodecContext codecContext = new CodecContext(codec)
         {
@@ -58,7 +58,7 @@ public unsafe static class FrameExtensions
             Width = frame.Width,
             Height = frame.Height,
             TimeBase = new AVRational(1, 25),
-            Flags = fc.OutputFormat.Flags.HasFlag(FormatOutputFlag.Globalheader) ? AV_CODEC_FLAG.GlobalHeader : default,
+            Flags = fc.OFormat.Flags.HasFlag(FormatOutputFlag.Globalheader) ? AV_CODEC_FLAG.GlobalHeader : default,
         };
         codecContext.Open(codec);
         mediaStream.Codecpar!.CopyFrom(codecContext);

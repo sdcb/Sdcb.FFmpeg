@@ -58,7 +58,7 @@ public unsafe partial struct MediaStream
     /// <para>original type: void*</para>
     /// <see cref="AVStream.priv_data" />
     /// </summary>
-    public IntPtr PrivData
+    public IntPtr PrivateData
     {
         get => (IntPtr)_ptr->priv_data;
         set => _ptr->priv_data = (void*)value;

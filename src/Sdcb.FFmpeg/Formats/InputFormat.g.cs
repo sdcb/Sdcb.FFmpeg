@@ -91,7 +91,7 @@ public unsafe partial struct InputFormat
     /// <para>AVClass for the private context</para>
     /// <see cref="AVInputFormat.priv_class" />
     /// </summary>
-    public FFmpegClass PrivClass
+    public FFmpegClass PrivateClass
     {
         get => FFmpegClass.FromNative(_ptr->priv_class);
         set => _ptr->priv_class = (AVClass*)value;
@@ -122,7 +122,7 @@ public unsafe partial struct InputFormat
     /// <para>Size of private data so that it can be allocated in the wrapper.</para>
     /// <see cref="AVInputFormat.priv_data_size" />
     /// </summary>
-    public int PrivDataSize
+    public int PrivateDataSize
     {
         get => _ptr->priv_data_size;
         set => _ptr->priv_data_size = value;

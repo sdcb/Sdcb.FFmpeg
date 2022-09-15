@@ -129,21 +129,21 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
         protected virtual string ReturnType => NewType;
 
-        public virtual IEnumerable<string> GetPropertyBody(string fieldName, bool isReadonly)
+        public virtual IEnumerable<string> GetPropertyBody(string fieldName, string newName, bool isReadonly)
         {
             const string _ptr = "_ptr";
-            string transformedName = StringExtensions.CSharpKeywordTransform(fieldName);
+            string oldName = StringExtensions.CSharpKeywordTransform(fieldName);
 
             if (isReadonly)
             {
-                yield return $"public {ReturnType} {G2StringTransforms.NameTransform(fieldName)} => {GetPropertyGetter($"{_ptr}->{transformedName}")};";
+                yield return $"public {ReturnType} {newName} => {GetPropertyGetter($"{_ptr}->{oldName}")};";
             }
             else
             {
-                yield return $"public {ReturnType} {G2StringTransforms.NameTransform(fieldName)}";
+                yield return $"public {ReturnType} {newName}";
                 yield return "{";
-                yield return $"    get => {GetPropertyGetter($"{_ptr}->{transformedName}")};";
-                yield return $"    set => {_ptr}->{transformedName} = {PropertySetter};";
+                yield return $"    get => {GetPropertyGetter($"{_ptr}->{oldName}")};";
+                yield return $"    set => {_ptr}->{oldName} = {PropertySetter};";
                 yield return "}";
             }
         }

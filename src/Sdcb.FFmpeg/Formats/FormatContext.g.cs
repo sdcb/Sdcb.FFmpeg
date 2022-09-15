@@ -45,7 +45,7 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>The input container format.</para>
     /// <see cref="AVFormatContext.iformat" />
     /// </summary>
-    public InputFormat? Iformat
+    public InputFormat? InputFormat
     {
         get => InputFormat.FromNativeOrNull(_ptr->iformat);
         set => _ptr->iformat = (AVInputFormat*)value;
@@ -56,7 +56,7 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>The output container format.</para>
     /// <see cref="AVFormatContext.oformat" />
     /// </summary>
-    public OutputFormat? Oformat
+    public OutputFormat? OutputFormat
     {
         get => OutputFormat.FromNativeOrNull(_ptr->oformat);
         set => _ptr->oformat = (AVOutputFormat*)value;
@@ -67,7 +67,7 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>Format private data. This is an AVOptions-enabled struct if and only if iformat/oformat.priv_class is not NULL.</para>
     /// <see cref="AVFormatContext.priv_data" />
     /// </summary>
-    public IntPtr PrivData
+    public IntPtr PrivateData
     {
         get => (IntPtr)_ptr->priv_data;
         set => _ptr->priv_data = (void*)value;
@@ -88,7 +88,7 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>Flags signalling stream properties. A combination of AVFMTCTX_*. Set by libavformat.</para>
     /// <see cref="AVFormatContext.ctx_flags" />
     /// </summary>
-    public int CtxFlags
+    public int ContextFlags
     {
         get => _ptr->ctx_flags;
         set => _ptr->ctx_flags = value;

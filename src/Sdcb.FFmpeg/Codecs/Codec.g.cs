@@ -131,7 +131,7 @@ public unsafe partial struct Codec
     /// <para>AVClass for the private context</para>
     /// <see cref="AVCodec.priv_class" />
     /// </summary>
-    public FFmpegClass PrivClass => FFmpegClass.FromNative(_ptr->priv_class);
+    public FFmpegClass PrivateClass => FFmpegClass.FromNative(_ptr->priv_class);
     
     /// <summary>
     /// <para>original type: AVProfile*</para>

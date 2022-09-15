@@ -91,7 +91,7 @@ public unsafe partial class CodecContext : SafeHandle
     /// <para>original type: void*</para>
     /// <see cref="AVCodecContext.priv_data" />
     /// </summary>
-    public IntPtr PrivData
+    public IntPtr PrivateData
     {
         get => (IntPtr)_ptr->priv_data;
         set => _ptr->priv_data = (void*)value;
@@ -1521,7 +1521,7 @@ public unsafe partial class CodecContext : SafeHandle
     /// <para>A reference to the AVHWFramesContext describing the input (for encoding) or output (decoding) frames. The reference is set by the caller and afterwards owned (and freed) by libavcodec - it should never be read by the caller after being set.</para>
     /// <see cref="AVCodecContext.hw_frames_ctx" />
     /// </summary>
-    public AVBufferRef* HwFramesCtx
+    public AVBufferRef* HwFramesContext
     {
         get => _ptr->hw_frames_ctx;
         set => _ptr->hw_frames_ctx = value;
@@ -1561,7 +1561,7 @@ public unsafe partial class CodecContext : SafeHandle
     /// <para>A reference to the AVHWDeviceContext describing the device which will be used by a hardware encoder/decoder. The reference is set by the caller and afterwards owned (and freed) by libavcodec.</para>
     /// <see cref="AVCodecContext.hw_device_ctx" />
     /// </summary>
-    public AVBufferRef* HwDeviceCtx
+    public AVBufferRef* HwDeviceContext
     {
         get => _ptr->hw_device_ctx;
         set => _ptr->hw_device_ctx = value;

@@ -23,6 +23,8 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             ["Pix"] = "Pixel",
             ["Fmt"] = "Format",
             ["Fmts"] = "Formats",
+            ["Ctx"] = "Context", 
+            ["Priv"] = "Private", 
         };
 
         private static string KeywordTransform(string name)

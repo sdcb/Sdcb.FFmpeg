@@ -75,10 +75,10 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
         {
             return Indexer;
 
-            PropStatus Indexer(string field) => (FieldDefs.TryGetValue(field, out FieldDef? def) && def != null) switch
+            PropStatus Indexer(string fieldName) => (FieldDefs.TryGetValue(fieldName, out FieldDef? def) && def != null) switch
             {
-                true => new PropStatus(def.Display, def.ReadOnly ?? AllReadOnly),
-                false => new PropStatus(IsDisplay: true, IsReadonly: AllReadOnly),
+                true => new PropStatus(def.Display, def.ReadOnly ?? AllReadOnly, def.IsRenamed ? def.NewName : G2StringTransforms.NameTransform(fieldName)),
+                false => new PropStatus(IsDisplay: true, IsReadonly: AllReadOnly, G2StringTransforms.NameTransform(fieldName)),
             };
         }
 
@@ -118,7 +118,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
             {
                 yield return $"[Obsolete(\"{StringExtensions.DoubleQuoteEscape(field.Obsoletion.Message)}\")]";
             }
-            foreach (string line in typeCastDef.GetPropertyBody(field.Name, isReadonly: propStatus.IsReadonly))
+            foreach (string line in typeCastDef.GetPropertyBody(field.Name, propStatus.Name, isReadonly: propStatus.IsReadonly))
             {
                 yield return line;
             }
@@ -170,5 +170,5 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
         }
     }
 
-    internal record PropStatus(bool IsDisplay, bool IsReadonly);
+    internal record PropStatus(bool IsDisplay, bool IsReadonly, string Name);
 }

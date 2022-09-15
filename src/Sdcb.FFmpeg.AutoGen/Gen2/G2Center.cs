@@ -38,7 +38,11 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 G2TransformDef.MakeStruct(ClassCategories.Codecs, "AVPacketSideData", "PacketSideData"), 
 
                 // formats
-                G2TransformDef.MakeClass(ClassCategories.Formats, "AVFormatContext", "FormatContext"),
+                G2TransformDef.MakeClass(ClassCategories.Formats, "AVFormatContext", "FormatContext", new FieldDef[]
+                {
+                    FieldDef.CreateRename("iformat", "InputFormat"), 
+                    FieldDef.CreateRename("oformat", "OutputFormat"), 
+                }),
                 G2TransformDef.MakeStruct(ClassCategories.Formats, "AVProgram", "MediaProgram"),
                 G2TransformDef.MakeStruct(ClassCategories.Formats, "AVStream", "MediaStream", new FieldDef[]
                 {
