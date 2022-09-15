@@ -112,7 +112,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
         public static TypeCastDef Utf8String(bool nullable) => CustomReadonly("byte*", "string", $"PtrExtensions.PtrToStringUTF8((IntPtr){{0}})", nullable);
 
-        protected virtual string GetPropertyGetter(string expression)
+        protected virtual string GetPropertyGetter(string expression, string oldName, string newName)
         {
             return IsChanged switch
             {
@@ -136,13 +136,13 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
             if (isReadonly)
             {
-                yield return $"public {ReturnType} {newName} => {GetPropertyGetter($"{_ptr}->{oldName}")};";
+                yield return $"public {ReturnType} {newName} => {GetPropertyGetter($"{_ptr}->{oldName}", fieldName, newName)};";
             }
             else
             {
                 yield return $"public {ReturnType} {newName}";
                 yield return "{";
-                yield return $"    get => {GetPropertyGetter($"{_ptr}->{oldName}")};";
+                yield return $"    get => {GetPropertyGetter($"{_ptr}->{oldName}", fieldName, newName)};";
                 yield return $"    set => {_ptr}->{oldName} = {PropertySetter};";
                 yield return "}";
             }
@@ -160,7 +160,20 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
             protected override string ReturnType => Nullable ? NewType + '?' : NewType;
 
-            protected override string GetPropertyGetter(string expression) => $"{NewType}.{StaticMethod}({expression}{AdditionalText})";
+            private bool IsOldTypePointer => OldType.EndsWith('*');
+
+            private string PointerOriginalType => IsOldTypePointer ? OldType.Substring(0, OldType.Length - 1) : throw new InvalidOperationException();
+
+            protected override string GetPropertyGetter(string expression, string oldName, string newName) =>
+                (newName == NewType && Nullable && IsOldTypePointer, $"{NewType}.{StaticMethod}({expression}{AdditionalText})") switch
+                {
+                    (true, string res) => G2Center.KnownClasses.TryGetValue(PointerOriginalType, out G2TransformDef? def) switch
+                    {
+                        true => def.Namespace + "." + res, 
+                        false => res
+                    },
+                    (false, string res) => res,
+                };
 
             protected override string PropertySetter => (IsClass && Nullable) switch
             {
@@ -173,10 +186,10 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
         {
             protected override string ReturnType => Nullable ? NewType + '?' : NewType;
 
-            protected override string GetPropertyGetter(string expression) => Nullable switch
+            protected override string GetPropertyGetter(string expression, string oldName, string newName) => Nullable switch
             {
-                true => $"{{0}} != null ? {string.Format(ReadCallFormat, expression)}! : null", 
-                false => string.Format(ReadCallFormat, expression) + "!", 
+                true => $"{{0}} != null ? {string.Format(ReadCallFormat, expression)}! : null",
+                false => string.Format(ReadCallFormat, expression) + "!",
             };
         }
     }

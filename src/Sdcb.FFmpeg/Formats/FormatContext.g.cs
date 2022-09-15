@@ -47,7 +47,7 @@ public unsafe partial class FormatContext : SafeHandle
     /// </summary>
     public InputFormat? InputFormat
     {
-        get => InputFormat.FromNativeOrNull(_ptr->iformat);
+        get => Sdcb.FFmpeg.Formats.InputFormat.FromNativeOrNull(_ptr->iformat);
         set => _ptr->iformat = (AVInputFormat*)value;
     }
     
@@ -58,7 +58,7 @@ public unsafe partial class FormatContext : SafeHandle
     /// </summary>
     public OutputFormat? OutputFormat
     {
-        get => OutputFormat.FromNativeOrNull(_ptr->oformat);
+        get => Sdcb.FFmpeg.Formats.OutputFormat.FromNativeOrNull(_ptr->oformat);
         set => _ptr->oformat = (AVOutputFormat*)value;
     }
     
