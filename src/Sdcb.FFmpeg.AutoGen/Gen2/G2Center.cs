@@ -20,18 +20,17 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 G2TransformDef.MakeClass(ClassCategories.Codecs, "AVFrame", "Frame"),
                 G2TransformDef.MakeReadonlyStruct(ClassCategories.Codecs, "AVCodec", "Codec", new FieldDef[]
                 {
-                    new FieldDef("capabilities", TypeCastDef.Force("int", "AV_CODEC_CAP")),
-                    new FieldDef("name", TypeCastDef.Utf8String(nullable: false)), 
-                    new FieldDef("long_name", TypeCastDef.Utf8String(nullable: false)), 
-                    new FieldDef("supported_framerates", TypeCastDef.ReadSequence("AVRational")),
-                    new FieldDef("pix_fmts", TypeCastDef.ReadSequence("AVPixelFormat", "p == AVPixelFormat.None")),
-                    new FieldDef("supported_samplerates", TypeCastDef.ReadSequence("int")),
-                    new FieldDef("sample_fmts", TypeCastDef.ReadSequence("AVSampleFormat")),
-                    new FieldDef("channel_layouts", TypeCastDef.ReadSequence("ulong")), 
-                    new FieldDef("profiles", TypeCastDef.ReadSequence("AVProfile", FormatEscape("p switch { { profile: 0 } => true, _ => false }"))),
-                    new FieldDef("wrapper_name", TypeCastDef.Utf8String(nullable: false)),
-                    new FieldDef("ch_layouts", TypeCastDef.ReadSequence("AVChannelLayout", FormatEscape("p switch { { order: AVChannelOrder.Unspec, nb_channels: 0 } => true, _ => false }"))),
-                    // sample_fmts
+                    FieldDef.CreateTypeCast("capabilities", TypeCastDef.Force("int", "AV_CODEC_CAP")),
+                    FieldDef.CreateTypeCast("name", TypeCastDef.Utf8String(nullable: false)), 
+                    FieldDef.CreateTypeCast("long_name", TypeCastDef.Utf8String(nullable: false)), 
+                    FieldDef.CreateTypeCast("supported_framerates", TypeCastDef.ReadSequence("AVRational")),
+                    FieldDef.CreateTypeCast("pix_fmts", TypeCastDef.ReadSequence("AVPixelFormat", "p == AVPixelFormat.None")),
+                    FieldDef.CreateTypeCast("supported_samplerates", TypeCastDef.ReadSequence("int")),
+                    FieldDef.CreateTypeCast("sample_fmts", TypeCastDef.ReadSequence("AVSampleFormat")),
+                    FieldDef.CreateTypeCast("channel_layouts", TypeCastDef.ReadSequence("ulong")), 
+                    FieldDef.CreateTypeCast("profiles", TypeCastDef.ReadSequence("AVProfile", FormatEscape("p switch { { profile: 0 } => true, _ => false }"))),
+                    FieldDef.CreateTypeCast("wrapper_name", TypeCastDef.Utf8String(nullable: false)),
+                    FieldDef.CreateTypeCast("ch_layouts", TypeCastDef.ReadSequence("AVChannelLayout", FormatEscape("p switch { { order: AVChannelOrder.Unspec, nb_channels: 0 } => true, _ => false }"))),
                 }),
                 G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecParameters", "CodecParameters"),
                 G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecContext", "CodecContext"),
@@ -43,11 +42,14 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 G2TransformDef.MakeStruct(ClassCategories.Formats, "AVProgram", "MediaProgram"),
                 G2TransformDef.MakeStruct(ClassCategories.Formats, "AVStream", "MediaStream", new FieldDef[]
                 {
-                    new FieldDef("codecpar", TypeCastDef.StaticCastClass("AVCodecParameters*", "CodecParameters", nullable: true, isOwner: false)),
+                    FieldDef.CreateTypeCast("codecpar", TypeCastDef.StaticCastClass("AVCodecParameters*", "CodecParameters", nullable: true, isOwner: false)),
                 }),
                 G2TransformDef.MakeStruct(ClassCategories.Formats, "AVInputFormat", "InputFormat"),
                 G2TransformDef.MakeStruct(ClassCategories.Formats, "AVOutputFormat", "OutputFormat"),
-                G2TransformDef.MakeClass(ClassCategories.Formats, "AVIOContext", "IOContext"),
+                G2TransformDef.MakeClass(ClassCategories.Formats, "AVIOContext", "IOContext", new FieldDef[]
+                {
+                    FieldDef.CreateHide("seek"), 
+                }),
             }.ToDictionary(k => k.OldName, v => v);
 
             G2TypeConverter typeConverter = G2TypeConvert.Create(knownClasses);

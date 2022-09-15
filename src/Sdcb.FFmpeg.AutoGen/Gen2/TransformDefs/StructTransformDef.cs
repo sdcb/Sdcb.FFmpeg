@@ -1,10 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
 {
-    internal record StructTransformDef(ClassCategories ClassCategory, string OldName, string NewName, FieldDef[] FieldDefs, bool AllReadOnly)
-        : G2TransformDef(ClassCategory, OldName, NewName, FieldDefs, AllReadOnly)
+    internal record StructTransformDef : G2TransformDef
     {
+        public StructTransformDef(ClassCategories ClassCategory, string OldName, string NewName, FieldDef[] FieldDefs, bool AllReadOnly) : 
+            base(ClassCategory, OldName, NewName, FieldDefs.ToDictionary(k => k.Name, v => v), AllReadOnly)
+        {
+        }
+
         protected override string DefinitionLineCode => $"public unsafe partial struct {NewName}";
 
         protected override IEnumerable<string> GetCommonHeaderCode()

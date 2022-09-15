@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
 {
-    internal abstract record G2TransformDef(ClassCategories ClassCategory, string OldName, string NewName, FieldDef[] FieldDefs, bool AllReadOnly = false)
+    internal abstract record G2TransformDef(ClassCategories ClassCategory, string OldName, string NewName, Dictionary<string, FieldDef> FieldDefs, bool AllReadOnly = false)
     {
         internal const string NsBase = "Sdcb.FFmpeg";
 
@@ -16,6 +16,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
         public string Namespace => $"{NsBase}.{ClassCategory}";
 
         public IEnumerable<TypeCastDef> TypeConversions => FieldDefs
+            .Values
             .Where(x => x.TypeCast != null)
             .Select(x => x.TypeCast)!;
 
@@ -45,7 +46,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
             yield return ind("{");
             using (indentManager.BeginScope())
             {
-                ReadonlyIndexer readonlyIndexer = MakeReadonlyIndexer();
+                PropertyStatusIndexer propStatusIndexer = MakePropertyStatusIndexer();
                 foreach (string line in GetCommonHeaderCode())
                 {
                     yield return ind(line);
@@ -54,30 +55,30 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
                 G2TypeConverter thisTypeConverter = G2TypeConvert.Combine(TypeConversions, typeConverter);
                 foreach (StructureField field in structure.Fields)
                 {
-                    foreach (string line in GetPropertyCode(structure, field, thisTypeConverter, readonlyIndexer))
+                    PropStatus propStatus = propStatusIndexer(field.Name);
+                    if (propStatus.IsDisplay)
                     {
-                        yield return ind(line);
+                        foreach (string line in GetPropertyCode(structure, field, thisTypeConverter, propStatus))
+                        {
+                            yield return ind(line);
+                        }
+                        if (field != structure.Fields.Last()) yield return ind("");
                     }
-                    if (field != structure.Fields.Last()) yield return ind("");
                 }
             }
             yield return ind("}");
         }
 
-        protected delegate bool ReadonlyIndexer(string field);
+        protected delegate PropStatus PropertyStatusIndexer(string field);
 
-        private ReadonlyIndexer MakeReadonlyIndexer()
+        private PropertyStatusIndexer MakePropertyStatusIndexer()
         {
-            Dictionary<string, bool> cache = FieldDefs
-                .Where(x => x.ReadOnly != null)
-                .ToDictionary(k => k.Name, v => v.ReadOnly!.Value);
-
             return Indexer;
 
-            bool Indexer(string field) => cache.TryGetValue(field, out bool isReadonly) switch
+            PropStatus Indexer(string field) => (FieldDefs.TryGetValue(field, out FieldDef? def) && def != null) switch
             {
-                true => isReadonly,
-                false => AllReadOnly,
+                true => new PropStatus(def.Display, def.ReadOnly ?? AllReadOnly),
+                false => new PropStatus(IsDisplay: true, IsReadonly: AllReadOnly),
             };
         }
 
@@ -105,7 +106,8 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
         {
             return BuildXmlComment(BuildCommentForStructure(structure));
         }
-        protected virtual IEnumerable<string> GetPropertyCode(StructureDefinition structure, StructureField field, G2TypeConverter typeConverter, ReadonlyIndexer readonlyIndexer)
+
+        protected virtual IEnumerable<string> GetPropertyCode(StructureDefinition structure, StructureField field, G2TypeConverter typeConverter, PropStatus propStatus)
         {
             TypeCastDef typeCastDef = typeConverter(field.FieldType.Name, field.Name);
             foreach (string line in BuildXmlComment(BuildCommentForField(structure, field, typeCastDef.IsChanged)))
@@ -116,7 +118,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
             {
                 yield return $"[Obsolete(\"{StringExtensions.DoubleQuoteEscape(field.Obsoletion.Message)}\")]";
             }
-            foreach (string line in typeCastDef.GetPropertyBody(field.Name, isReadonly: readonlyIndexer(field.Name)))
+            foreach (string line in typeCastDef.GetPropertyBody(field.Name, isReadonly: propStatus.IsReadonly))
             {
                 yield return line;
             }
@@ -167,4 +169,6 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
                 .Select(x => $"/// {x}");
         }
     }
+
+    internal record PropStatus(bool IsDisplay, bool IsReadonly);
 }

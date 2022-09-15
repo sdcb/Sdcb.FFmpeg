@@ -1,10 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
 {
-    internal record ClassTransformDef(ClassCategories ClassCategory, string OldName, string NewName, FieldDef[] FieldDefs, bool AllReadOnly)
-        : G2TransformDef(ClassCategory, OldName, NewName, FieldDefs, AllReadOnly)
+    internal record ClassTransformDef : G2TransformDef
     {
+        public ClassTransformDef(ClassCategories ClassCategory, string OldName, string NewName, FieldDef[] FieldDefs, bool AllReadOnly)
+            : base(ClassCategory, OldName, NewName, FieldDefs.ToDictionary(k => k.Name, v => v), AllReadOnly)
+        {
+        }
+
         protected override string DefinitionLineCode => $"public unsafe partial class {NewName} : SafeHandle";
 
         protected override IEnumerable<string> GetCommonHeaderCode()
