@@ -13,12 +13,12 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
     {
         public static void WriteAll(string outputDir, IEnumerable<StructureDefinition> structures)
         {
-            G2TypeConverter typeConverter = G2TypeConvert.Create(KnownClasses);
+            G2TypeConverter commonTypeConverter = G2TypeConvert.Create(KnownClasses);
 
             foreach (StructureDefinition structure in structures.Where(x => KnownClasses.ContainsKey(x.Name)))
             {
                 G2TransformDef def = KnownClasses[structure.Name];
-                File.WriteAllLines(def.GetDestFile(outputDir), def.GenerateOneCode(structure, typeConverter));
+                File.WriteAllLines(def.GetDestFile(outputDir), def.GenerateOneCode(structure, commonTypeConverter));
             }
         }
 

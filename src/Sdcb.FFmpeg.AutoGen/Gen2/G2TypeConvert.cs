@@ -39,41 +39,16 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             };
         }
 
-        public static G2TypeConverter Combine(IEnumerable<TypeCastDef> specialConverters, G2TypeConverter baseConverter)
-        {
-            Indexer specialConverterMapping = MakeIndexer(specialConverters);
-
-            return Convert;
-            TypeCastDef Convert(string oldType, string name)
-            {
-                return specialConverterMapping(oldType, name, out TypeCastDef? converted) switch
-                {
-                    true => converted,
-                    false => baseConverter(oldType, name),
-                };
-            }
-        }
-
         static Indexer MakeIndexer(IEnumerable<TypeCastDef> data)
         {
-            Dictionary<string, TypeCastDef> nameMapping = data
-                .Where(x => x.FieldName != null)
-                .ToDictionary(k => k.FieldName!, v => v);
-
             Dictionary<string, TypeCastDef> typeMapping = data
-                .Where(x => x.FieldName == null)
                 .ToDictionary(k => k.OldType, v => v);
 
             return Indexer;
 
             bool Indexer(string srcType, string srcName, [NotNullWhen(returnValue: true)] out TypeCastDef? value)
             {
-                if (nameMapping.TryGetValue(srcName, out TypeCastDef? nameValue))
-                {
-                    value = nameValue;
-                    return true;
-                }
-                else if (typeMapping.TryGetValue(srcType, out TypeCastDef? typeValue))
+                if (typeMapping.TryGetValue(srcType, out TypeCastDef? typeValue))
                 {
                     value = typeValue;
                     return true;
@@ -90,8 +65,6 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
     internal record TypeCastDef(string OldType, string NewType)
     {
-        public string? FieldName { get; init; }
-
         public bool IsChanged => OldType != NewType;
 
         public static TypeCastDef NotChanged(string type) => new TypeCastDef(type, type);
@@ -112,7 +85,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
         public static TypeCastDef Utf8String(bool nullable) => CustomReadonly("byte*", "string", $"PtrExtensions.PtrToStringUTF8((IntPtr){{0}})", nullable);
 
-        protected virtual string GetPropertyGetter(string expression, string newName)
+        internal protected virtual string GetPropertyGetter(string expression, string newName)
         {
             return IsChanged switch
             {
@@ -121,32 +94,13 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             };
         }
 
-        protected virtual string PropertySetter => IsChanged switch
+        internal protected virtual string PropertySetter => IsChanged switch
         {
             false => $"value",
             true => $"({OldType})value",
         };
 
-        protected virtual string ReturnType => NewType;
-
-        public virtual IEnumerable<string> GetPropertyBody(string fieldName, string newName, bool isReadonly)
-        {
-            const string _ptr = "_ptr";
-            string oldName = StringExtensions.CSharpKeywordTransform(fieldName);
-
-            if (isReadonly)
-            {
-                yield return $"public {ReturnType} {newName} => {GetPropertyGetter($"{_ptr}->{oldName}", newName)};";
-            }
-            else
-            {
-                yield return $"public {ReturnType} {newName}";
-                yield return "{";
-                yield return $"    get => {GetPropertyGetter($"{_ptr}->{oldName}", newName)};";
-                yield return $"    set => {_ptr}->{oldName} = {PropertySetter};";
-                yield return "}";
-            }
-        }
+        internal protected virtual string ReturnType => NewType;
 
         private record TypeStaticCastDef(string OldType, string NewType, bool Nullable, bool IsClass, bool IsOwner = false) : TypeCastDef(OldType, NewType)
         {
@@ -158,13 +112,13 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
             private string StaticMethod => Nullable ? "FromNativeOrNull" : "FromNative";
 
-            protected override string ReturnType => Nullable ? NewType + '?' : NewType;
+            internal protected override string ReturnType => Nullable ? NewType + '?' : NewType;
 
             private bool IsOldTypePointer => OldType.EndsWith('*');
 
             private string PointerOriginalType => IsOldTypePointer ? OldType.Substring(0, OldType.Length - 1) : throw new InvalidOperationException();
 
-            protected override string GetPropertyGetter(string expression, string newName) =>
+            internal protected override string GetPropertyGetter(string expression, string newName) =>
                 (newName == NewType && Nullable && IsOldTypePointer, $"{NewType}.{StaticMethod}({expression}{AdditionalText})") switch
                 {
                     (true, string res) => G2Center.KnownClasses.TryGetValue(PointerOriginalType, out G2TransformDef? def) switch
@@ -175,7 +129,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                     (false, string res) => res,
                 };
 
-            protected override string PropertySetter => (IsClass && Nullable) switch
+            internal protected override string PropertySetter => (IsClass && Nullable) switch
             {
                 true => $"value != null ? {base.PropertySetter} : null",
                 false => base.PropertySetter,
@@ -184,9 +138,9 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
         private record FunctionCallCastDef(string OldType, string NewType, string ReadCallFormat, bool Nullable) : TypeCastDef(OldType, NewType)
         {
-            protected override string ReturnType => Nullable ? NewType + '?' : NewType;
+            internal protected override string ReturnType => Nullable ? NewType + '?' : NewType;
 
-            protected override string GetPropertyGetter(string expression, string newName) => Nullable switch
+            internal protected override string GetPropertyGetter(string expression, string newName) => Nullable switch
             {
                 true => $"{{0}} != null ? {string.Format(ReadCallFormat, expression)}! : null",
                 false => string.Format(ReadCallFormat, expression) + "!",

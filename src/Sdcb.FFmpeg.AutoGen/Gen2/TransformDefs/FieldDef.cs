@@ -1,4 +1,6 @@
-﻿namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
+﻿using System.Collections.Generic;
+
+namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
 {
     internal record FieldDef
     {
@@ -6,7 +8,7 @@
 
         public string NewName { get; init; }
 
-        private TypeCastDef? _typeCast;
+        public TypeCastDef? TypeCast { get; init; }
 
         public bool? ReadOnly { get; init; }
 
@@ -18,16 +20,30 @@
         {
             Name = name;
             NewName = newName;
-            _typeCast = typeCast;
+            TypeCast = typeCast;
             ReadOnly = isReadonly;
             Display = display;
         }
 
-        public TypeCastDef? TypeCast => _typeCast switch
+        public virtual IEnumerable<string> GetPropertyBody(string fieldName, TypeCastDef typeCastDef, PropStatus propStatus)
         {
-            { } x => x with { FieldName = Name },
-            null => null,
-        };
+            const string _ptr = "_ptr";
+            string oldName = StringExtensions.CSharpKeywordTransform(fieldName);
+            string newName = propStatus.Name;
+
+            if (propStatus.IsReadonly)
+            {
+                yield return $"public {typeCastDef.ReturnType} {newName} => {typeCastDef.GetPropertyGetter($"{_ptr}->{oldName}", newName)};";
+            }
+            else
+            {
+                yield return $"public {typeCastDef.ReturnType} {newName}";
+                yield return "{";
+                yield return $"    get => {typeCastDef.GetPropertyGetter($"{_ptr}->{oldName}", newName)};";
+                yield return $"    set => {_ptr}->{oldName} = {typeCastDef.PropertySetter};";
+                yield return "}";
+            }
+        }
 
         public static FieldDef CreateTypeCast(string name, TypeCastDef typeCast) => new FieldDef(name, name, typeCast);
 
