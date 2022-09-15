@@ -142,7 +142,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
             internal protected override string GetPropertyGetter(string expression, PropStatus prop) => prop.IsNullable switch
             {
-                true => $"{{0}} != null ? {string.Format(ReadCallFormat, expression)}! : null",
+                true => $"{expression} != null ? {string.Format(ReadCallFormat, expression)}! : null",
                 false => string.Format(ReadCallFormat, expression) + "!",
             };
         }

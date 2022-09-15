@@ -9,7 +9,7 @@ namespace Sdcb.FFmpeg.Common
     /// <summary>
     /// <see cref="AVClass"/>
     /// </summary>
-    public unsafe class FFmpegClass
+    public unsafe struct FFmpegClass
     {
         private readonly AVClass* _p;
 

@@ -46,8 +46,9 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateTypeCast("sample_fmts", TypeCastDef.ReadSequence("AVSampleFormat")),
                 FieldDef.CreateTypeCast("channel_layouts", TypeCastDef.ReadSequence("ulong")),
                 FieldDef.CreateTypeCast("profiles", TypeCastDef.ReadSequence("AVProfile", FormatEscape("p switch { { profile: 0 } => true, _ => false }"))),
-                FieldDef.CreateTypeCast("wrapper_name", TypeCastDef.Utf8String()),
+                FieldDef.CreateTypeCast("wrapper_name", TypeCastDef.Utf8String()) with { Nullable = true },
                 FieldDef.CreateTypeCast("ch_layouts", TypeCastDef.ReadSequence("AVChannelLayout", FormatEscape("p switch { { order: AVChannelOrder.Unspec, nb_channels: 0 } => true, _ => false }"))),
+                FieldDef.CreateNullable("priv_class"), 
             }),
             G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecParameters", "CodecParameters"),
             G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecContext", "CodecContext", new FieldDef[]
@@ -71,10 +72,19 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateTypeCast("codecpar", TypeCastDef.StaticCastClass("AVCodecParameters*", "CodecParameters", isOwner: false)) with { Nullable = true },
                 FieldDef.CreateNullable("side_data"), 
             }),
-            G2TransformDef.MakeStruct(ClassCategories.Formats, "AVInputFormat", "InputFormat"),
-            G2TransformDef.MakeStruct(ClassCategories.Formats, "AVOutputFormat", "OutputFormat", new FieldDef[]
+            G2TransformDef.MakeReadonlyStruct(ClassCategories.Formats, "AVInputFormat", "InputFormat", new FieldDef[]
             {
+                FieldDef.CreateTypeCast("name", TypeCastDef.Utf8String()),
+                FieldDef.CreateTypeCast("long_name", TypeCastDef.Utf8String()),
                 FieldDef.CreateTypeCast("flags", TypeCastDef.Force("int", "AVFMT")),
+                FieldDef.CreateTypeCast("mime_type", TypeCastDef.Utf8String()) with { Nullable = true },
+            }),
+            G2TransformDef.MakeReadonlyStruct(ClassCategories.Formats, "AVOutputFormat", "OutputFormat", new FieldDef[]
+            {
+                FieldDef.CreateTypeCast("name", TypeCastDef.Utf8String()),
+                FieldDef.CreateTypeCast("long_name", TypeCastDef.Utf8String()),
+                FieldDef.CreateTypeCast("flags", TypeCastDef.Force("int", "AVFMT")),
+                FieldDef.CreateTypeCast("mime_type", TypeCastDef.Utf8String()) with { Nullable = true },
             }),
             G2TransformDef.MakeClass(ClassCategories.Formats, "AVIOContext", "IOContext", new FieldDef[]
             {

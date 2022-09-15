@@ -131,7 +131,7 @@ public unsafe partial struct Codec
     /// <para>AVClass for the private context</para>
     /// <see cref="AVCodec.priv_class" />
     /// </summary>
-    public FFmpegClass PrivateClass => FFmpegClass.FromNative(_ptr->priv_class);
+    public FFmpegClass? PrivateClass => FFmpegClass.FromNativeOrNull(_ptr->priv_class);
     
     /// <summary>
     /// <para>original type: AVProfile*</para>
@@ -149,7 +149,7 @@ public unsafe partial struct Codec
     /// <para>Group name of the codec implementation. This is a short symbolic name of the wrapper backing this codec. A wrapper uses some kind of external implementation for the codec, such as an external library, or a codec implementation provided by the OS or the hardware. If this field is NULL, this is a builtin, libavcodec native codec. If non-NULL, this will be the suffix in AVCodec.name in most cases (usually AVCodec.name will be of the form "&lt;codec_name&gt;_&lt;wrapper_name&gt;").</para>
     /// <see cref="AVCodec.wrapper_name" />
     /// </summary>
-    public string WrapperName => PtrExtensions.PtrToStringUTF8((IntPtr)_ptr->wrapper_name)!;
+    public string? WrapperName => _ptr->wrapper_name != null ? PtrExtensions.PtrToStringUTF8((IntPtr)_ptr->wrapper_name)! : null;
     
     /// <summary>
     /// <para>original type: AVChannelLayout*</para>
