@@ -34,5 +34,7 @@
         public static FieldDef CreateHide(string name) => new FieldDef(name, name, display: false);
 
         public static FieldDef CreateRename(string name, string newName) => new FieldDef(name, newName);
+
+        public static FieldDef CreateDefault(string name) => new FieldDef(name, name);
     }
 }

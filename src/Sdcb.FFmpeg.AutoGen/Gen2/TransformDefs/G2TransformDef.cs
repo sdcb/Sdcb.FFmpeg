@@ -46,7 +46,6 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
             yield return ind("{");
             using (indentManager.BeginScope())
             {
-                PropertyStatusIndexer propStatusIndexer = MakePropertyStatusIndexer();
                 foreach (string line in GetCommonHeaderCode())
                 {
                     yield return ind(line);
@@ -55,7 +54,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
                 G2TypeConverter thisTypeConverter = G2TypeConvert.Combine(TypeConversions, typeConverter);
                 foreach (StructureField field in structure.Fields)
                 {
-                    PropStatus propStatus = propStatusIndexer(field.Name);
+                    (FieldDef def, PropStatus propStatus) = GetFieldDefAndStatus(field.Name);
                     if (propStatus.IsDisplay)
                     {
                         foreach (string line in GetPropertyCode(structure, field, thisTypeConverter, propStatus))
@@ -69,18 +68,16 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
             yield return ind("}");
         }
 
-        protected delegate PropStatus PropertyStatusIndexer(string field);
+        protected delegate FieldDef FieldDefIndexer(string fieldName);
 
-        private PropertyStatusIndexer MakePropertyStatusIndexer()
+        (FieldDef, PropStatus) GetFieldDefAndStatus(string fieldName) => (FieldDefs.TryGetValue(fieldName, out FieldDef? def) && def != null) switch
         {
-            return Indexer;
-
-            PropStatus Indexer(string fieldName) => (FieldDefs.TryGetValue(fieldName, out FieldDef? def) && def != null) switch
-            {
-                true => new PropStatus(def.Display, def.ReadOnly ?? AllReadOnly, def.IsRenamed ? def.NewName : G2StringTransforms.NameTransform(fieldName)),
-                false => new PropStatus(IsDisplay: true, IsReadonly: AllReadOnly, G2StringTransforms.NameTransform(fieldName)),
-            };
-        }
+            true => def,
+            false => FieldDef.CreateDefault(fieldName),
+        } switch
+        {
+            var d => (d, new PropStatus(d.Display, d.ReadOnly ?? AllReadOnly, d.IsRenamed ? d.NewName : G2StringTransforms.NameTransform(d.Name))), 
+        };
 
         protected virtual IEnumerable<string> GetFileHeader()
         {
