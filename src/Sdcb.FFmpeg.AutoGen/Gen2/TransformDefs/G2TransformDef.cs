@@ -49,7 +49,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
                 foreach (StructureField field in structure.Fields)
                 {
                     (FieldDef fieldDef, PropStatus propStatus) = GetFieldDefAndStatus(field.Name);
-                    TypeCastDef typeCastDef = Combine(field.FieldType.Name, field.Name, fieldDef.TypeCast, commonTypeConverter);
+                    TypeCastDef typeCastDef = Combine(field.FieldType.Name, field.Name, fieldDef.TypeCastDef, commonTypeConverter);
 
                     if (propStatus.IsDisplay)
                     {
@@ -78,7 +78,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
             false => FieldDef.CreateDefault(fieldName),
         } switch
         {
-            var d => (d, new PropStatus(d.Display, d.ReadOnly ?? AllReadOnly, d.IsRenamed ? d.NewName : G2StringTransforms.NameTransform(d.Name))), 
+            var d => (d, new PropStatus(d.Display, d.ReadOnly ?? AllReadOnly, d.CalculateIsNullable(), d.IsRenamed ? d.NewName : G2StringTransforms.NameTransform(d.Name))), 
         };
 
         protected virtual IEnumerable<string> GetFileHeader()
@@ -168,5 +168,5 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
         }
     }
 
-    internal record PropStatus(bool IsDisplay, bool IsReadonly, string Name);
+    internal record PropStatus(bool IsDisplay, bool IsReadonly, bool IsNullable, string Name);
 }

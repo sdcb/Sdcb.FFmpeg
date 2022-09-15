@@ -13,8 +13,8 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
         {
             Indexer commonConverters = MakeIndexer(new[]
             {
-                TypeCastDef.StaticCastStruct("AVCodec*", "Codec", nullable: false),
-                TypeCastDef.StaticCastStruct("AVClass*", "FFmpegClass", nullable: false),
+                TypeCastDef.StaticCastStruct("AVCodec*", "Codec"),
+                TypeCastDef.StaticCastStruct("AVClass*", "FFmpegClass"),
                 TypeCastDef.Force("void*", "IntPtr"),
                 TypeCastDef.Force("byte*", "IntPtr"),
             });
@@ -31,8 +31,8 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 {
                     true => knownType switch
                     {
-                        ClassTransformDef => TypeCastDef.StaticCastClass(srcType, knownType.NewName, nullable: true, isOwner: false),
-                        StructTransformDef => TypeCastDef.StaticCastStruct(srcType, knownType.NewName, nullable: true),
+                        ClassTransformDef => TypeCastDef.StaticCastClass(srcType, knownType.NewName, isOwner: false),
+                        StructTransformDef => TypeCastDef.StaticCastStruct(srcType, knownType.NewName),
                     },
                     false => TypeCastDef.NotChanged(srcType),
                 }
@@ -71,21 +71,21 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
         public static TypeCastDef Force(string oldType, string newType) => new TypeCastDef(oldType, newType);
 
-        public static TypeCastDef StaticCastClass(string oldType, string newType, bool nullable, bool isOwner) => new TypeStaticCastDef(oldType, newType, nullable, IsClass: true, IsOwner: isOwner);
+        public static TypeCastDef StaticCastClass(string oldType, string newType, bool isOwner) => new TypeStaticCastDef(oldType, newType, IsClass: true, IsOwner: isOwner);
 
-        public static TypeCastDef StaticCastStruct(string oldType, string newType, bool nullable) => new TypeStaticCastDef(oldType, newType, nullable, IsClass: false);
+        public static TypeCastDef StaticCastStruct(string oldType, string newType) => new TypeStaticCastDef(oldType, newType, IsClass: false);
 
-        public static TypeCastDef CustomReadonly(string oldType, string newType, string readFormat, bool nullable) => new FunctionCallCastDef(oldType, newType, readFormat, nullable);
+        public static TypeCastDef CustomReadonly(string oldType, string newType, string readFormat) => new FunctionCallCastDef(oldType, newType, readFormat);
 
         public static TypeCastDef ReadSequence(string elementType, string exitCondition = "p == default") => new FunctionCallCastDef(elementType + '*', $"IEnumerable<{elementType}>", $@"NativeUtils.ReadSequence(
             p: (IntPtr){{0}},
             unitSize: sizeof({elementType}),
             exitCondition: p => *({elementType}*){exitCondition}, 
-            valGetter: p => *({elementType}*)p)", Nullable: false);
+            valGetter: p => *({elementType}*)p)");
 
-        public static TypeCastDef Utf8String(bool nullable) => CustomReadonly("byte*", "string", $"PtrExtensions.PtrToStringUTF8((IntPtr){{0}})", nullable);
+        public static TypeCastDef Utf8String() => CustomReadonly("byte*", "string", $"PtrExtensions.PtrToStringUTF8((IntPtr){{0}})");
 
-        internal protected virtual string GetPropertyGetter(string expression, string newName)
+        internal protected virtual string GetPropertyGetter(string expression, PropStatus prop)
         {
             return IsChanged switch
             {
@@ -94,15 +94,15 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             };
         }
 
-        internal protected virtual string PropertySetter => IsChanged switch
+        internal protected virtual string GetPropertySetter(PropStatus prop) => IsChanged switch
         {
             false => $"value",
             true => $"({OldType})value",
         };
 
-        internal protected virtual string ReturnType => NewType;
+        internal protected virtual string GetReturnType(PropStatus prop) => NewType;
 
-        private record TypeStaticCastDef(string OldType, string NewType, bool Nullable, bool IsClass, bool IsOwner = false) : TypeCastDef(OldType, NewType)
+        private record TypeStaticCastDef(string OldType, string NewType, bool IsClass, bool IsOwner = false) : TypeCastDef(OldType, NewType)
         {
             private string AdditionalText => IsClass switch
             {
@@ -110,16 +110,16 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 false => "",
             };
 
-            private string StaticMethod => Nullable ? "FromNativeOrNull" : "FromNative";
+            private string GetStaticMethod(PropStatus prop) => prop.IsNullable ? "FromNativeOrNull" : "FromNative";
 
-            internal protected override string ReturnType => Nullable ? NewType + '?' : NewType;
+            internal protected override string GetReturnType(PropStatus prop) => prop.IsNullable ? NewType + '?' : NewType;
 
             private bool IsOldTypePointer => OldType.EndsWith('*');
 
             private string PointerOriginalType => IsOldTypePointer ? OldType.Substring(0, OldType.Length - 1) : throw new InvalidOperationException();
 
-            internal protected override string GetPropertyGetter(string expression, string newName) =>
-                (newName == NewType && Nullable && IsOldTypePointer, $"{NewType}.{StaticMethod}({expression}{AdditionalText})") switch
+            internal protected override string GetPropertyGetter(string expression, PropStatus prop) =>
+                (prop.Name == NewType && prop.IsNullable && IsOldTypePointer, $"{NewType}.{GetStaticMethod(prop)}({expression}{AdditionalText})") switch
                 {
                     (true, string res) => G2Center.KnownClasses.TryGetValue(PointerOriginalType, out G2TransformDef? def) switch
                     {
@@ -129,18 +129,18 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                     (false, string res) => res,
                 };
 
-            internal protected override string PropertySetter => (IsClass && Nullable) switch
+            internal protected override string GetPropertySetter(PropStatus prop) => (IsClass && prop.IsNullable) switch
             {
-                true => $"value != null ? {base.PropertySetter} : null",
-                false => base.PropertySetter,
+                true => $"value != null ? {base.GetPropertySetter(prop)} : null",
+                false => base.GetPropertySetter(prop),
             };
         }
 
-        private record FunctionCallCastDef(string OldType, string NewType, string ReadCallFormat, bool Nullable) : TypeCastDef(OldType, NewType)
+        private record FunctionCallCastDef(string OldType, string NewType, string ReadCallFormat) : TypeCastDef(OldType, NewType)
         {
-            internal protected override string ReturnType => Nullable ? NewType + '?' : NewType;
+            internal protected override string GetReturnType(PropStatus prop) => prop.IsNullable ? NewType + '?' : NewType;
 
-            internal protected override string GetPropertyGetter(string expression, string newName) => Nullable switch
+            internal protected override string GetPropertyGetter(string expression, PropStatus prop) => prop.IsNullable switch
             {
                 true => $"{{0}} != null ? {string.Format(ReadCallFormat, expression)}! : null",
                 false => string.Format(ReadCallFormat, expression) + "!",
