@@ -112,7 +112,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
         public static TypeCastDef Utf8String(bool nullable) => CustomReadonly("byte*", "string", $"PtrExtensions.PtrToStringUTF8((IntPtr){{0}})", nullable);
 
-        protected virtual string GetPropertyGetter(string expression, string oldName, string newName)
+        protected virtual string GetPropertyGetter(string expression, string newName)
         {
             return IsChanged switch
             {
@@ -136,13 +136,13 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
             if (isReadonly)
             {
-                yield return $"public {ReturnType} {newName} => {GetPropertyGetter($"{_ptr}->{oldName}", fieldName, newName)};";
+                yield return $"public {ReturnType} {newName} => {GetPropertyGetter($"{_ptr}->{oldName}", newName)};";
             }
             else
             {
                 yield return $"public {ReturnType} {newName}";
                 yield return "{";
-                yield return $"    get => {GetPropertyGetter($"{_ptr}->{oldName}", fieldName, newName)};";
+                yield return $"    get => {GetPropertyGetter($"{_ptr}->{oldName}", newName)};";
                 yield return $"    set => {_ptr}->{oldName} = {PropertySetter};";
                 yield return "}";
             }
@@ -164,7 +164,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
             private string PointerOriginalType => IsOldTypePointer ? OldType.Substring(0, OldType.Length - 1) : throw new InvalidOperationException();
 
-            protected override string GetPropertyGetter(string expression, string oldName, string newName) =>
+            protected override string GetPropertyGetter(string expression, string newName) =>
                 (newName == NewType && Nullable && IsOldTypePointer, $"{NewType}.{StaticMethod}({expression}{AdditionalText})") switch
                 {
                     (true, string res) => G2Center.KnownClasses.TryGetValue(PointerOriginalType, out G2TransformDef? def) switch
@@ -186,7 +186,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
         {
             protected override string ReturnType => Nullable ? NewType + '?' : NewType;
 
-            protected override string GetPropertyGetter(string expression, string oldName, string newName) => Nullable switch
+            protected override string GetPropertyGetter(string expression, string newName) => Nullable switch
             {
                 true => $"{{0}} != null ? {string.Format(ReadCallFormat, expression)}! : null",
                 false => string.Format(ReadCallFormat, expression) + "!",

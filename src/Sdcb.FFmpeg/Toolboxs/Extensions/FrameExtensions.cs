@@ -50,7 +50,7 @@ public unsafe static class FrameExtensions
 
     private static void WriteImageTo(Frame frame, FormatContext fc)
     {
-        Codec codec = Codec.FindEncoder(fc.OFormat.VideoCodec);
+        Codec codec = Codec.FindEncoder(fc.OutputFormat.VideoCodec);
         var mediaStream = new MediaStream(fc);
         using CodecContext codecContext = new CodecContext(codec)
         {
@@ -58,7 +58,7 @@ public unsafe static class FrameExtensions
             Width = frame.Width,
             Height = frame.Height,
             TimeBase = new AVRational(1, 25),
-            Flags = fc.OFormat.Flags.HasFlag(FormatOutputFlag.Globalheader) ? AV_CODEC_FLAG.GlobalHeader : default,
+            Flags = fc.OutputFormat.Flags.HasFlag(FormatOutputFlag.Globalheader) ? AV_CODEC_FLAG.GlobalHeader : default,
         };
         codecContext.Open(codec);
         mediaStream.Codecpar!.CopyFrom(codecContext);
