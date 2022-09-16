@@ -314,6 +314,30 @@ namespace Sdcb.FFmpeg.Raw
         FakeObj = 1 << 1,
     }
     
+    /// <summary>Macro enum, prefix: AV_PIX_FMT_FLAG_</summary>
+    [Flags]
+    public enum AV_PIX_FMT_FLAG : int
+    {
+        /// <summary>AV_PIX_FMT_FLAG_BE</summary>
+        Be = 1 << 0,
+        /// <summary>AV_PIX_FMT_FLAG_PAL</summary>
+        Pal = 1 << 1,
+        /// <summary>AV_PIX_FMT_FLAG_BITSTREAM</summary>
+        Bitstream = 1 << 2,
+        /// <summary>AV_PIX_FMT_FLAG_HWACCEL</summary>
+        Hwaccel = 1 << 3,
+        /// <summary>AV_PIX_FMT_FLAG_PLANAR</summary>
+        Planar = 1 << 4,
+        /// <summary>AV_PIX_FMT_FLAG_RGB</summary>
+        Rgb = 1 << 5,
+        /// <summary>AV_PIX_FMT_FLAG_ALPHA</summary>
+        Alpha = 1 << 7,
+        /// <summary>AV_PIX_FMT_FLAG_BAYER</summary>
+        Bayer = 1 << 8,
+        /// <summary>AV_PIX_FMT_FLAG_FLOAT</summary>
+        Float = 1 << 9,
+    }
+    
     public enum AVActiveFormatDescription : int
     {
         Same = 8,

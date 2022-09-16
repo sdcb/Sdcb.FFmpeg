@@ -31,7 +31,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                     EnumerationItem.MakeFake("Current", "SEEK_CUR", 1),
                     EnumerationItem.MakeFake("End", "SEEK_END", 2),
                 }, IsBegin: true),
-                //("AV_PIX_FMT_FLAG_", "PixelFormatFlags"),
+                MacroEnumDef.MakeFlags("AV_PIX_FMT_FLAG_"),
                 MacroEnumDef.MakeFlags("AV_OPT_FLAG_"),
                 MacroEnumDef.MakeFlags("AV_OPT_SEARCH_"),
                 new MacroEnumDef("AV_LOG_", "LogFlags", Only: HashSet("AV_LOG_SKIP_REPEATED", "AV_LOG_PRINT_LEVEL")),
