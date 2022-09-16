@@ -50,7 +50,7 @@ public unsafe static class FrameExtensions
 
     private static void WriteImageTo(Frame frame, FormatContext fc)
     {
-        Codec codec = Codec.FindEncoder(fc.OutputFormat.VideoCodec);
+        Codec codec = Codec.FindEncoderById(fc.OutputFormat.VideoCodec);
         var mediaStream = new MediaStream(fc);
         using CodecContext codecContext = CodecContext.FromCodec(codec);
         {

@@ -23,26 +23,26 @@ public unsafe partial struct Codec
     /// <summary>
     /// <see cref="avcodec_find_decoder(AVCodecID)"/>
     /// </summary>
-    public static Codec FindDecoder(AVCodecID id) => FromNative(FindChecking(avcodec_find_decoder(id), id));
+    public static Codec FindDecoderById(AVCodecID id) => FromNative(FindChecking(avcodec_find_decoder(id), id));
 
     public static IEnumerable<Codec> FindDecoders(AVCodecID id) => Decoders.Where(x => x.Id == id);
 
     /// <summary>
     /// <see cref="avcodec_find_decoder_by_name(string)"/>
     /// </summary>
-    public static Codec FindDecoderByName(string name) => FromNative(FindChecking(avcodec_find_decoder_by_name(name), name));
+    public static Codec? FindDecoderByName(string name) => FromNativeOrNull(avcodec_find_decoder_by_name(name));
 
     /// <summary>
     /// <see cref="avcodec_find_encoder(AVCodecID)"/>
     /// </summary>
-    public static Codec FindEncoder(AVCodecID id) => FromNative(FindChecking(avcodec_find_encoder(id), id));
+    public static Codec FindEncoderById(AVCodecID id) => FromNative(FindChecking(avcodec_find_encoder(id), id));
 
     public static IEnumerable<Codec> FindEncoders(AVCodecID id) => Encoders.Where(x => x.Id == id);
 
     /// <summary>
     /// <see cref="avcodec_find_encoder_by_name(string)"/>
     /// </summary>
-    public static Codec FindEncoderByName(string name) => FromNative(FindChecking(avcodec_find_encoder_by_name(name), name));
+    public static Codec? FindEncoderByName(string name) => FromNativeOrNull(avcodec_find_encoder_by_name(name));
 
     private static AVCodec* FindChecking(AVCodec* codec, AVCodecID id) => codec != null ? codec : throw new FFmpegException($"codec id {id} not found.");
     private static AVCodec* FindChecking(AVCodec* codec, string name) => codec != null ? codec : throw new FFmpegException($"codec name '{name}' not found.");
