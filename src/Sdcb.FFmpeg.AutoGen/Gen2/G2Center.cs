@@ -47,7 +47,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateTypeCast("supported_framerates", TypeCastDef.ReadSequence("AVRational")),
                 FieldDef.CreateTypeCast("pix_fmts", TypeCastDef.ReadSequence("AVPixelFormat", "p == AVPixelFormat.None")),
                 FieldDef.CreateTypeCast("supported_samplerates", TypeCastDef.ReadSequence("int")),
-                FieldDef.CreateTypeCast("sample_fmts", TypeCastDef.ReadSequence("AVSampleFormat")),
+                FieldDef.CreateTypeCast("sample_fmts", TypeCastDef.ReadSequence("AVSampleFormat", "p == AVSampleFormat.None")),
                 FieldDef.CreateTypeCast("channel_layouts", TypeCastDef.ReadSequence("ulong")),
                 FieldDef.CreateTypeCast("profiles", TypeCastDef.ReadSequence("AVProfile", FormatEscape("p switch { { profile: 0 } => true, _ => false }"))),
                 FieldDef.CreateTypeCast("wrapper_name", TypeCastDef.Utf8String()) with { Nullable = true },

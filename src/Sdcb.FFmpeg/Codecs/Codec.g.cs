@@ -112,7 +112,7 @@ public unsafe partial struct Codec
     public IEnumerable<AVSampleFormat> SampleFormats => NativeUtils.ReadSequence(
             p: (IntPtr)_ptr->sample_fmts,
             unitSize: sizeof(AVSampleFormat),
-            exitCondition: p => *(AVSampleFormat*)p == default, 
+            exitCondition: p => *(AVSampleFormat*)p == AVSampleFormat.None, 
             valGetter: p => *(AVSampleFormat*)p)!;
     
     /// <summary>

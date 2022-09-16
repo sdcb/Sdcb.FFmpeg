@@ -78,7 +78,11 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
             false => FieldDef.CreateDefault(fieldName),
         } switch
         {
-            var d => (d, new PropStatus(d.Display, d.ReadOnly ?? AllReadOnly, d.CalculateIsNullable(), d.IsRenamed ? d.NewName : G2StringTransforms.NameTransform(d.Name))), 
+            var d => (d, new PropStatus(
+                d.Display, 
+                d.ReadOnly ?? AllReadOnly, 
+                d.CalculateIsNullable(), 
+                d.IsRenamed ? d.NewName : G2StringTransforms.NameTransform(d.Name))), 
         };
 
         protected virtual IEnumerable<string> GetFileHeader()
