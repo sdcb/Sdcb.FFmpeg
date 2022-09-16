@@ -1,6 +1,7 @@
 ﻿using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Raw;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -110,6 +111,26 @@ public partial class IOContext : SafeHandle
         fixed (byte* p = data)
         {
             return avio_get_str(this, maxLength, p, data.Length).ThrowIfError();
+        }
+    }
+
+    /// <summary>
+    /// <see cref="avio_get_str(AVIOContext*, int, byte*, int)"/>
+    /// </summary>
+    public unsafe string ReadString(int maxLength = 4096)
+    {
+        byte[] data = ArrayPool<byte>.Shared.Rent(maxLength);
+        try
+        {
+            fixed (byte* p = data)
+            {
+                int c = avio_get_str(this, data.Length, p, data.Length).ThrowIfError();
+                return Encoding.UTF8.GetString(data, 0, c);
+            }
+        }
+        finally
+        {
+            ArrayPool<byte>.Shared.Return(data);
         }
     }
 
