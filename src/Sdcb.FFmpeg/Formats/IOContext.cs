@@ -125,7 +125,7 @@ public partial class IOContext : SafeHandle
             fixed (byte* p = data)
             {
                 int c = avio_get_str(this, data.Length, p, data.Length).ThrowIfError();
-                return Encoding.UTF8.GetString(data, 0, c);
+                return Encoding.UTF8.GetString(data, 0, c - 1);
             }
         }
         finally
