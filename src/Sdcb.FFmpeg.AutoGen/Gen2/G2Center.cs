@@ -34,6 +34,10 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             {
                 FieldDef.CreateNullable("side_data"),
             }),
+            G2TransformDef.MakeReadonlyStruct(ClassCategories.Codecs, "AVProfile", "MediaProfile", new FieldDef[]
+            {
+                FieldDef.CreateTypeCast("name", TypeCastDef.Utf8String()) with { Nullable = true },
+            }),
             G2TransformDef.MakeClass(ClassCategories.Codecs, "AVFrame", "Frame"),
             G2TransformDef.MakeReadonlyStruct(ClassCategories.Codecs, "AVCodec", "Codec", new FieldDef[]
             {

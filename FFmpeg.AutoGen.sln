@@ -21,7 +21,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sdcb.FFmpeg.AutoGen", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sdcb.FFmpeg.Tests", "src\Sdcb.FFmpeg.Tests\Sdcb.FFmpeg.Tests.csproj", "{B563C64A-D599-4DD4-969C-411F1CA074CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sdcb.FFmpeg.NuGetBuilder", "src\Sdcb.FFmpeg.NuGetBuilder\Sdcb.FFmpeg.NuGetBuilder.csproj", "{FEF18EB7-0CD0-4B51-89C9-2212F7900AE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sdcb.FFmpeg.NuGetBuilder", "src\Sdcb.FFmpeg.NuGetBuilder\Sdcb.FFmpeg.NuGetBuilder.csproj", "{FEF18EB7-0CD0-4B51-89C9-2212F7900AE4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{8049449F-40E4-4426-A896-C07E3CB1C8F6}"
+	ProjectSection(SolutionItems) = preProject
+		build\deploy-test-nuget.linq = build\deploy-test-nuget.linq
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,6 +57,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{99AA60D6-6C3F-4538-952A-B75F39AC9D76} = {CF48D45D-979F-4574-9E33-A3AC1CB542B5}
 		{B5834632-8D6D-4841-BE64-0AB4D6CB1149} = {99AA60D6-6C3F-4538-952A-B75F39AC9D76}
+		{8049449F-40E4-4426-A896-C07E3CB1C8F6} = {CF48D45D-979F-4574-9E33-A3AC1CB542B5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4BAFD2E8-8AAC-4483-B5FA-6E4C136A59F5}

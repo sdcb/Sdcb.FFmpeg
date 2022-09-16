@@ -7,6 +7,7 @@ using CppSharp;
 using CppSharp.AST;
 using CppSharp.Parser;
 using Sdcb.FFmpeg.AutoGen.Definitions;
+using Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs;
 using Sdcb.FFmpeg.AutoGen.Processors;
 using ClangParser = CppSharp.ClangParser;
 
@@ -187,12 +188,11 @@ namespace Sdcb.FFmpeg.AutoGen
 
         public void WriteStructures(string outputFile)
         {
-            HashSet<string> ignoreIds = new[] { "AVRational" }.ToHashSet();
             WriteInternal(outputFile,
                 (units, writer) =>
                 {
                     units.OfType<StructureDefinition>()
-                        .Where(x => x.IsComplete && !ignoreIds.Contains(x.Name))
+                        .Where(x => x.IsComplete && !RawStructureTransformDef.IgnoredStructures.Contains(x.Name))
                         .ToList()
                         .ForEach(x =>
                         {
