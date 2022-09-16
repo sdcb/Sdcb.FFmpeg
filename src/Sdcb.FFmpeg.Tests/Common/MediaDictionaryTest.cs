@@ -1,9 +1,7 @@
 ﻿using Sdcb.FFmpeg.Common;
-using System;
+using Sdcb.FFmpeg.Raw;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Sdcb.FFmpeg.Tests.Common
@@ -136,6 +134,18 @@ namespace Sdcb.FFmpeg.Tests.Common
             };
             Assert.True(dict.ContainsKey("A1001"));
             Assert.False(dict.ContainsKey("A1002"));
+        }
+
+        [Fact]
+        public unsafe void CanResetAfterFree()
+        {
+            using MediaDictionary dict = new()
+            {
+                ["A1001"] = "100-One",
+            };
+            AVDictionary* ptr = (AVDictionary*)dict;
+            ffmpeg.av_dict_free(&ptr);
+            dict.Reset(ptr);
         }
     }
 }
