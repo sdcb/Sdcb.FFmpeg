@@ -229,6 +229,8 @@ namespace Sdcb.FFmpeg.Common
         /// </summary>
         public void Free()
         {
+            if (IsInvalid) return;
+
             AVDictionary* p = this;
             av_dict_free(&p);
             handle = Invalid;
