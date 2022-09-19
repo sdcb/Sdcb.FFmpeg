@@ -29,13 +29,7 @@ public class CommonEncoders
     /// <summary>
     /// libvpx is the VP8 video encoder for ​WebM, an open, royalty-free media file format.
     /// </summary>
-    public Codec Libvpx => EnsureEncoderAvailable("libvpx-vp8");
-
-    /// <summary>
-    /// <para>The Fraunhofer FDK AAC codec library. This is currently the highest-quality AAC encoder available with ffmpeg.</para>
-    /// <para>The license of libfdk_aac is not compatible with GPL, so the GPL does not permit distribution of binaries containing incompatible code when GPL-licensed code is also included. Therefore this encoder have been designated as "non-free", and you cannot download a pre-built ffmpeg that supports it.</para>
-    /// </summary>
-    public Codec Libfdk_aac => EnsureEncoderAvailable("libfdk_aac");
+    public Codec Libvpx => EnsureEncoderAvailable("libvpx");
 
     /// <summary>
     /// <para>The native FFmpeg AAC encoder. </para>
