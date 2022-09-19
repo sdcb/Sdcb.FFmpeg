@@ -72,7 +72,7 @@ public unsafe partial struct InputFormat
     /// <para>AVClass for the private context</para>
     /// <see cref="AVInputFormat.priv_class" />
     /// </summary>
-    public FFmpegClass PrivateClass => FFmpegClass.FromNative(_ptr->priv_class);
+    public FFmpegClass? PrivateClass => FFmpegClass.FromNativeOrNull(_ptr->priv_class);
     
     /// <summary>
     /// <para>original type: byte*</para>

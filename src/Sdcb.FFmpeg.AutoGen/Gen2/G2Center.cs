@@ -85,6 +85,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateTypeCast("extensions", TypeCastDef.Utf8String()) with { Nullable = true },
                 FieldDef.CreateTypeCast("flags", TypeCastDef.Force("int", "AVFMT")),
                 FieldDef.CreateTypeCast("mime_type", TypeCastDef.Utf8String()) with { Nullable = true },
+                FieldDef.CreateNullable("priv_class"),
             }),
             G2TransformDef.MakeReadonlyStruct(ClassCategories.Formats, "AVOutputFormat", "OutputFormat", new FieldDef[]
             {
@@ -93,6 +94,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateTypeCast("extensions", TypeCastDef.Utf8String()) with { Nullable = true },
                 FieldDef.CreateTypeCast("flags", TypeCastDef.Force("int", "AVFMT")),
                 FieldDef.CreateTypeCast("mime_type", TypeCastDef.Utf8String()) with { Nullable = true },
+                FieldDef.CreateNullable("priv_class"),
             }),
             G2TransformDef.MakeClass(ClassCategories.Formats, "AVIOContext", "IOContext", new FieldDef[]
             {

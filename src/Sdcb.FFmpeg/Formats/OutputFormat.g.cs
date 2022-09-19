@@ -96,7 +96,7 @@ public unsafe partial struct OutputFormat
     /// <para>AVClass for the private context</para>
     /// <see cref="AVOutputFormat.priv_class" />
     /// </summary>
-    public FFmpegClass PrivateClass => FFmpegClass.FromNative(_ptr->priv_class);
+    public FFmpegClass? PrivateClass => FFmpegClass.FromNativeOrNull(_ptr->priv_class);
     
     /// <summary>
     /// <para>*************************************************************** No fields below this line are part of the public API. They may not be used outside of libavformat and can be changed and removed at will. New public fields should be added right above. ****************************************************************</para>
