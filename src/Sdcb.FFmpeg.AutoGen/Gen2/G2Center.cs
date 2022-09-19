@@ -82,7 +82,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             {
                 FieldDef.CreateTypeCast("name", TypeCastDef.Utf8String()),
                 FieldDef.CreateTypeCast("long_name", TypeCastDef.Utf8String()),
-                FieldDef.CreateTypeCast("exensions", TypeCastDef.Utf8String()) with { Nullable = true },
+                FieldDef.CreateTypeCast("extensions", TypeCastDef.Utf8String()) with { Nullable = true },
                 FieldDef.CreateTypeCast("flags", TypeCastDef.Force("int", "AVFMT")),
                 FieldDef.CreateTypeCast("mime_type", TypeCastDef.Utf8String()) with { Nullable = true },
             }),
@@ -90,6 +90,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             {
                 FieldDef.CreateTypeCast("name", TypeCastDef.Utf8String()),
                 FieldDef.CreateTypeCast("long_name", TypeCastDef.Utf8String()),
+                FieldDef.CreateTypeCast("extensions", TypeCastDef.Utf8String()) with { Nullable = true },
                 FieldDef.CreateTypeCast("flags", TypeCastDef.Force("int", "AVFMT")),
                 FieldDef.CreateTypeCast("mime_type", TypeCastDef.Utf8String()) with { Nullable = true },
             }),

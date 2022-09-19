@@ -58,7 +58,7 @@ public unsafe partial struct OutputFormat
     /// <para>comma-separated filename extensions</para>
     /// <see cref="AVOutputFormat.extensions" />
     /// </summary>
-    public IntPtr Extensions => (IntPtr)_ptr->extensions;
+    public string? Extensions => _ptr->extensions != null ? PtrExtensions.PtrToStringUTF8((IntPtr)_ptr->extensions)! : null;
     
     /// <summary>
     /// <para>default audio codec</para>

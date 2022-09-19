@@ -60,7 +60,7 @@ public unsafe partial struct InputFormat
     /// <para>If extensions are defined, then no probe is done. You should usually not use extension format guessing because it is not reliable enough</para>
     /// <see cref="AVInputFormat.extensions" />
     /// </summary>
-    public IntPtr Extensions => (IntPtr)_ptr->extensions;
+    public string? Extensions => _ptr->extensions != null ? PtrExtensions.PtrToStringUTF8((IntPtr)_ptr->extensions)! : null;
     
     /// <summary>
     /// <see cref="AVInputFormat.codec_tag" />
