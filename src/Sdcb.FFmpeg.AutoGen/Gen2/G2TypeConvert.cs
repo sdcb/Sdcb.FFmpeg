@@ -77,11 +77,25 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
         public static TypeCastDef CustomReadonly(string oldType, string newType, string readFormat) => new FunctionCallCastDef(oldType, newType, readFormat);
 
-        public static TypeCastDef ReadSequence(string elementType, string exitCondition = "p == default") => new FunctionCallCastDef(elementType + '*', $"IEnumerable<{elementType}>", $@"NativeUtils.ReadSequence(
+        public static TypeCastDef ReadSequence(string elementType, string exitCondition = "p == default")
+        {
+            return new FunctionCallCastDef(elementType + '*', $"IEnumerable<{elementType}>", $@"NativeUtils.ReadSequence(
             p: (IntPtr){{0}},
             unitSize: sizeof({elementType}),
             exitCondition: p => *({elementType}*){exitCondition}, 
             valGetter: p => *({elementType}*)p)");
+        }
+
+        public static TypeCastDef ReadSequenceAndCast(string elementType, string finalType, string exitCondition, string getter = "*{0}")
+        {
+            string finalGetter = string.Format(getter, $"({elementType}*)p");
+            return new FunctionCallCastDef(elementType + '*', $"IEnumerable<{finalType}>", $@"NativeUtils.ReadSequence(
+            p: (IntPtr){{0}},
+            unitSize: sizeof({elementType}),
+            exitCondition: p => *({elementType}*){exitCondition}, 
+            valGetter: p => {finalGetter})");
+        }
+
 
         public static TypeCastDef Utf8String() => CustomReadonly("byte*", "string", $"PtrExtensions.PtrToStringUTF8((IntPtr){{0}})");
 
@@ -123,7 +137,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 {
                     (true, string res) => G2Center.KnownClasses.TryGetValue(PointerOriginalType, out G2TransformDef? def) switch
                     {
-                        true => def.Namespace + "." + res, 
+                        true => def.Namespace + "." + res,
                         false => res
                     },
                     (false, string res) => res,

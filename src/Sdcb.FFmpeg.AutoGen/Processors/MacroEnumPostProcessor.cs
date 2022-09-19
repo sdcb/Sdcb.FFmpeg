@@ -22,8 +22,8 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 //new ("FF_MB_DECISION_", "FFMacroblockDecision"),
                 //new ("FF_CMP_", "FFComparison"),
                 //new ("PARSER_FLAG_", "ParserFlags"),
-                MacroEnumDef.MakeFlags("AVIO_FLAG_"), 
-                //new ("FF_PROFILE_", "FFProfile"),
+                MacroEnumDef.MakeFlags("AVIO_FLAG_"),
+                MacroEnumDef.Make("FF_PROFILE_") with { TypeHint = "int" },
                 MacroEnumDef.MakeFlags("AVSEEK_FLAG_"),
                 MacroEnumDef.MakeFlagsAdditional("AVSEEK_", new EnumerationItem[]
                 {
@@ -96,7 +96,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 Name = enumDef.EnumName,
                 XmlDocument = $"Macro enum, prefix: {enumDef.Prefix}",
                 IsFlags = enumDef.IsFlags,
-                TypeName = DeterminBestTypeForMacroEnum(macros
+                TypeName = enumDef.TypeHint ?? DeterminBestTypeForMacroEnum(macros
                     .Select(x => x.TypeName)
                     .ToHashSet()),
                 Obsoletion = new Obsoletion { IsObsolete = false },
@@ -134,7 +134,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
         }
     }
 
-    internal record MacroEnumDef(string Prefix, string EnumName, HashSet<string>? Only = default, HashSet<string>? Except = default, AdditionalMacroDef? AdditionalValues = null, bool IsFlags = false)
+    internal record MacroEnumDef(string Prefix, string EnumName, string? TypeHint = null, HashSet<string>? Only = default, HashSet<string>? Except = default, AdditionalMacroDef? AdditionalValues = null, bool IsFlags = false)
     {
         public bool Match(string name) =>
             name.StartsWith(Prefix) &&

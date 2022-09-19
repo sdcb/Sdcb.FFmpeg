@@ -138,11 +138,11 @@ public unsafe partial struct Codec
     /// <para>array of recognized profiles, or NULL if unknown, array is terminated by {FF_PROFILE_UNKNOWN}</para>
     /// <see cref="AVCodec.profiles" />
     /// </summary>
-    public IEnumerable<AVProfile> Profiles => NativeUtils.ReadSequence(
+    public IEnumerable<MediaProfile> Profiles => NativeUtils.ReadSequence(
             p: (IntPtr)_ptr->profiles,
             unitSize: sizeof(AVProfile),
-            exitCondition: p => *(AVProfile*)p switch { { profile: 0 } => true, _ => false }, 
-            valGetter: p => *(AVProfile*)p)!;
+            exitCondition: p => *(AVProfile*)p switch { { profile: (int)FF_PROFILE.Unknown } => true, _ => false }, 
+            valGetter: p => MediaProfile.FromNative((AVProfile*)p))!;
     
     /// <summary>
     /// <para>original type: byte*</para>

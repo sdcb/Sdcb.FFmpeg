@@ -2182,6 +2182,213 @@ namespace Sdcb.FFmpeg.Raw
         Allownegative = 4,
     }
     
+    /// <summary>Macro enum, prefix: FF_PROFILE_</summary>
+    public enum FF_PROFILE : int
+    {
+        /// <summary>FF_PROFILE_UNKNOWN</summary>
+        Unknown = -99,
+        /// <summary>FF_PROFILE_RESERVED</summary>
+        Reserved = -100,
+        /// <summary>FF_PROFILE_AAC_MAIN</summary>
+        AacMain = 0,
+        /// <summary>FF_PROFILE_AAC_LOW</summary>
+        AacLow = 1,
+        /// <summary>FF_PROFILE_AAC_SSR</summary>
+        AacSsr = 2,
+        /// <summary>FF_PROFILE_AAC_LTP</summary>
+        AacLtp = 3,
+        /// <summary>FF_PROFILE_AAC_HE</summary>
+        AacHe = 4,
+        /// <summary>FF_PROFILE_AAC_HE_V2</summary>
+        AacHeV2 = 28,
+        /// <summary>FF_PROFILE_AAC_LD</summary>
+        AacLd = 22,
+        /// <summary>FF_PROFILE_AAC_ELD</summary>
+        AacEld = 38,
+        /// <summary>FF_PROFILE_MPEG2_AAC_LOW</summary>
+        Mpeg2AacLow = 128,
+        /// <summary>FF_PROFILE_MPEG2_AAC_HE</summary>
+        Mpeg2AacHe = 131,
+        /// <summary>FF_PROFILE_DNXHD</summary>
+        Dnxhd = 0,
+        /// <summary>FF_PROFILE_DNXHR_LB</summary>
+        DnxhrLb = 1,
+        /// <summary>FF_PROFILE_DNXHR_SQ</summary>
+        DnxhrSq = 2,
+        /// <summary>FF_PROFILE_DNXHR_HQ</summary>
+        DnxhrHq = 3,
+        /// <summary>FF_PROFILE_DNXHR_HQX</summary>
+        DnxhrHqx = 4,
+        /// <summary>FF_PROFILE_DNXHR_444</summary>
+        Dnxhr_444 = 5,
+        /// <summary>FF_PROFILE_DTS</summary>
+        Dts = 20,
+        /// <summary>FF_PROFILE_DTS_ES</summary>
+        DtsEs = 30,
+        /// <summary>FF_PROFILE_DTS_96_24</summary>
+        Dts_96_24 = 40,
+        /// <summary>FF_PROFILE_DTS_HD_HRA</summary>
+        DtsHdHra = 50,
+        /// <summary>FF_PROFILE_DTS_HD_MA</summary>
+        DtsHdMa = 60,
+        /// <summary>FF_PROFILE_DTS_EXPRESS</summary>
+        DtsExpress = 70,
+        /// <summary>FF_PROFILE_MPEG2_422</summary>
+        Mpeg2_422 = 0,
+        /// <summary>FF_PROFILE_MPEG2_HIGH</summary>
+        Mpeg2High = 1,
+        /// <summary>FF_PROFILE_MPEG2_SS</summary>
+        Mpeg2Ss = 2,
+        /// <summary>FF_PROFILE_MPEG2_SNR_SCALABLE</summary>
+        Mpeg2SnrScalable = 3,
+        /// <summary>FF_PROFILE_MPEG2_MAIN</summary>
+        Mpeg2Main = 4,
+        /// <summary>FF_PROFILE_MPEG2_SIMPLE</summary>
+        Mpeg2Simple = 5,
+        /// <summary>FF_PROFILE_H264_CONSTRAINED</summary>
+        H264Constrained = 1 << 9,
+        /// <summary>FF_PROFILE_H264_INTRA</summary>
+        H264Intra = 1 << 11,
+        /// <summary>FF_PROFILE_H264_BASELINE</summary>
+        H264Baseline = 66,
+        /// <summary>FF_PROFILE_H264_CONSTRAINED_BASELINE</summary>
+        H264ConstrainedBaseline = 66 | H264Constrained,
+        /// <summary>FF_PROFILE_H264_MAIN</summary>
+        H264Main = 77,
+        /// <summary>FF_PROFILE_H264_EXTENDED</summary>
+        H264Extended = 88,
+        /// <summary>FF_PROFILE_H264_HIGH</summary>
+        H264High = 100,
+        /// <summary>FF_PROFILE_H264_HIGH_10</summary>
+        H264High_10 = 110,
+        /// <summary>FF_PROFILE_H264_HIGH_10_INTRA</summary>
+        H264High_10Intra = 110 | H264Intra,
+        /// <summary>FF_PROFILE_H264_MULTIVIEW_HIGH</summary>
+        H264MultiviewHigh = 118,
+        /// <summary>FF_PROFILE_H264_HIGH_422</summary>
+        H264High_422 = 122,
+        /// <summary>FF_PROFILE_H264_HIGH_422_INTRA</summary>
+        H264High_422Intra = 122 | H264Intra,
+        /// <summary>FF_PROFILE_H264_STEREO_HIGH</summary>
+        H264StereoHigh = 128,
+        /// <summary>FF_PROFILE_H264_HIGH_444</summary>
+        H264High_444 = 144,
+        /// <summary>FF_PROFILE_H264_HIGH_444_PREDICTIVE</summary>
+        H264High_444Predictive = 244,
+        /// <summary>FF_PROFILE_H264_HIGH_444_INTRA</summary>
+        H264High_444Intra = 244 | H264Intra,
+        /// <summary>FF_PROFILE_H264_CAVLC_444</summary>
+        H264Cavlc_444 = 44,
+        /// <summary>FF_PROFILE_VC1_SIMPLE</summary>
+        Vc1Simple = 0,
+        /// <summary>FF_PROFILE_VC1_MAIN</summary>
+        Vc1Main = 1,
+        /// <summary>FF_PROFILE_VC1_COMPLEX</summary>
+        Vc1Complex = 2,
+        /// <summary>FF_PROFILE_VC1_ADVANCED</summary>
+        Vc1Advanced = 3,
+        /// <summary>FF_PROFILE_MPEG4_SIMPLE</summary>
+        Mpeg4Simple = 0,
+        /// <summary>FF_PROFILE_MPEG4_SIMPLE_SCALABLE</summary>
+        Mpeg4SimpleScalable = 1,
+        /// <summary>FF_PROFILE_MPEG4_CORE</summary>
+        Mpeg4Core = 2,
+        /// <summary>FF_PROFILE_MPEG4_MAIN</summary>
+        Mpeg4Main = 3,
+        /// <summary>FF_PROFILE_MPEG4_N_BIT</summary>
+        Mpeg4NBit = 4,
+        /// <summary>FF_PROFILE_MPEG4_SCALABLE_TEXTURE</summary>
+        Mpeg4ScalableTexture = 5,
+        /// <summary>FF_PROFILE_MPEG4_SIMPLE_FACE_ANIMATION</summary>
+        Mpeg4SimpleFaceAnimation = 6,
+        /// <summary>FF_PROFILE_MPEG4_BASIC_ANIMATED_TEXTURE</summary>
+        Mpeg4BasicAnimatedTexture = 7,
+        /// <summary>FF_PROFILE_MPEG4_HYBRID</summary>
+        Mpeg4Hybrid = 8,
+        /// <summary>FF_PROFILE_MPEG4_ADVANCED_REAL_TIME</summary>
+        Mpeg4AdvancedRealTime = 9,
+        /// <summary>FF_PROFILE_MPEG4_CORE_SCALABLE</summary>
+        Mpeg4CoreScalable = 10,
+        /// <summary>FF_PROFILE_MPEG4_ADVANCED_CODING</summary>
+        Mpeg4AdvancedCoding = 11,
+        /// <summary>FF_PROFILE_MPEG4_ADVANCED_CORE</summary>
+        Mpeg4AdvancedCore = 12,
+        /// <summary>FF_PROFILE_MPEG4_ADVANCED_SCALABLE_TEXTURE</summary>
+        Mpeg4AdvancedScalableTexture = 13,
+        /// <summary>FF_PROFILE_MPEG4_SIMPLE_STUDIO</summary>
+        Mpeg4SimpleStudio = 14,
+        /// <summary>FF_PROFILE_MPEG4_ADVANCED_SIMPLE</summary>
+        Mpeg4AdvancedSimple = 15,
+        /// <summary>FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_0</summary>
+        Jpeg2000CstreamRestriction_0 = 1,
+        /// <summary>FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_1</summary>
+        Jpeg2000CstreamRestriction_1 = 2,
+        /// <summary>FF_PROFILE_JPEG2000_CSTREAM_NO_RESTRICTION</summary>
+        Jpeg2000CstreamNoRestriction = 32768,
+        /// <summary>FF_PROFILE_JPEG2000_DCINEMA_2K</summary>
+        Jpeg2000Dcinema_2K = 3,
+        /// <summary>FF_PROFILE_JPEG2000_DCINEMA_4K</summary>
+        Jpeg2000Dcinema_4K = 4,
+        /// <summary>FF_PROFILE_VP9_0</summary>
+        Vp9_0 = 0,
+        /// <summary>FF_PROFILE_VP9_1</summary>
+        Vp9_1 = 1,
+        /// <summary>FF_PROFILE_VP9_2</summary>
+        Vp9_2 = 2,
+        /// <summary>FF_PROFILE_VP9_3</summary>
+        Vp9_3 = 3,
+        /// <summary>FF_PROFILE_HEVC_MAIN</summary>
+        HevcMain = 1,
+        /// <summary>FF_PROFILE_HEVC_MAIN_10</summary>
+        HevcMain_10 = 2,
+        /// <summary>FF_PROFILE_HEVC_MAIN_STILL_PICTURE</summary>
+        HevcMainStillPicture = 3,
+        /// <summary>FF_PROFILE_HEVC_REXT</summary>
+        HevcRext = 4,
+        /// <summary>FF_PROFILE_VVC_MAIN_10</summary>
+        VvcMain_10 = 1,
+        /// <summary>FF_PROFILE_VVC_MAIN_10_444</summary>
+        VvcMain_10_444 = 33,
+        /// <summary>FF_PROFILE_AV1_MAIN</summary>
+        Av1Main = 0,
+        /// <summary>FF_PROFILE_AV1_HIGH</summary>
+        Av1High = 1,
+        /// <summary>FF_PROFILE_AV1_PROFESSIONAL</summary>
+        Av1Professional = 2,
+        /// <summary>FF_PROFILE_MJPEG_HUFFMAN_BASELINE_DCT</summary>
+        MjpegHuffmanBaselineDct = 0xc0,
+        /// <summary>FF_PROFILE_MJPEG_HUFFMAN_EXTENDED_SEQUENTIAL_DCT</summary>
+        MjpegHuffmanExtendedSequentialDct = 0xc1,
+        /// <summary>FF_PROFILE_MJPEG_HUFFMAN_PROGRESSIVE_DCT</summary>
+        MjpegHuffmanProgressiveDct = 0xc2,
+        /// <summary>FF_PROFILE_MJPEG_HUFFMAN_LOSSLESS</summary>
+        MjpegHuffmanLossless = 0xc3,
+        /// <summary>FF_PROFILE_MJPEG_JPEG_LS</summary>
+        MjpegJpegLs = 0xf7,
+        /// <summary>FF_PROFILE_SBC_MSBC</summary>
+        SbcMsbc = 1,
+        /// <summary>FF_PROFILE_PRORES_PROXY</summary>
+        ProresProxy = 0,
+        /// <summary>FF_PROFILE_PRORES_LT</summary>
+        ProresLt = 1,
+        /// <summary>FF_PROFILE_PRORES_STANDARD</summary>
+        ProresStandard = 2,
+        /// <summary>FF_PROFILE_PRORES_HQ</summary>
+        ProresHq = 3,
+        /// <summary>FF_PROFILE_PRORES_4444</summary>
+        Prores_4444 = 4,
+        /// <summary>FF_PROFILE_PRORES_XQ</summary>
+        ProresXq = 5,
+        /// <summary>FF_PROFILE_ARIB_PROFILE_A</summary>
+        AribProfileA = 0,
+        /// <summary>FF_PROFILE_ARIB_PROFILE_C</summary>
+        AribProfileC = 1,
+        /// <summary>FF_PROFILE_KLVA_SYNC</summary>
+        KlvaSync = 0,
+        /// <summary>FF_PROFILE_KLVA_ASYNC</summary>
+        KlvaAsync = 1,
+    }
+    
     /// <summary>Macro enum, prefix: AV_LOG_</summary>
     public enum LogFlags : int
     {
