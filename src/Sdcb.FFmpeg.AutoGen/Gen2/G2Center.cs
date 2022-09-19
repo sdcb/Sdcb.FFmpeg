@@ -44,7 +44,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateTypeCast("capabilities", TypeCastDef.Force("int", "AV_CODEC_CAP")),
                 FieldDef.CreateTypeCast("name", TypeCastDef.Utf8String()),
                 FieldDef.CreateTypeCast("long_name", TypeCastDef.Utf8String()),
-                FieldDef.CreateTypeCast("supported_framerates", TypeCastDef.ReadSequence("AVRational")),
+                FieldDef.CreateTypeCast("supported_framerates", TypeCastDef.ReadSequence("AVRational", FormatEscape("p switch { { Num: 0 } => true, _ => false }"))),
                 FieldDef.CreateTypeCast("pix_fmts", TypeCastDef.ReadSequence("AVPixelFormat", "p == AVPixelFormat.None")),
                 FieldDef.CreateTypeCast("supported_samplerates", TypeCastDef.ReadSequence("int")),
                 FieldDef.CreateTypeCast("sample_fmts", TypeCastDef.ReadSequence("AVSampleFormat", "p == AVSampleFormat.None")),

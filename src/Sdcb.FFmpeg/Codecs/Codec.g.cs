@@ -79,7 +79,7 @@ public unsafe partial struct Codec
     public IEnumerable<AVRational> SupportedFramerates => NativeUtils.ReadSequence(
             p: (IntPtr)_ptr->supported_framerates,
             unitSize: sizeof(AVRational),
-            exitCondition: p => *(AVRational*)p == default, 
+            exitCondition: p => *(AVRational*)p switch { { Num: 0 } => true, _ => false }, 
             valGetter: p => *(AVRational*)p)!;
     
     /// <summary>
