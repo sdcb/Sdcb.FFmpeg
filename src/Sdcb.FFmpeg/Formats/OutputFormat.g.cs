@@ -111,77 +111,9 @@ public unsafe partial struct OutputFormat
     public int FlagsInternal => _ptr->flags_internal;
     
     /// <summary>
-    /// <see cref="AVOutputFormat.write_header" />
-    /// </summary>
-    public AVOutputFormat_write_header_func WriteHeader => _ptr->write_header;
-    
-    /// <summary>
-    /// <para>Write a packet. If AVFMT_ALLOW_FLUSH is set in flags, pkt can be NULL in order to flush data buffered in the muxer. When flushing, return 0 if there still is more data to flush, or 1 if everything was flushed and there is no more buffered data.</para>
-    /// <see cref="AVOutputFormat.write_packet" />
-    /// </summary>
-    public AVOutputFormat_write_packet_func WritePacket => _ptr->write_packet;
-    
-    /// <summary>
-    /// <see cref="AVOutputFormat.write_trailer" />
-    /// </summary>
-    public AVOutputFormat_write_trailer_func WriteTrailer => _ptr->write_trailer;
-    
-    /// <summary>
-    /// <para>A format-specific function for interleavement. If unset, packets will be interleaved by dts.</para>
-    /// <see cref="AVOutputFormat.interleave_packet" />
-    /// </summary>
-    public AVOutputFormat_interleave_packet_func InterleavePacket => _ptr->interleave_packet;
-    
-    /// <summary>
-    /// <para>Test if the given codec can be stored in this container.</para>
-    /// <see cref="AVOutputFormat.query_codec" />
-    /// </summary>
-    public AVOutputFormat_query_codec_func QueryCodec => _ptr->query_codec;
-    
-    /// <summary>
-    /// <see cref="AVOutputFormat.get_output_timestamp" />
-    /// </summary>
-    public AVOutputFormat_get_output_timestamp_func GetOutputTimestamp => _ptr->get_output_timestamp;
-    
-    /// <summary>
-    /// <para>Allows sending messages from application to device.</para>
-    /// <see cref="AVOutputFormat.control_message" />
-    /// </summary>
-    public AVOutputFormat_control_message_func ControlMessage => _ptr->control_message;
-    
-    /// <summary>
-    /// <para>Write an uncoded AVFrame.</para>
-    /// <see cref="AVOutputFormat.write_uncoded_frame" />
-    /// </summary>
-    public AVOutputFormat_write_uncoded_frame_func WriteUncodedFrame => _ptr->write_uncoded_frame;
-    
-    /// <summary>
-    /// <para>Returns device list with it properties.</para>
-    /// <see cref="AVOutputFormat.get_device_list" />
-    /// </summary>
-    public AVOutputFormat_get_device_list_func GetDeviceList => _ptr->get_device_list;
-    
-    /// <summary>
     /// <para>default data codec</para>
     /// <see cref="AVOutputFormat.data_codec" />
     /// </summary>
     public AVCodecID DataCodec => _ptr->data_codec;
     
-    /// <summary>
-    /// <para>Initialize format. May allocate data here, and set any AVFormatContext or AVStream parameters that need to be set before packets are sent. This method must not write output.</para>
-    /// <see cref="AVOutputFormat.init" />
-    /// </summary>
-    public AVOutputFormat_init_func Init => _ptr->init;
-    
-    /// <summary>
-    /// <para>Deinitialize format. If present, this is called whenever the muxer is being destroyed, regardless of whether or not the header has been written.</para>
-    /// <see cref="AVOutputFormat.deinit" />
-    /// </summary>
-    public AVOutputFormat_deinit_func Deinit => _ptr->deinit;
-    
-    /// <summary>
-    /// <para>Set up any necessary bitstream filtering and extract any extra data needed for the global header.</para>
-    /// <see cref="AVOutputFormat.check_bitstream" />
-    /// </summary>
-    public AVOutputFormat_check_bitstream_func CheckBitstream => _ptr->check_bitstream;
 }

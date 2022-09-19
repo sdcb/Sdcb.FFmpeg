@@ -48,7 +48,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
                 yield return ind("");
                 foreach (StructureField field in structure.Fields)
                 {
-                    (FieldDef fieldDef, PropStatus propStatus) = GetFieldDefAndStatus(field.Name);
+                    (FieldDef fieldDef, PropStatus propStatus) = GetFieldDefAndStatus(field.Name, field.FieldType.Name);
                     TypeCastDef typeCastDef = Combine(field.FieldType.Name, field.Name, fieldDef.TypeCastDef, commonTypeConverter);
 
                     if (propStatus.IsDisplay)
@@ -72,14 +72,14 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
 
         protected delegate FieldDef FieldDefIndexer(string fieldName);
 
-        (FieldDef, PropStatus) GetFieldDefAndStatus(string fieldName) => (FieldDefs.TryGetValue(fieldName, out FieldDef? def) && def != null) switch
+        (FieldDef, PropStatus) GetFieldDefAndStatus(string fieldName, string fieldType) => (FieldDefs.TryGetValue(fieldName, out FieldDef? def) && def != null) switch
         {
             true => def,
             false => FieldDef.CreateDefault(fieldName),
         } switch
         {
             var d => (d, new PropStatus(
-                d.Display, 
+                fieldType.EndsWith("_func") ? false : d.Display, 
                 d.ReadOnly ?? AllReadOnly, 
                 d.CalculateIsNullable(), 
                 d.IsRenamed ? d.NewName : G2StringTransforms.NameTransform(d.Name))), 

@@ -290,26 +290,6 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>If non NULL, 'draw_horiz_band' is called by the libavcodec decoder to draw a horizontal band. It improves cache usage. Not all codecs can do that. You must check the codec capabilities beforehand. When multithreading is used, it may be called from multiple threads at the same time; threads might draw different parts of the same AVFrame, or multiple AVFrames, and there is no guarantee that slices will be drawn in order. The function is also used by hardware acceleration APIs. It is called at least once during frame decoding to pass the data needed for hardware render. In that mode instead of pixel data, AVFrame points to a structure specific to the acceleration API. The application reads the structure and can change some fields to indicate progress or mark state. - encoding: unused - decoding: Set by user.</para>
-    /// <see cref="AVCodecContext.draw_horiz_band" />
-    /// </summary>
-    public AVCodecContext_draw_horiz_band_func DrawHorizBand
-    {
-        get => _ptr->draw_horiz_band;
-        set => _ptr->draw_horiz_band = value;
-    }
-    
-    /// <summary>
-    /// <para>Callback to negotiate the pixel format. Decoding only, may be set by the caller before avcodec_open2().</para>
-    /// <see cref="AVCodecContext.get_format" />
-    /// </summary>
-    public AVCodecContext_get_format_func GetFormat
-    {
-        get => _ptr->get_format;
-        set => _ptr->get_format = value;
-    }
-    
-    /// <summary>
     /// <para>maximum number of B-frames between non-B-frames Note: The output will be delayed by max_b_frames+1 relative to the input. - encoding: Set by user. - decoding: unused</para>
     /// <see cref="AVCodecContext.max_b_frames" />
     /// </summary>
@@ -863,16 +843,6 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>This callback is called at the beginning of each frame to get data buffer(s) for it. There may be one contiguous buffer for all the data or there may be a buffer per each data plane or anything in between. What this means is, you may set however many entries in buf[] you feel necessary. Each buffer must be reference-counted using the AVBuffer API (see description of buf[] below).</para>
-    /// <see cref="AVCodecContext.get_buffer2" />
-    /// </summary>
-    public AVCodecContext_get_buffer2_func GetBuffer2
-    {
-        get => _ptr->get_buffer2;
-        set => _ptr->get_buffer2 = value;
-    }
-    
-    /// <summary>
     /// <para>amount of qscale change between easy &amp; hard scenes (0.0-1.0)</para>
     /// <see cref="AVCodecContext.qcompress" />
     /// </summary>
@@ -1213,26 +1183,6 @@ public unsafe partial class CodecContext : SafeHandle
     {
         get => _ptr->thread_safe_callbacks;
         set => _ptr->thread_safe_callbacks = value;
-    }
-    
-    /// <summary>
-    /// <para>The codec may call this to execute several independent things. It will return only after finishing all tasks. The user may replace this with some multithreaded implementation, the default implementation will execute the parts serially.</para>
-    /// <see cref="AVCodecContext.execute" />
-    /// </summary>
-    public AVCodecContext_execute_func Execute
-    {
-        get => _ptr->execute;
-        set => _ptr->execute = value;
-    }
-    
-    /// <summary>
-    /// <para>The codec may call this to execute several independent things. It will return only after finishing all tasks. The user may replace this with some multithreaded implementation, the default implementation will execute the parts serially.</para>
-    /// <see cref="AVCodecContext.execute2" />
-    /// </summary>
-    public AVCodecContext_execute2_func Execute2
-    {
-        get => _ptr->execute2;
-        set => _ptr->execute2 = value;
     }
     
     /// <summary>
@@ -1625,16 +1575,6 @@ public unsafe partial class CodecContext : SafeHandle
     {
         get => _ptr->export_side_data;
         set => _ptr->export_side_data = value;
-    }
-    
-    /// <summary>
-    /// <para>This callback is called at the beginning of each packet to get a data buffer for it.</para>
-    /// <see cref="AVCodecContext.get_encode_buffer" />
-    /// </summary>
-    public AVCodecContext_get_encode_buffer_func GetEncodeBuffer
-    {
-        get => _ptr->get_encode_buffer;
-        set => _ptr->get_encode_buffer = value;
     }
     
     /// <summary>
