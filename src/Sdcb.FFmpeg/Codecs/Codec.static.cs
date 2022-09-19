@@ -63,4 +63,6 @@ public unsafe partial struct Codec
     /// <see cref="avcodec_license"/>
     /// </summary>
     public static string License => avcodec_license();
+
+    public static CommonEncoders CommonEncoders { get; } = new();
 }
