@@ -21,16 +21,14 @@ public unsafe partial class CodecContext : SafeHandle
     /// <param name="codec"></param>
     /// <returns></returns>
     /// <exception cref="FFmpegException"></exception>
-    public static CodecContext FromCodec(Codec? codec)
-    {
-        AVCodecContext* ptr = avcodec_alloc_context3(codec);
-        if (ptr == null)
+    public CodecContext(Codec? codec) : this(
+        avcodec_alloc_context3(codec) switch
         {
-            throw new FFmpegException($"Failed to create {nameof(AVCodecContext)} from codec {codec?.Id}");
-        }
-
-        return new CodecContext(ptr, isOwner: true);
-    }
+            null => throw new FFmpegException($"Failed to create {nameof(AVCodecContext)} from codec {codec?.Id}"),
+            var x => x,
+        },
+        isOwner: true)
+    { }
 
     /// <summary>
     /// <see cref="avcodec_get_class"/>

@@ -52,7 +52,7 @@ public unsafe static class FrameExtensions
     {
         Codec codec = Codec.FindEncoderById(fc.OutputFormat.VideoCodec);
         var mediaStream = new MediaStream(fc);
-        using CodecContext codecContext = CodecContext.FromCodec(codec);
+        using CodecContext codecContext = new (codec);
         {
             codecContext.PixelFormat = codec.PixelFormats.First();
             codecContext.Width = frame.Width;
