@@ -21,6 +21,10 @@ public unsafe partial class FormatContext : SafeHandle
     public FFmpegOptions Options => new FFmpegOptions(this);
 
     /// <summary>
+    /// Allocate an AVFormatContext for an output format. avformat_free_context() can be used to free the context and everything allocated by the framework within it.
+    /// <param name="format">format to use for allocating the context, if NULL format_name and filename are used instead</param>
+    /// <param name="formatName">the name of output format to use for allocating the context, if NULL filename is used instead</param>
+    /// <param name="fileName">the name of the filename to use for allocating the context, may be NULL</param>
     /// <see cref="avformat_alloc_output_context2(AVFormatContext**, AVOutputFormat*, string, string)"/>
     /// </summary>
     public static FormatContext AllocOutput(OutputFormat? format = null, string? formatName = null, string? fileName = null)
@@ -35,13 +39,34 @@ public unsafe partial class FormatContext : SafeHandle
     }
 
     /// <summary>
+    /// Open an input stream and read the header. The codecs are not opened. The stream must be closed with avformat_close_input().
+    /// <param name="url">URL of the stream to open.</param>
+    /// <param name="format">If non-NULL, this parameter forces a specific input format. Otherwise the format is autodetected.</param>
+    /// <param name="options">A dictionary filled with AVFormatContext and demuxer-private options. On return this parameter will be destroyed and replaced with a dict containing options that were not found. May be NULL.</param>
     /// <see cref="avformat_open_input(AVFormatContext**, string, AVInputFormat*, AVDictionary**)"/>
     /// </summary>
-    public static FormatContext OpenInput(string? url, InputFormat? format = null, MediaDictionary? options = null)
+    public static FormatContext OpenInputUrl(string? url, InputFormat? format = null, MediaDictionary? options = null)
     {
         AVFormatContext* resultPtr;
         AVDictionary* dictPtr = options;
         avformat_open_input(&resultPtr, url, format, &dictPtr).ThrowIfError();
+        options?.Reset(dictPtr);
+        return new InputFormatContext(resultPtr, isOwner: true);
+    }
+
+    /// <summary>
+    /// Open an input stream and read the header. The codecs are not opened. The stream must be closed with avformat_close_input().
+    /// <param name="inputIO">the IOContext to open.</param>
+    /// <param name="format">If non-NULL, this parameter forces a specific input format. Otherwise the format is autodetected.</param>
+    /// <param name="options">A dictionary filled with AVFormatContext and demuxer-private options. On return this parameter will be destroyed and replaced with a dict containing options that were not found. May be NULL.</param>
+    /// <see cref="avformat_open_input(AVFormatContext**, string, AVInputFormat*, AVDictionary**)"/>
+    /// </summary>
+    public static FormatContext OpenInputIO(IOContext inputIO, InputFormat? format = null, MediaDictionary? options = null)
+    {
+        AVFormatContext* resultPtr = avformat_alloc_context();
+        AVDictionary* dictPtr = options;
+        resultPtr->pb = inputIO;
+        avformat_open_input(&resultPtr, null, format, &dictPtr).ThrowIfError();
         options?.Reset(dictPtr);
         return new InputFormatContext(resultPtr, isOwner: true);
     }
