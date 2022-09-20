@@ -95,24 +95,6 @@ public unsafe partial class IOContext : SafeHandle
     }
     
     /// <summary>
-    /// <see cref="AVIOContext.read_packet" />
-    /// </summary>
-    public AVIOContext_read_packet_func ReadPacket
-    {
-        get => _ptr->read_packet;
-        set => _ptr->read_packet = value;
-    }
-    
-    /// <summary>
-    /// <see cref="AVIOContext.write_packet" />
-    /// </summary>
-    public AVIOContext_write_packet_func WritePacket
-    {
-        get => _ptr->write_packet;
-        set => _ptr->write_packet = value;
-    }
-    
-    /// <summary>
     /// <para>position in the file of the current buffer</para>
     /// <see cref="AVIOContext.pos" />
     /// </summary>
@@ -191,35 +173,6 @@ public unsafe partial class IOContext : SafeHandle
     }
     
     /// <summary>
-    /// <see cref="AVIOContext.update_checksum" />
-    /// </summary>
-    public AVIOContext_update_checksum_func UpdateChecksum
-    {
-        get => _ptr->update_checksum;
-        set => _ptr->update_checksum = value;
-    }
-    
-    /// <summary>
-    /// <para>Pause or resume playback for network streaming protocols - e.g. MMS.</para>
-    /// <see cref="AVIOContext.read_pause" />
-    /// </summary>
-    public AVIOContext_read_pause_func ReadPause
-    {
-        get => _ptr->read_pause;
-        set => _ptr->read_pause = value;
-    }
-    
-    /// <summary>
-    /// <para>Seek to a given timestamp in stream with the specified stream_index. Needed for some network streaming protocols which don't support seeking to byte position.</para>
-    /// <see cref="AVIOContext.read_seek" />
-    /// </summary>
-    public AVIOContext_read_seek_func ReadSeek
-    {
-        get => _ptr->read_seek;
-        set => _ptr->read_seek = value;
-    }
-    
-    /// <summary>
     /// <para>A combination of AVIO_SEEKABLE_ flags or 0 when the stream is not seekable.</para>
     /// <see cref="AVIOContext.seekable" />
     /// </summary>
@@ -259,16 +212,6 @@ public unsafe partial class IOContext : SafeHandle
     {
         get => (IntPtr)_ptr->protocol_blacklist;
         set => _ptr->protocol_blacklist = (byte*)value;
-    }
-    
-    /// <summary>
-    /// <para>A callback that is used instead of write_packet.</para>
-    /// <see cref="AVIOContext.write_data_type" />
-    /// </summary>
-    public AVIOContext_write_data_type_func WriteDataType
-    {
-        get => _ptr->write_data_type;
-        set => _ptr->write_data_type = value;
     }
     
     /// <summary>

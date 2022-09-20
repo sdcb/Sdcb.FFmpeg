@@ -647,16 +647,6 @@ public unsafe partial class FormatContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>Callback used by devices to communicate with application.</para>
-    /// <see cref="AVFormatContext.control_message_cb" />
-    /// </summary>
-    public AVFormatContext_control_message_cb_func ControlMessageCb
-    {
-        get => _ptr->control_message_cb;
-        set => _ptr->control_message_cb = value;
-    }
-    
-    /// <summary>
     /// <para>Output timestamp offset, in microseconds. Muxing: set by user</para>
     /// <see cref="AVFormatContext.output_ts_offset" />
     /// </summary>
@@ -696,26 +686,6 @@ public unsafe partial class FormatContext : SafeHandle
     {
         get => (IntPtr)_ptr->protocol_whitelist;
         set => _ptr->protocol_whitelist = (byte*)value;
-    }
-    
-    /// <summary>
-    /// <para>A callback for opening new IO streams.</para>
-    /// <see cref="AVFormatContext.io_open" />
-    /// </summary>
-    public AVFormatContext_io_open_func IoOpen
-    {
-        get => _ptr->io_open;
-        set => _ptr->io_open = value;
-    }
-    
-    /// <summary>
-    /// <para>A callback for closing the streams opened with AVFormatContext.io_open().</para>
-    /// <see cref="AVFormatContext.io_close" />
-    /// </summary>
-    public AVFormatContext_io_close_func IoClose
-    {
-        get => _ptr->io_close;
-        set => _ptr->io_close = value;
     }
     
     /// <summary>
@@ -759,13 +729,4 @@ public unsafe partial class FormatContext : SafeHandle
         set => _ptr->max_probe_packets = value;
     }
     
-    /// <summary>
-    /// <para>A callback for closing the streams opened with AVFormatContext.io_open().</para>
-    /// <see cref="AVFormatContext.io_close2" />
-    /// </summary>
-    public AVFormatContext_io_close2_func IoClose2
-    {
-        get => _ptr->io_close2;
-        set => _ptr->io_close2 = value;
-    }
 }
