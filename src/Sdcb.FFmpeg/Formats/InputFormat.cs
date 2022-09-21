@@ -55,7 +55,6 @@ public unsafe partial struct InputFormat
     /// <summary>
     /// Guess the file format.
     /// <param name="isOpened">Whether the file is already opened; determines whether demuxers with or without AVFMT_NOFILE are probed.</param>
-    /// <param name="score">The score of the best detection.</param>
     /// <see cref="av_probe_input_format3(AVProbeData*, int, int*)"/>
     /// </summary>
     public static ProbeResult ProbeInputFormat3(ProbeData data, bool isOpened = true)
