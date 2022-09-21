@@ -87,6 +87,6 @@ namespace Sdcb.FFmpeg.Raw
 
         public readonly bool Equals(AVRational other) => this == other;
 
-        public override int GetHashCode() => EqualityComparer<int>.Default.GetHashCode(Num) * -1521134295 + EqualityComparer<int>.Default.GetHashCode(Den);
+        public override int GetHashCode() => HashCode.Combine(Num, Den);
     }
 }

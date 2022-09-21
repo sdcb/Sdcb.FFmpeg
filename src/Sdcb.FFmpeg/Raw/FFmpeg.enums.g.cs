@@ -130,6 +130,54 @@ namespace Sdcb.FFmpeg.Raw
         Layout_22POINT2 = Layout_5POINT1Back | FrontLeftOfCenter | FrontRightOfCenter | BackCenter | LowFrequency_2 | SideLeft | SideRight | TopFrontLeft | TopFrontRight | TopFrontCenter | TopCenter | TopBackLeft | TopBackRight | TopSideLeft | TopSideRight | TopBackCenter | BottomFrontCenter | BottomFrontLeft | BottomFrontRight,
     }
     
+    /// <summary>Macro enum, prefix: AV_CODEC_CAP_</summary>
+    [Flags]
+    public enum AV_CODEC_CAP : uint
+    {
+        /// <summary>AV_CODEC_CAP_DRAW_HORIZ_BAND</summary>
+        DrawHorizBand = 1 << 0,
+        /// <summary>AV_CODEC_CAP_DR1</summary>
+        Dr1 = 1 << 1,
+        /// <summary>AV_CODEC_CAP_TRUNCATED</summary>
+        Truncated = 1 << 3,
+        /// <summary>AV_CODEC_CAP_DELAY</summary>
+        Delay = 1 << 5,
+        /// <summary>AV_CODEC_CAP_SMALL_LAST_FRAME</summary>
+        SmallLastFrame = 1 << 6,
+        /// <summary>AV_CODEC_CAP_SUBFRAMES</summary>
+        Subframes = 1 << 8,
+        /// <summary>AV_CODEC_CAP_EXPERIMENTAL</summary>
+        Experimental = 1 << 9,
+        /// <summary>AV_CODEC_CAP_CHANNEL_CONF</summary>
+        ChannelConf = 1 << 10,
+        /// <summary>AV_CODEC_CAP_FRAME_THREADS</summary>
+        FrameThreads = 1 << 12,
+        /// <summary>AV_CODEC_CAP_SLICE_THREADS</summary>
+        SliceThreads = 1 << 13,
+        /// <summary>AV_CODEC_CAP_PARAM_CHANGE</summary>
+        ParamChange = 1 << 14,
+        /// <summary>AV_CODEC_CAP_OTHER_THREADS</summary>
+        OtherThreads = 1 << 15,
+        /// <summary>AV_CODEC_CAP_AUTO_THREADS</summary>
+        AutoThreads = OtherThreads,
+        /// <summary>AV_CODEC_CAP_VARIABLE_FRAME_SIZE</summary>
+        VariableFrameSize = 1 << 16,
+        /// <summary>AV_CODEC_CAP_AVOID_PROBING</summary>
+        AvoidProbing = 1 << 17,
+        /// <summary>AV_CODEC_CAP_INTRA_ONLY</summary>
+        IntraOnly = 0x40000000,
+        /// <summary>AV_CODEC_CAP_LOSSLESS</summary>
+        Lossless = 0x80000000,
+        /// <summary>AV_CODEC_CAP_HARDWARE</summary>
+        Hardware = 1 << 18,
+        /// <summary>AV_CODEC_CAP_HYBRID</summary>
+        Hybrid = 1 << 19,
+        /// <summary>AV_CODEC_CAP_ENCODER_REORDERED_OPAQUE</summary>
+        EncoderReorderedOpaque = 1 << 20,
+        /// <summary>AV_CODEC_CAP_ENCODER_FLUSH</summary>
+        EncoderFlush = 1 << 21,
+    }
+    
     /// <summary>Macro enum, prefix: AV_CODEC_FLAG_</summary>
     [Flags]
     public enum AV_CODEC_FLAG : int
@@ -264,6 +312,30 @@ namespace Sdcb.FFmpeg.Raw
         Children = 1 << 0,
         /// <summary>AV_OPT_SEARCH_FAKE_OBJ</summary>
         FakeObj = 1 << 1,
+    }
+    
+    /// <summary>Macro enum, prefix: AV_PIX_FMT_FLAG_</summary>
+    [Flags]
+    public enum AV_PIX_FMT_FLAG : int
+    {
+        /// <summary>AV_PIX_FMT_FLAG_BE</summary>
+        Be = 1 << 0,
+        /// <summary>AV_PIX_FMT_FLAG_PAL</summary>
+        Pal = 1 << 1,
+        /// <summary>AV_PIX_FMT_FLAG_BITSTREAM</summary>
+        Bitstream = 1 << 2,
+        /// <summary>AV_PIX_FMT_FLAG_HWACCEL</summary>
+        Hwaccel = 1 << 3,
+        /// <summary>AV_PIX_FMT_FLAG_PLANAR</summary>
+        Planar = 1 << 4,
+        /// <summary>AV_PIX_FMT_FLAG_RGB</summary>
+        Rgb = 1 << 5,
+        /// <summary>AV_PIX_FMT_FLAG_ALPHA</summary>
+        Alpha = 1 << 7,
+        /// <summary>AV_PIX_FMT_FLAG_BAYER</summary>
+        Bayer = 1 << 8,
+        /// <summary>AV_PIX_FMT_FLAG_FLOAT</summary>
+        Float = 1 << 9,
     }
     
     public enum AVActiveFormatDescription : int
@@ -1153,6 +1225,102 @@ namespace Sdcb.FFmpeg.Raw
         Init = 2,
     }
     
+    /// <summary>Macro enum, prefix: AVFMT_</summary>
+    [Flags]
+    public enum AVFMT : uint
+    {
+        /// <summary>AVFMT_NOFILE</summary>
+        Nofile = 0x0001,
+        /// <summary>AVFMT_NEEDNUMBER</summary>
+        Neednumber = 0x0002,
+        /// <summary>AVFMT_EXPERIMENTAL</summary>
+        Experimental = 0x0004,
+        /// <summary>AVFMT_SHOW_IDS</summary>
+        ShowIds = 0x0008,
+        /// <summary>AVFMT_GLOBALHEADER</summary>
+        Globalheader = 0x0040,
+        /// <summary>AVFMT_NOTIMESTAMPS</summary>
+        Notimestamps = 0x0080,
+        /// <summary>AVFMT_GENERIC_INDEX</summary>
+        GenericIndex = 0x0100,
+        /// <summary>AVFMT_TS_DISCONT</summary>
+        TsDiscont = 0x0200,
+        /// <summary>AVFMT_VARIABLE_FPS</summary>
+        VariableFps = 0x0400,
+        /// <summary>AVFMT_NODIMENSIONS</summary>
+        Nodimensions = 0x0800,
+        /// <summary>AVFMT_NOSTREAMS</summary>
+        Nostreams = 0x1000,
+        /// <summary>AVFMT_NOBINSEARCH</summary>
+        Nobinsearch = 0x2000,
+        /// <summary>AVFMT_NOGENSEARCH</summary>
+        Nogensearch = 0x4000,
+        /// <summary>AVFMT_NO_BYTE_SEEK</summary>
+        NoByteSeek = 0x8000,
+        /// <summary>AVFMT_ALLOW_FLUSH</summary>
+        AllowFlush = 0x10000,
+        /// <summary>AVFMT_TS_NONSTRICT</summary>
+        TsNonstrict = 0x20000,
+        /// <summary>AVFMT_TS_NEGATIVE</summary>
+        TsNegative = 0x40000,
+        /// <summary>AVFMT_SEEK_TO_PTS</summary>
+        SeekToPts = 0x4000000,
+        /// <summary>AVFMT_EVENT_FLAG_METADATA_UPDATED</summary>
+        EventFlagMetadataUpdated = 0x0001,
+    }
+    
+    /// <summary>Macro enum, prefix: AVFMT_AVOID_NEG_TS_</summary>
+    [Flags]
+    public enum AVFMT_AVOID_NEG_TS : int
+    {
+        /// <summary>AVFMT_AVOID_NEG_TS_AUTO</summary>
+        Auto = -1,
+        /// <summary>AVFMT_AVOID_NEG_TS_DISABLED</summary>
+        Disabled = 0,
+        /// <summary>AVFMT_AVOID_NEG_TS_MAKE_NON_NEGATIVE</summary>
+        MakeNonNegative = 1,
+        /// <summary>AVFMT_AVOID_NEG_TS_MAKE_ZERO</summary>
+        MakeZero = 2,
+    }
+    
+    /// <summary>Macro enum, prefix: AVFMT_FLAG_</summary>
+    [Flags]
+    public enum AVFMT_FLAG : uint
+    {
+        /// <summary>AVFMT_FLAG_GENPTS</summary>
+        Genpts = 0x0001,
+        /// <summary>AVFMT_FLAG_IGNIDX</summary>
+        Ignidx = 0x0002,
+        /// <summary>AVFMT_FLAG_NONBLOCK</summary>
+        Nonblock = 0x0004,
+        /// <summary>AVFMT_FLAG_IGNDTS</summary>
+        Igndts = 0x0008,
+        /// <summary>AVFMT_FLAG_NOFILLIN</summary>
+        Nofillin = 0x0010,
+        /// <summary>AVFMT_FLAG_NOPARSE</summary>
+        Noparse = 0x0020,
+        /// <summary>AVFMT_FLAG_NOBUFFER</summary>
+        Nobuffer = 0x0040,
+        /// <summary>AVFMT_FLAG_CUSTOM_IO</summary>
+        CustomIo = 0x0080,
+        /// <summary>AVFMT_FLAG_DISCARD_CORRUPT</summary>
+        DiscardCorrupt = 0x0100,
+        /// <summary>AVFMT_FLAG_FLUSH_PACKETS</summary>
+        FlushPackets = 0x0200,
+        /// <summary>AVFMT_FLAG_BITEXACT</summary>
+        Bitexact = 0x0400,
+        /// <summary>AVFMT_FLAG_SORT_DTS</summary>
+        SortDts = 0x10000,
+        /// <summary>AVFMT_FLAG_PRIV_OPT</summary>
+        PrivOpt = 0x20000,
+        /// <summary>AVFMT_FLAG_FAST_SEEK</summary>
+        FastSeek = 0x80000,
+        /// <summary>AVFMT_FLAG_SHORTEST</summary>
+        Shortest = 0x100000,
+        /// <summary>AVFMT_FLAG_AUTO_BSF</summary>
+        AutoBsf = 0x200000,
+    }
+    
     /// <summary>@{ AVFrame is an abstraction for reference-counted raw multimedia data.</summary>
     public enum AVFrameSideDataType : int
     {
@@ -1243,7 +1411,7 @@ namespace Sdcb.FFmpeg.Raw
     
     /// <summary>Macro enum, prefix: AVIO_FLAG_</summary>
     [Flags]
-    public enum AVIO_FLAG : int
+    public enum AVIO_FLAG : uint
     {
         /// <summary>AVIO_FLAG_READ</summary>
         Read = 1,
@@ -1920,12 +2088,52 @@ namespace Sdcb.FFmpeg.Raw
         Nb = 12,
     }
     
+    /// <summary>Macro enum, prefix: AVSEEK_</summary>
+    [Flags]
+    public enum AVSEEK : uint
+    {
+        /// <summary>SEEK_SET</summary>
+        Begin = 0,
+        /// <summary>SEEK_CUR</summary>
+        Current = 1,
+        /// <summary>SEEK_END</summary>
+        End = 2,
+        /// <summary>AVSEEK_SIZE</summary>
+        Size = 0x10000,
+        /// <summary>AVSEEK_FORCE</summary>
+        Force = 0x20000,
+    }
+    
+    /// <summary>Macro enum, prefix: AVSEEK_FLAG_</summary>
+    [Flags]
+    public enum AVSEEK_FLAG : int
+    {
+        /// <summary>AVSEEK_FLAG_BACKWARD</summary>
+        Backward = 1,
+        /// <summary>AVSEEK_FLAG_BYTE</summary>
+        Byte = 2,
+        /// <summary>AVSEEK_FLAG_ANY</summary>
+        Any = 4,
+        /// <summary>AVSEEK_FLAG_FRAME</summary>
+        Frame = 8,
+    }
+    
     public enum AVSideDataParamChangeFlags : int
     {
         ChannelCount = 1,
         ChannelLayout = 2,
         SampleRate = 4,
         Dimensions = 8,
+    }
+    
+    /// <summary>Macro enum, prefix: AVSTREAM_INIT_IN_</summary>
+    [Flags]
+    public enum AVSTREAM_INIT_IN : int
+    {
+        /// <summary>AVSTREAM_INIT_IN_WRITE_HEADER</summary>
+        WriteHeader = 0,
+        /// <summary>AVSTREAM_INIT_IN_INIT_OUTPUT</summary>
+        InitOutput = 1,
     }
     
     /// <summary>@}</summary>
@@ -1972,6 +2180,213 @@ namespace Sdcb.FFmpeg.Raw
         _24HOURSMAX = 2,
         /// <summary>negative time values are allowed</summary>
         Allownegative = 4,
+    }
+    
+    /// <summary>Macro enum, prefix: FF_PROFILE_</summary>
+    public enum FF_PROFILE : int
+    {
+        /// <summary>FF_PROFILE_UNKNOWN</summary>
+        Unknown = -99,
+        /// <summary>FF_PROFILE_RESERVED</summary>
+        Reserved = -100,
+        /// <summary>FF_PROFILE_AAC_MAIN</summary>
+        AacMain = 0,
+        /// <summary>FF_PROFILE_AAC_LOW</summary>
+        AacLow = 1,
+        /// <summary>FF_PROFILE_AAC_SSR</summary>
+        AacSsr = 2,
+        /// <summary>FF_PROFILE_AAC_LTP</summary>
+        AacLtp = 3,
+        /// <summary>FF_PROFILE_AAC_HE</summary>
+        AacHe = 4,
+        /// <summary>FF_PROFILE_AAC_HE_V2</summary>
+        AacHeV2 = 28,
+        /// <summary>FF_PROFILE_AAC_LD</summary>
+        AacLd = 22,
+        /// <summary>FF_PROFILE_AAC_ELD</summary>
+        AacEld = 38,
+        /// <summary>FF_PROFILE_MPEG2_AAC_LOW</summary>
+        Mpeg2AacLow = 128,
+        /// <summary>FF_PROFILE_MPEG2_AAC_HE</summary>
+        Mpeg2AacHe = 131,
+        /// <summary>FF_PROFILE_DNXHD</summary>
+        Dnxhd = 0,
+        /// <summary>FF_PROFILE_DNXHR_LB</summary>
+        DnxhrLb = 1,
+        /// <summary>FF_PROFILE_DNXHR_SQ</summary>
+        DnxhrSq = 2,
+        /// <summary>FF_PROFILE_DNXHR_HQ</summary>
+        DnxhrHq = 3,
+        /// <summary>FF_PROFILE_DNXHR_HQX</summary>
+        DnxhrHqx = 4,
+        /// <summary>FF_PROFILE_DNXHR_444</summary>
+        Dnxhr_444 = 5,
+        /// <summary>FF_PROFILE_DTS</summary>
+        Dts = 20,
+        /// <summary>FF_PROFILE_DTS_ES</summary>
+        DtsEs = 30,
+        /// <summary>FF_PROFILE_DTS_96_24</summary>
+        Dts_96_24 = 40,
+        /// <summary>FF_PROFILE_DTS_HD_HRA</summary>
+        DtsHdHra = 50,
+        /// <summary>FF_PROFILE_DTS_HD_MA</summary>
+        DtsHdMa = 60,
+        /// <summary>FF_PROFILE_DTS_EXPRESS</summary>
+        DtsExpress = 70,
+        /// <summary>FF_PROFILE_MPEG2_422</summary>
+        Mpeg2_422 = 0,
+        /// <summary>FF_PROFILE_MPEG2_HIGH</summary>
+        Mpeg2High = 1,
+        /// <summary>FF_PROFILE_MPEG2_SS</summary>
+        Mpeg2Ss = 2,
+        /// <summary>FF_PROFILE_MPEG2_SNR_SCALABLE</summary>
+        Mpeg2SnrScalable = 3,
+        /// <summary>FF_PROFILE_MPEG2_MAIN</summary>
+        Mpeg2Main = 4,
+        /// <summary>FF_PROFILE_MPEG2_SIMPLE</summary>
+        Mpeg2Simple = 5,
+        /// <summary>FF_PROFILE_H264_CONSTRAINED</summary>
+        H264Constrained = 1 << 9,
+        /// <summary>FF_PROFILE_H264_INTRA</summary>
+        H264Intra = 1 << 11,
+        /// <summary>FF_PROFILE_H264_BASELINE</summary>
+        H264Baseline = 66,
+        /// <summary>FF_PROFILE_H264_CONSTRAINED_BASELINE</summary>
+        H264ConstrainedBaseline = 66 | H264Constrained,
+        /// <summary>FF_PROFILE_H264_MAIN</summary>
+        H264Main = 77,
+        /// <summary>FF_PROFILE_H264_EXTENDED</summary>
+        H264Extended = 88,
+        /// <summary>FF_PROFILE_H264_HIGH</summary>
+        H264High = 100,
+        /// <summary>FF_PROFILE_H264_HIGH_10</summary>
+        H264High_10 = 110,
+        /// <summary>FF_PROFILE_H264_HIGH_10_INTRA</summary>
+        H264High_10Intra = 110 | H264Intra,
+        /// <summary>FF_PROFILE_H264_MULTIVIEW_HIGH</summary>
+        H264MultiviewHigh = 118,
+        /// <summary>FF_PROFILE_H264_HIGH_422</summary>
+        H264High_422 = 122,
+        /// <summary>FF_PROFILE_H264_HIGH_422_INTRA</summary>
+        H264High_422Intra = 122 | H264Intra,
+        /// <summary>FF_PROFILE_H264_STEREO_HIGH</summary>
+        H264StereoHigh = 128,
+        /// <summary>FF_PROFILE_H264_HIGH_444</summary>
+        H264High_444 = 144,
+        /// <summary>FF_PROFILE_H264_HIGH_444_PREDICTIVE</summary>
+        H264High_444Predictive = 244,
+        /// <summary>FF_PROFILE_H264_HIGH_444_INTRA</summary>
+        H264High_444Intra = 244 | H264Intra,
+        /// <summary>FF_PROFILE_H264_CAVLC_444</summary>
+        H264Cavlc_444 = 44,
+        /// <summary>FF_PROFILE_VC1_SIMPLE</summary>
+        Vc1Simple = 0,
+        /// <summary>FF_PROFILE_VC1_MAIN</summary>
+        Vc1Main = 1,
+        /// <summary>FF_PROFILE_VC1_COMPLEX</summary>
+        Vc1Complex = 2,
+        /// <summary>FF_PROFILE_VC1_ADVANCED</summary>
+        Vc1Advanced = 3,
+        /// <summary>FF_PROFILE_MPEG4_SIMPLE</summary>
+        Mpeg4Simple = 0,
+        /// <summary>FF_PROFILE_MPEG4_SIMPLE_SCALABLE</summary>
+        Mpeg4SimpleScalable = 1,
+        /// <summary>FF_PROFILE_MPEG4_CORE</summary>
+        Mpeg4Core = 2,
+        /// <summary>FF_PROFILE_MPEG4_MAIN</summary>
+        Mpeg4Main = 3,
+        /// <summary>FF_PROFILE_MPEG4_N_BIT</summary>
+        Mpeg4NBit = 4,
+        /// <summary>FF_PROFILE_MPEG4_SCALABLE_TEXTURE</summary>
+        Mpeg4ScalableTexture = 5,
+        /// <summary>FF_PROFILE_MPEG4_SIMPLE_FACE_ANIMATION</summary>
+        Mpeg4SimpleFaceAnimation = 6,
+        /// <summary>FF_PROFILE_MPEG4_BASIC_ANIMATED_TEXTURE</summary>
+        Mpeg4BasicAnimatedTexture = 7,
+        /// <summary>FF_PROFILE_MPEG4_HYBRID</summary>
+        Mpeg4Hybrid = 8,
+        /// <summary>FF_PROFILE_MPEG4_ADVANCED_REAL_TIME</summary>
+        Mpeg4AdvancedRealTime = 9,
+        /// <summary>FF_PROFILE_MPEG4_CORE_SCALABLE</summary>
+        Mpeg4CoreScalable = 10,
+        /// <summary>FF_PROFILE_MPEG4_ADVANCED_CODING</summary>
+        Mpeg4AdvancedCoding = 11,
+        /// <summary>FF_PROFILE_MPEG4_ADVANCED_CORE</summary>
+        Mpeg4AdvancedCore = 12,
+        /// <summary>FF_PROFILE_MPEG4_ADVANCED_SCALABLE_TEXTURE</summary>
+        Mpeg4AdvancedScalableTexture = 13,
+        /// <summary>FF_PROFILE_MPEG4_SIMPLE_STUDIO</summary>
+        Mpeg4SimpleStudio = 14,
+        /// <summary>FF_PROFILE_MPEG4_ADVANCED_SIMPLE</summary>
+        Mpeg4AdvancedSimple = 15,
+        /// <summary>FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_0</summary>
+        Jpeg2000CstreamRestriction_0 = 1,
+        /// <summary>FF_PROFILE_JPEG2000_CSTREAM_RESTRICTION_1</summary>
+        Jpeg2000CstreamRestriction_1 = 2,
+        /// <summary>FF_PROFILE_JPEG2000_CSTREAM_NO_RESTRICTION</summary>
+        Jpeg2000CstreamNoRestriction = 32768,
+        /// <summary>FF_PROFILE_JPEG2000_DCINEMA_2K</summary>
+        Jpeg2000Dcinema_2K = 3,
+        /// <summary>FF_PROFILE_JPEG2000_DCINEMA_4K</summary>
+        Jpeg2000Dcinema_4K = 4,
+        /// <summary>FF_PROFILE_VP9_0</summary>
+        Vp9_0 = 0,
+        /// <summary>FF_PROFILE_VP9_1</summary>
+        Vp9_1 = 1,
+        /// <summary>FF_PROFILE_VP9_2</summary>
+        Vp9_2 = 2,
+        /// <summary>FF_PROFILE_VP9_3</summary>
+        Vp9_3 = 3,
+        /// <summary>FF_PROFILE_HEVC_MAIN</summary>
+        HevcMain = 1,
+        /// <summary>FF_PROFILE_HEVC_MAIN_10</summary>
+        HevcMain_10 = 2,
+        /// <summary>FF_PROFILE_HEVC_MAIN_STILL_PICTURE</summary>
+        HevcMainStillPicture = 3,
+        /// <summary>FF_PROFILE_HEVC_REXT</summary>
+        HevcRext = 4,
+        /// <summary>FF_PROFILE_VVC_MAIN_10</summary>
+        VvcMain_10 = 1,
+        /// <summary>FF_PROFILE_VVC_MAIN_10_444</summary>
+        VvcMain_10_444 = 33,
+        /// <summary>FF_PROFILE_AV1_MAIN</summary>
+        Av1Main = 0,
+        /// <summary>FF_PROFILE_AV1_HIGH</summary>
+        Av1High = 1,
+        /// <summary>FF_PROFILE_AV1_PROFESSIONAL</summary>
+        Av1Professional = 2,
+        /// <summary>FF_PROFILE_MJPEG_HUFFMAN_BASELINE_DCT</summary>
+        MjpegHuffmanBaselineDct = 0xc0,
+        /// <summary>FF_PROFILE_MJPEG_HUFFMAN_EXTENDED_SEQUENTIAL_DCT</summary>
+        MjpegHuffmanExtendedSequentialDct = 0xc1,
+        /// <summary>FF_PROFILE_MJPEG_HUFFMAN_PROGRESSIVE_DCT</summary>
+        MjpegHuffmanProgressiveDct = 0xc2,
+        /// <summary>FF_PROFILE_MJPEG_HUFFMAN_LOSSLESS</summary>
+        MjpegHuffmanLossless = 0xc3,
+        /// <summary>FF_PROFILE_MJPEG_JPEG_LS</summary>
+        MjpegJpegLs = 0xf7,
+        /// <summary>FF_PROFILE_SBC_MSBC</summary>
+        SbcMsbc = 1,
+        /// <summary>FF_PROFILE_PRORES_PROXY</summary>
+        ProresProxy = 0,
+        /// <summary>FF_PROFILE_PRORES_LT</summary>
+        ProresLt = 1,
+        /// <summary>FF_PROFILE_PRORES_STANDARD</summary>
+        ProresStandard = 2,
+        /// <summary>FF_PROFILE_PRORES_HQ</summary>
+        ProresHq = 3,
+        /// <summary>FF_PROFILE_PRORES_4444</summary>
+        Prores_4444 = 4,
+        /// <summary>FF_PROFILE_PRORES_XQ</summary>
+        ProresXq = 5,
+        /// <summary>FF_PROFILE_ARIB_PROFILE_A</summary>
+        AribProfileA = 0,
+        /// <summary>FF_PROFILE_ARIB_PROFILE_C</summary>
+        AribProfileC = 1,
+        /// <summary>FF_PROFILE_KLVA_SYNC</summary>
+        KlvaSync = 0,
+        /// <summary>FF_PROFILE_KLVA_ASYNC</summary>
+        KlvaAsync = 1,
     }
     
     /// <summary>Macro enum, prefix: AV_LOG_</summary>
@@ -2048,6 +2463,76 @@ namespace Sdcb.FFmpeg.Raw
         BlackmanNuttall = 1,
         /// <summary>Kaiser windowed sinc</summary>
         Kaiser = 2,
+    }
+    
+    /// <summary>Macro enum, prefix: SWS_</summary>
+    [Flags]
+    public enum SWS : uint
+    {
+        /// <summary>SWS_FAST_BILINEAR</summary>
+        FastBilinear = 1,
+        /// <summary>SWS_BILINEAR</summary>
+        Bilinear = 2,
+        /// <summary>SWS_BICUBIC</summary>
+        Bicubic = 4,
+        /// <summary>SWS_X</summary>
+        X = 8,
+        /// <summary>SWS_POINT</summary>
+        Point = 0x10,
+        /// <summary>SWS_AREA</summary>
+        Area = 0x20,
+        /// <summary>SWS_BICUBLIN</summary>
+        Bicublin = 0x40,
+        /// <summary>SWS_GAUSS</summary>
+        Gauss = 0x80,
+        /// <summary>SWS_SINC</summary>
+        Sinc = 0x100,
+        /// <summary>SWS_LANCZOS</summary>
+        Lanczos = 0x200,
+        /// <summary>SWS_SPLINE</summary>
+        Spline = 0x400,
+        /// <summary>SWS_SRC_V_CHR_DROP_MASK</summary>
+        SrcVChrDropMask = 0x30000,
+        /// <summary>SWS_SRC_V_CHR_DROP_SHIFT</summary>
+        SrcVChrDropShift = 16,
+        /// <summary>SWS_PARAM_DEFAULT</summary>
+        ParamDefault = 123456,
+        /// <summary>SWS_PRINT_INFO</summary>
+        PrintInfo = 0x1000,
+        /// <summary>SWS_FULL_CHR_H_INT</summary>
+        FullChrHInt = 0x2000,
+        /// <summary>SWS_FULL_CHR_H_INP</summary>
+        FullChrHInp = 0x4000,
+        /// <summary>SWS_DIRECT_BGR</summary>
+        DirectBgr = 0x8000,
+        /// <summary>SWS_ACCURATE_RND</summary>
+        AccurateRnd = 0x40000,
+        /// <summary>SWS_BITEXACT</summary>
+        Bitexact = 0x80000,
+        /// <summary>SWS_ERROR_DIFFUSION</summary>
+        ErrorDiffusion = 0x800000,
+    }
+    
+    /// <summary>Macro enum, prefix: SWS_CS_</summary>
+    [Flags]
+    public enum SWS_CS : int
+    {
+        /// <summary>SWS_CS_ITU709</summary>
+        Itu709 = 1,
+        /// <summary>SWS_CS_FCC</summary>
+        Fcc = 4,
+        /// <summary>SWS_CS_ITU601</summary>
+        Itu601 = 5,
+        /// <summary>SWS_CS_ITU624</summary>
+        Itu624 = 5,
+        /// <summary>SWS_CS_SMPTE170M</summary>
+        Smpte170m = 5,
+        /// <summary>SWS_CS_SMPTE240M</summary>
+        Smpte240m = 7,
+        /// <summary>SWS_CS_DEFAULT</summary>
+        Default = 5,
+        /// <summary>SWS_CS_BT2020</summary>
+        Bt2020 = 9,
     }
     
 }

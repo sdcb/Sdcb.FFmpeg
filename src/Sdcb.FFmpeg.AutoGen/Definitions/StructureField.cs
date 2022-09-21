@@ -1,3 +1,5 @@
+#nullable disable
+
 namespace Sdcb.FFmpeg.AutoGen.Definitions
 {
     internal record StructureField : ICanGenerateXmlDoc, IObsoletionAware

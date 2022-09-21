@@ -1,4 +1,6 @@
-﻿namespace Sdcb.FFmpeg.AutoGen.Definitions
+﻿#nullable disable
+
+namespace Sdcb.FFmpeg.AutoGen.Definitions
 {
     internal record FixedArrayDefinition : TypeDefinition
     {

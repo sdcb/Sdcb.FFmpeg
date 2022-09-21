@@ -1,9 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <PackageId>Sdcb.FFmpeg</PackageId>
-        <VersionPrefix>5.1</VersionPrefix>
-        <VersionSuffix>preview-1</VersionSuffix>
+        <VersionPrefix>5.1.0</VersionPrefix>
+        <VersionSuffix>preview-24</VersionSuffix>
         <LangVersion>latest</LangVersion>
         <!-- Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
         <IncludeSymbols>true</IncludeSymbols>
@@ -32,9 +32,9 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-        <PackageReference Include="System.Memory">
-            <Version>4.5.5</Version>
-        </PackageReference>
-    </ItemGroup>
+      <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
+      <PackageReference Include="System.Memory" Version="4.5.5" />
+      <PackageReference Include="IndexRange" Version="1.0.2" />
+  </ItemGroup>
 
 </Project>

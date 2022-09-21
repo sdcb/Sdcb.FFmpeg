@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using Microsoft.FSharp.Core;
+using Sdcb.FFmpeg.AutoGen.Definitions;
 using Sdcb.FFmpeg.AutoGen.Processors;
 
 namespace Sdcb.FFmpeg.AutoGen
@@ -93,6 +96,7 @@ namespace Sdcb.FFmpeg.AutoGen
             g.WriteIncompleteStructures(Path.Combine(options.OutputDir, "FFmpeg.structs.incomplete.g.cs"));
             g.WriteExportFunctions(Path.Combine(options.OutputDir, "FFmpeg.functions.export.g.cs"));
             g.WriteInlineFunctions(Path.Combine(options.OutputDir, "FFmpeg.functions.inline.g.cs"));
+            Gen2.G2Center.WriteAll(options.OutputDir, astProcessor.Units.OfType<StructureDefinition>());
         }
     }
 }

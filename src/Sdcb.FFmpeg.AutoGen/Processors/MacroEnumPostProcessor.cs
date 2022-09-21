@@ -4,6 +4,7 @@ using Sdcb.FFmpeg.AutoGen.Definitions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Sdcb.FFmpeg.AutoGen.Processors
 {
@@ -13,27 +14,38 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
         {
             MacroEnumDef[] knownConstEnums = new MacroEnumDef[]
             {
-                new ("AV_CODEC_FLAG_", "AV_CODEC_FLAG", IsFlags: true),
-                new ("AV_CODEC_FLAG2_", "AV_CODEC_FLAG2", IsFlags: true),
+                MacroEnumDef.MakeFlags("AV_CODEC_FLAG_"),
+                MacroEnumDef.MakeFlags("AV_CODEC_FLAG2_"),
                 //new ("SLICE_FLAG_", "SLICE_FLAG"),
-                new ("AV_CH_", "AV_CH", IsFlags: true, Except: HashSet("AV_CH_LAYOUT_NATIVE")),
-                //new ("AV_CODEC_CAP_", "CodecCompability"),
+                MacroEnumDef.MakeFlagsExcept("AV_CH_", HashSet("AV_CH_LAYOUT_NATIVE")),
+                MacroEnumDef.MakeFlags("AV_CODEC_CAP_"), 
                 //new ("FF_MB_DECISION_", "FFMacroblockDecision"),
                 //new ("FF_CMP_", "FFComparison"),
                 //new ("PARSER_FLAG_", "ParserFlags"),
-                new ("AVIO_FLAG_", "AVIO_FLAG", IsFlags: true),
-                //new ("FF_PROFILE_", "FFProfile"),
-                //new ("AVSEEK_FLAG_", "SeekFlags"),
-                //new ("AV_PIX_FMT_FLAG_", "PixelFormatFlags"),
-                new ("AV_OPT_FLAG_", "AV_OPT_FLAG", IsFlags: true),
-                new ("AV_OPT_SEARCH_", "AV_OPT_SEARCH", IsFlags: true),
-                new ("AV_LOG_", "LogFlags", Only: HashSet("AV_LOG_SKIP_REPEATED", "AV_LOG_PRINT_LEVEL")),
-                new ("AV_LOG_", "LogLevel", Except: HashSet("AV_LOG_C")),
-                new ("AV_DICT_", "AV_DICT_READ", Only: HashSet("AV_DICT_MATCH_CASE", "AV_DICT_IGNORE_SUFFIX"), IsFlags: true),
-                new ("AV_DICT_", "AV_DICT_WRITE", IsFlags: true),
-                //new ("AV_CPU_FLAG_", "CpuFlags"),
-                //new ("AV_PKT_FLAG_", "PacketFlags"),
-                //new ("AVFMT_FLAG_", "FormatFlags"), 
+                MacroEnumDef.MakeFlags("AVIO_FLAG_"),
+                MacroEnumDef.Make("FF_PROFILE_") with { TypeHint = "int" },
+                MacroEnumDef.MakeFlags("AVSEEK_FLAG_"),
+                MacroEnumDef.MakeFlagsAdditional("AVSEEK_", new EnumerationItem[]
+                {
+                    EnumerationItem.MakeFake("Begin", "SEEK_SET", 0),
+                    EnumerationItem.MakeFake("Current", "SEEK_CUR", 1),
+                    EnumerationItem.MakeFake("End", "SEEK_END", 2),
+                }, IsBegin: true),
+                MacroEnumDef.MakeFlags("AV_PIX_FMT_FLAG_"),
+                MacroEnumDef.MakeFlags("AV_OPT_FLAG_"),
+                MacroEnumDef.MakeFlags("AV_OPT_SEARCH_"),
+                new MacroEnumDef("AV_LOG_", "LogFlags", Only: HashSet("AV_LOG_SKIP_REPEATED", "AV_LOG_PRINT_LEVEL")),
+                new MacroEnumDef("AV_LOG_", "LogLevel", Except: HashSet("AV_LOG_C")),
+                new MacroEnumDef("AV_DICT_", "AV_DICT_READ", Only: HashSet("AV_DICT_MATCH_CASE", "AV_DICT_IGNORE_SUFFIX"), IsFlags: true),
+                new MacroEnumDef("AV_DICT_", "AV_DICT_WRITE", IsFlags: true),
+                MacroEnumDef.MakeFlags("AVSTREAM_INIT_IN_"),
+                //("AV_CPU_FLAG_", "CpuFlags"),
+                //("AV_PKT_FLAG_", "PacketFlags"),
+                MacroEnumDef.MakeFlags("AVFMT_FLAG_"),
+                MacroEnumDef.MakeFlags("AVFMT_AVOID_NEG_TS_"),
+                MacroEnumDef.MakeFlags("AVFMT_"),
+                MacroEnumDef.MakeFlags("SWS_CS_"),
+                MacroEnumDef.MakeFlagsExcept("SWS_", HashSet("SWS_MAX_REDUCE_CUTOFF")),
             };
             Dictionary<string, MacroEnumDef> knownConstEnumMapping = knownConstEnums.ToDictionary(k => k.EnumName, v => v);
 
@@ -70,22 +82,25 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 .OrderByDescending(k => k.Name.Length)
                 .ToDictionary(k => k.Name, v => StringExtensions.EnumNameTransform(v.Name[enumDef.Prefix.Length..]));
 
+            IEnumerable<EnumerationItem> existingItems = macros.Select(macro => new EnumerationItem
+            {
+                Name = macroShortcutMapping[macro.Name],
+                RawName = macro.Name,
+                Value = ExpressionTransform(macro.ExpressionText, macroShortcutMapping),
+                XmlDocument = macro.Name,
+            });
+            IEnumerable<EnumerationItem> items = enumDef.AdditionalValues != null ? enumDef.AdditionalValues.CombineExistingItems(existingItems) : existingItems;
+
             return new EnumerationDefinition
             {
-                Name = enumDef.EnumName, 
-                XmlDocument = $"Macro enum, prefix: {enumDef.Prefix}", 
+                Name = enumDef.EnumName,
+                XmlDocument = $"Macro enum, prefix: {enumDef.Prefix}",
                 IsFlags = enumDef.IsFlags,
-                TypeName = DeterminBestTypeForMacroEnum(macros
+                TypeName = enumDef.TypeHint ?? DeterminBestTypeForMacroEnum(macros
                     .Select(x => x.TypeName)
-                    .ToHashSet()), 
-                Obsoletion = new Obsoletion { IsObsolete = false }, 
-                Items = macros.Select(macro => new EnumerationItem
-                {
-                    Name = macroShortcutMapping[macro.Name], 
-                    RawName = macro.Name, 
-                    Value = ExpressionTransform(macro.ExpressionText, macroShortcutMapping),
-                    XmlDocument = macro.Name, 
-                }).ToArray(), 
+                    .ToHashSet()),
+                Obsoletion = new Obsoletion { IsObsolete = false },
+                Items = items.ToArray(),
             };
 
             static string ExpressionTransform(string expression, Dictionary<string, string> mapping)
@@ -101,12 +116,12 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
             {
                 string[] priorities = new[]
                 {
-                    "long",
                     "ulong",
-                    "int",
+                    "long",
                     "uint",
-                    "short",
+                    "int",
                     "ushort",
+                    "short",
                 };
 
                 foreach (string prior in priorities)
@@ -119,11 +134,48 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
         }
     }
 
-    public record MacroEnumDef(string Prefix, string EnumName, HashSet<string>? Only = default, HashSet<string>? Except = default, bool IsFlags = false)
+    internal record MacroEnumDef(string Prefix, string EnumName, string? TypeHint = null, HashSet<string>? Only = default, HashSet<string>? Except = default, AdditionalMacroDef? AdditionalValues = null, bool IsFlags = false)
     {
         public bool Match(string name) =>
             name.StartsWith(Prefix) &&
             (Except == null || !Except.Contains(name)) &&
             (Only == null || Only.Contains(name));
+
+        internal static MacroEnumDef Make(string prefix) => new MacroEnumDef(prefix, FindName(prefix));
+
+        internal static MacroEnumDef MakeFlags(string prefix) => new MacroEnumDef(prefix, FindName(prefix), IsFlags: true);
+
+        internal static MacroEnumDef MakeFlagsAdditional(string prefix, EnumerationItem[] additionalValues, bool IsBegin) => new MacroEnumDef(prefix, FindName(prefix), AdditionalValues: new (IsBegin, additionalValues), IsFlags: true);
+
+        internal static MacroEnumDef MakeFlagsExcept(string prefix, HashSet<string> except) => new MacroEnumDef(prefix, FindName(prefix), Except: except, IsFlags: true);
+
+        internal static string FindName(string prefix) => prefix.EndsWith('_') ? prefix.Substring(0, prefix.Length - 1) : throw new NotSupportedException("Prefix must ends with _");
+    }
+
+    internal record AdditionalMacroDef(bool IsBegin, EnumerationItem[] Items)
+    {
+        public IEnumerable<EnumerationItem> CombineExistingItems(IEnumerable<EnumerationItem> existingItems)
+        {
+            if (IsBegin)
+            {
+                foreach (EnumerationItem item in Items)
+                {
+                    yield return item;
+                }
+            }
+
+            foreach (EnumerationItem item in existingItems)
+            {
+                yield return item;
+            }
+
+            if (!IsBegin)
+            {
+                foreach (EnumerationItem item in Items)
+                {
+                    yield return item;
+                }
+            }
+        }
     }
 }
