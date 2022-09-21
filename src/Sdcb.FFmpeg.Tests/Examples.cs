@@ -2,9 +2,10 @@
 using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Formats;
 using Sdcb.FFmpeg.Raw;
+using Sdcb.FFmpeg.Swscales;
 using Sdcb.FFmpeg.Toolboxs.Extensions;
 using Sdcb.FFmpeg.Toolboxs.Generators;
-using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Xunit;
@@ -31,20 +32,23 @@ namespace Sdcb.FFmpeg.Tests
             Assert.NotEmpty(pngData);
         }
 
-        private byte[] MakeMp4()
+        private byte[] MakeMp4(Codec codec, int width, int height)
         {
             using FormatContext fc = FormatContext.AllocOutput(formatName: "mp4");
-            fc.VideoCodec = Codec.CommonEncoders.Libx264;
+            fc.VideoCodec = codec;
             MediaStream vstream = fc.NewStream(fc.VideoCodec);
             using CodecContext vcodec = new CodecContext(fc.VideoCodec)
             {
-                Width = 640,
-                Height = 480,
+                Width = width,
+                Height = height,
                 TimeBase = new AVRational(1, 30),
                 PixelFormat = AVPixelFormat.Yuv420p,
                 Flags = AV_CODEC_FLAG.GlobalHeader,
             };
-            vcodec.Open();
+            vcodec.Open(fc.VideoCodec, new MediaDictionary
+            {
+                ["preset"] = "ultrafast"
+            });
             vstream.Codecpar.CopyFrom(vcodec);
 
             using DynamicIOContext io = IOContext.OpenDynamic();
@@ -71,9 +75,36 @@ namespace Sdcb.FFmpeg.Tests
         public void CreateMp4()
         {
             FFmpegLogger.LogWriter = (level, msg) => _console.WriteLine(msg.Trim());
-            byte[] mp4 = MakeMp4();
+            byte[] mp4 = MakeMp4(Codec.CommonEncoders.Libx264, width: 640, height: 480);
             Assert.NotEmpty(mp4);
-            Console.WriteLine($"mp4 size: {mp4.Length}");
+            _console.WriteLine($"mp4 size: {mp4.Length}");
+        }
+
+        [Fact]
+        public void DecodeMp4()
+        {
+            FFmpegLogger.LogWriter = (level, msg) => { };
+            byte[] mp4 = MakeMp4(Codec.CommonEncoders.Libx264, width: 640, height: 480);
+            _console.WriteLine($"mp4 size: {mp4.Length}");
+
+            FFmpegLogger.LogWriter = (level, msg) => _console.WriteLine(msg.Trim());
+            using IOContext io = IOContext.ReadStream(new MemoryStream(mp4));
+            using FormatContext fc = FormatContext.OpenInputIO(io);
+            MediaStream videoStream = fc.GetVideoStream();
+
+            using CodecContext videoDecoder = new CodecContext(Codec.FindDecoderById(videoStream.Codecpar.CodecId));
+            videoDecoder.FillParameters(videoStream.Codecpar);
+            videoDecoder.Open();
+
+            using VideoFrameConverter sws = new();
+            using Frame dest = Frame.CreateWritableVideo(videoStream.Codecpar.Width, videoStream.Codecpar.Height, AVPixelFormat.Rgb0);
+            foreach (Frame frame in videoDecoder.DecodePackets(fc.ReadPackets()))
+            {
+                Stopwatch sw = Stopwatch.StartNew();
+                sws.ConvertFrame(frame, dest);
+                sw.Stop();
+                _console.WriteLine($"dts: {frame.PktDts}, pts: {frame.Pts}, cpn: {frame.CodedPictureNumber}, sws-elapse: {sw.Elapsed.TotalMilliseconds:F2}ms");
+            }
         }
     }
 }
