@@ -31,18 +31,15 @@ namespace Sdcb.FFmpeg.Tests
             Assert.NotEmpty(pngData);
         }
 
-        [Fact]
-        public void CreateMp4()
+        private byte[] MakeMp4()
         {
-            FFmpegLogger.LogWriter = (level, msg) => _console.WriteLine(msg);
-
             using FormatContext fc = FormatContext.AllocOutput(formatName: "mp4");
             fc.VideoCodec = Codec.CommonEncoders.Libx264;
             MediaStream vstream = fc.NewStream(fc.VideoCodec);
             using CodecContext vcodec = new CodecContext(fc.VideoCodec)
             {
-                Width = 800,
-                Height = 600,
+                Width = 640,
+                Height = 480,
                 TimeBase = new AVRational(1, 30),
                 PixelFormat = AVPixelFormat.Yuv420p,
                 Flags = AV_CODEC_FLAG.GlobalHeader,
@@ -53,13 +50,12 @@ namespace Sdcb.FFmpeg.Tests
             using DynamicIOContext io = IOContext.OpenDynamic();
             fc.Pb = io;
             fc.WriteHeader();
-            foreach (Packet packet in vcodec.EncodeFrames(vcodec.ConvertFrames(VideoFrameGenerator.Yuv420pSequence(vcodec.Width, vcodec.Height).Take(60))))
+            foreach (Packet packet in vcodec.EncodeFrames(VideoFrameGenerator.Yuv420pSequence(vcodec.Width, vcodec.Height).Take(60)))
             {
                 try
                 {
                     packet.RescaleTimestamp(vcodec.TimeBase, vstream.TimeBase);
                     packet.StreamIndex = vstream.Index;
-                    LogPacket(fc, packet);
                     fc.InterleavedWritePacket(packet);
                 }
                 finally
@@ -68,26 +64,16 @@ namespace Sdcb.FFmpeg.Tests
                 }
             }
             fc.WriteTrailer();
-            fc.Close();
+            return io.GetBuffer().ToArray();
+        }
 
-            byte[] mp4 = io.GetBuffer().ToArray();
+        [Fact]
+        public void CreateMp4()
+        {
+            FFmpegLogger.LogWriter = (level, msg) => _console.WriteLine(msg.Trim());
+            byte[] mp4 = MakeMp4();
             Assert.NotEmpty(mp4);
-            _console.WriteLine($"mp4 size: {mp4.Length}");
-
-            unsafe void LogPacket(FormatContext fc, Packet packet)
-            {
-                AVRational timebase = MediaStream.FromNative(fc.Streams[packet.StreamIndex]).TimeBase;
-                _console.WriteLine(string.Format("pts:{0} pts_time:{1} dts:{2} dts_time:{3} duration:{4} duration_time:{5} stream_index:{6}",
-                       av_ts2str(packet.Pts), av_ts2timestr(packet.Pts, timebase),
-                       av_ts2str(packet.Dts), av_ts2timestr(packet.Dts, timebase),
-                       av_ts2str(packet.Duration), av_ts2timestr(packet.Duration, timebase),
-                       packet.StreamIndex));
-
-                static string av_ts2str(long pts) => pts == ffmpeg.AV_NOPTS_VALUE ? "NOPTS" : pts.ToString();
-                static unsafe string av_ts2timestr(long pts, AVRational timebase) => pts == ffmpeg.AV_NOPTS_VALUE
-                    ? "NOPTS"
-                    : (1.0 * pts * timebase.Num / timebase.Den).ToString("N6");
-            }
+            Console.WriteLine($"mp4 size: {mp4.Length}");
         }
     }
 }
