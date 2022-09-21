@@ -9,7 +9,7 @@ using System.Xml.XPath;
 string solutionDir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory)
     .Parent?.Parent?.Parent?.Parent?.Parent?.FullName ?? throw new Exception();
 
-string version = "5.1";
+string version = "5.1.1";
 await SetupFFmpegBinaries(solutionDir, DownloadUrlBuilder.Url);
 
 const string namePrefix = "Sdcb.FFmpeg.runtime";
@@ -23,11 +23,10 @@ string nuspecFile = BuildNuspec(dlls, "win-x64", "windows-x64");
 
 string nupkgsRoot = Path.Combine(binaryRoot, "nupkgs");
 Directory.CreateDirectory(nupkgsRoot);
-ProcessStartInfo psInfo = new ProcessStartInfo($"nuget", $"pack {nuspecFile} -version {version} -OutputDirectory {nupkgsRoot}")
+Process.Start(new ProcessStartInfo($"nuget", $"pack {nuspecFile} -version {version} -OutputDirectory {nupkgsRoot}")
 {
     WorkingDirectory = binaryRoot
-};
-Process.Start(psInfo)!.WaitForExit();
+})!.WaitForExit();
 
 string BuildNuspec(string[] libs, string rid, string titleRid)
 {
