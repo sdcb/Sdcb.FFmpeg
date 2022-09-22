@@ -625,10 +625,10 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>dump format separator. can be ", " or " " or anything else - muxing: Set by user. - demuxing: Set by user.</para>
     /// <see cref="AVFormatContext.dump_separator" />
     /// </summary>
-    public IntPtr DumpSeparator
+    public string? DumpSeparator
     {
-        get => (IntPtr)_ptr->dump_separator;
-        set => _ptr->dump_separator = (byte*)value;
+        get => _ptr->dump_separator != null ? PtrExtensions.PtrToStringUTF8((IntPtr)_ptr->dump_separator)! : null;
+        set => Options.Set("dump_separator", value);
     }
     
     /// <summary>
@@ -646,10 +646,10 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>',' separated list of allowed protocols. - encoding: unused - decoding: set by user</para>
     /// <see cref="AVFormatContext.protocol_whitelist" />
     /// </summary>
-    public IntPtr ProtocolWhitelist
+    public string? ProtocolWhitelist
     {
-        get => (IntPtr)_ptr->protocol_whitelist;
-        set => _ptr->protocol_whitelist = (byte*)value;
+        get => _ptr->protocol_whitelist != null ? PtrExtensions.PtrToStringUTF8((IntPtr)_ptr->protocol_whitelist)! : null;
+        set => Options.Set("protocol_whitelist", value);
     }
     
     /// <summary>
@@ -657,10 +657,10 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>',' separated list of disallowed protocols. - encoding: unused - decoding: set by user</para>
     /// <see cref="AVFormatContext.protocol_blacklist" />
     /// </summary>
-    public IntPtr ProtocolBlacklist
+    public string? ProtocolBlacklist
     {
-        get => (IntPtr)_ptr->protocol_blacklist;
-        set => _ptr->protocol_blacklist = (byte*)value;
+        get => _ptr->protocol_blacklist != null ? PtrExtensions.PtrToStringUTF8((IntPtr)_ptr->protocol_blacklist)! : null;
+        set => Options.Set("protocol_blacklist", value);
     }
     
     /// <summary>

@@ -46,7 +46,7 @@ public unsafe class FFmpegOptions
     /// <summary>
     /// <see cref="av_opt_set(void*, string, string, int)"/>
     /// </summary>
-    public void Set(string name, string value, AV_OPT_SEARCH searchFlags = default) => 
+    public void Set(string name, string? value, AV_OPT_SEARCH searchFlags = default) => 
         av_opt_set(_obj, name, value, (int)searchFlags).ThrowIfError();
 
     /// <summary>

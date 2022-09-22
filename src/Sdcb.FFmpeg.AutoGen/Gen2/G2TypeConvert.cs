@@ -76,11 +76,13 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
         public static TypeCastDef StaticCastStruct(string oldType, string newType) => new TypeStaticCastDef(oldType, newType, IsClass: false);
 
-        public static TypeCastDef CustomReadonly(string oldType, string newType, string readFormat) => new FunctionCallCastDef(oldType, newType, readFormat);
+        public static TypeCastDef CustomReadonly(string oldType, string newType, string readFormat) => new ReadOnlyFunctionCallCastDef(oldType, newType, readFormat);
+
+        public static TypeCastDef Custom(string oldType, string newType, string readFormat, string writeFormat) => new FunctionCallCastDef(oldType, newType, readFormat, writeFormat);
 
         public static TypeCastDef ReadSequence(string elementType, string exitCondition = "p == default")
         {
-            return new FunctionCallCastDef(elementType + '*', $"IEnumerable<{elementType}>", $@"NativeUtils.ReadSequence(
+            return new ReadOnlyFunctionCallCastDef(elementType + '*', $"IEnumerable<{elementType}>", $@"NativeUtils.ReadSequence(
             p: (IntPtr){{0}},
             unitSize: sizeof({elementType}),
             exitCondition: p => *({elementType}*){exitCondition}, 
@@ -89,7 +91,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
         public static TypeCastDef ReadonlyPtrList(string elementType, string returnElementType, string countElement, string converterMethod)
         {
-            return new FunctionCallCastDef(
+            return new ReadOnlyFunctionCallCastDef(
                 elementType + "**", 
                 $"IReadOnlyList<{returnElementType}>", 
                 $@"new ReadOnlyPtrList<{elementType}, {returnElementType}>({{0}}, (int)_ptr->{countElement}, {returnElementType}.{converterMethod})");
@@ -97,7 +99,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
         public static TypeCastDef ReadonlyNativeListWithCast(string elementType, string returnElementType, string countElement, string converterMethod)
         {
-            return new FunctionCallCastDef(
+            return new ReadOnlyFunctionCallCastDef(
                 elementType + "*",
                 $"IReadOnlyList<{returnElementType}>",
                 $@"new ReadOnlyNativeListWithCast<{elementType}, {returnElementType}>({{0}}, (int)_ptr->{countElement}, {returnElementType}.{converterMethod})");
@@ -105,7 +107,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
         public static TypeCastDef ReadonlyNativeList(string elementType, string countElement)
         {
-            return new FunctionCallCastDef(
+            return new ReadOnlyFunctionCallCastDef(
                 elementType + "*",
                 $"IReadOnlyList<{elementType}>",
                 $@"new ReadOnlyNativeList<{elementType}>({{0}}, (int)_ptr->{countElement})");
@@ -114,7 +116,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
         public static TypeCastDef ReadSequenceAndCast(string elementType, string finalType, string exitCondition, string getter = "*{0}")
         {
             string finalGetter = string.Format(getter, $"({elementType}*)p");
-            return new FunctionCallCastDef(elementType + '*', $"IEnumerable<{finalType}>", $@"NativeUtils.ReadSequence(
+            return new ReadOnlyFunctionCallCastDef(elementType + '*', $"IEnumerable<{finalType}>", $@"NativeUtils.ReadSequence(
             p: (IntPtr){{0}},
             unitSize: sizeof({elementType}),
             exitCondition: p => *({elementType}*){exitCondition}, 
@@ -122,18 +124,22 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
         }
 
 
-        public static TypeCastDef Utf8String() => CustomReadonly("byte*", "string", $"PtrExtensions.PtrToStringUTF8((IntPtr){{0}})");
+        public static TypeCastDef ReadOnlyUtf8String() => CustomReadonly("byte*", "string", $"PtrExtensions.PtrToStringUTF8((IntPtr){{0}})");
 
-        internal protected virtual string GetPropertyGetter(string expression, PropStatus prop)
+        public static TypeCastDef OptUtf8String() => Custom("byte*", "string", $"PtrExtensions.PtrToStringUTF8((IntPtr){{0}})", $"Options.Set(\"{{oldName}}\", value)");
+
+        internal protected virtual string GetPropertyGetter(string ptr, string oldName, PropStatus prop)
         {
             return IsChanged switch
             {
-                false => expression,
-                true => $"({NewType}){expression}",
+                false => $"{ptr}->{oldName}",
+                true => $"({NewType}){ptr}->{oldName}",
             };
         }
 
-        internal protected virtual string GetPropertySetter(PropStatus prop) => IsChanged switch
+        internal protected virtual string GetPropertySetter(string ptr, string oldName, PropStatus prop) => $"{ptr}->{oldName} = {GetPropertySetterRight(ptr, oldName, prop)}";
+
+        internal protected virtual string GetPropertySetterRight(string ptr, string oldName, PropStatus prop) => IsChanged switch
         {
             false => $"value",
             true => $"({OldType})value",
@@ -157,8 +163,8 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
             private string PointerOriginalType => IsOldTypePointer ? OldType.Substring(0, OldType.Length - 1) : throw new InvalidOperationException();
 
-            internal protected override string GetPropertyGetter(string expression, PropStatus prop) =>
-                (prop.Name == NewType && prop.IsNullable && IsOldTypePointer, $"{NewType}.{GetStaticMethod(prop)}({expression}{AdditionalText})") switch
+            internal protected override string GetPropertyGetter(string ptr, string oldName, PropStatus prop) =>
+                (prop.Name == NewType && prop.IsNullable && IsOldTypePointer, $"{NewType}.{GetStaticMethod(prop)}({ptr}->{oldName}{AdditionalText})") switch
                 {
                     (true, string res) => G2Center.KnownClasses.TryGetValue(PointerOriginalType, out G2TransformDef? def) switch
                     {
@@ -168,22 +174,28 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                     (false, string res) => res,
                 };
 
-            internal protected override string GetPropertySetter(PropStatus prop) => (IsClass && prop.IsNullable) switch
+            internal protected override string GetPropertySetterRight(string ptr, string oldName, PropStatus prop) => (IsClass && prop.IsNullable) switch
             {
-                true => $"value != null ? {base.GetPropertySetter(prop)} : null",
-                false => base.GetPropertySetter(prop),
+                true => $"value != null ? {base.GetPropertySetterRight(ptr, oldName, prop)} : null",
+                false => base.GetPropertySetterRight(ptr, oldName, prop),
             };
         }
 
-        private record FunctionCallCastDef(string OldType, string NewType, string ReadCallFormat) : TypeCastDef(OldType, NewType)
+        private record ReadOnlyFunctionCallCastDef(string OldType, string NewType, string ReadCallFormat) : TypeCastDef(OldType, NewType)
         {
             internal protected override string GetReturnType(PropStatus prop) => prop.IsNullable ? NewType + '?' : NewType;
 
-            internal protected override string GetPropertyGetter(string expression, PropStatus prop) => prop.IsNullable switch
+            internal protected override string GetPropertyGetter(string ptr, string oldName, PropStatus prop) => prop.IsNullable switch
             {
-                true => $"{expression} != null ? {string.Format(ReadCallFormat, expression)}! : null",
-                false => string.Format(ReadCallFormat, expression) + "!",
+                true => $"{ptr}->{oldName} != null ? {string.Format(ReadCallFormat, $"{ptr}->{oldName}")}! : null",
+                false => string.Format(ReadCallFormat, $"{ptr}->{oldName}") + "!",
             };
+        }
+
+        private record FunctionCallCastDef(string OldType, string NewType, string ReadCallFormat, string WriteCallFormat) : ReadOnlyFunctionCallCastDef(OldType, NewType, ReadCallFormat)
+        {
+            protected internal override string GetPropertySetter(string ptr, string oldName, PropStatus prop) => WriteCallFormat
+                .Replace("{oldName}", oldName);
         }
     }
 }
