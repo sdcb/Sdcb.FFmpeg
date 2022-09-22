@@ -4,17 +4,17 @@ using System.Collections.Generic;
 
 namespace Sdcb.FFmpeg.Common;
 
-internal unsafe class ReadOnlyPtrArray<Ptr, Final> : IReadOnlyList<Final> where Ptr : unmanaged
+internal unsafe class ReadOnlyNativeList<N, Final> : IReadOnlyList<Final> where N : unmanaged
 {
-    private readonly Ptr** _ptr;
+    private readonly N* _ptr;
     private int _size;
-    private Func<IntPtr, Final> FinalAccessor { get; init; }
+    private Func<N, Final> FinalAccessor { get; init; }
 
-    public ReadOnlyPtrArray(Ptr** ptr, int size, Func<IntPtr, Final> finalAccessor)
+    public ReadOnlyNativeList(N* ptr, int size, Func<N, Final> toFinal)
     {
         _ptr = ptr;
         _size = size;
-        FinalAccessor = finalAccessor;
+        FinalAccessor = toFinal;
     }
 
     public Final this[int index]
@@ -25,7 +25,7 @@ internal unsafe class ReadOnlyPtrArray<Ptr, Final> : IReadOnlyList<Final> where 
             {
                 throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} was outside the bound {Count}.");
             }
-            return FinalAccessor((IntPtr)_ptr[index]);
+            return FinalAccessor(_ptr[index]);
         }
     }
 

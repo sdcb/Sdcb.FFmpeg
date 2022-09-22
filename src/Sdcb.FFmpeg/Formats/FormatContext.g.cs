@@ -99,7 +99,7 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>A list of all streams in the file. New streams are created with avformat_new_stream().</para>
     /// <see cref="AVFormatContext.streams" />
     /// </summary>
-    public IReadOnlyList<MediaStream> Streams => new ReadOnlyPtrArray<AVStream, MediaStream>(_ptr->streams, (int)_ptr->nb_streams, MediaStream.FromNative)!;
+    public IReadOnlyList<MediaStream> Streams => new ReadOnlyPtrList<AVStream, MediaStream>(_ptr->streams, (int)_ptr->nb_streams, MediaStream.FromNative)!;
     
     /// <summary>
     /// <para>original type: byte*</para>
@@ -210,22 +210,10 @@ public unsafe partial class FormatContext : SafeHandle
     }
     
     /// <summary>
-    /// <see cref="AVFormatContext.nb_programs" />
-    /// </summary>
-    public uint NbPrograms
-    {
-        get => _ptr->nb_programs;
-        set => _ptr->nb_programs = value;
-    }
-    
-    /// <summary>
+    /// <para>original type: AVProgram**</para>
     /// <see cref="AVFormatContext.programs" />
     /// </summary>
-    public AVProgram** Programs
-    {
-        get => _ptr->programs;
-        set => _ptr->programs = value;
-    }
+    public IReadOnlyList<MediaProgram> Programs => new ReadOnlyPtrList<AVProgram, MediaProgram>(_ptr->programs, (int)_ptr->nb_programs, MediaProgram.FromNative)!;
     
     /// <summary>
     /// <para>Forced video codec_id. Demuxing: Set by user.</para>
