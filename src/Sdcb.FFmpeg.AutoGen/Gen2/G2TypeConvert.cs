@@ -95,12 +95,20 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 $@"new ReadOnlyPtrList<{elementType}, {returnElementType}>({{0}}, (int)_ptr->{countElement}, {returnElementType}.{converterMethod})");
         }
 
-        public static TypeCastDef ReadonlyNativeList(string elementType, string returnElementType, string countElement, string converterMethod)
+        public static TypeCastDef ReadonlyNativeListWithCast(string elementType, string returnElementType, string countElement, string converterMethod)
         {
             return new FunctionCallCastDef(
                 elementType + "*",
                 $"IReadOnlyList<{returnElementType}>",
-                $@"new ReadOnlyNativeList<{elementType}, {returnElementType}>({{0}}, (int)_ptr->{countElement}, {returnElementType}.{converterMethod})");
+                $@"new ReadOnlyNativeListWithCast<{elementType}, {returnElementType}>({{0}}, (int)_ptr->{countElement}, {returnElementType}.{converterMethod})");
+        }
+
+        public static TypeCastDef ReadonlyNativeList(string elementType, string countElement)
+        {
+            return new FunctionCallCastDef(
+                elementType + "*",
+                $"IReadOnlyList<{elementType}>",
+                $@"new ReadOnlyNativeList<{elementType}>({{0}}, (int)_ptr->{countElement})");
         }
 
         public static TypeCastDef ReadSequenceAndCast(string elementType, string finalType, string exitCondition, string getter = "*{0}")

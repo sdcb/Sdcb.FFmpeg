@@ -78,7 +78,11 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateTypeCast("chapters", TypeCastDef.ReadonlyPtrList("AVChapter", "MediaChapter", "nb_chapters", "FromNative")) with { ReadOnly = true },
                 FieldDef.CreateHide("nb_chapters"),
             }),
-            G2TransformDef.MakeStruct(ClassCategories.Formats, "AVProgram", "MediaProgram"),
+            G2TransformDef.MakeStruct(ClassCategories.Formats, "AVProgram", "MediaProgram", new FieldDef[]
+            {
+                FieldDef.CreateTypeCast("stream_index", TypeCastDef.ReadonlyNativeList("uint", "nb_stream_indexes")) with { ReadOnly = true },
+                FieldDef.CreateHide("nb_stream_indexes"),
+            }),
             G2TransformDef.MakeStruct(ClassCategories.Formats, "AVChapter", "MediaChapter"),
             G2TransformDef.MakeStruct(ClassCategories.Formats, "AVStream", "MediaStream", new FieldDef[]
             {

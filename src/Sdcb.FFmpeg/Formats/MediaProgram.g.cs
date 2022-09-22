@@ -63,22 +63,10 @@ public unsafe partial struct MediaProgram
     }
     
     /// <summary>
+    /// <para>original type: uint*</para>
     /// <see cref="AVProgram.stream_index" />
     /// </summary>
-    public uint* StreamIndex
-    {
-        get => _ptr->stream_index;
-        set => _ptr->stream_index = value;
-    }
-    
-    /// <summary>
-    /// <see cref="AVProgram.nb_stream_indexes" />
-    /// </summary>
-    public uint NbStreamIndexes
-    {
-        get => _ptr->nb_stream_indexes;
-        set => _ptr->nb_stream_indexes = value;
-    }
+    public IReadOnlyList<uint> StreamIndex => new ReadOnlyNativeList<uint>(_ptr->stream_index, (int)_ptr->nb_stream_indexes)!;
     
     /// <summary>
     /// <para>original type: AVDictionary*</para>
