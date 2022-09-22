@@ -245,8 +245,6 @@ public unsafe partial class FormatContext : SafeHandle
     /// </summary>
     public void DumpFormat(int streamIndex, string? url, bool isOutput) => av_dump_format(this, streamIndex, url, isOutput ? 1 : 0);
 
-    public IReadOnlyList<MediaStream> Streams2 => new MediaStreamPtrArray(_ptr->streams, (int)_ptr->nb_streams);
-
     public MediaStream GetVideoStream() => FindBestStream(AVMediaType.Video);
     public MediaStream GetAudioStream() => FindBestStream(AVMediaType.Audio);
     public MediaStream GetSubtitleStream() => FindBestStream(AVMediaType.Subtitle);

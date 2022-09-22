@@ -71,6 +71,8 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateRename("iformat", "InputFormat"),
                 FieldDef.CreateRename("oformat", "OutputFormat"),
                 FieldDef.CreateNullable("pb"),
+                FieldDef.CreateTypeCast("streams", TypeCastDef.ReadonlyPtrArray("AVStream", "MediaStream", "nb_streams", "FromNative")) with { ReadOnly = true },
+                FieldDef.CreateHide("nb_streams"), 
             }),
             G2TransformDef.MakeStruct(ClassCategories.Formats, "AVProgram", "MediaProgram"),
             G2TransformDef.MakeStruct(ClassCategories.Formats, "AVStream", "MediaStream", new FieldDef[]

@@ -95,24 +95,11 @@ public unsafe partial class FormatContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>Number of elements in AVFormatContext.streams.</para>
-    /// <see cref="AVFormatContext.nb_streams" />
-    /// </summary>
-    public uint NbStreams
-    {
-        get => _ptr->nb_streams;
-        set => _ptr->nb_streams = value;
-    }
-    
-    /// <summary>
+    /// <para>original type: AVStream**</para>
     /// <para>A list of all streams in the file. New streams are created with avformat_new_stream().</para>
     /// <see cref="AVFormatContext.streams" />
     /// </summary>
-    public AVStream** Streams
-    {
-        get => _ptr->streams;
-        set => _ptr->streams = value;
-    }
+    public IReadOnlyList<MediaStream> Streams => new ReadOnlyPtrArray<AVStream, MediaStream>(_ptr->streams, (int)_ptr->nb_streams, MediaStream.FromNative)!;
     
     /// <summary>
     /// <para>original type: byte*</para>
