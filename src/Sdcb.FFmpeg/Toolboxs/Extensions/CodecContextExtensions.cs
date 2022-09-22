@@ -2,6 +2,7 @@
 using Sdcb.FFmpeg.Raw;
 using Sdcb.FFmpeg.Swresamples;
 using Sdcb.FFmpeg.Swscales;
+using Sdcb.FFmpeg.Utils;
 using System.Collections.Generic;
 using static Sdcb.FFmpeg.Raw.ffmpeg;
 

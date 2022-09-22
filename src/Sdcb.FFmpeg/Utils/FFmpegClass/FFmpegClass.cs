@@ -2,8 +2,9 @@
 using Sdcb.FFmpeg.Raw;
 using System.Collections.Generic;
 using System.Linq;
+using Sdcb.FFmpeg.Common;
 
-namespace Sdcb.FFmpeg.Common;
+namespace Sdcb.FFmpeg.Utils;
 
 /// <summary>
 /// <see cref="AVClass"/>

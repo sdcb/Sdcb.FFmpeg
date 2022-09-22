@@ -5,7 +5,7 @@ using System;
 using System.Runtime.InteropServices;
 using static Sdcb.FFmpeg.Raw.ffmpeg;
 
-namespace Sdcb.FFmpeg.Codecs;
+namespace Sdcb.FFmpeg.Utils;
 
 public unsafe partial class Frame : SafeHandle
 {

@@ -38,7 +38,6 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             {
                 FieldDef.CreateTypeCast("name", TypeCastDef.ReadOnlyUtf8String()) with { Nullable = true },
             }),
-            G2TransformDef.MakeClass(ClassCategories.Codecs, "AVFrame", "Frame"),
             G2TransformDef.MakeReadonlyStruct(ClassCategories.Codecs, "AVCodec", "Codec", new FieldDef[]
             {
                 FieldDef.CreateTypeCast("capabilities", TypeCastDef.Force("int", "AV_CODEC_CAP")),
@@ -119,6 +118,9 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             {
                 FieldDef.CreateHide("seek"),
             }),
+
+            // utils
+            G2TransformDef.MakeClass(ClassCategories.Utils, "AVFrame", "Frame"),
         }.ToDictionary(k => k.OldName, v => v);
     }
 }

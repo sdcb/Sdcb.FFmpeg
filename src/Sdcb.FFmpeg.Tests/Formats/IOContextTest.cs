@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Formats;
 using Sdcb.FFmpeg.Raw;
+using Sdcb.FFmpeg.Utils;
 using System;
 using System.IO;
 using System.Text;

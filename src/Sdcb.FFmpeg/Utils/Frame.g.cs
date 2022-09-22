@@ -1,13 +1,14 @@
 // This file was genereated from Sdcb.FFmpeg.AutoGen, DO NOT CHANGE DIRECTLY.
 #nullable enable
 using Sdcb.FFmpeg.Common;
+using Sdcb.FFmpeg.Codecs;
 using Sdcb.FFmpeg.Formats;
 using Sdcb.FFmpeg.Raw;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace Sdcb.FFmpeg.Codecs;
+namespace Sdcb.FFmpeg.Utils;
 
 /// <summary>
 /// <para>This structure describes decoded (raw) audio or video data.</para>

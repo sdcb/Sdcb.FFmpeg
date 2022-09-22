@@ -3,7 +3,7 @@ using Sdcb.FFmpeg.Raw;
 using System.Runtime.InteropServices;
 using static Sdcb.FFmpeg.Raw.ffmpeg;
 
-namespace Sdcb.FFmpeg.Common;
+namespace Sdcb.FFmpeg.Utils;
 
 public unsafe class FFmpegOption
 {

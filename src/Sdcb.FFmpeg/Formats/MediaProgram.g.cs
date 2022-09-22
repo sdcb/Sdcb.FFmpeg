@@ -2,6 +2,7 @@
 #nullable enable
 using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Codecs;
+using Sdcb.FFmpeg.Utils;
 using Sdcb.FFmpeg.Raw;
 using System;
 using System.Collections.Generic;

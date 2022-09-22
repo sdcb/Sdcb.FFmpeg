@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using Sdcb.FFmpeg.Raw;
 using static Sdcb.FFmpeg.Raw.ffmpeg;
 using System.Linq;
+using Sdcb.FFmpeg.Common;
 
-namespace Sdcb.FFmpeg.Common;
+namespace Sdcb.FFmpeg.Utils;
 
 public unsafe class FFmpegOptions
 {

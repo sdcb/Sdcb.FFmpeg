@@ -5,6 +5,7 @@ using Sdcb.FFmpeg.Raw;
 using Sdcb.FFmpeg.Swscales;
 using Sdcb.FFmpeg.Toolboxs.Extensions;
 using Sdcb.FFmpeg.Toolboxs.Generators;
+using Sdcb.FFmpeg.Utils;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;

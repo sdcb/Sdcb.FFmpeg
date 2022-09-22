@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using Sdcb.FFmpeg.Raw;
 using static Sdcb.FFmpeg.Raw.ffmpeg;
 
-namespace Sdcb.FFmpeg.Common;
+namespace Sdcb.FFmpeg.Utils;
 
     public static class FFmpegLogger
     {

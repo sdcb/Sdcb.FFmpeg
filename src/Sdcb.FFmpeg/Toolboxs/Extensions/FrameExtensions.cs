@@ -3,6 +3,7 @@ using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Formats;
 using Sdcb.FFmpeg.Raw;
 using Sdcb.FFmpeg.Swscales;
+using Sdcb.FFmpeg.Utils;
 using System.IO;
 using System.Linq;
 

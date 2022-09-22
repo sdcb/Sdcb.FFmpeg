@@ -1,9 +1,9 @@
-﻿using Sdcb.FFmpeg.Common;
+﻿using Sdcb.FFmpeg.Utils;
 using Sdcb.FFmpeg.Raw;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Sdcb.FFmpeg.Tests.Common;
+namespace Sdcb.FFmpeg.Tests.Utils;
 
 public class LogWriterTest
 {

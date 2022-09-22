@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Raw;
 using static Sdcb.FFmpeg.Raw.ffmpeg;
 
-namespace Sdcb.FFmpeg.Common;
+namespace Sdcb.FFmpeg.Utils;
 
 /// <summary>
 /// <see cref="AVDictionary"/>
