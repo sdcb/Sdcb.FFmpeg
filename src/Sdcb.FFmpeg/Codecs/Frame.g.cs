@@ -407,13 +407,14 @@ public unsafe partial class Frame : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVDictionary*</para>
     /// <para>metadata. - encoding: Set by user. - decoding: Set by libavcodec.</para>
     /// <see cref="AVFrame.metadata" />
     /// </summary>
-    public AVDictionary* Metadata
+    public MediaDictionary Metadata
     {
-        get => _ptr->metadata;
-        set => _ptr->metadata = value;
+        get => MediaDictionary.FromNative(_ptr->metadata, false);
+        set => _ptr->metadata = (AVDictionary*)value;
     }
     
     /// <summary>

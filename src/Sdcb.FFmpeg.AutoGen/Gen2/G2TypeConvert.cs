@@ -15,6 +15,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             {
                 TypeCastDef.StaticCastStruct("AVCodec*", "Codec"),
                 TypeCastDef.StaticCastStruct("AVClass*", "FFmpegClass"),
+                TypeCastDef.StaticCastClass("AVDictionary*", "MediaDictionary", isOwner: false),
                 TypeCastDef.Force("void*", "IntPtr"),
                 TypeCastDef.Force("byte*", "IntPtr"),
             });

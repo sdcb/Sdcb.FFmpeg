@@ -297,13 +297,14 @@ public unsafe partial class FormatContext : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVDictionary*</para>
     /// <para>Metadata that applies to the whole file.</para>
     /// <see cref="AVFormatContext.metadata" />
     /// </summary>
-    public AVDictionary* Metadata
+    public MediaDictionary Metadata
     {
-        get => _ptr->metadata;
-        set => _ptr->metadata = value;
+        get => MediaDictionary.FromNative(_ptr->metadata, false);
+        set => _ptr->metadata = (AVDictionary*)value;
     }
     
     /// <summary>

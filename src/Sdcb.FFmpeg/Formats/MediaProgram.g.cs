@@ -81,12 +81,13 @@ public unsafe partial struct MediaProgram
     }
     
     /// <summary>
+    /// <para>original type: AVDictionary*</para>
     /// <see cref="AVProgram.metadata" />
     /// </summary>
-    public AVDictionary* Metadata
+    public MediaDictionary Metadata
     {
-        get => _ptr->metadata;
-        set => _ptr->metadata = value;
+        get => MediaDictionary.FromNative(_ptr->metadata, false);
+        set => _ptr->metadata = (AVDictionary*)value;
     }
     
     /// <summary>
