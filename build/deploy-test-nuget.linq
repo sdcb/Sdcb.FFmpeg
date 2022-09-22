@@ -22,9 +22,9 @@ string IncrementBuildVersion(string projFile)
 	
 	string versionPrefix = (versionPrefixNode.FirstNode as XText).Value;
 	string versionSuffix = (versionSuffixNode.FirstNode as XText).Value;
-	int buildNumber = int.Parse(versionSuffix.Split('-')[1]);
+	int buildNumber = int.Parse(versionSuffix.Split('.')[1]);
 	int newBuildNumber = buildNumber + 1;
-	string newVersionSuffix = "preview-" + newBuildNumber;
+	string newVersionSuffix = "preview." + newBuildNumber;
 	
 	versionSuffixNode.ReplaceNodes(newVersionSuffix);
 	
