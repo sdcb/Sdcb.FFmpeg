@@ -17,8 +17,6 @@ internal unsafe class ReadOnlyPtrArray<Ptr, Final> : IReadOnlyList<Final> where 
         FinalAccessor = finalAccessor;
     }
 
-    internal delegate Ptr** PtrAccessorFunc();
-
     public Final this[int index]
     {
         get
