@@ -75,8 +75,11 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateHide("nb_streams"),
                 FieldDef.CreateTypeCast("programs", TypeCastDef.ReadonlyPtrList("AVProgram", "MediaProgram", "nb_programs", "FromNative")) with { ReadOnly = true },
                 FieldDef.CreateHide("nb_programs"),
+                FieldDef.CreateTypeCast("chapters", TypeCastDef.ReadonlyPtrList("AVChapter", "MediaChapter", "nb_chapters", "FromNative")) with { ReadOnly = true },
+                FieldDef.CreateHide("nb_chapters"),
             }),
             G2TransformDef.MakeStruct(ClassCategories.Formats, "AVProgram", "MediaProgram"),
+            G2TransformDef.MakeStruct(ClassCategories.Formats, "AVChapter", "MediaChapter"),
             G2TransformDef.MakeStruct(ClassCategories.Formats, "AVStream", "MediaStream", new FieldDef[]
             {
                 FieldDef.CreateTypeCast("codecpar", TypeCastDef.StaticCastClass("AVCodecParameters*", "CodecParameters", isOwner: false)) with { Nullable = true },

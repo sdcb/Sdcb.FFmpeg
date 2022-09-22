@@ -266,23 +266,10 @@ public unsafe partial class FormatContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>Number of chapters in AVChapter array. When muxing, chapters are normally written in the file header, so nb_chapters should normally be initialized before write_header is called. Some muxers (e.g. mov and mkv) can also write chapters in the trailer. To write chapters in the trailer, nb_chapters must be zero when write_header is called and non-zero when write_trailer is called. - muxing: set by user - demuxing: set by libavformat</para>
-    /// <see cref="AVFormatContext.nb_chapters" />
-    /// </summary>
-    public uint NbChapters
-    {
-        get => _ptr->nb_chapters;
-        set => _ptr->nb_chapters = value;
-    }
-    
-    /// <summary>
+    /// <para>original type: AVChapter**</para>
     /// <see cref="AVFormatContext.chapters" />
     /// </summary>
-    public AVChapter** Chapters
-    {
-        get => _ptr->chapters;
-        set => _ptr->chapters = value;
-    }
+    public IReadOnlyList<MediaChapter> Chapters => new ReadOnlyPtrList<AVChapter, MediaChapter>(_ptr->chapters, (int)_ptr->nb_chapters, MediaChapter.FromNative)!;
     
     /// <summary>
     /// <para>original type: AVDictionary*</para>
