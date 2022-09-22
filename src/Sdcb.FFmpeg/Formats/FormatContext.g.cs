@@ -550,9 +550,9 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>Forced video codec. This allows forcing a specific decoder, even when there are multiple with the same codec_id. Demuxing: Set by user</para>
     /// <see cref="AVFormatContext.video_codec" />
     /// </summary>
-    public Codec VideoCodec
+    public Codec? VideoCodec
     {
-        get => Codec.FromNative(_ptr->video_codec);
+        get => Codec.FromNativeOrNull(_ptr->video_codec);
         set => _ptr->video_codec = (AVCodec*)value;
     }
     
@@ -561,9 +561,9 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>Forced audio codec. This allows forcing a specific decoder, even when there are multiple with the same codec_id. Demuxing: Set by user</para>
     /// <see cref="AVFormatContext.audio_codec" />
     /// </summary>
-    public Codec AudioCodec
+    public Codec? AudioCodec
     {
-        get => Codec.FromNative(_ptr->audio_codec);
+        get => Codec.FromNativeOrNull(_ptr->audio_codec);
         set => _ptr->audio_codec = (AVCodec*)value;
     }
     
@@ -572,9 +572,9 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>Forced subtitle codec. This allows forcing a specific decoder, even when there are multiple with the same codec_id. Demuxing: Set by user</para>
     /// <see cref="AVFormatContext.subtitle_codec" />
     /// </summary>
-    public Codec SubtitleCodec
+    public Codec? SubtitleCodec
     {
-        get => Codec.FromNative(_ptr->subtitle_codec);
+        get => Codec.FromNativeOrNull(_ptr->subtitle_codec);
         set => _ptr->subtitle_codec = (AVCodec*)value;
     }
     
@@ -583,9 +583,9 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>Forced data codec. This allows forcing a specific decoder, even when there are multiple with the same codec_id. Demuxing: Set by user</para>
     /// <see cref="AVFormatContext.data_codec" />
     /// </summary>
-    public Codec DataCodec
+    public Codec? DataCodec
     {
-        get => Codec.FromNative(_ptr->data_codec);
+        get => Codec.FromNativeOrNull(_ptr->data_codec);
         set => _ptr->data_codec = (AVCodec*)value;
     }
     

@@ -70,6 +70,10 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             {
                 FieldDef.CreateRename("iformat", "InputFormat") with { Nullable = true },
                 FieldDef.CreateRename("oformat", "OutputFormat") with { Nullable = true },
+                FieldDef.CreateNullable("video_codec"),
+                FieldDef.CreateNullable("audio_codec"),
+                FieldDef.CreateNullable("subtitle_codec"),
+                FieldDef.CreateNullable("data_codec"),
                 FieldDef.CreateNullable("pb"),
                 FieldDef.CreateTypeCast("flags", TypeCastDef.Force("int", "AVFMT_FLAG")),
                 FieldDef.CreateTypeCast("streams", TypeCastDef.ReadonlyPtrList("AVStream", "MediaStream", "nb_streams", "FromNative")) with { ReadOnly = true },
