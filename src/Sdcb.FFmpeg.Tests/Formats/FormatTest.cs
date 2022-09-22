@@ -1,16 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Sdcb.FFmpeg.Common;
-using Sdcb.FFmpeg.Formats;
-using Sdcb.FFmpeg.Raw;
-using System;
-using System.IO;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Sdcb.FFmpeg.Formats;
 using Xunit;
 using Xunit.Abstractions;
 
