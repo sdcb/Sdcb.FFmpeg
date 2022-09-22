@@ -45,9 +45,9 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>The input container format.</para>
     /// <see cref="AVFormatContext.iformat" />
     /// </summary>
-    public InputFormat InputFormat
+    public InputFormat? InputFormat
     {
-        get => InputFormat.FromNative(_ptr->iformat);
+        get => Sdcb.FFmpeg.Formats.InputFormat.FromNativeOrNull(_ptr->iformat);
         set => _ptr->iformat = (AVInputFormat*)value;
     }
     
@@ -56,9 +56,9 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>The output container format.</para>
     /// <see cref="AVFormatContext.oformat" />
     /// </summary>
-    public OutputFormat OutputFormat
+    public OutputFormat? OutputFormat
     {
-        get => OutputFormat.FromNative(_ptr->oformat);
+        get => Sdcb.FFmpeg.Formats.OutputFormat.FromNativeOrNull(_ptr->oformat);
         set => _ptr->oformat = (AVOutputFormat*)value;
     }
     
@@ -161,13 +161,14 @@ public unsafe partial class FormatContext : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: int</para>
     /// <para>Flags modifying the (de)muxer behaviour. A combination of AVFMT_FLAG_*. Set by the user before avformat_open_input() / avformat_write_header().</para>
     /// <see cref="AVFormatContext.flags" />
     /// </summary>
-    public int Flags
+    public AVFMT_FLAG Flags
     {
-        get => _ptr->flags;
-        set => _ptr->flags = value;
+        get => (AVFMT_FLAG)_ptr->flags;
+        set => _ptr->flags = (int)value;
     }
     
     /// <summary>

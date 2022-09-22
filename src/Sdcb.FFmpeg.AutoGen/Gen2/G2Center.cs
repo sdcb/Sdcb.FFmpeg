@@ -49,12 +49,12 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateTypeCast("supported_samplerates", TypeCastDef.ReadSequence("int")),
                 FieldDef.CreateTypeCast("sample_fmts", TypeCastDef.ReadSequence("AVSampleFormat", "p == AVSampleFormat.None")),
                 FieldDef.CreateTypeCast("channel_layouts", TypeCastDef.ReadSequence("ulong")),
-                FieldDef.CreateTypeCast("profiles", TypeCastDef.ReadSequenceAndCast("AVProfile", "MediaProfile", 
-                    FormatEscape("p switch { { profile: (int)FF_PROFILE.Unknown } => true, _ => false }"), 
+                FieldDef.CreateTypeCast("profiles", TypeCastDef.ReadSequenceAndCast("AVProfile", "MediaProfile",
+                    FormatEscape("p switch { { profile: (int)FF_PROFILE.Unknown } => true, _ => false }"),
                     getter: "MediaProfile.FromNative({0})")),
                 FieldDef.CreateTypeCast("wrapper_name", TypeCastDef.Utf8String()) with { Nullable = true },
                 FieldDef.CreateTypeCast("ch_layouts", TypeCastDef.ReadSequence("AVChannelLayout", FormatEscape("p switch { { order: AVChannelOrder.Unspec, nb_channels: 0 } => true, _ => false }"))),
-                FieldDef.CreateNullable("priv_class"), 
+                FieldDef.CreateNullable("priv_class"),
             }),
             G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecParameters", "CodecParameters"),
             G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecContext", "CodecContext", new FieldDef[]
@@ -68,9 +68,10 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             // formats
             G2TransformDef.MakeClass(ClassCategories.Formats, "AVFormatContext", "FormatContext", new FieldDef[]
             {
-                FieldDef.CreateRename("iformat", "InputFormat"),
-                FieldDef.CreateRename("oformat", "OutputFormat"),
+                FieldDef.CreateRename("iformat", "InputFormat") with { Nullable = true },
+                FieldDef.CreateRename("oformat", "OutputFormat") with { Nullable = true },
                 FieldDef.CreateNullable("pb"),
+                FieldDef.CreateTypeCast("flags", TypeCastDef.Force("int", "AVFMT_FLAG")),
                 FieldDef.CreateTypeCast("streams", TypeCastDef.ReadonlyPtrList("AVStream", "MediaStream", "nb_streams", "FromNative")) with { ReadOnly = true },
                 FieldDef.CreateHide("nb_streams"),
                 FieldDef.CreateTypeCast("programs", TypeCastDef.ReadonlyPtrList("AVProgram", "MediaProgram", "nb_programs", "FromNative")) with { ReadOnly = true },
@@ -87,7 +88,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             G2TransformDef.MakeStruct(ClassCategories.Formats, "AVStream", "MediaStream", new FieldDef[]
             {
                 FieldDef.CreateTypeCast("codecpar", TypeCastDef.StaticCastClass("AVCodecParameters*", "CodecParameters", isOwner: false)) with { Nullable = true },
-                FieldDef.CreateNullable("side_data"), 
+                FieldDef.CreateNullable("side_data"),
             }),
             G2TransformDef.MakeReadonlyStruct(ClassCategories.Formats, "AVInputFormat", "InputFormat", new FieldDef[]
             {

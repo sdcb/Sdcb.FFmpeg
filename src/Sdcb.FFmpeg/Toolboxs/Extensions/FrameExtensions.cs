@@ -50,7 +50,12 @@ public unsafe static class FrameExtensions
 
     private static void WriteImageTo(Frame frame, FormatContext fc)
     {
-        Codec codec = Codec.FindEncoderById(fc.OutputFormat.VideoCodec);
+        if (fc.OutputFormat == null)
+        {
+            throw new FFmpegException($"{nameof(fc.OutputFormat)} must be not null before calling {nameof(WriteImageTo)}");
+        }
+
+        Codec codec = Codec.FindEncoderById(fc.OutputFormat.Value.VideoCodec);
         var mediaStream = new MediaStream(fc);
         using CodecContext codecContext = new (codec);
         {
@@ -58,7 +63,7 @@ public unsafe static class FrameExtensions
             codecContext.Width = frame.Width;
             codecContext.Height = frame.Height;
             codecContext.TimeBase = new AVRational(1, 25);
-            codecContext.Flags = fc.OutputFormat.Flags.HasFlag(AVFMT.Globalheader) ? AV_CODEC_FLAG.GlobalHeader : default;
+            codecContext.Flags = fc.OutputFormat.Value.Flags.HasFlag(AVFMT.Globalheader) ? AV_CODEC_FLAG.GlobalHeader : default;
         };
         codecContext.Open(codec);
         mediaStream.Codecpar!.CopyFrom(codecContext);
