@@ -303,22 +303,10 @@ public unsafe partial class Frame : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVFrameSideData**</para>
     /// <see cref="AVFrame.side_data" />
     /// </summary>
-    public AVFrameSideData** SideData
-    {
-        get => _ptr->side_data;
-        set => _ptr->side_data = value;
-    }
-    
-    /// <summary>
-    /// <see cref="AVFrame.nb_side_data" />
-    /// </summary>
-    public int NbSideData
-    {
-        get => _ptr->nb_side_data;
-        set => _ptr->nb_side_data = value;
-    }
+    public IReadOnlyList<FrameSideData> SideData => new ReadOnlyPtrList<AVFrameSideData, FrameSideData>(_ptr->side_data, (int)_ptr->nb_side_data, FrameSideData.FromNative)!;
     
     /// <summary>
     /// <para>Frame flags, a combination of lavu_frame_flags</para>

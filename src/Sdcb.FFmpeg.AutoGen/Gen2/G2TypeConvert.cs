@@ -97,6 +97,14 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 $@"new ReadOnlyPtrList<{elementType}, {returnElementType}>({{0}}, (int)_ptr->{countElement}, {returnElementType}.{converterMethod})");
         }
 
+        public static TypeCastDef ReadonlyDataPointer(string elementType, string countElement)
+        {
+            return new ReadOnlyFunctionCallCastDef(
+                elementType + "*",
+                $"DataPointer",
+                $@"new DataPointer({{0}}, (int)_ptr->{countElement})");
+        }
+
         public static TypeCastDef ReadonlyNativeListWithCast(string elementType, string returnElementType, string countElement, string converterMethod)
         {
             return new ReadOnlyFunctionCallCastDef(

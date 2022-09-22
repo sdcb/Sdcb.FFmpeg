@@ -29,10 +29,10 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
         internal static Dictionary<string, G2TransformDef> KnownClasses = new G2TransformDef[]
         {
-            // codecs
+            #region codecs
             G2TransformDef.MakeClass(ClassCategories.Codecs, "AVPacket", "Packet", new FieldDef[]
             {
-                FieldDef.CreateNullable("side_data"),
+                FieldDef.CreateNullable("side_data")
             }),
             G2TransformDef.MakeReadonlyStruct(ClassCategories.Codecs, "AVProfile", "MediaProfile", new FieldDef[]
             {
@@ -62,9 +62,14 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateTypeCast("flags", TypeCastDef.Force("int", "AV_CODEC_FLAG")),
             }),
             G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecParserContext", "CodecParserContext"),
-            G2TransformDef.MakeStruct(ClassCategories.Codecs, "AVPacketSideData", "PacketSideData"), 
+            G2TransformDef.MakeStruct(ClassCategories.Codecs, "AVPacketSideData", "PacketSideData", new FieldDef[]
+            {
+                FieldDef.CreateTypeCast("data", TypeCastDef.ReadonlyDataPointer("byte*", "size")) with { ReadOnly = true },
+                FieldDef.CreateHide("size"),
+            }),
+            #endregion
 
-            // formats
+            #region formats
             G2TransformDef.MakeClass(ClassCategories.Formats, "AVFormatContext", "FormatContext", new FieldDef[]
             {
                 FieldDef.CreateRenameNullable("iformat", "InputFormat") with { Nullable = true },
@@ -118,9 +123,20 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             {
                 FieldDef.CreateHide("seek"),
             }),
+            #endregion
 
-            // utils
-            G2TransformDef.MakeClass(ClassCategories.Utils, "AVFrame", "Frame"),
+            #region utils
+            G2TransformDef.MakeClass(ClassCategories.Utils, "AVFrame", "Frame", new FieldDef[]
+            {
+                FieldDef.CreateTypeCast("side_data", TypeCastDef.ReadonlyPtrList("AVFrameSideData", "FrameSideData", "nb_side_data", "FromNative")) with { ReadOnly = true },
+                FieldDef.CreateHide("nb_side_data"),
+            }),
+            G2TransformDef.MakeStruct(ClassCategories.Utils, "AVFrameSideData", "FrameSideData", new FieldDef[]
+            {
+                FieldDef.CreateTypeCast("data", TypeCastDef.ReadonlyDataPointer("byte*", "size")) with { ReadOnly = true },
+                FieldDef.CreateHide("size"),
+            }),
+            #endregion
         }.ToDictionary(k => k.OldName, v => v);
     }
 }
