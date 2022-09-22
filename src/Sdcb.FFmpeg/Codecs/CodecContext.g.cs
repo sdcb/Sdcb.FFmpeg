@@ -1470,13 +1470,14 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVBufferRef*</para>
     /// <para>A reference to the AVHWFramesContext describing the input (for encoding) or output (decoding) frames. The reference is set by the caller and afterwards owned (and freed) by libavcodec - it should never be read by the caller after being set.</para>
     /// <see cref="AVCodecContext.hw_frames_ctx" />
     /// </summary>
-    public AVBufferRef* HwFramesContext
+    public BufferRef? HwFramesContext
     {
-        get => _ptr->hw_frames_ctx;
-        set => _ptr->hw_frames_ctx = value;
+        get => BufferRef.FromNativeOrNull(_ptr->hw_frames_ctx, false);
+        set => _ptr->hw_frames_ctx = value != null ? (AVBufferRef*)value : null;
     }
     
     /// <summary>
@@ -1510,13 +1511,14 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVBufferRef*</para>
     /// <para>A reference to the AVHWDeviceContext describing the device which will be used by a hardware encoder/decoder. The reference is set by the caller and afterwards owned (and freed) by libavcodec.</para>
     /// <see cref="AVCodecContext.hw_device_ctx" />
     /// </summary>
-    public AVBufferRef* HwDeviceContext
+    public BufferRef? HwDeviceContext
     {
-        get => _ptr->hw_device_ctx;
-        set => _ptr->hw_device_ctx = value;
+        get => BufferRef.FromNativeOrNull(_ptr->hw_device_ctx, false);
+        set => _ptr->hw_device_ctx = value != null ? (AVBufferRef*)value : null;
     }
     
     /// <summary>

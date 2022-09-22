@@ -24,14 +24,7 @@ public struct DataPointer
         return new DataPointer(Pointer + start, end);
     }
 
-    public unsafe DataPointer(Span<byte> data)
-    {
-        fixed(byte* ptr = data)
-        {
-            Pointer = (IntPtr)ptr;
-            Length = data.Length;
-        }
-    }
-
     public unsafe Span<byte> AsSpan() => new Span<byte>((byte*)Pointer, Length);
+
+    public byte[] ToArray() => AsSpan().ToArray();
 }

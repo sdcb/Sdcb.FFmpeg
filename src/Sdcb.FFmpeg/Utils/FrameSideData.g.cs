@@ -61,11 +61,12 @@ public unsafe partial struct FrameSideData
     }
     
     /// <summary>
+    /// <para>original type: AVBufferRef*</para>
     /// <see cref="AVFrameSideData.buf" />
     /// </summary>
-    public AVBufferRef* Buf
+    public BufferRef? Buf
     {
-        get => _ptr->buf;
-        set => _ptr->buf = value;
+        get => BufferRef.FromNativeOrNull(_ptr->buf, false);
+        set => _ptr->buf = value != null ? (AVBufferRef*)value : null;
     }
 }

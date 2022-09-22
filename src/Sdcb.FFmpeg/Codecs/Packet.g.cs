@@ -31,13 +31,14 @@ public unsafe partial class Packet : SafeHandle
     public override bool IsInvalid => handle == IntPtr.Zero;
     
     /// <summary>
+    /// <para>original type: AVBufferRef*</para>
     /// <para>A reference to the reference-counted buffer where the packet data is stored. May be NULL, then the packet data is not reference-counted.</para>
     /// <see cref="AVPacket.buf" />
     /// </summary>
-    public AVBufferRef* Buf
+    public BufferRef? Buf
     {
-        get => _ptr->buf;
-        set => _ptr->buf = value;
+        get => BufferRef.FromNativeOrNull(_ptr->buf, false);
+        set => _ptr->buf = value != null ? (AVBufferRef*)value : null;
     }
     
     /// <summary>
@@ -64,20 +65,7 @@ public unsafe partial class Packet : SafeHandle
     /// <para>original type: byte*</para>
     /// <see cref="AVPacket.data" />
     /// </summary>
-    public IntPtr Data
-    {
-        get => (IntPtr)_ptr->data;
-        set => _ptr->data = (byte*)value;
-    }
-    
-    /// <summary>
-    /// <see cref="AVPacket.size" />
-    /// </summary>
-    public int Size
-    {
-        get => _ptr->size;
-        set => _ptr->size = value;
-    }
+    public DataPointer Data => new DataPointer(_ptr->data, (int)_ptr->size)!;
     
     /// <summary>
     /// <see cref="AVPacket.stream_index" />
@@ -150,13 +138,14 @@ public unsafe partial class Packet : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVBufferRef*</para>
     /// <para>AVBufferRef for free use by the API user. FFmpeg will never check the contents of the buffer ref. FFmpeg calls av_buffer_unref() on it when the packet is unreferenced. av_packet_copy_props() calls create a new reference with av_buffer_ref() for the target packet's opaque_ref field.</para>
     /// <see cref="AVPacket.opaque_ref" />
     /// </summary>
-    public AVBufferRef* OpaqueRef
+    public BufferRef? OpaqueRef
     {
-        get => _ptr->opaque_ref;
-        set => _ptr->opaque_ref = value;
+        get => BufferRef.FromNativeOrNull(_ptr->opaque_ref, false);
+        set => _ptr->opaque_ref = value != null ? (AVBufferRef*)value : null;
     }
     
     /// <summary>

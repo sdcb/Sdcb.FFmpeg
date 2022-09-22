@@ -438,23 +438,25 @@ public unsafe partial class Frame : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVBufferRef*</para>
     /// <para>For hwaccel-format frames, this should be a reference to the AVHWFramesContext describing the frame.</para>
     /// <see cref="AVFrame.hw_frames_ctx" />
     /// </summary>
-    public AVBufferRef* HwFramesContext
+    public BufferRef? HwFramesContext
     {
-        get => _ptr->hw_frames_ctx;
-        set => _ptr->hw_frames_ctx = value;
+        get => BufferRef.FromNativeOrNull(_ptr->hw_frames_ctx, false);
+        set => _ptr->hw_frames_ctx = value != null ? (AVBufferRef*)value : null;
     }
     
     /// <summary>
+    /// <para>original type: AVBufferRef*</para>
     /// <para>AVBufferRef for free use by the API user. FFmpeg will never check the contents of the buffer ref. FFmpeg calls av_buffer_unref() on it when the frame is unreferenced. av_frame_copy_props() calls create a new reference with av_buffer_ref() for the target frame's opaque_ref field.</para>
     /// <see cref="AVFrame.opaque_ref" />
     /// </summary>
-    public AVBufferRef* OpaqueRef
+    public BufferRef? OpaqueRef
     {
-        get => _ptr->opaque_ref;
-        set => _ptr->opaque_ref = value;
+        get => BufferRef.FromNativeOrNull(_ptr->opaque_ref, false);
+        set => _ptr->opaque_ref = value != null ? (AVBufferRef*)value : null;
     }
     
     /// <summary>
@@ -495,13 +497,14 @@ public unsafe partial class Frame : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVBufferRef*</para>
     /// <para>AVBufferRef for internal use by a single libav* library. Must not be used to transfer data between libraries. Has to be NULL when ownership of the frame leaves the respective library.</para>
     /// <see cref="AVFrame.private_ref" />
     /// </summary>
-    public AVBufferRef* PrivateRef
+    public BufferRef? PrivateRef
     {
-        get => _ptr->private_ref;
-        set => _ptr->private_ref = value;
+        get => BufferRef.FromNativeOrNull(_ptr->private_ref, false);
+        set => _ptr->private_ref = value != null ? (AVBufferRef*)value : null;
     }
     
     /// <summary>

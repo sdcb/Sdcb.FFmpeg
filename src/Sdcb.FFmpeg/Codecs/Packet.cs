@@ -143,8 +143,6 @@ public unsafe partial class Packet : SafeHandle
         handle = (IntPtr)ptr;
     }
 
-    public Span<byte> AsSpan() => new Span<byte>((void*)Data, Size);
-
     /// <summary>
     /// <see cref="av_packet_side_data_name(AVPacketSideDataType)"/>
     /// </summary>

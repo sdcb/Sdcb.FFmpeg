@@ -32,7 +32,11 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             #region codecs
             G2TransformDef.MakeClass(ClassCategories.Codecs, "AVPacket", "Packet", new FieldDef[]
             {
-                FieldDef.CreateNullable("side_data")
+                FieldDef.CreateNullable("side_data"),
+                FieldDef.CreateNullable("buf"),
+                FieldDef.CreateNullable("opaque_ref"),
+                FieldDef.CreateTypeCast("data", TypeCastDef.ReadonlyDataPointer("byte*", "size")) with { ReadOnly = true },
+                FieldDef.CreateHide("size"),
             }),
             G2TransformDef.MakeReadonlyStruct(ClassCategories.Codecs, "AVProfile", "MediaProfile", new FieldDef[]
             {
@@ -60,6 +64,8 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             {
                 FieldDef.CreateNullable("coded_side_data"),
                 FieldDef.CreateTypeCast("flags", TypeCastDef.Force("int", "AV_CODEC_FLAG")),
+                FieldDef.CreateNullable("hw_frames_ctx"), 
+                FieldDef.CreateNullable("hw_device_ctx"), 
             }),
             G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecParserContext", "CodecParserContext"),
             G2TransformDef.MakeStruct(ClassCategories.Codecs, "AVPacketSideData", "PacketSideData", new FieldDef[]
@@ -130,9 +136,19 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             {
                 FieldDef.CreateTypeCast("side_data", TypeCastDef.ReadonlyPtrList("AVFrameSideData", "FrameSideData", "nb_side_data", "FromNative")) with { ReadOnly = true },
                 FieldDef.CreateHide("nb_side_data"),
+                FieldDef.CreateNullable("hw_frames_ctx"),
+                FieldDef.CreateNullable("opaque_ref"),
+                FieldDef.CreateNullable("private_ref"),
             }),
             G2TransformDef.MakeStruct(ClassCategories.Utils, "AVFrameSideData", "FrameSideData", new FieldDef[]
             {
+                FieldDef.CreateNullable("buf"),
+                FieldDef.CreateTypeCast("data", TypeCastDef.ReadonlyDataPointer("byte*", "size")) with { ReadOnly = true },
+                FieldDef.CreateHide("size"),
+            }),
+            G2TransformDef.MakeClass(ClassCategories.Utils, "AVBufferRef", "BufferRef", new FieldDef[]
+            {
+                FieldDef.CreateTypeCast("buffer", TypeCastDef.Force("AVBuffer*", "IntPtr")), 
                 FieldDef.CreateTypeCast("data", TypeCastDef.ReadonlyDataPointer("byte*", "size")) with { ReadOnly = true },
                 FieldDef.CreateHide("size"),
             }),
