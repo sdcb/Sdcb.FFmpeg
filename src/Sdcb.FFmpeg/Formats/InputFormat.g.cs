@@ -86,7 +86,7 @@ public unsafe partial struct InputFormat
     /// <para>original type: AVInputFormat*</para>
     /// <see cref="AVInputFormat.next" />
     /// </summary>
-    public InputFormat Next => InputFormat.FromNative(_ptr->next);
+    public InputFormat? Next => InputFormat.FromNativeOrNull(_ptr->next);
     
     /// <summary>
     /// <para>Raw demuxers store their codec ID here.</para>

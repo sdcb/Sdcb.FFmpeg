@@ -103,7 +103,7 @@ public unsafe partial struct OutputFormat
     /// <para>original type: AVOutputFormat*</para>
     /// <see cref="AVOutputFormat.next" />
     /// </summary>
-    public OutputFormat Next => OutputFormat.FromNative(_ptr->next);
+    public OutputFormat? Next => OutputFormat.FromNativeOrNull(_ptr->next);
     
     /// <summary>
     /// <para>size of private data so that it can be allocated in the wrapper</para>

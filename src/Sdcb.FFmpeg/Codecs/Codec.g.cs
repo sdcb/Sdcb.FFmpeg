@@ -162,7 +162,7 @@ public unsafe partial struct Codec
     /// <para>original type: AVCodec*</para>
     /// <see cref="AVCodec.next" />
     /// </summary>
-    public Codec Next => Codec.FromNative(_ptr->next);
+    public Codec? Next => Codec.FromNativeOrNull(_ptr->next);
     
     /// <summary>
     /// <para>Private codec-specific defaults.</para>
