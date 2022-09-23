@@ -8,68 +8,68 @@ namespace Sdcb.FFmpeg.Raw
 {
     /// <summary>Macro enum, prefix: AV_CH_</summary>
     [Flags]
-    public enum AV_CH : int
+    public enum AV_CH : ulong
     {
         /// <summary>AV_CH_FRONT_LEFT</summary>
-        FrontLeft = 1 << (int)AVChannel.FrontLeft,
+        FrontLeft = 0x00000001,
         /// <summary>AV_CH_FRONT_RIGHT</summary>
-        FrontRight = 1 << (int)AVChannel.FrontRight,
+        FrontRight = 0x00000002,
         /// <summary>AV_CH_FRONT_CENTER</summary>
-        FrontCenter = 1 << (int)AVChannel.FrontCenter,
+        FrontCenter = 0x00000004,
         /// <summary>AV_CH_LOW_FREQUENCY</summary>
-        LowFrequency = 1 << (int)AVChannel.LowFrequency,
+        LowFrequency = 0x00000008,
         /// <summary>AV_CH_BACK_LEFT</summary>
-        BackLeft = 1 << (int)AVChannel.BackLeft,
+        BackLeft = 0x00000010,
         /// <summary>AV_CH_BACK_RIGHT</summary>
-        BackRight = 1 << (int)AVChannel.BackRight,
+        BackRight = 0x00000020,
         /// <summary>AV_CH_FRONT_LEFT_OF_CENTER</summary>
-        FrontLeftOfCenter = 1 << (int)AVChannel.FrontLeftOfCenter,
+        FrontLeftOfCenter = 0x00000040,
         /// <summary>AV_CH_FRONT_RIGHT_OF_CENTER</summary>
-        FrontRightOfCenter = 1 << (int)AVChannel.FrontRightOfCenter,
+        FrontRightOfCenter = 0x00000080,
         /// <summary>AV_CH_BACK_CENTER</summary>
-        BackCenter = 1 << (int)AVChannel.BackCenter,
+        BackCenter = 0x00000100,
         /// <summary>AV_CH_SIDE_LEFT</summary>
-        SideLeft = 1 << (int)AVChannel.SideLeft,
+        SideLeft = 0x00000200,
         /// <summary>AV_CH_SIDE_RIGHT</summary>
-        SideRight = 1 << (int)AVChannel.SideRight,
+        SideRight = 0x00000400,
         /// <summary>AV_CH_TOP_CENTER</summary>
-        TopCenter = 1 << (int)AVChannel.TopCenter,
+        TopCenter = 0x00000800,
         /// <summary>AV_CH_TOP_FRONT_LEFT</summary>
-        TopFrontLeft = 1 << (int)AVChannel.TopFrontLeft,
+        TopFrontLeft = 0x00001000,
         /// <summary>AV_CH_TOP_FRONT_CENTER</summary>
-        TopFrontCenter = 1 << (int)AVChannel.TopFrontCenter,
+        TopFrontCenter = 0x00002000,
         /// <summary>AV_CH_TOP_FRONT_RIGHT</summary>
-        TopFrontRight = 1 << (int)AVChannel.TopFrontRight,
+        TopFrontRight = 0x00004000,
         /// <summary>AV_CH_TOP_BACK_LEFT</summary>
-        TopBackLeft = 1 << (int)AVChannel.TopBackLeft,
+        TopBackLeft = 0x00008000,
         /// <summary>AV_CH_TOP_BACK_CENTER</summary>
-        TopBackCenter = 1 << (int)AVChannel.TopBackCenter,
+        TopBackCenter = 0x00010000,
         /// <summary>AV_CH_TOP_BACK_RIGHT</summary>
-        TopBackRight = 1 << (int)AVChannel.TopBackRight,
+        TopBackRight = 0x00020000,
         /// <summary>AV_CH_STEREO_LEFT</summary>
-        StereoLeft = 1 << (int)AVChannel.StereoLeft,
+        StereoLeft = 0x20000000,
         /// <summary>AV_CH_STEREO_RIGHT</summary>
-        StereoRight = 1 << (int)AVChannel.StereoRight,
+        StereoRight = 0x40000000,
         /// <summary>AV_CH_WIDE_LEFT</summary>
-        WideLeft = 1 << (int)AVChannel.WideLeft,
+        WideLeft = 0x0000000080000000,
         /// <summary>AV_CH_WIDE_RIGHT</summary>
-        WideRight = 1 << (int)AVChannel.WideRight,
+        WideRight = 0x0000000100000000,
         /// <summary>AV_CH_SURROUND_DIRECT_LEFT</summary>
-        SurroundDirectLeft = 1 << (int)AVChannel.SurroundDirectLeft,
+        SurroundDirectLeft = 0x0000000200000000,
         /// <summary>AV_CH_SURROUND_DIRECT_RIGHT</summary>
-        SurroundDirectRight = 1 << (int)AVChannel.SurroundDirectRight,
+        SurroundDirectRight = 0x0000000400000000,
         /// <summary>AV_CH_LOW_FREQUENCY_2</summary>
-        LowFrequency_2 = 1 << (int)AVChannel.LowFrequency_2,
+        LowFrequency_2 = 0x0000000800000000,
         /// <summary>AV_CH_TOP_SIDE_LEFT</summary>
-        TopSideLeft = 1 << (int)AVChannel.TopSideLeft,
+        TopSideLeft = 0x0000001000000000,
         /// <summary>AV_CH_TOP_SIDE_RIGHT</summary>
-        TopSideRight = 1 << (int)AVChannel.TopSideRight,
+        TopSideRight = 0x0000002000000000,
         /// <summary>AV_CH_BOTTOM_FRONT_CENTER</summary>
-        BottomFrontCenter = 1 << (int)AVChannel.BottomFrontCenter,
+        BottomFrontCenter = 0x0000004000000000,
         /// <summary>AV_CH_BOTTOM_FRONT_LEFT</summary>
-        BottomFrontLeft = 1 << (int)AVChannel.BottomFrontLeft,
+        BottomFrontLeft = 0x0000008000000000,
         /// <summary>AV_CH_BOTTOM_FRONT_RIGHT</summary>
-        BottomFrontRight = 1 << (int)AVChannel.BottomFrontRight,
+        BottomFrontRight = 0x0000010000000000,
         /// <summary>AV_CH_LAYOUT_MONO</summary>
         LayoutMono = FrontCenter,
         /// <summary>AV_CH_LAYOUT_STEREO</summary>
@@ -330,6 +330,8 @@ namespace Sdcb.FFmpeg.Raw
         Planar = 1 << 4,
         /// <summary>AV_PIX_FMT_FLAG_RGB</summary>
         Rgb = 1 << 5,
+        /// <summary>AV_PIX_FMT_FLAG_PSEUDOPAL</summary>
+        Pseudopal = 1 << 6,
         /// <summary>AV_PIX_FMT_FLAG_ALPHA</summary>
         Alpha = 1 << 7,
         /// <summary>AV_PIX_FMT_FLAG_BAYER</summary>
@@ -391,74 +393,6 @@ namespace Sdcb.FFmpeg.Raw
         Karaoke = 8,
         /// <summary>Not part of ABI</summary>
         Nb = 9,
-    }
-    
-    /// <summary>@{</summary>
-    public enum AVChannel : int
-    {
-        None = -1,
-        FrontLeft = 0,
-        FrontRight = 1,
-        FrontCenter = 2,
-        LowFrequency = 3,
-        BackLeft = 4,
-        BackRight = 5,
-        FrontLeftOfCenter = 6,
-        FrontRightOfCenter = 7,
-        BackCenter = 8,
-        SideLeft = 9,
-        SideRight = 10,
-        TopCenter = 11,
-        TopFrontLeft = 12,
-        TopFrontCenter = 13,
-        TopFrontRight = 14,
-        TopBackLeft = 15,
-        TopBackCenter = 16,
-        TopBackRight = 17,
-        /// <summary>Stereo downmix.</summary>
-        StereoLeft = 29,
-        /// <summary>See above.</summary>
-        StereoRight = 30,
-        /// <summary>See above.</summary>
-        WideLeft = 31,
-        /// <summary>See above.</summary>
-        WideRight = 32,
-        /// <summary>See above.</summary>
-        SurroundDirectLeft = 33,
-        /// <summary>See above.</summary>
-        SurroundDirectRight = 34,
-        /// <summary>See above.</summary>
-        LowFrequency_2 = 35,
-        /// <summary>See above.</summary>
-        TopSideLeft = 36,
-        /// <summary>See above.</summary>
-        TopSideRight = 37,
-        /// <summary>See above.</summary>
-        BottomFrontCenter = 38,
-        /// <summary>See above.</summary>
-        BottomFrontLeft = 39,
-        /// <summary>See above.</summary>
-        BottomFrontRight = 40,
-        /// <summary>Channel is empty can be safely skipped.</summary>
-        Unused = 512,
-        /// <summary>Channel contains data, but its position is unknown.</summary>
-        Unknown = 768,
-        /// <summary>Range of channels between AV_CHAN_AMBISONIC_BASE and AV_CHAN_AMBISONIC_END represent Ambisonic components using the ACN system.</summary>
-        AmbisonicBase = 1024,
-        /// <summary>Range of channels between AV_CHAN_AMBISONIC_BASE and AV_CHAN_AMBISONIC_END represent Ambisonic components using the ACN system.</summary>
-        AmbisonicEnd = 2047,
-    }
-    
-    public enum AVChannelOrder : int
-    {
-        /// <summary>Only the channel count is specified, without any further information about the channel order.</summary>
-        Unspec = 0,
-        /// <summary>The native channel order, i.e. the channels are in the same order in which they are defined in the AVChannel enum. This supports up to 63 different channels.</summary>
-        Native = 1,
-        /// <summary>The channel order does not correspond to any other predefined order and is stored as an explicit map. For example, this could be used to support layouts with 64 or more channels, or with empty/skipped (AV_CHAN_SILENCE) channels at arbitrary positions.</summary>
-        Custom = 2,
-        /// <summary>The audio is represented as the decomposition of the sound field into spherical harmonics. Each channel corresponds to a single expansion component. Channels are ordered according to ACN (Ambisonic Channel Number).</summary>
-        Ambisonic = 3,
     }
     
     /// <summary>Location of chroma samples.</summary>
@@ -702,71 +636,66 @@ namespace Sdcb.FFmpeg.Raw
         Avs3 = 194,
         Msp2 = 195,
         Vvc = 196,
-        Y41p = 197,
-        Avrp = 198,
-        _012V = 199,
-        Avui = 200,
-        Ayuv = 201,
-        TargaY216 = 202,
-        V308 = 203,
-        V408 = 204,
-        Yuv4 = 205,
-        Avrn = 206,
-        Cpia = 207,
-        Xface = 208,
-        Snow = 209,
-        Smvjpeg = 210,
-        Apng = 211,
-        Daala = 212,
-        Cfhd = 213,
-        Truemotion2rt = 214,
-        M101 = 215,
-        Magicyuv = 216,
-        Sheervideo = 217,
-        Ylc = 218,
-        Psd = 219,
-        Pixlet = 220,
-        Speedhq = 221,
-        Fmvc = 222,
-        Scpr = 223,
-        Clearvideo = 224,
-        Xpm = 225,
-        Av1 = 226,
-        Bitpacked = 227,
-        Mscc = 228,
-        Srgc = 229,
-        Svg = 230,
-        Gdv = 231,
-        Fits = 232,
-        Imm4 = 233,
-        Prosumer = 234,
-        Mwsc = 235,
-        Wcmv = 236,
-        Rasc = 237,
-        Hymt = 238,
-        Arbc = 239,
-        Agm = 240,
-        Lscr = 241,
-        Vp4 = 242,
-        Imm5 = 243,
-        Mvdv = 244,
-        Mvha = 245,
-        Cdtoons = 246,
-        Mv30 = 247,
-        Notchlc = 248,
-        Pfm = 249,
-        Mobiclip = 250,
-        Photocd = 251,
-        Ipu = 252,
-        Argo = 253,
-        Cri = 254,
-        SimbiosisImx = 255,
-        SgaVideo = 256,
-        Gem = 257,
-        Vbn = 258,
-        Jpegxl = 259,
-        Qoi = 260,
-        Phm = 261,
+        Y41p = 32768,
+        Avrp = 32769,
+        _012V = 32770,
+        Avui = 32771,
+        Ayuv = 32772,
+        TargaY216 = 32773,
+        V308 = 32774,
+        V408 = 32775,
+        Yuv4 = 32776,
+        Avrn = 32777,
+        Cpia = 32778,
+        Xface = 32779,
+        Snow = 32780,
+        Smvjpeg = 32781,
+        Apng = 32782,
+        Daala = 32783,
+        Cfhd = 32784,
+        Truemotion2rt = 32785,
+        M101 = 32786,
+        Magicyuv = 32787,
+        Sheervideo = 32788,
+        Ylc = 32789,
+        Psd = 32790,
+        Pixlet = 32791,
+        Speedhq = 32792,
+        Fmvc = 32793,
+        Scpr = 32794,
+        Clearvideo = 32795,
+        Xpm = 32796,
+        Av1 = 32797,
+        Bitpacked = 32798,
+        Mscc = 32799,
+        Srgc = 32800,
+        Svg = 32801,
+        Gdv = 32802,
+        Fits = 32803,
+        Imm4 = 32804,
+        Prosumer = 32805,
+        Mwsc = 32806,
+        Wcmv = 32807,
+        Rasc = 32808,
+        Hymt = 32809,
+        Arbc = 32810,
+        Agm = 32811,
+        Lscr = 32812,
+        Vp4 = 32813,
+        Imm5 = 32814,
+        Mvdv = 32815,
+        Mvha = 32816,
+        Cdtoons = 32817,
+        Mv30 = 32818,
+        Notchlc = 32819,
+        Pfm = 32820,
+        Mobiclip = 32821,
+        Photocd = 32822,
+        Ipu = 32823,
+        Argo = 32824,
+        Cri = 32825,
+        SimbiosisImx = 32826,
+        SgaVideo = 32827,
         /// <summary>A dummy id pointing at the start of audio codecs</summary>
         FirstAudio = 65536,
         PcmS16le = 65536,
@@ -800,12 +729,12 @@ namespace Sdcb.FFmpeg.Raw
         PcmS24lePlanar = 65564,
         PcmS32lePlanar = 65565,
         PcmS16bePlanar = 65566,
-        PcmS64le = 65567,
-        PcmS64be = 65568,
-        PcmF16le = 65569,
-        PcmF24le = 65570,
-        PcmVidc = 65571,
-        PcmSga = 65572,
+        PcmS64le = 67584,
+        PcmS64be = 67585,
+        PcmF16le = 67586,
+        PcmF24le = 67587,
+        PcmVidc = 67588,
+        PcmSga = 67589,
         AdpcmImaQt = 69632,
         AdpcmImaWav = 69633,
         AdpcmImaDk3 = 69634,
@@ -837,26 +766,25 @@ namespace Sdcb.FFmpeg.Raw
         AdpcmG722 = 69660,
         AdpcmImaApc = 69661,
         AdpcmVima = 69662,
-        AdpcmAfc = 69663,
-        AdpcmImaOki = 69664,
-        AdpcmDtk = 69665,
-        AdpcmImaRad = 69666,
-        AdpcmG726le = 69667,
-        AdpcmThpLe = 69668,
-        AdpcmPsx = 69669,
-        AdpcmAica = 69670,
-        AdpcmImaDat4 = 69671,
-        AdpcmMtaf = 69672,
-        AdpcmAgm = 69673,
-        AdpcmArgo = 69674,
-        AdpcmImaSsi = 69675,
-        AdpcmZork = 69676,
-        AdpcmImaApm = 69677,
-        AdpcmImaAlp = 69678,
-        AdpcmImaMtf = 69679,
-        AdpcmImaCunning = 69680,
-        AdpcmImaMoflex = 69681,
-        AdpcmImaAcorn = 69682,
+        AdpcmAfc = 71680,
+        AdpcmImaOki = 71681,
+        AdpcmDtk = 71682,
+        AdpcmImaRad = 71683,
+        AdpcmG726le = 71684,
+        AdpcmThpLe = 71685,
+        AdpcmPsx = 71686,
+        AdpcmAica = 71687,
+        AdpcmImaDat4 = 71688,
+        AdpcmMtaf = 71689,
+        AdpcmAgm = 71690,
+        AdpcmArgo = 71691,
+        AdpcmImaSsi = 71692,
+        AdpcmZork = 71693,
+        AdpcmImaApm = 71694,
+        AdpcmImaAlp = 71695,
+        AdpcmImaMtf = 71696,
+        AdpcmImaCunning = 71697,
+        AdpcmImaMoflex = 71698,
         AmrNb = 73728,
         AmrWb = 73729,
         Ra_144 = 77824,
@@ -865,9 +793,9 @@ namespace Sdcb.FFmpeg.Raw
         InterplayDpcm = 81921,
         XanDpcm = 81922,
         SolDpcm = 81923,
-        Sdx2Dpcm = 81924,
-        GremlinDpcm = 81925,
-        DerfDpcm = 81926,
+        Sdx2Dpcm = 83968,
+        GremlinDpcm = 83969,
+        DerfDpcm = 83970,
         Mp2 = 86016,
         /// <summary>preferred ID for decoding MPEG audio layer 1, 2 or 3</summary>
         Mp3 = 86017,
@@ -938,35 +866,33 @@ namespace Sdcb.FFmpeg.Raw
         On2avc = 86081,
         DssSp = 86082,
         Codec2 = 86083,
-        Ffwavesynth = 86084,
-        Sonic = 86085,
-        SonicLs = 86086,
-        Evrc = 86087,
-        Smv = 86088,
-        DsdLsbf = 86089,
-        DsdMsbf = 86090,
-        DsdLsbfPlanar = 86091,
-        DsdMsbfPlanar = 86092,
-        _4GV = 86093,
-        InterplayAcm = 86094,
-        Xma1 = 86095,
-        Xma2 = 86096,
-        Dst = 86097,
-        Atrac3al = 86098,
-        Atrac3pal = 86099,
-        DolbyE = 86100,
-        Aptx = 86101,
-        AptxHd = 86102,
-        Sbc = 86103,
-        Atrac9 = 86104,
-        Hcom = 86105,
-        AcelpKelvin = 86106,
-        Mpegh_3DAudio = 86107,
-        Siren = 86108,
-        Hca = 86109,
-        Fastaudio = 86110,
-        Msnsiren = 86111,
-        Dfpwm = 86112,
+        Ffwavesynth = 88064,
+        Sonic = 88065,
+        SonicLs = 88066,
+        Evrc = 88067,
+        Smv = 88068,
+        DsdLsbf = 88069,
+        DsdMsbf = 88070,
+        DsdLsbfPlanar = 88071,
+        DsdMsbfPlanar = 88072,
+        _4GV = 88073,
+        InterplayAcm = 88074,
+        Xma1 = 88075,
+        Xma2 = 88076,
+        Dst = 88077,
+        Atrac3al = 88078,
+        Atrac3pal = 88079,
+        DolbyE = 88080,
+        Aptx = 88081,
+        AptxHd = 88082,
+        Sbc = 88083,
+        Atrac9 = 88084,
+        Hcom = 88085,
+        AcelpKelvin = 88086,
+        Mpegh_3DAudio = 88087,
+        Siren = 88088,
+        Hca = 88089,
+        Fastaudio = 88090,
         /// <summary>A dummy ID pointing at the start of subtitle codecs.</summary>
         FirstSubtitle = 94208,
         DvdSubtitle = 94208,
@@ -979,37 +905,37 @@ namespace Sdcb.FFmpeg.Raw
         HdmvPgsSubtitle = 94214,
         DvbTeletext = 94215,
         Srt = 94216,
-        Microdvd = 94217,
-        Eia_608 = 94218,
-        Jacosub = 94219,
-        Sami = 94220,
-        Realtext = 94221,
-        Stl = 94222,
-        Subviewer1 = 94223,
-        Subviewer = 94224,
-        Subrip = 94225,
-        Webvtt = 94226,
-        Mpl2 = 94227,
-        Vplayer = 94228,
-        Pjs = 94229,
-        Ass = 94230,
-        HdmvTextSubtitle = 94231,
-        Ttml = 94232,
-        AribCaption = 94233,
+        Microdvd = 96256,
+        Eia_608 = 96257,
+        Jacosub = 96258,
+        Sami = 96259,
+        Realtext = 96260,
+        Stl = 96261,
+        Subviewer1 = 96262,
+        Subviewer = 96263,
+        Subrip = 96264,
+        Webvtt = 96265,
+        Mpl2 = 96266,
+        Vplayer = 96267,
+        Pjs = 96268,
+        Ass = 96269,
+        HdmvTextSubtitle = 96270,
+        Ttml = 96271,
+        AribCaption = 96272,
         /// <summary>A dummy ID pointing at the start of various fake codecs.</summary>
         FirstUnknown = 98304,
         Ttf = 98304,
         /// <summary>Contain timestamp estimated through PCR of program stream.</summary>
         Scte_35 = 98305,
         Epg = 98306,
-        Bintext = 98307,
-        Xbin = 98308,
-        Idf = 98309,
-        Otf = 98310,
-        SmpteKlv = 98311,
-        DvdNav = 98312,
-        TimedId3 = 98313,
-        BinData = 98314,
+        Bintext = 100352,
+        Xbin = 100353,
+        Idf = 100354,
+        Otf = 100355,
+        SmpteKlv = 100356,
+        DvdNav = 100357,
+        TimedId3 = 100358,
+        BinData = 100359,
         /// <summary>codec_id is not known (like AV_CODEC_ID_NONE) but lavf should attempt to identify it</summary>
         Probe = 102400,
         /// <summary>_FAKE_ codec to indicate a raw MPEG-2 TS stream (only used by libavformat)</summary>
@@ -1022,11 +948,11 @@ namespace Sdcb.FFmpeg.Raw
         WrappedAvframe = 135169,
     }
     
-    /// <summary>Chromaticity coordinates of the source primaries. These values match the ones defined by ISO/IEC 23091-2_2019 subclause 8.1 and ITU-T H.273.</summary>
+    /// <summary>Chromaticity coordinates of the source primaries. These values match the ones defined by ISO/IEC 23001-8_2013 § 7.1.</summary>
     public enum AVColorPrimaries : int
     {
         Reserved0 = 0,
-        /// <summary>also ITU-R BT1361 / IEC 61966-2-4 / SMPTE RP 177 Annex B</summary>
+        /// <summary>also ITU-R BT1361 / IEC 61966-2-4 / SMPTE RP177 Annex B</summary>
         Bt709 = 1,
         Unspecified = 2,
         Reserved = 3,
@@ -1036,7 +962,7 @@ namespace Sdcb.FFmpeg.Raw
         Bt470bg = 5,
         /// <summary>also ITU-R BT601-6 525 / ITU-R BT1358 525 / ITU-R BT1700 NTSC</summary>
         Smpte170m = 6,
-        /// <summary>identical to above, also called &quot;SMPTE C&quot; even though it uses D65</summary>
+        /// <summary>functionally identical to above</summary>
         Smpte240m = 7,
         /// <summary>colour filters using Illuminant C</summary>
         Film = 8,
@@ -1049,7 +975,7 @@ namespace Sdcb.FFmpeg.Raw
         Smpte431 = 11,
         /// <summary>SMPTE ST 432-1 (2010) / P3 D65 / Display P3</summary>
         Smpte432 = 12,
-        /// <summary>EBU Tech. 3213-E (nothing there) / one of JEDEC P22 group phosphors</summary>
+        /// <summary>EBU Tech. 3213-E / JEDEC P22 phosphors</summary>
         Ebu3213 = 22,
         JedecP22 = 22,
         /// <summary>Not part of ABI</summary>
@@ -1068,25 +994,24 @@ namespace Sdcb.FFmpeg.Raw
         Nb = 3,
     }
     
-    /// <summary>YUV colorspace type. These values match the ones defined by ISO/IEC 23091-2_2019 subclause 8.3.</summary>
+    /// <summary>YUV colorspace type. These values match the ones defined by ISO/IEC 23001-8_2013 § 7.3.</summary>
     public enum AVColorSpace : int
     {
-        /// <summary>order of coefficients is actually GBR, also IEC 61966-2-1 (sRGB), YZX and ST 428-1</summary>
+        /// <summary>order of coefficients is actually GBR, also IEC 61966-2-1 (sRGB)</summary>
         Rgb = 0,
-        /// <summary>also ITU-R BT1361 / IEC 61966-2-4 xvYCC709 / derived in SMPTE RP 177 Annex B</summary>
+        /// <summary>also ITU-R BT1361 / IEC 61966-2-4 xvYCC709 / SMPTE RP177 Annex B</summary>
         Bt709 = 1,
         Unspecified = 2,
-        /// <summary>reserved for future use by ITU-T and ISO/IEC just like 15-255 are</summary>
         Reserved = 3,
         /// <summary>FCC Title 47 Code of Federal Regulations 73.682 (a)(20)</summary>
         Fcc = 4,
         /// <summary>also ITU-R BT601-6 625 / ITU-R BT1358 625 / ITU-R BT1700 625 PAL &amp; SECAM / IEC 61966-2-4 xvYCC601</summary>
         Bt470bg = 5,
-        /// <summary>also ITU-R BT601-6 525 / ITU-R BT1358 525 / ITU-R BT1700 NTSC / functionally identical to above</summary>
+        /// <summary>also ITU-R BT601-6 525 / ITU-R BT1358 525 / ITU-R BT1700 NTSC</summary>
         Smpte170m = 6,
-        /// <summary>derived from 170M primaries and D65 white point, 170M is derived from BT470 System M&apos;s primaries</summary>
+        /// <summary>functionally identical to above</summary>
         Smpte240m = 7,
-        /// <summary>used by Dirac / VC-2 and H.264 FRext, see ITU-T SG16</summary>
+        /// <summary>Used by Dirac / VC-2 and H.264 FRext, see ITU-T SG16</summary>
         Ycgco = 8,
         Ycocg = 8,
         /// <summary>ITU-R BT2020 non-constant luminance system</summary>
@@ -1105,7 +1030,7 @@ namespace Sdcb.FFmpeg.Raw
         Nb = 15,
     }
     
-    /// <summary>Color Transfer Characteristic. These values match the ones defined by ISO/IEC 23091-2_2019 subclause 8.2.</summary>
+    /// <summary>Color Transfer Characteristic. These values match the ones defined by ISO/IEC 23001-8_2013 § 7.2.</summary>
     public enum AVColorTransferCharacteristic : int
     {
         Reserved0 = 0,
@@ -1233,8 +1158,6 @@ namespace Sdcb.FFmpeg.Raw
         Nofile = 0x0001,
         /// <summary>AVFMT_NEEDNUMBER</summary>
         Neednumber = 0x0002,
-        /// <summary>AVFMT_EXPERIMENTAL</summary>
-        Experimental = 0x0004,
         /// <summary>AVFMT_SHOW_IDS</summary>
         ShowIds = 0x0008,
         /// <summary>AVFMT_GLOBALHEADER</summary>
@@ -1275,8 +1198,6 @@ namespace Sdcb.FFmpeg.Raw
     {
         /// <summary>AVFMT_AVOID_NEG_TS_AUTO</summary>
         Auto = -1,
-        /// <summary>AVFMT_AVOID_NEG_TS_DISABLED</summary>
-        Disabled = 0,
         /// <summary>AVFMT_AVOID_NEG_TS_MAKE_NON_NEGATIVE</summary>
         MakeNonNegative = 1,
         /// <summary>AVFMT_AVOID_NEG_TS_MAKE_ZERO</summary>
@@ -1309,10 +1230,14 @@ namespace Sdcb.FFmpeg.Raw
         FlushPackets = 0x0200,
         /// <summary>AVFMT_FLAG_BITEXACT</summary>
         Bitexact = 0x0400,
+        /// <summary>AVFMT_FLAG_MP4A_LATM</summary>
+        Mp4aLatm = 0x8000,
         /// <summary>AVFMT_FLAG_SORT_DTS</summary>
         SortDts = 0x10000,
         /// <summary>AVFMT_FLAG_PRIV_OPT</summary>
         PrivOpt = 0x20000,
+        /// <summary>AVFMT_FLAG_KEEP_SIDE_DATA</summary>
+        KeepSideData = 0x40000,
         /// <summary>AVFMT_FLAG_FAST_SEEK</summary>
         FastSeek = 0x80000,
         /// <summary>AVFMT_FLAG_SHORTEST</summary>
@@ -1356,26 +1281,22 @@ namespace Sdcb.FFmpeg.Raw
         ContentLightLevel = 14,
         /// <summary>The data contains an ICC profile as an opaque octet buffer following the format described by ISO 15076-1 with an optional name defined in the metadata key entry &quot;name&quot;.</summary>
         IccProfile = 15,
+        /// <summary>Implementation-specific description of the format of AV_FRAME_QP_TABLE_DATA. The contents of this side data are undocumented and internal; use av_frame_set_qp_table() and av_frame_get_qp_table() to access this in a meaningful way instead.</summary>
+        QpTableProperties = 16,
+        /// <summary>Raw QP table data. Its format is described by AV_FRAME_DATA_QP_TABLE_PROPERTIES. Use av_frame_set_qp_table() and av_frame_get_qp_table() to access this instead.</summary>
+        QpTableData = 17,
         /// <summary>Timecode which conforms to SMPTE ST 12-1. The data is an array of 4 uint32_t where the first uint32_t describes how many (1-3) of the other timecodes are used. The timecode format is described in the documentation of av_timecode_get_smpte_from_framenum() function in libavutil/timecode.h.</summary>
-        S12mTimecode = 16,
+        S12mTimecode = 18,
         /// <summary>HDR dynamic metadata associated with a video frame. The payload is an AVDynamicHDRPlus type and contains information for color volume transform - application 4 of SMPTE 2094-40:2016 standard.</summary>
-        DynamicHdrPlus = 17,
+        DynamicHdrPlus = 19,
         /// <summary>Regions Of Interest, the data is an array of AVRegionOfInterest type, the number of array element is implied by AVFrameSideData.size / AVRegionOfInterest.self_size.</summary>
-        RegionsOfInterest = 18,
+        RegionsOfInterest = 20,
         /// <summary>Encoding parameters for a video frame, as described by AVVideoEncParams.</summary>
-        VideoEncParams = 19,
+        VideoEncParams = 21,
         /// <summary>User data unregistered metadata associated with a video frame. This is the H.26[45] UDU SEI message, and shouldn&apos;t be used for any other purpose The data is stored as uint8_t in AVFrameSideData.data which is 16 bytes of uuid_iso_iec_11578 followed by AVFrameSideData.size - 16 bytes of user_data_payload_byte.</summary>
-        SeiUnregistered = 20,
+        SeiUnregistered = 22,
         /// <summary>Film grain parameters for a frame, described by AVFilmGrainParams. Must be present for every frame which should have film grain applied.</summary>
-        FilmGrainParams = 21,
-        /// <summary>Bounding boxes for object detection and classification, as described by AVDetectionBBoxHeader.</summary>
-        DetectionBboxes = 22,
-        /// <summary>Dolby Vision RPU raw data, suitable for passing to x265 or other libraries. Array of uint8_t, with NAL emulation bytes intact.</summary>
-        DoviRpuBuffer = 23,
-        /// <summary>Parsed Dolby Vision metadata, suitable for passing to a software implementation. The payload is the AVDOVIMetadata struct defined in libavutil/dovi_meta.h.</summary>
-        DoviMetadata = 24,
-        /// <summary>HDR Vivid dynamic metadata associated with a video frame. The payload is an AVDynamicHDRVivid type and contains information for color volume transform - CUVA 005.1-2021.</summary>
-        DynamicHdrVivid = 25,
+        FilmGrainParams = 23,
     }
     
     /// <summary>Option for overlapping elliptical pixel selectors in an image.</summary>
@@ -1458,6 +1379,20 @@ namespace Sdcb.FFmpeg.Raw
         Workgroup = 10,
     }
     
+    /// <summary>Lock operation used by lockmgr</summary>
+    [Obsolete("Deprecated together with av_lockmgr_register().")]
+    public enum AVLockOp : int
+    {
+        /// <summary>Create a mutex</summary>
+        Create = 0,
+        /// <summary>Lock the mutex</summary>
+        Obtain = 1,
+        /// <summary>Unlock the mutex</summary>
+        Release = 2,
+        /// <summary>Free mutex resources</summary>
+        Destroy = 3,
+    }
+    
     public enum AVMatrixEncoding : int
     {
         None = 0,
@@ -1510,7 +1445,6 @@ namespace Sdcb.FFmpeg.Raw
         Color = 16,
         ChannelLayout = 17,
         Bool = 18,
-        Chlayout = 19,
     }
     
     /// <summary>Types and functions for working with AVPacket. @{</summary>
@@ -1578,10 +1512,8 @@ namespace Sdcb.FFmpeg.Raw
         DoviConf = 29,
         /// <summary>Timecode which conforms to SMPTE ST 12-1:2014. The data is an array of 4 uint32_t where the first uint32_t describes how many (1-3) of the other timecodes are used. The timecode format is described in the documentation of av_timecode_get_smpte_from_framenum() function in libavutil/timecode.h.</summary>
         S12mTimecode = 30,
-        /// <summary>HDR10+ dynamic metadata associated with a video frame. The metadata is in the form of the AVDynamicHDRPlus struct and contains information for color volume transform - application 4 of SMPTE 2094-40:2016 standard.</summary>
-        DynamicHdr10Plus = 31,
         /// <summary>The number of side data types. This is not part of the public API/ABI in the sense that it may change when new side data types are added. This must stay the last enum value. If its value becomes huge, some code using it needs to be updated as it assumes it to be smaller than other limits.</summary>
-        Nb = 32,
+        Nb = 31,
     }
     
     /// <summary>@{</summary>
@@ -1706,337 +1638,323 @@ namespace Sdcb.FFmpeg.Raw
         Bgr555be = 42,
         /// <summary>packed BGR 5:5:5, 16bpp, (msb)1X 5B 5G 5R(lsb), little-endian, X=unused/undefined</summary>
         Bgr555le = 43,
-        /// <summary>Hardware acceleration through VA-API, data[3] contains a VASurfaceID.</summary>
-        Vaapi = 44,
+        /// <summary>HW acceleration through VA API at motion compensation entry-point, Picture.data[3] contains a vaapi_render_state struct which contains macroblocks as well as various fields extracted from headers</summary>
+        VaapiMoco = 44,
+        /// <summary>HW acceleration through VA API at IDCT entry-point, Picture.data[3] contains a vaapi_render_state struct which contains fields extracted from headers</summary>
+        VaapiIdct = 45,
+        /// <summary>HW decoding through VA API, Picture.data[3] contains a VASurfaceID</summary>
+        VaapiVld = 46,
+        /// <summary>@}</summary>
+        Vaapi = 46,
         /// <summary>planar YUV 4:2:0, 24bpp, (1 Cr &amp; Cb sample per 2x2 Y samples), little-endian</summary>
-        Yuv420p16le = 45,
+        Yuv420p16le = 47,
         /// <summary>planar YUV 4:2:0, 24bpp, (1 Cr &amp; Cb sample per 2x2 Y samples), big-endian</summary>
-        Yuv420p16be = 46,
+        Yuv420p16be = 48,
         /// <summary>planar YUV 4:2:2, 32bpp, (1 Cr &amp; Cb sample per 2x1 Y samples), little-endian</summary>
-        Yuv422p16le = 47,
+        Yuv422p16le = 49,
         /// <summary>planar YUV 4:2:2, 32bpp, (1 Cr &amp; Cb sample per 2x1 Y samples), big-endian</summary>
-        Yuv422p16be = 48,
+        Yuv422p16be = 50,
         /// <summary>planar YUV 4:4:4, 48bpp, (1 Cr &amp; Cb sample per 1x1 Y samples), little-endian</summary>
-        Yuv444p16le = 49,
+        Yuv444p16le = 51,
         /// <summary>planar YUV 4:4:4, 48bpp, (1 Cr &amp; Cb sample per 1x1 Y samples), big-endian</summary>
-        Yuv444p16be = 50,
+        Yuv444p16be = 52,
         /// <summary>HW decoding through DXVA2, Picture.data[3] contains a LPDIRECT3DSURFACE9 pointer</summary>
-        Dxva2Vld = 51,
+        Dxva2Vld = 53,
         /// <summary>packed RGB 4:4:4, 16bpp, (msb)4X 4R 4G 4B(lsb), little-endian, X=unused/undefined</summary>
-        Rgb444le = 52,
+        Rgb444le = 54,
         /// <summary>packed RGB 4:4:4, 16bpp, (msb)4X 4R 4G 4B(lsb), big-endian, X=unused/undefined</summary>
-        Rgb444be = 53,
+        Rgb444be = 55,
         /// <summary>packed BGR 4:4:4, 16bpp, (msb)4X 4B 4G 4R(lsb), little-endian, X=unused/undefined</summary>
-        Bgr444le = 54,
+        Bgr444le = 56,
         /// <summary>packed BGR 4:4:4, 16bpp, (msb)4X 4B 4G 4R(lsb), big-endian, X=unused/undefined</summary>
-        Bgr444be = 55,
+        Bgr444be = 57,
         /// <summary>8 bits gray, 8 bits alpha</summary>
-        Ya8 = 56,
+        Ya8 = 58,
         /// <summary>alias for AV_PIX_FMT_YA8</summary>
-        Y400a = 56,
+        Y400a = 58,
         /// <summary>alias for AV_PIX_FMT_YA8</summary>
-        Gray8a = 56,
+        Gray8a = 58,
         /// <summary>packed RGB 16:16:16, 48bpp, 16B, 16G, 16R, the 2-byte value for each R/G/B component is stored as big-endian</summary>
-        Bgr48be = 57,
+        Bgr48be = 59,
         /// <summary>packed RGB 16:16:16, 48bpp, 16B, 16G, 16R, the 2-byte value for each R/G/B component is stored as little-endian</summary>
-        Bgr48le = 58,
+        Bgr48le = 60,
         /// <summary>planar YUV 4:2:0, 13.5bpp, (1 Cr &amp; Cb sample per 2x2 Y samples), big-endian</summary>
-        Yuv420p9be = 59,
+        Yuv420p9be = 61,
         /// <summary>planar YUV 4:2:0, 13.5bpp, (1 Cr &amp; Cb sample per 2x2 Y samples), little-endian</summary>
-        Yuv420p9le = 60,
+        Yuv420p9le = 62,
         /// <summary>planar YUV 4:2:0, 15bpp, (1 Cr &amp; Cb sample per 2x2 Y samples), big-endian</summary>
-        Yuv420p10be = 61,
+        Yuv420p10be = 63,
         /// <summary>planar YUV 4:2:0, 15bpp, (1 Cr &amp; Cb sample per 2x2 Y samples), little-endian</summary>
-        Yuv420p10le = 62,
+        Yuv420p10le = 64,
         /// <summary>planar YUV 4:2:2, 20bpp, (1 Cr &amp; Cb sample per 2x1 Y samples), big-endian</summary>
-        Yuv422p10be = 63,
+        Yuv422p10be = 65,
         /// <summary>planar YUV 4:2:2, 20bpp, (1 Cr &amp; Cb sample per 2x1 Y samples), little-endian</summary>
-        Yuv422p10le = 64,
+        Yuv422p10le = 66,
         /// <summary>planar YUV 4:4:4, 27bpp, (1 Cr &amp; Cb sample per 1x1 Y samples), big-endian</summary>
-        Yuv444p9be = 65,
+        Yuv444p9be = 67,
         /// <summary>planar YUV 4:4:4, 27bpp, (1 Cr &amp; Cb sample per 1x1 Y samples), little-endian</summary>
-        Yuv444p9le = 66,
+        Yuv444p9le = 68,
         /// <summary>planar YUV 4:4:4, 30bpp, (1 Cr &amp; Cb sample per 1x1 Y samples), big-endian</summary>
-        Yuv444p10be = 67,
+        Yuv444p10be = 69,
         /// <summary>planar YUV 4:4:4, 30bpp, (1 Cr &amp; Cb sample per 1x1 Y samples), little-endian</summary>
-        Yuv444p10le = 68,
+        Yuv444p10le = 70,
         /// <summary>planar YUV 4:2:2, 18bpp, (1 Cr &amp; Cb sample per 2x1 Y samples), big-endian</summary>
-        Yuv422p9be = 69,
+        Yuv422p9be = 71,
         /// <summary>planar YUV 4:2:2, 18bpp, (1 Cr &amp; Cb sample per 2x1 Y samples), little-endian</summary>
-        Yuv422p9le = 70,
+        Yuv422p9le = 72,
         /// <summary>planar GBR 4:4:4 24bpp</summary>
-        Gbrp = 71,
-        Gbr24p = 71,
+        Gbrp = 73,
+        Gbr24p = 73,
         /// <summary>planar GBR 4:4:4 27bpp, big-endian</summary>
-        Gbrp9be = 72,
+        Gbrp9be = 74,
         /// <summary>planar GBR 4:4:4 27bpp, little-endian</summary>
-        Gbrp9le = 73,
+        Gbrp9le = 75,
         /// <summary>planar GBR 4:4:4 30bpp, big-endian</summary>
-        Gbrp10be = 74,
+        Gbrp10be = 76,
         /// <summary>planar GBR 4:4:4 30bpp, little-endian</summary>
-        Gbrp10le = 75,
+        Gbrp10le = 77,
         /// <summary>planar GBR 4:4:4 48bpp, big-endian</summary>
-        Gbrp16be = 76,
+        Gbrp16be = 78,
         /// <summary>planar GBR 4:4:4 48bpp, little-endian</summary>
-        Gbrp16le = 77,
+        Gbrp16le = 79,
         /// <summary>planar YUV 4:2:2 24bpp, (1 Cr &amp; Cb sample per 2x1 Y &amp; A samples)</summary>
-        Yuva422p = 78,
+        Yuva422p = 80,
         /// <summary>planar YUV 4:4:4 32bpp, (1 Cr &amp; Cb sample per 1x1 Y &amp; A samples)</summary>
-        Yuva444p = 79,
+        Yuva444p = 81,
         /// <summary>planar YUV 4:2:0 22.5bpp, (1 Cr &amp; Cb sample per 2x2 Y &amp; A samples), big-endian</summary>
-        Yuva420p9be = 80,
+        Yuva420p9be = 82,
         /// <summary>planar YUV 4:2:0 22.5bpp, (1 Cr &amp; Cb sample per 2x2 Y &amp; A samples), little-endian</summary>
-        Yuva420p9le = 81,
+        Yuva420p9le = 83,
         /// <summary>planar YUV 4:2:2 27bpp, (1 Cr &amp; Cb sample per 2x1 Y &amp; A samples), big-endian</summary>
-        Yuva422p9be = 82,
+        Yuva422p9be = 84,
         /// <summary>planar YUV 4:2:2 27bpp, (1 Cr &amp; Cb sample per 2x1 Y &amp; A samples), little-endian</summary>
-        Yuva422p9le = 83,
+        Yuva422p9le = 85,
         /// <summary>planar YUV 4:4:4 36bpp, (1 Cr &amp; Cb sample per 1x1 Y &amp; A samples), big-endian</summary>
-        Yuva444p9be = 84,
+        Yuva444p9be = 86,
         /// <summary>planar YUV 4:4:4 36bpp, (1 Cr &amp; Cb sample per 1x1 Y &amp; A samples), little-endian</summary>
-        Yuva444p9le = 85,
+        Yuva444p9le = 87,
         /// <summary>planar YUV 4:2:0 25bpp, (1 Cr &amp; Cb sample per 2x2 Y &amp; A samples, big-endian)</summary>
-        Yuva420p10be = 86,
+        Yuva420p10be = 88,
         /// <summary>planar YUV 4:2:0 25bpp, (1 Cr &amp; Cb sample per 2x2 Y &amp; A samples, little-endian)</summary>
-        Yuva420p10le = 87,
+        Yuva420p10le = 89,
         /// <summary>planar YUV 4:2:2 30bpp, (1 Cr &amp; Cb sample per 2x1 Y &amp; A samples, big-endian)</summary>
-        Yuva422p10be = 88,
+        Yuva422p10be = 90,
         /// <summary>planar YUV 4:2:2 30bpp, (1 Cr &amp; Cb sample per 2x1 Y &amp; A samples, little-endian)</summary>
-        Yuva422p10le = 89,
+        Yuva422p10le = 91,
         /// <summary>planar YUV 4:4:4 40bpp, (1 Cr &amp; Cb sample per 1x1 Y &amp; A samples, big-endian)</summary>
-        Yuva444p10be = 90,
+        Yuva444p10be = 92,
         /// <summary>planar YUV 4:4:4 40bpp, (1 Cr &amp; Cb sample per 1x1 Y &amp; A samples, little-endian)</summary>
-        Yuva444p10le = 91,
+        Yuva444p10le = 93,
         /// <summary>planar YUV 4:2:0 40bpp, (1 Cr &amp; Cb sample per 2x2 Y &amp; A samples, big-endian)</summary>
-        Yuva420p16be = 92,
+        Yuva420p16be = 94,
         /// <summary>planar YUV 4:2:0 40bpp, (1 Cr &amp; Cb sample per 2x2 Y &amp; A samples, little-endian)</summary>
-        Yuva420p16le = 93,
+        Yuva420p16le = 95,
         /// <summary>planar YUV 4:2:2 48bpp, (1 Cr &amp; Cb sample per 2x1 Y &amp; A samples, big-endian)</summary>
-        Yuva422p16be = 94,
+        Yuva422p16be = 96,
         /// <summary>planar YUV 4:2:2 48bpp, (1 Cr &amp; Cb sample per 2x1 Y &amp; A samples, little-endian)</summary>
-        Yuva422p16le = 95,
+        Yuva422p16le = 97,
         /// <summary>planar YUV 4:4:4 64bpp, (1 Cr &amp; Cb sample per 1x1 Y &amp; A samples, big-endian)</summary>
-        Yuva444p16be = 96,
+        Yuva444p16be = 98,
         /// <summary>planar YUV 4:4:4 64bpp, (1 Cr &amp; Cb sample per 1x1 Y &amp; A samples, little-endian)</summary>
-        Yuva444p16le = 97,
+        Yuva444p16le = 99,
         /// <summary>HW acceleration through VDPAU, Picture.data[3] contains a VdpVideoSurface</summary>
-        Vdpau = 98,
+        Vdpau = 100,
         /// <summary>packed XYZ 4:4:4, 36 bpp, (msb) 12X, 12Y, 12Z (lsb), the 2-byte value for each X/Y/Z is stored as little-endian, the 4 lower bits are set to 0</summary>
-        Xyz12le = 99,
+        Xyz12le = 101,
         /// <summary>packed XYZ 4:4:4, 36 bpp, (msb) 12X, 12Y, 12Z (lsb), the 2-byte value for each X/Y/Z is stored as big-endian, the 4 lower bits are set to 0</summary>
-        Xyz12be = 100,
+        Xyz12be = 102,
         /// <summary>interleaved chroma YUV 4:2:2, 16bpp, (1 Cr &amp; Cb sample per 2x1 Y samples)</summary>
-        Nv16 = 101,
+        Nv16 = 103,
         /// <summary>interleaved chroma YUV 4:2:2, 20bpp, (1 Cr &amp; Cb sample per 2x1 Y samples), little-endian</summary>
-        Nv20le = 102,
+        Nv20le = 104,
         /// <summary>interleaved chroma YUV 4:2:2, 20bpp, (1 Cr &amp; Cb sample per 2x1 Y samples), big-endian</summary>
-        Nv20be = 103,
+        Nv20be = 105,
         /// <summary>packed RGBA 16:16:16:16, 64bpp, 16R, 16G, 16B, 16A, the 2-byte value for each R/G/B/A component is stored as big-endian</summary>
-        Rgba64be = 104,
+        Rgba64be = 106,
         /// <summary>packed RGBA 16:16:16:16, 64bpp, 16R, 16G, 16B, 16A, the 2-byte value for each R/G/B/A component is stored as little-endian</summary>
-        Rgba64le = 105,
+        Rgba64le = 107,
         /// <summary>packed RGBA 16:16:16:16, 64bpp, 16B, 16G, 16R, 16A, the 2-byte value for each R/G/B/A component is stored as big-endian</summary>
-        Bgra64be = 106,
+        Bgra64be = 108,
         /// <summary>packed RGBA 16:16:16:16, 64bpp, 16B, 16G, 16R, 16A, the 2-byte value for each R/G/B/A component is stored as little-endian</summary>
-        Bgra64le = 107,
+        Bgra64le = 109,
         /// <summary>packed YUV 4:2:2, 16bpp, Y0 Cr Y1 Cb</summary>
-        Yvyu422 = 108,
+        Yvyu422 = 110,
         /// <summary>16 bits gray, 16 bits alpha (big-endian)</summary>
-        Ya16be = 109,
+        Ya16be = 111,
         /// <summary>16 bits gray, 16 bits alpha (little-endian)</summary>
-        Ya16le = 110,
+        Ya16le = 112,
         /// <summary>planar GBRA 4:4:4:4 32bpp</summary>
-        Gbrap = 111,
+        Gbrap = 113,
         /// <summary>planar GBRA 4:4:4:4 64bpp, big-endian</summary>
-        Gbrap16be = 112,
+        Gbrap16be = 114,
         /// <summary>planar GBRA 4:4:4:4 64bpp, little-endian</summary>
-        Gbrap16le = 113,
+        Gbrap16le = 115,
         /// <summary>HW acceleration through QSV, data[3] contains a pointer to the mfxFrameSurface1 structure.</summary>
-        Qsv = 114,
+        Qsv = 116,
         /// <summary>HW acceleration though MMAL, data[3] contains a pointer to the MMAL_BUFFER_HEADER_T structure.</summary>
-        Mmal = 115,
+        Mmal = 117,
         /// <summary>HW decoding through Direct3D11 via old API, Picture.data[3] contains a ID3D11VideoDecoderOutputView pointer</summary>
-        D3d11vaVld = 116,
+        D3d11vaVld = 118,
         /// <summary>HW acceleration through CUDA. data[i] contain CUdeviceptr pointers exactly as for system memory frames.</summary>
-        Cuda = 117,
+        Cuda = 119,
         /// <summary>packed RGB 8:8:8, 32bpp, XRGBXRGB... X=unused/undefined</summary>
-        _0RGB = 118,
+        _0RGB = 120,
         /// <summary>packed RGB 8:8:8, 32bpp, RGBXRGBX... X=unused/undefined</summary>
-        Rgb0 = 119,
+        Rgb0 = 121,
         /// <summary>packed BGR 8:8:8, 32bpp, XBGRXBGR... X=unused/undefined</summary>
-        _0BGR = 120,
+        _0BGR = 122,
         /// <summary>packed BGR 8:8:8, 32bpp, BGRXBGRX... X=unused/undefined</summary>
-        Bgr0 = 121,
+        Bgr0 = 123,
         /// <summary>planar YUV 4:2:0,18bpp, (1 Cr &amp; Cb sample per 2x2 Y samples), big-endian</summary>
-        Yuv420p12be = 122,
+        Yuv420p12be = 124,
         /// <summary>planar YUV 4:2:0,18bpp, (1 Cr &amp; Cb sample per 2x2 Y samples), little-endian</summary>
-        Yuv420p12le = 123,
+        Yuv420p12le = 125,
         /// <summary>planar YUV 4:2:0,21bpp, (1 Cr &amp; Cb sample per 2x2 Y samples), big-endian</summary>
-        Yuv420p14be = 124,
+        Yuv420p14be = 126,
         /// <summary>planar YUV 4:2:0,21bpp, (1 Cr &amp; Cb sample per 2x2 Y samples), little-endian</summary>
-        Yuv420p14le = 125,
+        Yuv420p14le = 127,
         /// <summary>planar YUV 4:2:2,24bpp, (1 Cr &amp; Cb sample per 2x1 Y samples), big-endian</summary>
-        Yuv422p12be = 126,
+        Yuv422p12be = 128,
         /// <summary>planar YUV 4:2:2,24bpp, (1 Cr &amp; Cb sample per 2x1 Y samples), little-endian</summary>
-        Yuv422p12le = 127,
+        Yuv422p12le = 129,
         /// <summary>planar YUV 4:2:2,28bpp, (1 Cr &amp; Cb sample per 2x1 Y samples), big-endian</summary>
-        Yuv422p14be = 128,
+        Yuv422p14be = 130,
         /// <summary>planar YUV 4:2:2,28bpp, (1 Cr &amp; Cb sample per 2x1 Y samples), little-endian</summary>
-        Yuv422p14le = 129,
+        Yuv422p14le = 131,
         /// <summary>planar YUV 4:4:4,36bpp, (1 Cr &amp; Cb sample per 1x1 Y samples), big-endian</summary>
-        Yuv444p12be = 130,
+        Yuv444p12be = 132,
         /// <summary>planar YUV 4:4:4,36bpp, (1 Cr &amp; Cb sample per 1x1 Y samples), little-endian</summary>
-        Yuv444p12le = 131,
+        Yuv444p12le = 133,
         /// <summary>planar YUV 4:4:4,42bpp, (1 Cr &amp; Cb sample per 1x1 Y samples), big-endian</summary>
-        Yuv444p14be = 132,
+        Yuv444p14be = 134,
         /// <summary>planar YUV 4:4:4,42bpp, (1 Cr &amp; Cb sample per 1x1 Y samples), little-endian</summary>
-        Yuv444p14le = 133,
+        Yuv444p14le = 135,
         /// <summary>planar GBR 4:4:4 36bpp, big-endian</summary>
-        Gbrp12be = 134,
+        Gbrp12be = 136,
         /// <summary>planar GBR 4:4:4 36bpp, little-endian</summary>
-        Gbrp12le = 135,
+        Gbrp12le = 137,
         /// <summary>planar GBR 4:4:4 42bpp, big-endian</summary>
-        Gbrp14be = 136,
+        Gbrp14be = 138,
         /// <summary>planar GBR 4:4:4 42bpp, little-endian</summary>
-        Gbrp14le = 137,
+        Gbrp14le = 139,
         /// <summary>planar YUV 4:1:1, 12bpp, (1 Cr &amp; Cb sample per 4x1 Y samples) full scale (JPEG), deprecated in favor of AV_PIX_FMT_YUV411P and setting color_range</summary>
-        Yuvj411p = 138,
+        Yuvj411p = 140,
         /// <summary>bayer, BGBG..(odd line), GRGR..(even line), 8-bit samples</summary>
-        BayerBggr8 = 139,
+        BayerBggr8 = 141,
         /// <summary>bayer, RGRG..(odd line), GBGB..(even line), 8-bit samples</summary>
-        BayerRggb8 = 140,
+        BayerRggb8 = 142,
         /// <summary>bayer, GBGB..(odd line), RGRG..(even line), 8-bit samples</summary>
-        BayerGbrg8 = 141,
+        BayerGbrg8 = 143,
         /// <summary>bayer, GRGR..(odd line), BGBG..(even line), 8-bit samples</summary>
-        BayerGrbg8 = 142,
+        BayerGrbg8 = 144,
         /// <summary>bayer, BGBG..(odd line), GRGR..(even line), 16-bit samples, little-endian</summary>
-        BayerBggr16le = 143,
+        BayerBggr16le = 145,
         /// <summary>bayer, BGBG..(odd line), GRGR..(even line), 16-bit samples, big-endian</summary>
-        BayerBggr16be = 144,
+        BayerBggr16be = 146,
         /// <summary>bayer, RGRG..(odd line), GBGB..(even line), 16-bit samples, little-endian</summary>
-        BayerRggb16le = 145,
+        BayerRggb16le = 147,
         /// <summary>bayer, RGRG..(odd line), GBGB..(even line), 16-bit samples, big-endian</summary>
-        BayerRggb16be = 146,
+        BayerRggb16be = 148,
         /// <summary>bayer, GBGB..(odd line), RGRG..(even line), 16-bit samples, little-endian</summary>
-        BayerGbrg16le = 147,
+        BayerGbrg16le = 149,
         /// <summary>bayer, GBGB..(odd line), RGRG..(even line), 16-bit samples, big-endian</summary>
-        BayerGbrg16be = 148,
+        BayerGbrg16be = 150,
         /// <summary>bayer, GRGR..(odd line), BGBG..(even line), 16-bit samples, little-endian</summary>
-        BayerGrbg16le = 149,
+        BayerGrbg16le = 151,
         /// <summary>bayer, GRGR..(odd line), BGBG..(even line), 16-bit samples, big-endian</summary>
-        BayerGrbg16be = 150,
+        BayerGrbg16be = 152,
         /// <summary>XVideo Motion Acceleration via common packet passing</summary>
-        Xvmc = 151,
+        Xvmc = 153,
         /// <summary>planar YUV 4:4:0,20bpp, (1 Cr &amp; Cb sample per 1x2 Y samples), little-endian</summary>
-        Yuv440p10le = 152,
+        Yuv440p10le = 154,
         /// <summary>planar YUV 4:4:0,20bpp, (1 Cr &amp; Cb sample per 1x2 Y samples), big-endian</summary>
-        Yuv440p10be = 153,
+        Yuv440p10be = 155,
         /// <summary>planar YUV 4:4:0,24bpp, (1 Cr &amp; Cb sample per 1x2 Y samples), little-endian</summary>
-        Yuv440p12le = 154,
+        Yuv440p12le = 156,
         /// <summary>planar YUV 4:4:0,24bpp, (1 Cr &amp; Cb sample per 1x2 Y samples), big-endian</summary>
-        Yuv440p12be = 155,
+        Yuv440p12be = 157,
         /// <summary>packed AYUV 4:4:4,64bpp (1 Cr &amp; Cb sample per 1x1 Y &amp; A samples), little-endian</summary>
-        Ayuv64le = 156,
+        Ayuv64le = 158,
         /// <summary>packed AYUV 4:4:4,64bpp (1 Cr &amp; Cb sample per 1x1 Y &amp; A samples), big-endian</summary>
-        Ayuv64be = 157,
+        Ayuv64be = 159,
         /// <summary>hardware decoding through Videotoolbox</summary>
-        Videotoolbox = 158,
+        Videotoolbox = 160,
         /// <summary>like NV12, with 10bpp per component, data in the high bits, zeros in the low bits, little-endian</summary>
-        P010le = 159,
+        P010le = 161,
         /// <summary>like NV12, with 10bpp per component, data in the high bits, zeros in the low bits, big-endian</summary>
-        P010be = 160,
+        P010be = 162,
         /// <summary>planar GBR 4:4:4:4 48bpp, big-endian</summary>
-        Gbrap12be = 161,
+        Gbrap12be = 163,
         /// <summary>planar GBR 4:4:4:4 48bpp, little-endian</summary>
-        Gbrap12le = 162,
+        Gbrap12le = 164,
         /// <summary>planar GBR 4:4:4:4 40bpp, big-endian</summary>
-        Gbrap10be = 163,
+        Gbrap10be = 165,
         /// <summary>planar GBR 4:4:4:4 40bpp, little-endian</summary>
-        Gbrap10le = 164,
+        Gbrap10le = 166,
         /// <summary>hardware decoding through MediaCodec</summary>
-        Mediacodec = 165,
+        Mediacodec = 167,
         /// <summary>Y , 12bpp, big-endian</summary>
-        Gray12be = 166,
+        Gray12be = 168,
         /// <summary>Y , 12bpp, little-endian</summary>
-        Gray12le = 167,
+        Gray12le = 169,
         /// <summary>Y , 10bpp, big-endian</summary>
-        Gray10be = 168,
+        Gray10be = 170,
         /// <summary>Y , 10bpp, little-endian</summary>
-        Gray10le = 169,
+        Gray10le = 171,
         /// <summary>like NV12, with 16bpp per component, little-endian</summary>
-        P016le = 170,
+        P016le = 172,
         /// <summary>like NV12, with 16bpp per component, big-endian</summary>
-        P016be = 171,
+        P016be = 173,
         /// <summary>Hardware surfaces for Direct3D11.</summary>
-        D3d11 = 172,
+        D3d11 = 174,
         /// <summary>Y , 9bpp, big-endian</summary>
-        Gray9be = 173,
+        Gray9be = 175,
         /// <summary>Y , 9bpp, little-endian</summary>
-        Gray9le = 174,
+        Gray9le = 176,
         /// <summary>IEEE-754 single precision planar GBR 4:4:4, 96bpp, big-endian</summary>
-        Gbrpf32be = 175,
+        Gbrpf32be = 177,
         /// <summary>IEEE-754 single precision planar GBR 4:4:4, 96bpp, little-endian</summary>
-        Gbrpf32le = 176,
+        Gbrpf32le = 178,
         /// <summary>IEEE-754 single precision planar GBRA 4:4:4:4, 128bpp, big-endian</summary>
-        Gbrapf32be = 177,
+        Gbrapf32be = 179,
         /// <summary>IEEE-754 single precision planar GBRA 4:4:4:4, 128bpp, little-endian</summary>
-        Gbrapf32le = 178,
+        Gbrapf32le = 180,
         /// <summary>DRM-managed buffers exposed through PRIME buffer sharing.</summary>
-        DrmPrime = 179,
+        DrmPrime = 181,
         /// <summary>Hardware surfaces for OpenCL.</summary>
-        Opencl = 180,
+        Opencl = 182,
         /// <summary>Y , 14bpp, big-endian</summary>
-        Gray14be = 181,
+        Gray14be = 183,
         /// <summary>Y , 14bpp, little-endian</summary>
-        Gray14le = 182,
+        Gray14le = 184,
         /// <summary>IEEE-754 single precision Y, 32bpp, big-endian</summary>
-        Grayf32be = 183,
+        Grayf32be = 185,
         /// <summary>IEEE-754 single precision Y, 32bpp, little-endian</summary>
-        Grayf32le = 184,
+        Grayf32le = 186,
         /// <summary>planar YUV 4:2:2,24bpp, (1 Cr &amp; Cb sample per 2x1 Y samples), 12b alpha, big-endian</summary>
-        Yuva422p12be = 185,
+        Yuva422p12be = 187,
         /// <summary>planar YUV 4:2:2,24bpp, (1 Cr &amp; Cb sample per 2x1 Y samples), 12b alpha, little-endian</summary>
-        Yuva422p12le = 186,
+        Yuva422p12le = 188,
         /// <summary>planar YUV 4:4:4,36bpp, (1 Cr &amp; Cb sample per 1x1 Y samples), 12b alpha, big-endian</summary>
-        Yuva444p12be = 187,
+        Yuva444p12be = 189,
         /// <summary>planar YUV 4:4:4,36bpp, (1 Cr &amp; Cb sample per 1x1 Y samples), 12b alpha, little-endian</summary>
-        Yuva444p12le = 188,
+        Yuva444p12le = 190,
         /// <summary>planar YUV 4:4:4, 24bpp, 1 plane for Y and 1 plane for the UV components, which are interleaved (first byte U and the following byte V)</summary>
-        Nv24 = 189,
+        Nv24 = 191,
         /// <summary>as above, but U and V bytes are swapped</summary>
-        Nv42 = 190,
+        Nv42 = 192,
         /// <summary>Vulkan hardware images.</summary>
-        Vulkan = 191,
+        Vulkan = 193,
         /// <summary>packed YUV 4:2:2 like YUYV422, 20bpp, data in the high bits, big-endian</summary>
-        Y210be = 192,
+        Y210be = 194,
         /// <summary>packed YUV 4:2:2 like YUYV422, 20bpp, data in the high bits, little-endian</summary>
-        Y210le = 193,
+        Y210le = 195,
         /// <summary>packed RGB 10:10:10, 30bpp, (msb)2X 10R 10G 10B(lsb), little-endian, X=unused/undefined</summary>
-        X2rgb10le = 194,
+        X2rgb10le = 196,
         /// <summary>packed RGB 10:10:10, 30bpp, (msb)2X 10R 10G 10B(lsb), big-endian, X=unused/undefined</summary>
-        X2rgb10be = 195,
-        /// <summary>packed BGR 10:10:10, 30bpp, (msb)2X 10B 10G 10R(lsb), little-endian, X=unused/undefined</summary>
-        X2bgr10le = 196,
-        /// <summary>packed BGR 10:10:10, 30bpp, (msb)2X 10B 10G 10R(lsb), big-endian, X=unused/undefined</summary>
-        X2bgr10be = 197,
-        /// <summary>interleaved chroma YUV 4:2:2, 20bpp, data in the high bits, big-endian</summary>
-        P210be = 198,
-        /// <summary>interleaved chroma YUV 4:2:2, 20bpp, data in the high bits, little-endian</summary>
-        P210le = 199,
-        /// <summary>interleaved chroma YUV 4:4:4, 30bpp, data in the high bits, big-endian</summary>
-        P410be = 200,
-        /// <summary>interleaved chroma YUV 4:4:4, 30bpp, data in the high bits, little-endian</summary>
-        P410le = 201,
-        /// <summary>interleaved chroma YUV 4:2:2, 32bpp, big-endian</summary>
-        P216be = 202,
-        /// <summary>interleaved chroma YUV 4:2:2, 32bpp, little-endian</summary>
-        P216le = 203,
-        /// <summary>interleaved chroma YUV 4:4:4, 48bpp, big-endian</summary>
-        P416be = 204,
-        /// <summary>interleaved chroma YUV 4:4:4, 48bpp, little-endian</summary>
-        P416le = 205,
+        X2rgb10be = 197,
         /// <summary>number of pixel formats, DO NOT USE THIS if you want to link with shared libav* because the number of formats might differ between versions</summary>
-        Nb = 206,
+        Nb = 198,
     }
     
     /// <summary>Rounding methods.</summary>
@@ -2152,7 +2070,6 @@ namespace Sdcb.FFmpeg.Raw
         FullRaw = 5,
     }
     
-    /// <summary>@}</summary>
     public enum AVSubtitleType : int
     {
         None = 0,

@@ -103,6 +103,17 @@ public unsafe partial class FormatContext : SafeHandle
     public IReadOnlyList<MediaStream> Streams => new ReadOnlyPtrList<AVStream, MediaStream>(_ptr->streams, (int)_ptr->nb_streams, MediaStream.FromNative)!;
     
     /// <summary>
+    /// <para>input or output filename</para>
+    /// <see cref="AVFormatContext.filename" />
+    /// </summary>
+    [Obsolete("Use url instead.")]
+    public byte_array1024 Filename
+    {
+        get => _ptr->filename;
+        set => _ptr->filename = value;
+    }
+    
+    /// <summary>
     /// <para>original type: byte*</para>
     /// <para>input or output URL. Unlike the old filename field, this field has no length restriction.</para>
     /// <see cref="AVFormatContext.url" />
@@ -173,7 +184,7 @@ public unsafe partial class FormatContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>Maximum number of bytes read from input in order to determine stream properties. Used when reading the global header and in avformat_find_stream_info().</para>
+    /// <para>Maximum size of the data read from input for determining the input container format. Demuxing only, set by the caller before avformat_open_input().</para>
     /// <see cref="AVFormatContext.probesize" />
     /// </summary>
     public long Probesize
@@ -375,7 +386,7 @@ public unsafe partial class FormatContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>Avoid negative timestamps during muxing. Any value of the AVFMT_AVOID_NEG_TS_* constants. Note, this works better when using av_interleaved_write_frame(). - muxing: Set by user - demuxing: unused</para>
+    /// <para>Avoid negative timestamps during muxing. Any value of the AVFMT_AVOID_NEG_TS_* constants. Note, this only works when using av_interleaved_write_frame. (interleave_packet_per_dts is in use) - muxing: Set by user - demuxing: unused</para>
     /// <see cref="AVFormatContext.avoid_negative_ts" />
     /// </summary>
     public int AvoidNegativeTs
@@ -505,7 +516,7 @@ public unsafe partial class FormatContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>Maximum number of bytes read from input in order to identify the AVInputFormat "input format". Only used when the format is not set explicitly by the caller.</para>
+    /// <para>number of bytes to read maximally to identify format. - encoding: unused - decoding: set by user</para>
     /// <see cref="AVFormatContext.format_probesize" />
     /// </summary>
     public int FormatProbesize
@@ -534,6 +545,16 @@ public unsafe partial class FormatContext : SafeHandle
     {
         get => (IntPtr)_ptr->format_whitelist;
         set => _ptr->format_whitelist = (byte*)value;
+    }
+    
+    /// <summary>
+    /// <para>An opaque field for libavformat internal usage. Must not be accessed in any way by callers.</para>
+    /// <see cref="AVFormatContext.@internal" />
+    /// </summary>
+    public AVFormatInternal* Internal
+    {
+        get => _ptr->@internal;
+        set => _ptr->@internal = value;
     }
     
     /// <summary>
@@ -693,5 +714,4 @@ public unsafe partial class FormatContext : SafeHandle
         get => _ptr->max_probe_packets;
         set => _ptr->max_probe_packets = value;
     }
-    
 }

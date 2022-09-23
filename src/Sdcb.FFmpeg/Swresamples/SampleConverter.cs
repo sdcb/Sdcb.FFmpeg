@@ -32,7 +32,6 @@ public unsafe class SampleConverter : SafeHandle
     /// <summary>
     /// <see cref="swr_alloc_set_opts(SwrContext*, long, AVSampleFormat, int, long, AVSampleFormat, int, int, void*)"/>
     /// </summary>
-    [Obsolete("use Reset2")]
     public void Reset(
         long outputChannelLayout, AVSampleFormat outputSampleFormat, int outputSampleRate,
         long inputChannelLayout, AVSampleFormat inputSampleFormat, int inputSampleRate)
@@ -41,26 +40,6 @@ public unsafe class SampleConverter : SafeHandle
             outputChannelLayout, outputSampleFormat, outputSampleRate,
             inputChannelLayout, inputSampleFormat, inputSampleRate,
             log_offset: 0, log_ctx: null));
-    }
-
-    /// <summary>
-    /// <see cref="swr_alloc_set_opts2(SwrContext**, AVChannelLayout*, AVSampleFormat, int, AVChannelLayout*, AVSampleFormat, int, int, void*)"/>
-    /// </summary>
-    public void Reset2(
-        AVChannelLayout outputChannelLayout, AVSampleFormat outputSampleFormat, int outputSampleRate,
-        AVChannelLayout inputChannelLayout, AVSampleFormat inputSampleFormat, int inputSampleRate)
-    {
-        SwrContext* ctx = this;
-        int ret = swr_alloc_set_opts2(&ctx,
-            &outputChannelLayout, outputSampleFormat, outputSampleRate,
-            &inputChannelLayout, inputSampleFormat, inputSampleRate,
-            log_offset: 0, log_ctx: null);
-        handle = (IntPtr)ctx;
-
-        if (ret != 0)
-        {
-            throw FFmpegException.FromErrorCode(ret, $"Error when calling {nameof(swr_alloc_set_opts2)}");
-        }
     }
 
     /// <summary>

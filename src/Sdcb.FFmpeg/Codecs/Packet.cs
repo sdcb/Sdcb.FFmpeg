@@ -64,9 +64,9 @@ public unsafe partial class Packet : SafeHandle
     }
 
     /// <summary>
-    /// <see cref="av_packet_new_side_data(AVPacket*, AVPacketSideDataType, ulong)"/>
+    /// <see cref="av_packet_new_side_data(AVPacket*, AVPacketSideDataType, int)"/>
     /// </summary>
-    public IntPtr NewSideData(AVPacketSideDataType type, long size) => (IntPtr)av_packet_new_side_data(this, (AVPacketSideDataType)type, (ulong)size);
+    public IntPtr NewSideData(AVPacketSideDataType type, int size) => (IntPtr)av_packet_new_side_data(this, (AVPacketSideDataType)type, size);
 
     /// <summary>
     /// <see cref="av_packet_add_side_data(AVPacket*, AVPacketSideDataType, byte*, ulong)"/>
@@ -80,17 +80,17 @@ public unsafe partial class Packet : SafeHandle
     }
 
     /// <summary>
-    /// <see cref="av_packet_shrink_side_data(AVPacket*, AVPacketSideDataType, ulong)"/>
+    /// <see cref="av_packet_shrink_side_data(AVPacket*, AVPacketSideDataType, int)"/>
     /// </summary>
-    public void ShinkSideData(AVPacketSideDataType type, long size) => av_packet_shrink_side_data(this, (AVPacketSideDataType)type, (ulong)size).ThrowIfError();
+    public void ShinkSideData(AVPacketSideDataType type, int size) => av_packet_shrink_side_data(this, type, size).ThrowIfError();
 
     /// <summary>
-    /// <see cref="av_packet_get_side_data(AVPacket*, AVPacketSideDataType, ulong*)"/>
+    /// <see cref="av_packet_get_side_data(AVPacket*, AVPacketSideDataType, int*)"/>
     /// </summary>
     public DataPointer GetSideData(AVPacketSideDataType type)
     {
-        ulong size;
-        return new DataPointer(av_packet_get_side_data(this, (AVPacketSideDataType)type, &size), (int)size);
+        int size;
+        return new DataPointer(av_packet_get_side_data(this, type, &size), size);
     }
 
     /// <summary>
@@ -149,23 +149,23 @@ public unsafe partial class Packet : SafeHandle
     public static string GetSideDataName(AVPacketSideDataType type) => av_packet_side_data_name(type);
 
     /// <summary>
-    /// <see cref="av_packet_pack_dictionary(AVDictionary*, ulong*)"/>
+    /// <see cref="av_packet_pack_dictionary(AVDictionary*, int*)"/>
     /// </summary>
     public static DataPointer PackDirectory(MediaDictionary dict)
     {
-        ulong size;
+        int size;
         return new DataPointer(av_packet_pack_dictionary(dict, &size), (int)size);
     }
 
     /// <summary>
-    /// <see cref="av_packet_unpack_dictionary(byte*, ulong, AVDictionary**)"/>
+    /// <see cref="av_packet_unpack_dictionary(byte*, int, AVDictionary**)"/>
     /// </summary>
     public static MediaDictionary UnpackDictionary(Span<byte> data)
     {
         AVDictionary* dict = null;
         fixed (byte* ptr = data)
         {
-            av_packet_unpack_dictionary(ptr, (ulong)data.Length, &dict).ThrowIfError();
+            av_packet_unpack_dictionary(ptr, data.Length, &dict).ThrowIfError();
         }
         return MediaDictionary.FromNative(dict, isOwner: true);
     }

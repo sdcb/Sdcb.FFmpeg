@@ -214,6 +214,16 @@ public unsafe partial class CodecParserContext : SafeHandle
     }
     
     /// <summary>
+    /// <see cref="AVCodecParserContext.convergence_duration" />
+    /// </summary>
+    [Obsolete("unused")]
+    public long ConvergenceDuration
+    {
+        get => _ptr->convergence_duration;
+        set => _ptr->convergence_duration = value;
+    }
+    
+    /// <summary>
     /// <para>Synchronization point for start of timestamp generation.</para>
     /// <see cref="AVCodecParserContext.dts_sync_point" />
     /// </summary>

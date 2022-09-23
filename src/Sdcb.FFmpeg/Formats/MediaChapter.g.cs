@@ -38,7 +38,7 @@ public unsafe partial struct MediaChapter
     /// <para>unique ID to identify the chapter</para>
     /// <see cref="AVChapter.id" />
     /// </summary>
-    public long Id
+    public int Id
     {
         get => _ptr->id;
         set => _ptr->id = value;

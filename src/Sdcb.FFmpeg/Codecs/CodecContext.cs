@@ -130,7 +130,7 @@ public unsafe partial class CodecContext : SafeHandle
     }
 
     internal Frame CreateVideoFrame() => Frame.CreateWritableVideo(Width, Height, PixelFormat);
-    internal Frame CreateAudioFrame() => Frame.CreateWritableAudio(SampleFormat, ChLayout, SampleRate,
+    internal Frame CreateAudioFrame() => Frame.CreateWritableAudio(SampleFormat, ChannelLayout, SampleRate,
         Codec.Capabilities.HasFlag(AV_CODEC_CAP.VariableFrameSize) ? 10000 : FrameSize);
 
     public Frame CreateFrame() => Width > 0 ? CreateVideoFrame() : CreateAudioFrame();

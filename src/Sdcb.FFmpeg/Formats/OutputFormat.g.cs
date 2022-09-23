@@ -100,16 +100,16 @@ public unsafe partial struct OutputFormat
     public FFmpegClass? PrivateClass => FFmpegClass.FromNativeOrNull(_ptr->priv_class);
     
     /// <summary>
-    /// <para>*************************************************************** No fields below this line are part of the public API. They may not be used outside of libavformat and can be changed and removed at will. New public fields should be added right above. ****************************************************************</para>
+    /// <para>original type: AVOutputFormat*</para>
+    /// <see cref="AVOutputFormat.next" />
+    /// </summary>
+    public OutputFormat Next => OutputFormat.FromNative(_ptr->next);
+    
+    /// <summary>
+    /// <para>size of private data so that it can be allocated in the wrapper</para>
     /// <see cref="AVOutputFormat.priv_data_size" />
     /// </summary>
     public int PrivateDataSize => _ptr->priv_data_size;
-    
-    /// <summary>
-    /// <para>Internal flags. See FF_FMT_FLAG_* in internal.h.</para>
-    /// <see cref="AVOutputFormat.flags_internal" />
-    /// </summary>
-    public int FlagsInternal => _ptr->flags_internal;
     
     /// <summary>
     /// <para>default data codec</para>

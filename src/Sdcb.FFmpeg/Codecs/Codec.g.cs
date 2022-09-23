@@ -67,12 +67,6 @@ public unsafe partial struct Codec
     public AV_CODEC_CAP Capabilities => (AV_CODEC_CAP)_ptr->capabilities;
     
     /// <summary>
-    /// <para>maximum value for lowres supported by the decoder</para>
-    /// <see cref="AVCodec.max_lowres" />
-    /// </summary>
-    public byte MaxLowres => _ptr->max_lowres;
-    
-    /// <summary>
     /// <para>original type: AVRational*</para>
     /// <para>array of supported framerates, or NULL if any, array is terminated by {0,0}</para>
     /// <see cref="AVCodec.supported_framerates" />
@@ -128,6 +122,12 @@ public unsafe partial struct Codec
             valGetter: p => *(ulong*)p)!;
     
     /// <summary>
+    /// <para>maximum value for lowres supported by the decoder</para>
+    /// <see cref="AVCodec.max_lowres" />
+    /// </summary>
+    public byte MaxLowres => _ptr->max_lowres;
+    
+    /// <summary>
     /// <para>original type: AVClass*</para>
     /// <para>AVClass for the private context</para>
     /// <see cref="AVCodec.priv_class" />
@@ -153,13 +153,45 @@ public unsafe partial struct Codec
     public string? WrapperName => _ptr->wrapper_name != null ? PtrExtensions.PtrToStringUTF8((IntPtr)_ptr->wrapper_name)! : null;
     
     /// <summary>
-    /// <para>original type: AVChannelLayout*</para>
-    /// <para>Array of supported channel layouts, terminated with a zeroed layout.</para>
-    /// <see cref="AVCodec.ch_layouts" />
+    /// <para>*************************************************************** No fields below this line are part of the public API. They may not be used outside of libavcodec and can be changed and removed at will. New public fields should be added right above. ****************************************************************</para>
+    /// <see cref="AVCodec.priv_data_size" />
     /// </summary>
-    public IEnumerable<AVChannelLayout> ChLayouts => NativeUtils.ReadSequence(
-            p: (IntPtr)_ptr->ch_layouts,
-            unitSize: sizeof(AVChannelLayout),
-            exitCondition: p => *(AVChannelLayout*)p switch { { order: AVChannelOrder.Unspec, nb_channels: 0 } => true, _ => false }, 
-            valGetter: p => *(AVChannelLayout*)p)!;
+    public int PrivateDataSize => _ptr->priv_data_size;
+    
+    /// <summary>
+    /// <para>original type: AVCodec*</para>
+    /// <see cref="AVCodec.next" />
+    /// </summary>
+    public Codec Next => Codec.FromNative(_ptr->next);
+    
+    /// <summary>
+    /// <para>Private codec-specific defaults.</para>
+    /// <see cref="AVCodec.defaults" />
+    /// </summary>
+    public AVCodecDefault* Defaults => _ptr->defaults;
+    
+    /// <summary>
+    /// <para>Internal codec capabilities. See FF_CODEC_CAP_* in internal.h</para>
+    /// <see cref="AVCodec.caps_internal" />
+    /// </summary>
+    public int CapsInternal => _ptr->caps_internal;
+    
+    /// <summary>
+    /// <para>original type: byte*</para>
+    /// <para>Decoding only, a comma-separated list of bitstream filters to apply to packets before decoding.</para>
+    /// <see cref="AVCodec.bsfs" />
+    /// </summary>
+    public IntPtr Bsfs => (IntPtr)_ptr->bsfs;
+    
+    /// <summary>
+    /// <para>Array of pointers to hardware configurations supported by the codec, or NULL if no hardware supported. The array is terminated by a NULL pointer.</para>
+    /// <see cref="AVCodec.hw_configs" />
+    /// </summary>
+    public AVCodecHWConfigInternal** HwConfigs => _ptr->hw_configs;
+    
+    /// <summary>
+    /// <para>List of supported codec_tags, terminated by FF_CODEC_TAGS_END.</para>
+    /// <see cref="AVCodec.codec_tags" />
+    /// </summary>
+    public uint* CodecTags => _ptr->codec_tags;
 }

@@ -31,7 +31,7 @@ public unsafe partial class Frame : SafeHandle
     public override bool IsInvalid => handle == IntPtr.Zero;
     
     /// <summary>
-    /// <para>pointer to the picture/channel planes. This might be different from the first allocated byte. For video, it could even point to the end of the image data.</para>
+    /// <para>pointer to the picture/channel planes. This might be different from the first allocated byte</para>
     /// <see cref="AVFrame.data" />
     /// </summary>
     public byte_ptrArray8 Data
@@ -41,7 +41,7 @@ public unsafe partial class Frame : SafeHandle
     }
     
     /// <summary>
-    /// <para>For video, a positive or negative value, which is typically indicating the size in bytes of each picture line, but it can also be: - the negative byte size of lines for vertical flipping (with data[n] pointing to the end of the data - a positive or negative multiple of the byte size as for accessing even and odd fields of a frame (possibly flipped)</para>
+    /// <para>For video, size in bytes of each picture line. For audio, size in bytes of each plane.</para>
     /// <see cref="AVFrame.linesize" />
     /// </summary>
     public int_array8 Linesize
@@ -141,6 +141,17 @@ public unsafe partial class Frame : SafeHandle
     }
     
     /// <summary>
+    /// <para>PTS copied from the AVPacket that was decoded to produce this frame.</para>
+    /// <see cref="AVFrame.pkt_pts" />
+    /// </summary>
+    [Obsolete("use the pts field instead")]
+    public long PktPts
+    {
+        get => _ptr->pkt_pts;
+        set => _ptr->pkt_pts = value;
+    }
+    
+    /// <summary>
     /// <para>DTS copied from the AVPacket that triggered returning this frame. (if frame threading isn't used) This is also the Presentation time of this AVFrame calculated from only AVPacket.dts values without pts values.</para>
     /// <see cref="AVFrame.pkt_dts" />
     /// </summary>
@@ -148,16 +159,6 @@ public unsafe partial class Frame : SafeHandle
     {
         get => _ptr->pkt_dts;
         set => _ptr->pkt_dts = value;
-    }
-    
-    /// <summary>
-    /// <para>Time base for the timestamps in this frame. In the future, this field may be set on frames output by decoders or filters, but its value will be by default ignored on input to encoders or filters.</para>
-    /// <see cref="AVFrame.time_base" />
-    /// </summary>
-    public AVRational TimeBase
-    {
-        get => _ptr->time_base;
-        set => _ptr->time_base = value;
     }
     
     /// <summary>
@@ -199,6 +200,16 @@ public unsafe partial class Frame : SafeHandle
     {
         get => (IntPtr)_ptr->opaque;
         set => _ptr->opaque = (void*)value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVFrame.error" />
+    /// </summary>
+    [Obsolete("unused")]
+    public ulong_array8 Error
+    {
+        get => _ptr->error;
+        set => _ptr->error = value;
     }
     
     /// <summary>
@@ -265,7 +276,6 @@ public unsafe partial class Frame : SafeHandle
     /// <para>Channel layout of the audio data.</para>
     /// <see cref="AVFrame.channel_layout" />
     /// </summary>
-    [Obsolete("use ch_layout instead")]
     public ulong ChannelLayout
     {
         get => _ptr->channel_layout;
@@ -273,7 +283,7 @@ public unsafe partial class Frame : SafeHandle
     }
     
     /// <summary>
-    /// <para>AVBuffer references backing the data for this frame. All the pointers in data and extended_data must point inside one of the buffers in buf or extended_buf. This array must be filled contiguously -- if buf[i] is non-NULL then buf[j] must also be non-NULL for all j &lt; i.</para>
+    /// <para>AVBuffer references backing the data for this frame. If all elements of this array are NULL, then this frame is not reference counted. This array must be filled contiguously -- if buf[i] is non-NULL then buf[j] must also be non-NULL for all j &lt; i.</para>
     /// <see cref="AVFrame.buf" />
     /// </summary>
     public AVBufferRef_ptrArray8 Buf
@@ -420,7 +430,6 @@ public unsafe partial class Frame : SafeHandle
     /// <para>number of audio channels, only used for audio. - encoding: unused - decoding: Read by user.</para>
     /// <see cref="AVFrame.channels" />
     /// </summary>
-    [Obsolete("use ch_layout instead")]
     public int Channels
     {
         get => _ptr->channels;
@@ -435,6 +444,45 @@ public unsafe partial class Frame : SafeHandle
     {
         get => _ptr->pkt_size;
         set => _ptr->pkt_size = value;
+    }
+    
+    /// <summary>
+    /// <para>QP table</para>
+    /// <see cref="AVFrame.qscale_table" />
+    /// </summary>
+    public sbyte* QscaleTable
+    {
+        get => _ptr->qscale_table;
+        set => _ptr->qscale_table = value;
+    }
+    
+    /// <summary>
+    /// <para>QP store stride</para>
+    /// <see cref="AVFrame.qstride" />
+    /// </summary>
+    public int Qstride
+    {
+        get => _ptr->qstride;
+        set => _ptr->qstride = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVFrame.qscale_type" />
+    /// </summary>
+    public int QscaleType
+    {
+        get => _ptr->qscale_type;
+        set => _ptr->qscale_type = value;
+    }
+    
+    /// <summary>
+    /// <para>original type: AVBufferRef*</para>
+    /// <see cref="AVFrame.qp_table_buf" />
+    /// </summary>
+    public BufferRef QpTableBuf
+    {
+        get => BufferRef.FromNative(_ptr->qp_table_buf, false);
+        set => _ptr->qp_table_buf = (AVBufferRef*)value;
     }
     
     /// <summary>
@@ -505,15 +553,5 @@ public unsafe partial class Frame : SafeHandle
     {
         get => BufferRef.FromNativeOrNull(_ptr->private_ref, false);
         set => _ptr->private_ref = value != null ? (AVBufferRef*)value : null;
-    }
-    
-    /// <summary>
-    /// <para>Channel layout of the audio data.</para>
-    /// <see cref="AVFrame.ch_layout" />
-    /// </summary>
-    public AVChannelLayout ChLayout
-    {
-        get => _ptr->ch_layout;
-        set => _ptr->ch_layout = value;
     }
 }

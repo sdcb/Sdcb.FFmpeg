@@ -23,18 +23,18 @@ namespace Sdcb.FFmpeg.Formats
             av_stream_add_side_data(this, type, (byte*)data.Pointer, (ulong)data.Length).ThrowIfError();
 
         /// <summary>
-        /// <see cref="av_stream_new_side_data(AVStream*, AVPacketSideDataType, ulong)"/>
+        /// <see cref="av_stream_new_side_data(AVStream*, AVPacketSideDataType, int)"/>
         /// </summary>
-        public IntPtr NewSideData(AVPacketSideDataType type, long size) =>
-            NativeUtils.NotNull((IntPtr)av_stream_new_side_data(this, type, (ulong)size));
+        public IntPtr NewSideData(AVPacketSideDataType type, int size) =>
+            NativeUtils.NotNull((IntPtr)av_stream_new_side_data(this, type, size));
 
         /// <summary>
-        /// <see cref="av_stream_get_side_data(AVStream*, AVPacketSideDataType, ulong*)"/>
+        /// <see cref="av_stream_get_side_data(AVStream*, AVPacketSideDataType, int*)"/>
         /// </summary>
         public DataPointer GetSideData(AVPacketSideDataType type)
         {
-            ulong size;
-            return new DataPointer(av_stream_get_side_data(this, type, &size), (int)size);
+            int size;
+            return new DataPointer(av_stream_get_side_data(this, type, &size), size);
         }
 
         /// <summary>

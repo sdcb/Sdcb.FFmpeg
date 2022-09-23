@@ -311,6 +311,16 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
+    /// <see cref="AVCodecContext.b_frame_strategy" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int BFrameStrategy
+    {
+        get => _ptr->b_frame_strategy;
+        set => _ptr->b_frame_strategy = value;
+    }
+    
+    /// <summary>
     /// <para>qscale offset between IP and B-frames - encoding: Set by user. - decoding: unused</para>
     /// <see cref="AVCodecContext.b_quant_offset" />
     /// </summary>
@@ -328,6 +338,16 @@ public unsafe partial class CodecContext : SafeHandle
     {
         get => _ptr->has_b_frames;
         set => _ptr->has_b_frames = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.mpeg_quant" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int MpegQuant
+    {
+        get => _ptr->mpeg_quant;
+        set => _ptr->mpeg_quant = value;
     }
     
     /// <summary>
@@ -411,6 +431,16 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
+    /// <see cref="AVCodecContext.prediction_method" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int PredictionMethod
+    {
+        get => _ptr->prediction_method;
+        set => _ptr->prediction_method = value;
+    }
+    
+    /// <summary>
     /// <para>slice offsets in the frame in bytes - encoding: Set/allocated by libavcodec. - decoding: Set/allocated by user (or NULL).</para>
     /// <see cref="AVCodecContext.slice_offset" />
     /// </summary>
@@ -488,6 +518,16 @@ public unsafe partial class CodecContext : SafeHandle
     {
         get => _ptr->last_predictor_count;
         set => _ptr->last_predictor_count = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.pre_me" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int PreMe
+    {
+        get => _ptr->pre_me;
+        set => _ptr->pre_me = value;
     }
     
     /// <summary>
@@ -571,6 +611,26 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
+    /// <see cref="AVCodecContext.scenechange_threshold" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int ScenechangeThreshold
+    {
+        get => _ptr->scenechange_threshold;
+        set => _ptr->scenechange_threshold = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.noise_reduction" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int NoiseReduction
+    {
+        get => _ptr->noise_reduction;
+        set => _ptr->noise_reduction = value;
+    }
+    
+    /// <summary>
     /// <para>precision of the intra DC coefficient - 8 - encoding: Set by user. - decoding: Set by libavcodec</para>
     /// <see cref="AVCodecContext.intra_dc_precision" />
     /// </summary>
@@ -621,6 +681,16 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
+    /// <see cref="AVCodecContext.me_penalty_compensation" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int MePenaltyCompensation
+    {
+        get => _ptr->me_penalty_compensation;
+        set => _ptr->me_penalty_compensation = value;
+    }
+    
+    /// <summary>
     /// <para>- encoding: Set by user. - decoding: unused</para>
     /// <see cref="AVCodecContext.bidir_refine" />
     /// </summary>
@@ -628,6 +698,16 @@ public unsafe partial class CodecContext : SafeHandle
     {
         get => _ptr->bidir_refine;
         set => _ptr->bidir_refine = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.brd_scale" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int BrdScale
+    {
+        get => _ptr->brd_scale;
+        set => _ptr->brd_scale = value;
     }
     
     /// <summary>
@@ -651,6 +731,16 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
+    /// <see cref="AVCodecContext.chromaoffset" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int Chromaoffset
+    {
+        get => _ptr->chromaoffset;
+        set => _ptr->chromaoffset = value;
+    }
+    
+    /// <summary>
     /// <para>Note: Value depends upon the compare function used for fullpel ME. - encoding: Set by user. - decoding: unused</para>
     /// <see cref="AVCodecContext.mv0_threshold" />
     /// </summary>
@@ -658,6 +748,16 @@ public unsafe partial class CodecContext : SafeHandle
     {
         get => _ptr->mv0_threshold;
         set => _ptr->mv0_threshold = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.b_sensitivity" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int BSensitivity
+    {
+        get => _ptr->b_sensitivity;
+        set => _ptr->b_sensitivity = value;
     }
     
     /// <summary>
@@ -744,7 +844,6 @@ public unsafe partial class CodecContext : SafeHandle
     /// <para>number of audio channels</para>
     /// <see cref="AVCodecContext.channels" />
     /// </summary>
-    [Obsolete("use ch_layout.nb_channels")]
     public int Channels
     {
         get => _ptr->channels;
@@ -805,7 +904,6 @@ public unsafe partial class CodecContext : SafeHandle
     /// <para>Audio channel layout. - encoding: set by user. - decoding: set by user, may be overwritten by libavcodec.</para>
     /// <see cref="AVCodecContext.channel_layout" />
     /// </summary>
-    [Obsolete("use ch_layout")]
     public ulong ChannelLayout
     {
         get => _ptr->channel_layout;
@@ -816,7 +914,6 @@ public unsafe partial class CodecContext : SafeHandle
     /// <para>Request decoder to use this channel layout if it can (0 for default) - encoding: unused - decoding: Set by user.</para>
     /// <see cref="AVCodecContext.request_channel_layout" />
     /// </summary>
-    [Obsolete("use \"downmix\" codec private option")]
     public ulong RequestChannelLayout
     {
         get => _ptr->request_channel_layout;
@@ -841,6 +938,16 @@ public unsafe partial class CodecContext : SafeHandle
     {
         get => _ptr->request_sample_fmt;
         set => _ptr->request_sample_fmt = value;
+    }
+    
+    /// <summary>
+    /// <para>If non-zero, the decoded audio and video frames returned from avcodec_decode_video2() and avcodec_decode_audio4() are reference-counted and are valid indefinitely. The caller must free them with av_frame_unref() when they are not needed anymore. Otherwise, the decoded frames must not be freed by the caller and are only valid until the next decode call.</para>
+    /// <see cref="AVCodecContext.refcounted_frames" />
+    /// </summary>
+    public int RefcountedFrames
+    {
+        get => _ptr->refcounted_frames;
+        set => _ptr->refcounted_frames = value;
     }
     
     /// <summary>
@@ -973,6 +1080,66 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
+    /// <see cref="AVCodecContext.coder_type" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int CoderType
+    {
+        get => _ptr->coder_type;
+        set => _ptr->coder_type = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.context_model" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int ContextModel
+    {
+        get => _ptr->context_model;
+        set => _ptr->context_model = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.frame_skip_threshold" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int FrameSkipThreshold
+    {
+        get => _ptr->frame_skip_threshold;
+        set => _ptr->frame_skip_threshold = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.frame_skip_factor" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int FrameSkipFactor
+    {
+        get => _ptr->frame_skip_factor;
+        set => _ptr->frame_skip_factor = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.frame_skip_exp" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int FrameSkipExp
+    {
+        get => _ptr->frame_skip_exp;
+        set => _ptr->frame_skip_exp = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.frame_skip_cmp" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int FrameSkipCmp
+    {
+        get => _ptr->frame_skip_cmp;
+        set => _ptr->frame_skip_cmp = value;
+    }
+    
+    /// <summary>
     /// <para>trellis RD quantization - encoding: Set by user. - decoding: unused</para>
     /// <see cref="AVCodecContext.trellis" />
     /// </summary>
@@ -980,6 +1147,128 @@ public unsafe partial class CodecContext : SafeHandle
     {
         get => _ptr->trellis;
         set => _ptr->trellis = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.min_prediction_order" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int MinPredictionOrder
+    {
+        get => _ptr->min_prediction_order;
+        set => _ptr->min_prediction_order = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.max_prediction_order" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int MaxPredictionOrder
+    {
+        get => _ptr->max_prediction_order;
+        set => _ptr->max_prediction_order = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.timecode_frame_start" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public long TimecodeFrameStart
+    {
+        get => _ptr->timecode_frame_start;
+        set => _ptr->timecode_frame_start = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.rtp_payload_size" />
+    /// </summary>
+    [Obsolete("use encoder private options instead")]
+    public int RtpPayloadSize
+    {
+        get => _ptr->rtp_payload_size;
+        set => _ptr->rtp_payload_size = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.mv_bits" />
+    /// </summary>
+    public int MvBits
+    {
+        get => _ptr->mv_bits;
+        set => _ptr->mv_bits = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.header_bits" />
+    /// </summary>
+    public int HeaderBits
+    {
+        get => _ptr->header_bits;
+        set => _ptr->header_bits = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.i_tex_bits" />
+    /// </summary>
+    public int ITexBits
+    {
+        get => _ptr->i_tex_bits;
+        set => _ptr->i_tex_bits = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.p_tex_bits" />
+    /// </summary>
+    public int PTexBits
+    {
+        get => _ptr->p_tex_bits;
+        set => _ptr->p_tex_bits = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.i_count" />
+    /// </summary>
+    public int ICount
+    {
+        get => _ptr->i_count;
+        set => _ptr->i_count = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.p_count" />
+    /// </summary>
+    public int PCount
+    {
+        get => _ptr->p_count;
+        set => _ptr->p_count = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.skip_count" />
+    /// </summary>
+    public int SkipCount
+    {
+        get => _ptr->skip_count;
+        set => _ptr->skip_count = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.misc_bits" />
+    /// </summary>
+    public int MiscBits
+    {
+        get => _ptr->misc_bits;
+        set => _ptr->misc_bits = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVCodecContext.frame_bits" />
+    /// </summary>
+    [Obsolete("this field is unused")]
+    public int FrameBits
+    {
+        get => _ptr->frame_bits;
+        set => _ptr->frame_bits = value;
     }
     
     /// <summary>
@@ -1076,7 +1365,7 @@ public unsafe partial class CodecContext : SafeHandle
     
     /// <summary>
     /// <para>original type: void*</para>
-    /// <para>Hardware accelerator context. For some hardware accelerators, a global context needs to be provided by the user. In that case, this holds display-dependent data FFmpeg cannot instantiate itself. Please refer to the FFmpeg HW accelerator documentation to know how to fill this. - encoding: unused - decoding: Set by user</para>
+    /// <para>Hardware accelerator context. For some hardware accelerators, a global context needs to be provided by the user. In that case, this holds display-dependent data FFmpeg cannot instantiate itself. Please refer to the FFmpeg HW accelerator documentation to know how to fill this is. e.g. for VA API, this is a struct vaapi_context. - encoding: unused - decoding: Set by user</para>
     /// <see cref="AVCodecContext.hwaccel_context" />
     /// </summary>
     public IntPtr HwaccelContext
@@ -1143,6 +1432,18 @@ public unsafe partial class CodecContext : SafeHandle
     {
         get => _ptr->lowres;
         set => _ptr->lowres = value;
+    }
+    
+    /// <summary>
+    /// <para>original type: AVFrame*</para>
+    /// <para>the picture in the bitstream - encoding: Set by libavcodec. - decoding: unused</para>
+    /// <see cref="AVCodecContext.coded_frame" />
+    /// </summary>
+    [Obsolete("use the quality factor packet side data instead")]
+    public Frame CodedFrame
+    {
+        get => Frame.FromNative(_ptr->coded_frame, false);
+        set => _ptr->coded_frame = (AVFrame*)value;
     }
     
     /// <summary>
@@ -1264,6 +1565,28 @@ public unsafe partial class CodecContext : SafeHandle
     {
         get => _ptr->subtitle_header_size;
         set => _ptr->subtitle_header_size = value;
+    }
+    
+    /// <summary>
+    /// <para>VBV delay coded in the last frame (in periods of a 27 MHz clock). Used for compliant TS muxing. - encoding: Set by libavcodec. - decoding: unused.</para>
+    /// <see cref="AVCodecContext.vbv_delay" />
+    /// </summary>
+    [Obsolete("this value is now exported as a part of AV_PKT_DATA_CPB_PROPERTIES packet side data")]
+    public ulong VbvDelay
+    {
+        get => _ptr->vbv_delay;
+        set => _ptr->vbv_delay = value;
+    }
+    
+    /// <summary>
+    /// <para>Encoding only and set by default. Allow encoders to output packets that do not contain any encoded data, only side data.</para>
+    /// <see cref="AVCodecContext.side_data_only_packets" />
+    /// </summary>
+    [Obsolete("this field disables the default behaviour and it is kept only for compatibility.")]
+    public int SideDataOnlyPackets
+    {
+        get => _ptr->side_data_only_packets;
+        set => _ptr->side_data_only_packets = value;
     }
     
     /// <summary>
@@ -1481,9 +1804,9 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
+    /// <para>Control the form of AVSubtitle.rects[N]-&gt;ass - decoding: set by user - encoding: unused</para>
     /// <see cref="AVCodecContext.sub_text_format" />
     /// </summary>
-    [Obsolete("unused")]
     public int SubTextFormat
     {
         get => _ptr->sub_text_format;
@@ -1580,13 +1903,4 @@ public unsafe partial class CodecContext : SafeHandle
         set => _ptr->export_side_data = value;
     }
     
-    /// <summary>
-    /// <para>Audio channel layout. - encoding: must be set by the caller, to one of AVCodec.ch_layouts. - decoding: may be set by the caller if known e.g. from the container. The decoder can then override during decoding as needed.</para>
-    /// <see cref="AVCodecContext.ch_layout" />
-    /// </summary>
-    public AVChannelLayout ChLayout
-    {
-        get => _ptr->ch_layout;
-        set => _ptr->ch_layout = value;
-    }
 }

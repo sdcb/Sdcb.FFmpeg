@@ -9,10 +9,10 @@ namespace Sdcb.FFmpeg.Utils;
 public unsafe partial class BufferRef : SafeHandle
 {
     /// <summary>Allocate an AVBuffer of the given size using av_malloc().</summary>
-    public static BufferRef Alloc(int size) => new BufferRef(av_buffer_alloc((ulong)size), isOwner: true);
+    public static BufferRef Alloc(int size) => new BufferRef(av_buffer_alloc(size), isOwner: true);
 
     /// <summary>Same as av_buffer_alloc(), except the returned buffer will be initialized to zero.</summary>
-    public static BufferRef AllocZ(int size) => new BufferRef(av_buffer_allocz((ulong)size), isOwner: true);
+    public static BufferRef AllocZ(int size) => new BufferRef(av_buffer_allocz(size), isOwner: true);
 
     /// <summary>Create a new reference to an AVBuffer.</summary>
     public static BufferRef Ref(BufferRef other) => new BufferRef(av_buffer_ref(other), isOwner: true);
@@ -46,7 +46,7 @@ public unsafe partial class BufferRef : SafeHandle
     public void Realloc(int size)
     {
         AVBufferRef* ptr = this;
-        av_buffer_realloc(&ptr, (ulong)size).ThrowIfError();
+        av_buffer_realloc(&ptr, size).ThrowIfError();
         handle = (IntPtr)ptr;
     }
 

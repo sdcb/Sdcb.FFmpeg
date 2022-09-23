@@ -1,7 +1,7 @@
 name: main
 on:
   push:
-    branches: [main,feature/5.1.1]
+    branches: [main,feature/5.1.1,release/4.4.1]
   pull_request:
     branches: [main]
 
@@ -18,7 +18,6 @@ jobs:
           sudo apt update
           sudo apt install software-properties-common -y
           sudo add-apt-repository ppa:savoury1/ffmpeg4 -y
-          sudo add-apt-repository ppa:savoury1/ffmpeg5 -y
           sudo apt update
           sudo apt install ffmpeg -y
       - name: Test

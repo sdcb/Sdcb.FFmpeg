@@ -127,34 +127,12 @@ public unsafe partial class Packet : SafeHandle
     }
     
     /// <summary>
-    /// <para>original type: void*</para>
-    /// <para>for some private data of the user</para>
-    /// <see cref="AVPacket.opaque" />
+    /// <see cref="AVPacket.convergence_duration" />
     /// </summary>
-    public IntPtr Opaque
+    [Obsolete("Same as the duration field, but as int64_t. This was required for Matroska subtitles, whose duration values could overflow when the duration field was still an int.")]
+    public long ConvergenceDuration
     {
-        get => (IntPtr)_ptr->opaque;
-        set => _ptr->opaque = (void*)value;
-    }
-    
-    /// <summary>
-    /// <para>original type: AVBufferRef*</para>
-    /// <para>AVBufferRef for free use by the API user. FFmpeg will never check the contents of the buffer ref. FFmpeg calls av_buffer_unref() on it when the packet is unreferenced. av_packet_copy_props() calls create a new reference with av_buffer_ref() for the target packet's opaque_ref field.</para>
-    /// <see cref="AVPacket.opaque_ref" />
-    /// </summary>
-    public BufferRef? OpaqueRef
-    {
-        get => BufferRef.FromNativeOrNull(_ptr->opaque_ref, false);
-        set => _ptr->opaque_ref = value != null ? (AVBufferRef*)value : null;
-    }
-    
-    /// <summary>
-    /// <para>Time base of the packet's timestamps. In the future, this field may be set on packets output by encoders or demuxers, but its value will be by default ignored on input to decoders or muxers.</para>
-    /// <see cref="AVPacket.time_base" />
-    /// </summary>
-    public AVRational TimeBase
-    {
-        get => _ptr->time_base;
-        set => _ptr->time_base = value;
+        get => _ptr->convergence_duration;
+        set => _ptr->convergence_duration = value;
     }
 }

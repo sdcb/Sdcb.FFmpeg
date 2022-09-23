@@ -29,12 +29,12 @@ public unsafe partial class Frame : SafeHandle
         return frame;
     }
 
-    public static Frame CreateWritableAudio(AVSampleFormat sampleFormat, AVChannelLayout channelLayout, int sampleRate, int sampleCount)
+    public static Frame CreateWritableAudio(AVSampleFormat sampleFormat, ulong channelLayout, int sampleRate, int sampleCount)
     {
         var frame = new Frame
         {
             Format = (int)sampleFormat,
-            ChLayout = channelLayout,
+            ChannelLayout = channelLayout,
             SampleRate = sampleRate,
             NbSamples = sampleCount,
         };

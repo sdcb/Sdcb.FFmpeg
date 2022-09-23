@@ -83,7 +83,13 @@ public unsafe partial struct InputFormat
     public string? MimeType => _ptr->mime_type != null ? PtrExtensions.PtrToStringUTF8((IntPtr)_ptr->mime_type)! : null;
     
     /// <summary>
-    /// <para>*************************************************************** No fields below this line are part of the public API. They may not be used outside of libavformat and can be changed and removed at will. New public fields should be added right above. ****************************************************************</para>
+    /// <para>original type: AVInputFormat*</para>
+    /// <see cref="AVInputFormat.next" />
+    /// </summary>
+    public InputFormat Next => InputFormat.FromNative(_ptr->next);
+    
+    /// <summary>
+    /// <para>Raw demuxers store their codec ID here.</para>
     /// <see cref="AVInputFormat.raw_codec_id" />
     /// </summary>
     public int RawCodecId => _ptr->raw_codec_id;
@@ -93,11 +99,5 @@ public unsafe partial struct InputFormat
     /// <see cref="AVInputFormat.priv_data_size" />
     /// </summary>
     public int PrivateDataSize => _ptr->priv_data_size;
-    
-    /// <summary>
-    /// <para>Internal flags. See FF_FMT_FLAG_* in internal.h.</para>
-    /// <see cref="AVInputFormat.flags_internal" />
-    /// </summary>
-    public int FlagsInternal => _ptr->flags_internal;
     
 }

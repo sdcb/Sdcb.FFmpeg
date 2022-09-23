@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 namespace Sdcb.FFmpeg.Formats;
 
 /// <summary>
-/// <para>Bytestream IO Context. New public fields can be added with minor version bumps. Removal, reordering and changes to existing public fields require a major version bump. sizeof(AVIOContext) must not be used outside libav*.</para>
+/// <para>Bytestream IO Context. New fields can be added to the end with minor version bumps. Removal, reordering and changes to existing fields require a major version bump. sizeof(AVIOContext) must not be used outside libav*.</para>
 /// <see cref="AVIOContext" />
 /// </summary>
 public unsafe partial class IOContext : SafeHandle
@@ -116,16 +116,6 @@ public unsafe partial class IOContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>contains the error code or 0 if no error happened</para>
-    /// <see cref="AVIOContext.error" />
-    /// </summary>
-    public int Error
-    {
-        get => _ptr->error;
-        set => _ptr->error = value;
-    }
-    
-    /// <summary>
     /// <para>true if open for writing</para>
     /// <see cref="AVIOContext.write_flag" />
     /// </summary>
@@ -142,16 +132,6 @@ public unsafe partial class IOContext : SafeHandle
     {
         get => _ptr->max_packet_size;
         set => _ptr->max_packet_size = value;
-    }
-    
-    /// <summary>
-    /// <para>Try to buffer at least this amount of data before flushing it.</para>
-    /// <see cref="AVIOContext.min_packet_size" />
-    /// </summary>
-    public int MinPacketSize
-    {
-        get => _ptr->min_packet_size;
-        set => _ptr->min_packet_size = value;
     }
     
     /// <summary>
@@ -174,6 +154,16 @@ public unsafe partial class IOContext : SafeHandle
     }
     
     /// <summary>
+    /// <para>contains the error code or 0 if no error happened</para>
+    /// <see cref="AVIOContext.error" />
+    /// </summary>
+    public int Error
+    {
+        get => _ptr->error;
+        set => _ptr->error = value;
+    }
+    
+    /// <summary>
     /// <para>A combination of AVIO_SEEKABLE_ flags or 0 when the stream is not seekable.</para>
     /// <see cref="AVIOContext.seekable" />
     /// </summary>
@@ -184,6 +174,16 @@ public unsafe partial class IOContext : SafeHandle
     }
     
     /// <summary>
+    /// <para>max filesize, used to limit allocations This field is internal to libavformat and access from outside is not allowed.</para>
+    /// <see cref="AVIOContext.maxsize" />
+    /// </summary>
+    public long Maxsize
+    {
+        get => _ptr->maxsize;
+        set => _ptr->maxsize = value;
+    }
+    
+    /// <summary>
     /// <para>avio_read and avio_write should if possible be satisfied directly instead of going through a buffer, and avio_seek will always call the underlying seek function directly.</para>
     /// <see cref="AVIOContext.direct" />
     /// </summary>
@@ -191,6 +191,56 @@ public unsafe partial class IOContext : SafeHandle
     {
         get => _ptr->direct;
         set => _ptr->direct = value;
+    }
+    
+    /// <summary>
+    /// <para>Bytes read statistic This field is internal to libavformat and access from outside is not allowed.</para>
+    /// <see cref="AVIOContext.bytes_read" />
+    /// </summary>
+    public long BytesRead
+    {
+        get => _ptr->bytes_read;
+        set => _ptr->bytes_read = value;
+    }
+    
+    /// <summary>
+    /// <para>seek statistic This field is internal to libavformat and access from outside is not allowed.</para>
+    /// <see cref="AVIOContext.seek_count" />
+    /// </summary>
+    public int SeekCount
+    {
+        get => _ptr->seek_count;
+        set => _ptr->seek_count = value;
+    }
+    
+    /// <summary>
+    /// <para>writeout statistic This field is internal to libavformat and access from outside is not allowed.</para>
+    /// <see cref="AVIOContext.writeout_count" />
+    /// </summary>
+    public int WriteoutCount
+    {
+        get => _ptr->writeout_count;
+        set => _ptr->writeout_count = value;
+    }
+    
+    /// <summary>
+    /// <para>Original buffer size used internally after probing and ensure seekback to reset the buffer size This field is internal to libavformat and access from outside is not allowed.</para>
+    /// <see cref="AVIOContext.orig_buffer_size" />
+    /// </summary>
+    public int OrigBufferSize
+    {
+        get => _ptr->orig_buffer_size;
+        set => _ptr->orig_buffer_size = value;
+    }
+    
+    /// <summary>
+    /// <para>Threshold to favor readahead over seek. This is current internal only, do not use from outside.</para>
+    /// <see cref="AVIOContext.short_seek_threshold" />
+    /// </summary>
+    public int ShortSeekThreshold
+    {
+        get => _ptr->short_seek_threshold;
+        set => _ptr->short_seek_threshold = value;
     }
     
     /// <summary>
@@ -226,9 +276,27 @@ public unsafe partial class IOContext : SafeHandle
     }
     
     /// <summary>
+    /// <para>Internal, not meant to be used from outside of AVIOContext.</para>
+    /// <see cref="AVIOContext.current_type" />
+    /// </summary>
+    public AVIODataMarkerType CurrentType
+    {
+        get => _ptr->current_type;
+        set => _ptr->current_type = value;
+    }
+    
+    /// <summary>
+    /// <see cref="AVIOContext.last_time" />
+    /// </summary>
+    public long LastTime
+    {
+        get => _ptr->last_time;
+        set => _ptr->last_time = value;
+    }
+    
+    /// <summary>
     /// <see cref="AVIOContext.written" />
     /// </summary>
-    [Obsolete("field utilized privately by libavformat. For a public statistic of how many bytes were written out, see AVIOContext::bytes_written.")]
     public long Written
     {
         get => _ptr->written;
@@ -247,22 +315,12 @@ public unsafe partial class IOContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>Read-only statistic of bytes read for this AVIOContext.</para>
-    /// <see cref="AVIOContext.bytes_read" />
+    /// <para>Try to buffer at least this amount of data before flushing it</para>
+    /// <see cref="AVIOContext.min_packet_size" />
     /// </summary>
-    public long BytesRead
+    public int MinPacketSize
     {
-        get => _ptr->bytes_read;
-        set => _ptr->bytes_read = value;
-    }
-    
-    /// <summary>
-    /// <para>Read-only statistic of bytes written for this AVIOContext.</para>
-    /// <see cref="AVIOContext.bytes_written" />
-    /// </summary>
-    public long BytesWritten
-    {
-        get => _ptr->bytes_written;
-        set => _ptr->bytes_written = value;
+        get => _ptr->min_packet_size;
+        set => _ptr->min_packet_size = value;
     }
 }

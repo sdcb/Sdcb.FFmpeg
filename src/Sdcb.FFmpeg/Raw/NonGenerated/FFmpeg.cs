@@ -75,14 +75,4 @@ public static partial class ffmpeg
     public static string AV_VERSION_DOT<T1, T2, T3>(T1 a, T2 b, T3 c) => $"{a}.{b}.{c}";
 
     public static string AV_VERSION<T1, T2, T3>(T1 a, T2 b, T3 c) => AV_VERSION_DOT(a, b, c);
-
-    public static AVChannelLayout AV_CHANNEL_LAYOUT_MASK(int nb, int channel) => new AVChannelLayout
-    {
-        order = AVChannelOrder.Native,
-        nb_channels = nb,
-        u = new AVChannelLayout_u
-        {
-            mask = (ulong)channel
-        }
-    };
 }

@@ -239,7 +239,6 @@ public unsafe partial class CodecParameters : SafeHandle
     /// <para>Audio only. The channel layout bitmask. May be 0 if the channel layout is unknown or unspecified, otherwise the number of bits set must be equal to the channels field.</para>
     /// <see cref="AVCodecParameters.channel_layout" />
     /// </summary>
-    [Obsolete("use ch_layout")]
     public ulong ChannelLayout
     {
         get => _ptr->channel_layout;
@@ -250,7 +249,6 @@ public unsafe partial class CodecParameters : SafeHandle
     /// <para>Audio only. The number of audio channels.</para>
     /// <see cref="AVCodecParameters.channels" />
     /// </summary>
-    [Obsolete("use ch_layout.nb_channels")]
     public int Channels
     {
         get => _ptr->channels;
@@ -315,15 +313,5 @@ public unsafe partial class CodecParameters : SafeHandle
     {
         get => _ptr->seek_preroll;
         set => _ptr->seek_preroll = value;
-    }
-    
-    /// <summary>
-    /// <para>Audio only. The channel layout and number of channels.</para>
-    /// <see cref="AVCodecParameters.ch_layout" />
-    /// </summary>
-    public AVChannelLayout ChLayout
-    {
-        get => _ptr->ch_layout;
-        set => _ptr->ch_layout = value;
     }
 }
