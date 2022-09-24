@@ -1,5 +1,4 @@
 ﻿using Sdcb.FFmpeg.Codecs;
-using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Formats;
 using Sdcb.FFmpeg.Raw;
 using Sdcb.FFmpeg.Swscales;
@@ -106,5 +105,46 @@ public class Examples
             sw.Stop();
             _console.WriteLine($"dts: {frame.PktDts}, pts: {frame.Pts}, cpn: {frame.CodedPictureNumber}, sws-elapse: {sw.Elapsed.TotalMilliseconds:F2}ms");
         }
+    }
+
+    [Fact]
+    public void MakeGif()
+    {
+        using FormatContext fc = FormatContext.AllocOutput(formatName: "gif");
+        fc.VideoCodec = Codec.CommonEncoders.Gif;
+        MediaStream vstream = fc.NewStream(fc.VideoCodec);
+        using CodecContext vcodec = new CodecContext(fc.VideoCodec)
+        {
+            Width = 400,
+            Height = 50,
+            TimeBase = new AVRational(1, 20),
+            PixelFormat = AVPixelFormat.Rgb8,
+        };
+        vcodec.Open(fc.VideoCodec);
+        vstream.Codecpar.CopyFrom(vcodec);
+
+        using DynamicIOContext io = IOContext.OpenDynamic();
+        fc.Pb = io;
+        fc.WriteHeader();
+        foreach (Packet packet in vcodec.EncodeFrames(vcodec.ConvertFrames(
+            VideoFrameGenerator.Yuv420pSequence(vcodec.Width, vcodec.Height).Take(40)
+            )))
+        {
+            try
+            {
+                packet.RescaleTimestamp(vcodec.TimeBase, vstream.TimeBase);
+                long after = packet.Dts;
+                packet.StreamIndex = vstream.Index;
+                fc.InterleavedWritePacket(packet);
+            }
+            finally
+            {
+                packet.Unreference();
+            }
+        }
+        fc.WriteTrailer();
+        byte[] gif = io.GetBuffer().ToArray();
+        Assert.NotEmpty(gif);
+        //File.WriteAllBytes("test.gif", gif);
     }
 }

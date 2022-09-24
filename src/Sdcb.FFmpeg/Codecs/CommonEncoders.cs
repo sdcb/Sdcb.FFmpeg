@@ -50,6 +50,11 @@ public class CommonEncoders
     /// </summary>
     public Codec Libopus => EnsureEncoderAvailable("libopus");
 
+    /// <summary>
+    /// GIF image/animation encoder.
+    /// </summary>
+    public Codec Gif => EnsureEncoderAvailable("gif");
+
     private Codec EnsureEncoderAvailable(string name)
     {
         Codec? codec = Codec.FindEncoderByName(name);
