@@ -3,6 +3,7 @@
 using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Codecs;
 using Sdcb.FFmpeg.Formats;
+using Sdcb.FFmpeg.Filters;
 using Sdcb.FFmpeg.Raw;
 using System;
 using System.Collections.Generic;
