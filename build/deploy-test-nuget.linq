@@ -32,3 +32,17 @@ string IncrementBuildVersion(string projFile)
 	
 	return versionPrefix + "-" + newVersionSuffix;
 }
+
+string KeepBuildVersion(string projFile)
+{
+	string allText = File.ReadAllText(projFile);
+	XDocument xml = XDocument.Parse(allText);
+	XElement versionSuffixNode = xml.XPathSelectElement(@"/Project/PropertyGroup/VersionSuffix");
+	XElement versionPrefixNode = xml.XPathSelectElement(@"/Project/PropertyGroup/VersionPrefix");
+
+	string versionPrefix = (versionPrefixNode.FirstNode as XText).Value;
+	string versionSuffix = (versionSuffixNode.FirstNode as XText).Value;
+	int buildNumber = int.Parse(versionSuffix.Split('.')[1]);
+
+	return versionPrefix + "-preview." + buildNumber;
+}

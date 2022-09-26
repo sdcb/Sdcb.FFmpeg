@@ -67,7 +67,7 @@ public unsafe partial struct Filter
     /// <para>A class for the private data, used to declare filter private AVOptions. This field is NULL for filters that do not declare any options.</para>
     /// <see cref="AVFilter.priv_class" />
     /// </summary>
-    public FFmpegClass PrivateClass => FFmpegClass.FromNative(_ptr->priv_class);
+    public FFmpegClass? PrivateClass => FFmpegClass.FromNativeOrNull(_ptr->priv_class);
     
     /// <summary>
     /// <para>original type: int</para>
@@ -87,12 +87,5 @@ public unsafe partial struct Filter
     /// <see cref="AVFilter.flags_internal" />
     /// </summary>
     public int FlagsInternal => _ptr->flags_internal;
-    
-    /// <summary>
-    /// <para>original type: AVFilter*</para>
-    /// <para>Used by the filter registration system. Must not be touched by any other code.</para>
-    /// <see cref="AVFilter.next" />
-    /// </summary>
-    public Filter Next => Filter.FromNative(_ptr->next);
     
 }

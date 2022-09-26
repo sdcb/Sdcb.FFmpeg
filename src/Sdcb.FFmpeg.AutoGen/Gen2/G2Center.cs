@@ -169,6 +169,8 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateTypeCast("name", TypeCastDef.ReadOnlyUtf8String()),
                 FieldDef.CreateTypeCastNullable("description", TypeCastDef.ReadOnlyUtf8String()),
                 FieldDef.CreateTypeCast("flags", TypeCastDef.Force("int", "AVFILTER_FLAG")),
+                FieldDef.CreateNullable("priv_class"),
+                FieldDef.CreateHide("next"),
             }),
             G2TransformDef.MakeClass(ClassCategories.Filters, "AVFilterGraph", "FilterGraph", new FieldDef[]
             {
