@@ -1139,6 +1139,24 @@ namespace Sdcb.FFmpeg.Raw
         Bt = 5,
     }
     
+    /// <summary>Macro enum, prefix: AVFILTER_FLAG_</summary>
+    [Flags]
+    public enum AVFILTER_FLAG : int
+    {
+        /// <summary>AVFILTER_FLAG_DYNAMIC_INPUTS</summary>
+        DynamicInputs = 1 << 0,
+        /// <summary>AVFILTER_FLAG_DYNAMIC_OUTPUTS</summary>
+        DynamicOutputs = 1 << 1,
+        /// <summary>AVFILTER_FLAG_SLICE_THREADS</summary>
+        SliceThreads = 1 << 2,
+        /// <summary>AVFILTER_FLAG_SUPPORT_TIMELINE_GENERIC</summary>
+        SupportTimelineGeneric = 1 << 16,
+        /// <summary>AVFILTER_FLAG_SUPPORT_TIMELINE_INTERNAL</summary>
+        SupportTimelineInternal = 1 << 17,
+        /// <summary>AVFILTER_FLAG_SUPPORT_TIMELINE</summary>
+        SupportTimeline = SupportTimelineGeneric | SupportTimelineInternal,
+    }
+    
     /// <summary>stage of the initialization of the link properties (dimensions, etc)</summary>
     public enum AVFilterLink_init_state : int
     {

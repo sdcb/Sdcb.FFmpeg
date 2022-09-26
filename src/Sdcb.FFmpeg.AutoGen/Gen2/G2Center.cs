@@ -162,6 +162,32 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateHide("size"),
             }),
             #endregion
+
+            #region filters
+            G2TransformDef.MakeReadonlyStruct(ClassCategories.Filters, "AVFilter", "Filter", new FieldDef[]
+            {
+                FieldDef.CreateTypeCast("name", TypeCastDef.ReadOnlyUtf8String()),
+                FieldDef.CreateTypeCastNullable("description", TypeCastDef.ReadOnlyUtf8String()),
+                FieldDef.CreateTypeCast("flags", TypeCastDef.Force("int", "AVFILTER_FLAG")),
+            }),
+            G2TransformDef.MakeClass(ClassCategories.Filters, "AVFilterGraph", "FilterGraph", new FieldDef[]
+            {
+
+            }),
+            G2TransformDef.MakeClass(ClassCategories.Filters, "AVFilterContext", "FilterContext", new FieldDef[]
+            {
+
+            }),
+            G2TransformDef.MakeClass(ClassCategories.Filters, "AVFilterLink", "FilterLink", new FieldDef[]
+            {
+
+            }),            
+            G2TransformDef.MakeClass(ClassCategories.Filters, "AVFilterInOut", "FilterInOut", new FieldDef[]
+            {
+                FieldDef.CreateTypeCast("name", TypeCastDef.DupUtf8String()),
+                FieldDef.CreateNullable("next"),
+            }),
+            #endregion filters
         }.ToDictionary(k => k.OldName, v => v);
     }
 }

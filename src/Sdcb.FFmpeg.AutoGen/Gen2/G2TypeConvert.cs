@@ -136,6 +136,8 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
 
         public static TypeCastDef OptUtf8String() => Custom("byte*", "string", $"PtrExtensions.PtrToStringUTF8((IntPtr){{0}})", $"Options.Set(\"{{oldName}}\", value)");
 
+        public static TypeCastDef DupUtf8String() => Custom("byte*", "string", $"PtrExtensions.PtrToStringUTF8((IntPtr){{0}})", $"{{ptr}}->{{oldName}} = ffmpeg.av_strdup(value)");
+
         internal protected virtual string GetPropertyGetter(string ptr, string oldName, PropStatus prop)
         {
             return IsChanged switch
@@ -203,6 +205,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
         private record FunctionCallCastDef(string OldType, string NewType, string ReadCallFormat, string WriteCallFormat) : ReadOnlyFunctionCallCastDef(OldType, NewType, ReadCallFormat)
         {
             protected internal override string GetPropertySetter(string ptr, string oldName, PropStatus prop) => WriteCallFormat
+                .Replace("{ptr}", ptr)
                 .Replace("{oldName}", oldName);
         }
     }
