@@ -27,6 +27,8 @@ public unsafe partial class FilterContext : SafeHandle
     
     public static FilterContext FromNative(AVFilterContext* ptr, bool isOwner) => new FilterContext(ptr, isOwner);
     
+    internal static FilterContext FromNative(IntPtr ptr, bool isOwner) => new FilterContext((AVFilterContext*)ptr, isOwner);
+    
     public static FilterContext? FromNativeOrNull(AVFilterContext* ptr, bool isOwner) => ptr == null ? null : new FilterContext(ptr, isOwner);
     
     public override bool IsInvalid => handle == IntPtr.Zero;
@@ -65,64 +67,32 @@ public unsafe partial class FilterContext : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVFilterPad*</para>
     /// <para>array of input pads</para>
     /// <see cref="AVFilterContext.input_pads" />
     /// </summary>
-    public AVFilterPad* InputPads
-    {
-        get => _ptr->input_pads;
-        set => _ptr->input_pads = value;
-    }
+    public FilterPadList InputPads => new FilterPadList(_ptr->input_pads)!;
     
     /// <summary>
+    /// <para>original type: AVFilterLink**</para>
     /// <para>array of pointers to input links</para>
     /// <see cref="AVFilterContext.inputs" />
     /// </summary>
-    public AVFilterLink** Inputs
-    {
-        get => _ptr->inputs;
-        set => _ptr->inputs = value;
-    }
+    public IReadOnlyList<FilterLink> Inputs => new ReadOnlyPtrList<AVFilterLink, FilterLink>(_ptr->inputs, (int)_ptr->nb_inputs, p => FilterLink.FromNative(p, isOwner: false))!;
     
     /// <summary>
-    /// <para>number of input pads</para>
-    /// <see cref="AVFilterContext.nb_inputs" />
-    /// </summary>
-    public uint NbInputs
-    {
-        get => _ptr->nb_inputs;
-        set => _ptr->nb_inputs = value;
-    }
-    
-    /// <summary>
+    /// <para>original type: AVFilterPad*</para>
     /// <para>array of output pads</para>
     /// <see cref="AVFilterContext.output_pads" />
     /// </summary>
-    public AVFilterPad* OutputPads
-    {
-        get => _ptr->output_pads;
-        set => _ptr->output_pads = value;
-    }
+    public FilterPadList OutputPads => new FilterPadList(_ptr->output_pads)!;
     
     /// <summary>
+    /// <para>original type: AVFilterLink**</para>
     /// <para>array of pointers to output links</para>
     /// <see cref="AVFilterContext.outputs" />
     /// </summary>
-    public AVFilterLink** Outputs
-    {
-        get => _ptr->outputs;
-        set => _ptr->outputs = value;
-    }
-    
-    /// <summary>
-    /// <para>number of output pads</para>
-    /// <see cref="AVFilterContext.nb_outputs" />
-    /// </summary>
-    public uint NbOutputs
-    {
-        get => _ptr->nb_outputs;
-        set => _ptr->nb_outputs = value;
-    }
+    public IReadOnlyList<FilterLink> Outputs => new ReadOnlyPtrList<AVFilterLink, FilterLink>(_ptr->outputs, (int)_ptr->nb_outputs, p => FilterLink.FromNative(p, isOwner: false))!;
     
     /// <summary>
     /// <para>original type: void*</para>

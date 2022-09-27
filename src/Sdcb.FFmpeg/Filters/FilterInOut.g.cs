@@ -27,6 +27,8 @@ public unsafe partial class FilterInOut : SafeHandle
     
     public static FilterInOut FromNative(AVFilterInOut* ptr, bool isOwner) => new FilterInOut(ptr, isOwner);
     
+    internal static FilterInOut FromNative(IntPtr ptr, bool isOwner) => new FilterInOut((AVFilterInOut*)ptr, isOwner);
+    
     public static FilterInOut? FromNativeOrNull(AVFilterInOut* ptr, bool isOwner) => ptr == null ? null : new FilterInOut(ptr, isOwner);
     
     public override bool IsInvalid => handle == IntPtr.Zero;

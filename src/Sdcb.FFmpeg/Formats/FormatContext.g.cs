@@ -27,6 +27,8 @@ public unsafe partial class FormatContext : SafeHandle
     
     public static FormatContext FromNative(AVFormatContext* ptr, bool isOwner) => new FormatContext(ptr, isOwner);
     
+    internal static FormatContext FromNative(IntPtr ptr, bool isOwner) => new FormatContext((AVFormatContext*)ptr, isOwner);
+    
     public static FormatContext? FromNativeOrNull(AVFormatContext* ptr, bool isOwner) => ptr == null ? null : new FormatContext(ptr, isOwner);
     
     public override bool IsInvalid => handle == IntPtr.Zero;

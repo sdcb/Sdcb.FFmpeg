@@ -27,6 +27,8 @@ public unsafe partial class BufferRef : SafeHandle
     
     public static BufferRef FromNative(AVBufferRef* ptr, bool isOwner) => new BufferRef(ptr, isOwner);
     
+    internal static BufferRef FromNative(IntPtr ptr, bool isOwner) => new BufferRef((AVBufferRef*)ptr, isOwner);
+    
     public static BufferRef? FromNativeOrNull(AVBufferRef* ptr, bool isOwner) => ptr == null ? null : new BufferRef(ptr, isOwner);
     
     public override bool IsInvalid => handle == IntPtr.Zero;

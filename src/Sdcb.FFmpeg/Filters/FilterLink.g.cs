@@ -27,6 +27,8 @@ public unsafe partial class FilterLink : SafeHandle
     
     public static FilterLink FromNative(AVFilterLink* ptr, bool isOwner) => new FilterLink(ptr, isOwner);
     
+    internal static FilterLink FromNative(IntPtr ptr, bool isOwner) => new FilterLink((AVFilterLink*)ptr, isOwner);
+    
     public static FilterLink? FromNativeOrNull(AVFilterLink* ptr, bool isOwner) => ptr == null ? null : new FilterLink(ptr, isOwner);
     
     public override bool IsInvalid => handle == IntPtr.Zero;

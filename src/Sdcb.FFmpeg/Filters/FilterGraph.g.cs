@@ -26,6 +26,8 @@ public unsafe partial class FilterGraph : SafeHandle
     
     public static FilterGraph FromNative(AVFilterGraph* ptr, bool isOwner) => new FilterGraph(ptr, isOwner);
     
+    internal static FilterGraph FromNative(IntPtr ptr, bool isOwner) => new FilterGraph((AVFilterGraph*)ptr, isOwner);
+    
     public static FilterGraph? FromNativeOrNull(AVFilterGraph* ptr, bool isOwner) => ptr == null ? null : new FilterGraph(ptr, isOwner);
     
     public override bool IsInvalid => handle == IntPtr.Zero;

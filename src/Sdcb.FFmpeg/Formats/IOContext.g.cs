@@ -27,6 +27,8 @@ public unsafe partial class IOContext : SafeHandle
     
     public static IOContext FromNative(AVIOContext* ptr, bool isOwner) => new IOContext(ptr, isOwner);
     
+    internal static IOContext FromNative(IntPtr ptr, bool isOwner) => new IOContext((AVIOContext*)ptr, isOwner);
+    
     public static IOContext? FromNativeOrNull(AVIOContext* ptr, bool isOwner) => ptr == null ? null : new IOContext(ptr, isOwner);
     
     public override bool IsInvalid => handle == IntPtr.Zero;

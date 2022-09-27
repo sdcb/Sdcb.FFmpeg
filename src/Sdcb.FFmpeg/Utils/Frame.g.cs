@@ -27,6 +27,8 @@ public unsafe partial class Frame : SafeHandle
     
     public static Frame FromNative(AVFrame* ptr, bool isOwner) => new Frame(ptr, isOwner);
     
+    internal static Frame FromNative(IntPtr ptr, bool isOwner) => new Frame((AVFrame*)ptr, isOwner);
+    
     public static Frame? FromNativeOrNull(AVFrame* ptr, bool isOwner) => ptr == null ? null : new Frame(ptr, isOwner);
     
     public override bool IsInvalid => handle == IntPtr.Zero;

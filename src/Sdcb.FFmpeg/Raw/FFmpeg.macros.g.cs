@@ -15,8 +15,6 @@ namespace Sdcb.FFmpeg.Raw
         // public static av_always_inline = __forceinline;
         /// <summary>AV_BUFFER_FLAG_READONLY = (1 &lt;&lt; 0)</summary>
         public const int AV_BUFFER_FLAG_READONLY = 1 << 0;
-        public const int AV_BUFFERSINK_FLAG_NO_REQUEST = 2;
-        public const int AV_BUFFERSINK_FLAG_PEEK = 1;
         // public static av_builtin_constant_p = __builtin_constant_p;
         // public static av_ceil_log2 = av_ceil_log2_c;
         // public static AV_CEIL_RSHIFT = (a,b) (!av_builtin_constant_p(b) ? -((-(a)) >> (b)) : ((a) + (1<<(b)) - 1) >> (b));

@@ -96,11 +96,11 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateTypeCastNullable("protocol_whitelist", TypeCastDef.OptUtf8String()),
                 FieldDef.CreateTypeCastNullable("protocol_blacklist", TypeCastDef.OptUtf8String()),
                 FieldDef.CreateTypeCast("flags", TypeCastDef.Force("int", "AVFMT_FLAG")),
-                FieldDef.CreateTypeCast("streams", TypeCastDef.ReadonlyPtrList("AVStream", "MediaStream", "nb_streams", "FromNative")) with { ReadOnly = true },
+                FieldDef.CreateTypeCastReadonly("streams", TypeCastDef.ReadonlyPtrList("AVStream", "MediaStream", "nb_streams", "MediaStream.FromNative")),
                 FieldDef.CreateHide("nb_streams"),
-                FieldDef.CreateTypeCast("programs", TypeCastDef.ReadonlyPtrList("AVProgram", "MediaProgram", "nb_programs", "FromNative")) with { ReadOnly = true },
+                FieldDef.CreateTypeCastReadonly("programs", TypeCastDef.ReadonlyPtrList("AVProgram", "MediaProgram", "nb_programs", "MediaProgram.FromNative")),
                 FieldDef.CreateHide("nb_programs"),
-                FieldDef.CreateTypeCast("chapters", TypeCastDef.ReadonlyPtrList("AVChapter", "MediaChapter", "nb_chapters", "FromNative")) with { ReadOnly = true },
+                FieldDef.CreateTypeCastReadonly("chapters", TypeCastDef.ReadonlyPtrList("AVChapter", "MediaChapter", "nb_chapters", "MediaChapter.FromNative")),
                 FieldDef.CreateHide("nb_chapters"),
             }),
             G2TransformDef.MakeStruct(ClassCategories.Formats, "AVProgram", "MediaProgram", new FieldDef[]
@@ -143,7 +143,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             #region utils
             G2TransformDef.MakeClass(ClassCategories.Utils, "AVFrame", "Frame", new FieldDef[]
             {
-                FieldDef.CreateTypeCast("side_data", TypeCastDef.ReadonlyPtrList("AVFrameSideData", "FrameSideData", "nb_side_data", "FromNative")) with { ReadOnly = true },
+                FieldDef.CreateTypeCastReadonly("side_data", TypeCastDef.ReadonlyPtrList("AVFrameSideData", "FrameSideData", "nb_side_data", "FrameSideData.FromNative")),
                 FieldDef.CreateHide("nb_side_data"),
                 FieldDef.CreateNullable("hw_frames_ctx"),
                 FieldDef.CreateNullable("opaque_ref"),
@@ -180,7 +180,12 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             }),
             G2TransformDef.MakeClass(ClassCategories.Filters, "AVFilterContext", "FilterContext", new FieldDef[]
             {
-
+                FieldDef.CreateTypeCastReadonly("inputs", TypeCastDef.ReadonlyPtrList("AVFilterLink", "FilterLink", "nb_inputs", "p => FilterLink.FromNative(p, isOwner: false)")),
+                FieldDef.CreateHide("nb_inputs"),
+                FieldDef.CreateTypeCastReadonly("outputs", TypeCastDef.ReadonlyPtrList("AVFilterLink", "FilterLink", "nb_outputs", "p => FilterLink.FromNative(p, isOwner: false)")),
+                FieldDef.CreateHide("nb_outputs"),
+                FieldDef.CreateTypeCast("input_pads", TypeCastDef.CustomReadonly("AVFilterPad*", "FilterPadList", "new FilterPadList({0})")) with { ReadOnly = true },
+                FieldDef.CreateTypeCast("output_pads", TypeCastDef.CustomReadonly("AVFilterPad*", "FilterPadList", "new FilterPadList({0})"))  with { ReadOnly = true },
             }),
             G2TransformDef.MakeClass(ClassCategories.Filters, "AVFilterLink", "FilterLink", new FieldDef[]
             {

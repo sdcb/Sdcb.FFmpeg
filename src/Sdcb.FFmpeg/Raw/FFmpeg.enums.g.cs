@@ -6,6 +6,16 @@ using System.Runtime.InteropServices;
 #pragma warning disable CS0108
 namespace Sdcb.FFmpeg.Raw
 {
+    /// <summary>Macro enum, prefix: AV_BUFFERSINK_FLAG_</summary>
+    [Flags]
+    public enum AV_BUFFERSINK_FLAG : int
+    {
+        /// <summary>AV_BUFFERSINK_FLAG_PEEK</summary>
+        Peek = 1,
+        /// <summary>AV_BUFFERSINK_FLAG_NO_REQUEST</summary>
+        NoRequest = 2,
+    }
+    
     /// <summary>Macro enum, prefix: AV_CH_</summary>
     [Flags]
     public enum AV_CH : ulong
