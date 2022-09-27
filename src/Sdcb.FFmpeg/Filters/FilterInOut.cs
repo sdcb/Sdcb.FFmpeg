@@ -16,6 +16,8 @@ public unsafe partial class FilterInOut
     {
     }
 
+    public void Reset(IntPtr ptr) => handle = ptr;
+
     public void Free()
     {
         AVFilterInOut* ptr = this;

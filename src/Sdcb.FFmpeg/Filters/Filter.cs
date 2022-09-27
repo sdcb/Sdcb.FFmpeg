@@ -17,6 +17,20 @@ public unsafe partial struct Filter
         .EnumeratePtrIterator(ptr => (IntPtr)av_filter_iterate((void**)ptr))
         .Select(FromNative);
 
+    /// <summary>
+    /// <para>Return the libavfilter build-time configuration.</para>
+    /// <see cref="avfilter_configuration"/>
+    /// </summary>
+    public static HashSet<string> Configuration => avfilter_configuration()
+        .Split(' ')
+        .ToHashSet();
+
+    /// <summary>
+    /// <para>Return the libavfilter license.</para>
+    /// <see cref="avfilter_license"/>
+    /// </summary>
+    public static string License => avfilter_license();
+
     /// <summary>Get a filter definition matching the given name.</summary>
     /// <param name="name">the filter name to find</param>
     public static Filter? GetByName(string name) => FromNativeOrNull(avfilter_get_by_name(name));

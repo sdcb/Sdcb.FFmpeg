@@ -432,8 +432,6 @@ namespace Sdcb.FFmpeg.Raw
         public static readonly int AVERROR_STREAM_NOT_FOUND = FFERRTAG(0xF8, 'S', 'T', 'R');
         /// <summary>AVERROR_UNKNOWN = FFERRTAG( &apos;U&apos;,&apos;N&apos;,&apos;K&apos;,&apos;N&apos;)</summary>
         public static readonly int AVERROR_UNKNOWN = FFERRTAG('U', 'N', 'K', 'N');
-        public const int AVFILTER_CMD_FLAG_FAST = 2;
-        public const int AVFILTER_CMD_FLAG_ONE = 1;
         /// <summary>AVFILTER_THREAD_SLICE = (1 &lt;&lt; 0)</summary>
         public const int AVFILTER_THREAD_SLICE = 1 << 0;
         public const uint AVFMTCTX_NOHEADER = 0x0001;

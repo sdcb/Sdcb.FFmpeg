@@ -1,6 +1,7 @@
 ﻿using Sdcb.FFmpeg.Codecs;
 using Sdcb.FFmpeg.Filters;
 using Sdcb.FFmpeg.Raw;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
@@ -36,10 +37,22 @@ public class FiltersTest
     }
 
     [Fact]
-    public unsafe void FilterInputs()
+    public  void FilterOutputs()
     {
         Filter formatFilter = Filter.GetByName("format").Value;
-        AVFilter* ptr = (AVFilter*)formatFilter;
         _console.WriteLine(string.Join("\n", formatFilter.Outputs.Select(x => $"{x.MediaType}: {x.Name}").Take(2)));
+    }
+
+    [Fact]
+    public void Configuration()
+    {
+        HashSet<string> configs = Filter.Configuration;
+        Assert.NotEmpty(configs);
+    }
+
+    [Fact]
+    public void License()
+    {
+        Assert.NotNull(Filter.License);
     }
 }

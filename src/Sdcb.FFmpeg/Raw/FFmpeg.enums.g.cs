@@ -1139,6 +1139,16 @@ namespace Sdcb.FFmpeg.Raw
         Bt = 5,
     }
     
+    /// <summary>Macro enum, prefix: AVFILTER_CMD_FLAG_</summary>
+    [Flags]
+    public enum AVFILTER_CMD_FLAG : int
+    {
+        /// <summary>AVFILTER_CMD_FLAG_ONE</summary>
+        One = 1,
+        /// <summary>AVFILTER_CMD_FLAG_FAST</summary>
+        Fast = 2,
+    }
+    
     /// <summary>Macro enum, prefix: AVFILTER_FLAG_</summary>
     [Flags]
     public enum AVFILTER_FLAG : int
