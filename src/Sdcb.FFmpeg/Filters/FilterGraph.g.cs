@@ -43,22 +43,10 @@ public unsafe partial class FilterGraph : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVFilterContext**</para>
     /// <see cref="AVFilterGraph.filters" />
     /// </summary>
-    public AVFilterContext** Filters
-    {
-        get => _ptr->filters;
-        set => _ptr->filters = value;
-    }
-    
-    /// <summary>
-    /// <see cref="AVFilterGraph.nb_filters" />
-    /// </summary>
-    public uint NbFilters
-    {
-        get => _ptr->nb_filters;
-        set => _ptr->nb_filters = value;
-    }
+    public IReadOnlyList<FilterContext> Filters => new ReadOnlyPtrList<AVFilterContext, FilterContext>(_ptr->filters, (int)_ptr->nb_filters, p => FilterContext.FromNative(p, isOwner: false))!;
     
     /// <summary>
     /// <para>original type: byte*</para>
@@ -135,23 +123,11 @@ public unsafe partial class FilterGraph : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVFilterLink**</para>
     /// <para>Private fields</para>
     /// <see cref="AVFilterGraph.sink_links" />
     /// </summary>
-    public AVFilterLink** SinkLinks
-    {
-        get => _ptr->sink_links;
-        set => _ptr->sink_links = value;
-    }
-    
-    /// <summary>
-    /// <see cref="AVFilterGraph.sink_links_count" />
-    /// </summary>
-    public int SinkLinksCount
-    {
-        get => _ptr->sink_links_count;
-        set => _ptr->sink_links_count = value;
-    }
+    public IReadOnlyList<FilterLink> SinkLinks => new ReadOnlyPtrList<AVFilterLink, FilterLink>(_ptr->sink_links, (int)_ptr->sink_links_count, p => FilterLink.FromNative(p, isOwner: false))!;
     
     /// <summary>
     /// <see cref="AVFilterGraph.disable_auto_convert" />

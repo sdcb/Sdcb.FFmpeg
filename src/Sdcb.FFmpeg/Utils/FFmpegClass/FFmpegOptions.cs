@@ -75,6 +75,31 @@ public unsafe class FFmpegOptions
         av_opt_set_bin(_obj, name, (byte*)value.Pointer, value.Length, (int)searchFlags).ThrowIfError();
 
     /// <summary>
+    /// <see cref="av_opt_set_bin(void*, string, byte*, int, int)"/>
+    /// </summary>
+    public void SetIntList(string name, int[] value, int terminator, AV_OPT_SEARCH searchFlags = default)
+    {
+        int length = Array.IndexOf(value, terminator);
+        if (length == -1) throw new ArgumentOutOfRangeException(nameof(terminator));
+
+        fixed (int* ptr = value)
+        {
+            av_opt_set_bin(_obj, name, (byte*)ptr, (length + 1) * 4, (int)searchFlags);
+        }
+    }
+
+    /// <summary>
+    /// <see cref="av_opt_set_bin(void*, string, byte*, int, int)"/>
+    /// </summary>
+    public void SetIntList(string name, int[] value, AV_OPT_SEARCH searchFlags = default)
+    {
+        fixed (int* ptr = value)
+        {
+            av_opt_set_bin(_obj, name, (byte*)ptr, value.Length * 4, (int)searchFlags);
+        }
+    }
+
+    /// <summary>
     /// <see cref="av_opt_set_image_size(void*, string, int, int, int)"/>
     /// </summary>
     public void Set(string name, int width, int height, AV_OPT_SEARCH searchFlags = default) => 

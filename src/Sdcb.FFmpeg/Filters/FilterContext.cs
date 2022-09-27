@@ -9,6 +9,8 @@ namespace Sdcb.FFmpeg.Filters;
 
 public unsafe partial class FilterContext : SafeHandle
 {
+    public FFmpegOptions Options => new FFmpegOptions(this);
+
     /// <summary>
     /// <para>Initialize a filter with the supplied parameters.</para>
     /// <see cref="avfilter_init_str"/>
