@@ -51,16 +51,18 @@ public unsafe partial struct Filter
     public string? Description => _ptr->description != null ? PtrExtensions.PtrToStringUTF8((IntPtr)_ptr->description)! : null;
     
     /// <summary>
+    /// <para>original type: AVFilterPad*</para>
     /// <para>List of inputs, terminated by a zeroed element.</para>
     /// <see cref="AVFilter.inputs" />
     /// </summary>
-    public AVFilterPad* Inputs => _ptr->inputs;
+    public FilterPadList Inputs => new FilterPadList(_ptr->inputs)!;
     
     /// <summary>
+    /// <para>original type: AVFilterPad*</para>
     /// <para>List of outputs, terminated by a zeroed element.</para>
     /// <see cref="AVFilter.outputs" />
     /// </summary>
-    public AVFilterPad* Outputs => _ptr->outputs;
+    public FilterPadList Outputs => new FilterPadList(_ptr->outputs)!;
     
     /// <summary>
     /// <para>original type: AVClass*</para>

@@ -89,6 +89,25 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             valGetter: p => *({elementType}*)p)");
         }
 
+        public static TypeCastDef ReadSequenceAndCast(string elementType, string finalType, string exitCondition, string getter = "*{0}")
+        {
+            string finalGetter = string.Format(getter, $"({elementType}*)p");
+            return new ReadOnlyFunctionCallCastDef(elementType + '*', $"IEnumerable<{finalType}>", $@"NativeUtils.ReadSequence(
+            p: (IntPtr){{0}},
+            unitSize: sizeof({elementType}),
+            exitCondition: p => *({elementType}*){exitCondition}, 
+            valGetter: p => {finalGetter})");
+        }
+
+        public static TypeCastDef ReadSequenceRaw(string elementType, string finalType, string unitSize, string exitCondition, string getter)
+        {
+            return new ReadOnlyFunctionCallCastDef(elementType + '*', $"IEnumerable<{finalType}>", $@"NativeUtils.ReadSequence(
+            p: (IntPtr){{0}},
+            unitSize: {unitSize},
+            exitCondition: p => {exitCondition}, 
+            valGetter: p => {getter})");
+        }
+
         public static TypeCastDef ReadonlyPtrList(string elementType, string returnElementType, string countElement, string converterMethod)
         {
             return new ReadOnlyFunctionCallCastDef(
@@ -105,12 +124,12 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 $@"new DataPointer({{0}}, (int)_ptr->{countElement})");
         }
 
-        public static TypeCastDef ReadonlyNativeListWithCast(string elementType, string returnElementType, string countElement, string converterMethod)
+        public static TypeCastDef ReadonlyNativeListWithCast(string elementType, string returnElementType, string countAccessor, string converterMethod)
         {
             return new ReadOnlyFunctionCallCastDef(
                 elementType + "*",
                 $"IReadOnlyList<{returnElementType}>",
-                $@"new ReadOnlyNativeListWithCast<{elementType}, {returnElementType}>({{0}}, (int)_ptr->{countElement}, {returnElementType}.{converterMethod})");
+                $@"new ReadOnlyNativeListWithCast<{elementType}, {returnElementType}>({{0}}, {countAccessor}, {returnElementType}.{converterMethod})");
         }
 
         public static TypeCastDef ReadonlyNativeList(string elementType, string countElement)
@@ -119,16 +138,6 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 elementType + "*",
                 $"IReadOnlyList<{elementType}>",
                 $@"new ReadOnlyNativeList<{elementType}>({{0}}, (int)_ptr->{countElement})");
-        }
-
-        public static TypeCastDef ReadSequenceAndCast(string elementType, string finalType, string exitCondition, string getter = "*{0}")
-        {
-            string finalGetter = string.Format(getter, $"({elementType}*)p");
-            return new ReadOnlyFunctionCallCastDef(elementType + '*', $"IEnumerable<{finalType}>", $@"NativeUtils.ReadSequence(
-            p: (IntPtr){{0}},
-            unitSize: sizeof({elementType}),
-            exitCondition: p => *({elementType}*){exitCondition}, 
-            valGetter: p => {finalGetter})");
         }
 
 

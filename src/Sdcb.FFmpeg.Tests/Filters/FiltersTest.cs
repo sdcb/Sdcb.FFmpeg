@@ -27,4 +27,19 @@ public class FiltersTest
     {
         _console.WriteLine(string.Join("\n", Filter.All.Select(x => x.Name)));
     }
+
+    [Fact]
+    public void GetByName()
+    {
+        Filter? formatFilter = Filter.GetByName("format");
+        Assert.NotNull(formatFilter);
+    }
+
+    [Fact]
+    public unsafe void FilterInputs()
+    {
+        Filter formatFilter = Filter.GetByName("format").Value;
+        AVFilter* ptr = (AVFilter*)formatFilter;
+        _console.WriteLine(string.Join("\n", formatFilter.Outputs.Select(x => $"{x.MediaType}: {x.Name}").Take(2)));
+    }
 }

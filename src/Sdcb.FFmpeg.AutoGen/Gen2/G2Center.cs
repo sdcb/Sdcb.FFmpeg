@@ -71,8 +71,8 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             {
                 FieldDef.CreateNullable("coded_side_data"),
                 FieldDef.CreateTypeCast("flags", TypeCastDef.Force("int", "AV_CODEC_FLAG")),
-                FieldDef.CreateNullable("hw_frames_ctx"), 
-                FieldDef.CreateNullable("hw_device_ctx"), 
+                FieldDef.CreateNullable("hw_frames_ctx"),
+                FieldDef.CreateNullable("hw_device_ctx"),
             }),
             G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecParserContext", "CodecParserContext"),
             G2TransformDef.MakeStruct(ClassCategories.Codecs, "AVPacketSideData", "PacketSideData", new FieldDef[]
@@ -157,7 +157,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             }),
             G2TransformDef.MakeClass(ClassCategories.Utils, "AVBufferRef", "BufferRef", new FieldDef[]
             {
-                FieldDef.CreateTypeCast("buffer", TypeCastDef.Force("AVBuffer*", "IntPtr")), 
+                FieldDef.CreateTypeCast("buffer", TypeCastDef.Force("AVBuffer*", "IntPtr")),
                 FieldDef.CreateTypeCast("data", TypeCastDef.ReadonlyDataPointer("byte*", "size")) with { ReadOnly = true },
                 FieldDef.CreateHide("size"),
             }),
@@ -171,6 +171,8 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateTypeCast("flags", TypeCastDef.Force("int", "AVFILTER_FLAG")),
                 FieldDef.CreateNullable("priv_class"),
                 FieldDef.CreateHide("next"),
+                FieldDef.CreateTypeCast("inputs", TypeCastDef.CustomReadonly("AVFilterPad*", "FilterPadList", "new FilterPadList({0})")),
+                FieldDef.CreateTypeCast("outputs", TypeCastDef.CustomReadonly("AVFilterPad*", "FilterPadList", "new FilterPadList({0})"))
             }),
             G2TransformDef.MakeClass(ClassCategories.Filters, "AVFilterGraph", "FilterGraph", new FieldDef[]
             {
