@@ -189,6 +189,9 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateHide("nb_outputs"),
                 FieldDef.CreateTypeCastReadonly("input_pads", TypeCastDef.CustomReadonly("AVFilterPad*", "FilterPadList", "new FilterPadList({0})")),
                 FieldDef.CreateTypeCastReadonly("output_pads", TypeCastDef.CustomReadonly("AVFilterPad*", "FilterPadList", "new FilterPadList({0})")),
+                FieldDef.CreateTypeCast("name", TypeCastDef.OptUtf8String()),
+                FieldDef.CreateTypeCastNullable("enable_str", TypeCastDef.OptUtf8String()),
+                FieldDef.CreateNullable("hw_device_ctx"),
             }),
             G2TransformDef.MakeClass(ClassCategories.Filters, "AVFilterLink", "FilterLink", new FieldDef[]
             {

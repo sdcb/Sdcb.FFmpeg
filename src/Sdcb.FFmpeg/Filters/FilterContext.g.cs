@@ -60,10 +60,10 @@ public unsafe partial class FilterContext : SafeHandle
     /// <para>name of this filter instance</para>
     /// <see cref="AVFilterContext.name" />
     /// </summary>
-    public IntPtr Name
+    public string Name
     {
-        get => (IntPtr)_ptr->name;
-        set => _ptr->name = (byte*)value;
+        get => PtrExtensions.PtrToStringUTF8((IntPtr)_ptr->name)!;
+        set => Options.Set("name", value);
     }
     
     /// <summary>
@@ -150,10 +150,10 @@ public unsafe partial class FilterContext : SafeHandle
     /// <para>enable expression string</para>
     /// <see cref="AVFilterContext.enable_str" />
     /// </summary>
-    public IntPtr EnableStr
+    public string? EnableStr
     {
-        get => (IntPtr)_ptr->enable_str;
-        set => _ptr->enable_str = (byte*)value;
+        get => _ptr->enable_str != null ? PtrExtensions.PtrToStringUTF8((IntPtr)_ptr->enable_str)! : null;
+        set => Options.Set("enable_str", value);
     }
     
     /// <summary>
@@ -192,10 +192,10 @@ public unsafe partial class FilterContext : SafeHandle
     /// <para>For filters which will create hardware frames, sets the device the filter should create them in. All other filters will ignore this field: in particular, a filter which consumes or processes hardware frames will instead use the hw_frames_ctx field in AVFilterLink to carry the hardware context information.</para>
     /// <see cref="AVFilterContext.hw_device_ctx" />
     /// </summary>
-    public BufferRef HwDeviceContext
+    public BufferRef? HwDeviceContext
     {
-        get => BufferRef.FromNative(_ptr->hw_device_ctx, false);
-        set => _ptr->hw_device_ctx = (AVBufferRef*)value;
+        get => BufferRef.FromNativeOrNull(_ptr->hw_device_ctx, false);
+        set => _ptr->hw_device_ctx = value != null ? (AVBufferRef*)value : null;
     }
     
     /// <summary>
