@@ -178,6 +178,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             {
                 FieldDef.CreateTypeCastReadonly("filters", TypeCastDef.ReadonlyPtrList("AVFilterContext", "FilterContext", "nb_filters", "p => FilterContext.FromNative(p, isOwner: false)")),
                 FieldDef.CreateHide("nb_filters"),
+                FieldDef.CreateTypeCast("internal", TypeCastDef.Force("AVFilterGraphInternal*", "IntPtr")),
                 FieldDef.CreateTypeCastReadonly("sink_links", TypeCastDef.ReadonlyPtrList("AVFilterLink", "FilterLink", "sink_links_count", "p => FilterLink.FromNative(p, isOwner: false)")),
                 FieldDef.CreateHide("sink_links_count"),
             }),
@@ -187,15 +188,21 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateHide("nb_inputs"),
                 FieldDef.CreateTypeCastReadonly("outputs", TypeCastDef.ReadonlyPtrList("AVFilterLink", "FilterLink", "nb_outputs", "p => FilterLink.FromNative(p, isOwner: false)")),
                 FieldDef.CreateHide("nb_outputs"),
-                FieldDef.CreateTypeCastReadonly("input_pads", TypeCastDef.CustomReadonly("AVFilterPad*", "FilterPadList", "new FilterPadList({0})")),
-                FieldDef.CreateTypeCastReadonly("output_pads", TypeCastDef.CustomReadonly("AVFilterPad*", "FilterPadList", "new FilterPadList({0})")),
+                FieldDef.CreateTypeCastReadonly("input_pads", TypeCastDef.CustomReadonly("AVFilterPad*", "FilterPadList", "new FilterPadList({0}, (int)_ptr->nb_inputs)")),
+                FieldDef.CreateTypeCastReadonly("output_pads", TypeCastDef.CustomReadonly("AVFilterPad*", "FilterPadList", "new FilterPadList({0}, (int)_ptr->nb_outputs)")),
                 FieldDef.CreateTypeCast("name", TypeCastDef.OptUtf8String()),
                 FieldDef.CreateTypeCastNullable("enable_str", TypeCastDef.OptUtf8String()),
                 FieldDef.CreateNullable("hw_device_ctx"),
+                FieldDef.CreateTypeCast("internal", TypeCastDef.Force("AVFilterInternal*", "IntPtr")),
             }),
             G2TransformDef.MakeClass(ClassCategories.Filters, "AVFilterLink", "FilterLink", new FieldDef[]
             {
-
+                FieldDef.CreateNullable("hw_frames_ctx"),
+                FieldDef.CreateNullable("partial_buf"),
+                FieldDef.CreateNullable("graph"),
+                FieldDef.CreateHide("reserved"),
+                FieldDef.CreateTypeCastReadonly("srcpad", TypeCastDef.StaticCastStruct("AVFilterPad*", "FilterPad")) with { Nullable = true },
+                FieldDef.CreateTypeCastReadonly("dstpad", TypeCastDef.StaticCastStruct("AVFilterPad*", "FilterPad")) with { Nullable = true },
             }),            
             G2TransformDef.MakeClass(ClassCategories.Filters, "AVFilterInOut", "FilterInOut", new FieldDef[]
             {

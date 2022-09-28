@@ -1,11 +1,5 @@
-using Sdcb.FFmpeg.Common;
-using Sdcb.FFmpeg.Codecs;
-using Sdcb.FFmpeg.Formats;
-using Sdcb.FFmpeg.Utils;
 using Sdcb.FFmpeg.Raw;
 using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using static Sdcb.FFmpeg.Raw.ffmpeg;
 
 namespace Sdcb.FFmpeg.Filters;
@@ -14,6 +8,12 @@ public unsafe partial class FilterInOut
 {
     public FilterInOut() : this(avfilter_inout_alloc(), isOwner: true)
     {
+    }
+
+    public FilterInOut(string name, FilterContext filterContext) : this()
+    {
+        Name = name;
+        FilterContext = filterContext;
     }
 
     public void Reset(IntPtr ptr) => handle = ptr;

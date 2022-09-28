@@ -164,11 +164,7 @@ public unsafe partial class FilterGraph : SafeHandle
     /// <para>Dump a graph into a human-readable string representation.</para>
     /// <see cref="avfilter_graph_dump"/>
     /// </summary>
-    public override string? ToString() => avfilter_graph_dump(this, null) switch
-    {
-        null => null,
-        var x => PtrExtensions.PtrToStringUTF8((IntPtr)x), 
-    };
+    public DisposableNativeString DumpToString() => new DisposableNativeString(avfilter_graph_dump(this, null));
 
     /// <summary>
     /// <para>Request a frame on the oldest sink link.</para>

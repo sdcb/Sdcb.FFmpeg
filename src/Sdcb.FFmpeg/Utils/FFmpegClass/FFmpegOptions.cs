@@ -84,7 +84,7 @@ public unsafe class FFmpegOptions
 
         fixed (int* ptr = value)
         {
-            av_opt_set_bin(_obj, name, (byte*)ptr, (length + 1) * 4, (int)searchFlags).ThrowIfError();
+            av_opt_set_bin(_obj, name, (byte*)ptr, length * 4, (int)searchFlags).ThrowIfError();
         }
     }
 

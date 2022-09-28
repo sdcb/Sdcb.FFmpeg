@@ -71,7 +71,7 @@ public unsafe partial class FilterContext : SafeHandle
     /// <para>array of input pads</para>
     /// <see cref="AVFilterContext.input_pads" />
     /// </summary>
-    public FilterPadList InputPads => new FilterPadList(_ptr->input_pads)!;
+    public FilterPadList InputPads => new FilterPadList(_ptr->input_pads, (int)_ptr->nb_inputs)!;
     
     /// <summary>
     /// <para>original type: AVFilterLink**</para>
@@ -85,7 +85,7 @@ public unsafe partial class FilterContext : SafeHandle
     /// <para>array of output pads</para>
     /// <see cref="AVFilterContext.output_pads" />
     /// </summary>
-    public FilterPadList OutputPads => new FilterPadList(_ptr->output_pads)!;
+    public FilterPadList OutputPads => new FilterPadList(_ptr->output_pads, (int)_ptr->nb_outputs)!;
     
     /// <summary>
     /// <para>original type: AVFilterLink**</para>
@@ -127,13 +127,14 @@ public unsafe partial class FilterContext : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVFilterInternal*</para>
     /// <para>An opaque struct for libavfilter internal use.</para>
     /// <see cref="AVFilterContext.@internal" />
     /// </summary>
-    public AVFilterInternal* Internal
+    public IntPtr Internal
     {
-        get => _ptr->@internal;
-        set => _ptr->@internal = value;
+        get => (IntPtr)_ptr->@internal;
+        set => _ptr->@internal = (AVFilterInternal*)value;
     }
     
     /// <summary>

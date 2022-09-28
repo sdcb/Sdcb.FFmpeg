@@ -45,14 +45,11 @@ public unsafe partial class FilterLink : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVFilterPad*</para>
     /// <para>output pad on the source filter</para>
     /// <see cref="AVFilterLink.srcpad" />
     /// </summary>
-    public AVFilterPad* Srcpad
-    {
-        get => _ptr->srcpad;
-        set => _ptr->srcpad = value;
-    }
+    public FilterPad? Srcpad => FilterPad.FromNativeOrNull(_ptr->srcpad);
     
     /// <summary>
     /// <para>original type: AVFilterContext*</para>
@@ -66,14 +63,11 @@ public unsafe partial class FilterLink : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVFilterPad*</para>
     /// <para>input pad on the dest filter</para>
     /// <see cref="AVFilterLink.dstpad" />
     /// </summary>
-    public AVFilterPad* Dstpad
-    {
-        get => _ptr->dstpad;
-        set => _ptr->dstpad = value;
-    }
+    public FilterPad? Dstpad => FilterPad.FromNativeOrNull(_ptr->dstpad);
     
     /// <summary>
     /// <para>filter media type</para>
@@ -189,10 +183,10 @@ public unsafe partial class FilterLink : SafeHandle
     /// <para>Graph the filter belongs to.</para>
     /// <see cref="AVFilterLink.graph" />
     /// </summary>
-    public FilterGraph Graph
+    public FilterGraph? Graph
     {
-        get => FilterGraph.FromNative(_ptr->graph, false);
-        set => _ptr->graph = (AVFilterGraph*)value;
+        get => FilterGraph.FromNativeOrNull(_ptr->graph, false);
+        set => _ptr->graph = value != null ? (AVFilterGraph*)value : null;
     }
     
     /// <summary>
@@ -240,10 +234,10 @@ public unsafe partial class FilterLink : SafeHandle
     /// <para>Buffer partially filled with samples to achieve a fixed/minimum size.</para>
     /// <see cref="AVFilterLink.partial_buf" />
     /// </summary>
-    public Frame PartialBuf
+    public Frame? PartialBuf
     {
-        get => Frame.FromNative(_ptr->partial_buf, false);
-        set => _ptr->partial_buf = (AVFrame*)value;
+        get => Frame.FromNativeOrNull(_ptr->partial_buf, false);
+        set => _ptr->partial_buf = value != null ? (AVFrame*)value : null;
     }
     
     /// <summary>
@@ -332,19 +326,10 @@ public unsafe partial class FilterLink : SafeHandle
     /// <para>For hwaccel pixel formats, this should be a reference to the AVHWFramesContext describing the frames.</para>
     /// <see cref="AVFilterLink.hw_frames_ctx" />
     /// </summary>
-    public BufferRef HwFramesContext
+    public BufferRef? HwFramesContext
     {
-        get => BufferRef.FromNative(_ptr->hw_frames_ctx, false);
-        set => _ptr->hw_frames_ctx = (AVBufferRef*)value;
+        get => BufferRef.FromNativeOrNull(_ptr->hw_frames_ctx, false);
+        set => _ptr->hw_frames_ctx = value != null ? (AVBufferRef*)value : null;
     }
     
-    /// <summary>
-    /// <para>Internal structure members. The fields below this limit are internal for libavfilter's use and must in no way be accessed by applications.</para>
-    /// <see cref="AVFilterLink.reserved" />
-    /// </summary>
-    public byte_array61440 Reserved
-    {
-        get => _ptr->reserved;
-        set => _ptr->reserved = value;
-    }
 }

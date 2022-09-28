@@ -91,13 +91,14 @@ public unsafe partial class FilterGraph : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVFilterGraphInternal*</para>
     /// <para>Opaque object for libavfilter internal use.</para>
     /// <see cref="AVFilterGraph.@internal" />
     /// </summary>
-    public AVFilterGraphInternal* Internal
+    public IntPtr Internal
     {
-        get => _ptr->@internal;
-        set => _ptr->@internal = value;
+        get => (IntPtr)_ptr->@internal;
+        set => _ptr->@internal = (AVFilterGraphInternal*)value;
     }
     
     /// <summary>
