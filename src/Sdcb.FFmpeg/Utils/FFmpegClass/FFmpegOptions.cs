@@ -20,6 +20,15 @@ public unsafe class FFmpegOptions
         _obj = ptr;
     }
 
+    public FFmpegOptions(IntPtr ptr)
+    {
+        if (ptr == IntPtr.Zero)
+        {
+            throw new ArgumentNullException(nameof(ptr));
+        }
+        _obj = (void*)ptr;
+    }
+
     /// <summary>
     /// <see cref="av_opt_find(void*, string, string, int, int)"/>
     /// </summary>
@@ -242,6 +251,8 @@ public unsafe class FFmpegOptions
         return data.ToString()!;
     });
 
+    public IEnumerable<FFmpegOptions> Children => GetChildren();
+
     /// <summary>
     /// <see cref="av_opt_next(void*, AVOption*)"/>
     /// </summary>
@@ -256,5 +267,18 @@ public unsafe class FFmpegOptions
         }
 
         IntPtr av_opt_next_safe(IntPtr prev) => (IntPtr)av_opt_next(_obj, (AVOption*)prev);
+    }
+
+    private IEnumerable<FFmpegOptions> GetChildren()
+    {
+        IntPtr prev = IntPtr.Zero;
+        while (true)
+        {
+            prev = av_opt_child_next_safe(prev);
+            if (prev == IntPtr.Zero) break;
+            yield return new FFmpegOptions(prev);
+        }
+
+        IntPtr av_opt_child_next_safe(IntPtr prev) => (IntPtr)av_opt_child_next(_obj, (AVOption*)prev);
     }
 }

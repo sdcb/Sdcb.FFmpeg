@@ -209,6 +209,10 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateTypeCast("name", TypeCastDef.DupUtf8String()),
                 FieldDef.CreateNullable("next"),
             }),
+            G2TransformDef.MakeClass(ClassCategories.Filters, "AVBufferSrcParameters", "BufferSrcParameters", new FieldDef[]
+            {
+                FieldDef.CreateNullable("hw_frames_ctx"),
+            }),
             #endregion filters
         }.ToDictionary(k => k.OldName, v => v);
     }

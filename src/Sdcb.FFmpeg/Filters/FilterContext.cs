@@ -121,6 +121,71 @@ public unsafe partial class FilterContext : SafeHandle
     }
 
     /// <summary>
+    /// <para>Get the number of failed requests.</para>
+    /// <para>A failed request is when the request_frame method is called while no frame is present in the buffer.</para>
+    /// <para>The number is reset when a frame is added.</para>
+    /// <see cref="av_buffersrc_get_nb_failed_requests"/>
+    /// </summary>
+    public int GetFailedRequestCount()
+    {
+        return (int)av_buffersrc_get_nb_failed_requests(this);
+    }
+
+    /// <summary>
+    /// <para>Initialize the buffersrc or abuffersrc filter with the provided parameters.</para>
+    /// <para>This function may be called multiple times, the later calls override the previous ones. Some of the parameters may also be set through AVOptions, then whatever method is used last takes precedence.</para>
+    /// <see cref="av_buffersrc_parameters_set"/>
+    /// </summary>
+    /// <param name="param">the stream parameters. The frames later passed to this filter must conform to those parameters. All the allocated fields in param remain owned by the caller, libavfilter will make internal copies or references when necessary.</param>
+    public void SetParameters(BufferSrcParameters param)
+    {
+        av_buffersrc_parameters_set(this, param).ThrowIfError();
+    }
+
+    /// <summary>
+    /// <para>Add a frame to the buffer source.</para>
+    /// <para>This function is equivalent to av_buffersrc_add_frame_flags() with the AV_BUFFERSRC_FLAG_KEEP_REF flag.</para>
+    /// <see cref="av_buffersrc_write_frame"/>
+    /// </summary>
+    /// <param name="frame">frame to be added. If the frame is reference counted, this function will make a new reference to it. Otherwise the frame data will be copied.</param>
+    public void WriteFrame(Frame? frame)
+    {
+        av_buffersrc_write_frame(this, frame!).ThrowIfError();
+    }
+
+    /// <summary>
+    /// <para>Add a frame to the buffer source.</para>
+    /// <para>This function is equivalent to av_buffersrc_add_frame_flags() without the AV_BUFFERSRC_FLAG_KEEP_REF flag.</para>
+    /// <para>the difference between this function and av_buffersrc_write_frame() is that av_buffersrc_write_frame() creates a new reference to the input frame, while this function takes ownership of the reference passed to it.</para>
+    /// </summary>
+    /// <param name="frame">frame to be added. If the frame is reference counted, this function will make a new reference to it. Otherwise the frame data will be copied. If this function returns an error, the input frame is not touched.</param>
+    public void AddFrame(Frame? frame)
+    {
+        av_buffersrc_add_frame(this, frame!).ThrowIfError();
+    }
+
+    /// <summary>
+    /// <para>Add a frame to the buffer source.</para>
+    /// <para>By default, if the frame is reference-counted, this function will take ownership of the reference(s) and reset the frame. This can be controlled using the flags.</para>
+    /// <para>If this function returns an error, the input frame is not touched.</para>
+    /// <see cref="av_buffersrc_add_frame_flags"/>
+    /// </summary>
+    /// <param name="frame">a frame, or NULL to mark EOF</param>
+    public void AddFrame(Frame? frame, AV_BUFFERSRC_FLAG flags)
+    {
+        av_buffersrc_add_frame_flags(this, frame!, (int)flags).ThrowIfError();
+    }
+
+    /// <summary>
+    /// <para>Close the buffer source after EOF.</para>
+    /// <see cref="av_buffersrc_close"/>
+    /// </summary>
+    public void CloseBufferSource(long pts, AV_BUFFERSRC_FLAG flags = AV_BUFFERSRC_FLAG.Push)
+    {
+        av_buffersrc_close(this, pts, (uint)flags).ThrowIfError();
+    }
+
+    /// <summary>
     /// <para>Free a filter context. This will also remove the filter from its filtergraph&apos;s list of filters.</para>
     /// <see cref="avfilter_free"/>
     /// </summary>
