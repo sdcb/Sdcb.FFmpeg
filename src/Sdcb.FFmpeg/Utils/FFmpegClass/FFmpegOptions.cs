@@ -33,7 +33,7 @@ public unsafe class FFmpegOptions
     /// <see cref="av_opt_find(void*, string, string, int, int)"/>
     /// </summary>
     /// <returns></returns>
-    public FFmpegOption? Find(string name, string unit, AV_OPT_FLAG AV_OPT_FLAG = default, AV_OPT_SEARCH searchFlags = default)
+    public FFmpegOption? Find(string name, string unit, AV_OPT_FLAG AV_OPT_FLAG = default, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children)
     {
         AVOption* val = av_opt_find(_obj, name, unit, (int)AV_OPT_FLAG, (int)searchFlags);
         if (val == null) return null;
@@ -41,9 +41,10 @@ public unsafe class FFmpegOptions
     }
 
     /// <summary>
+    /// <para>Look for an option in an object. Consider only options which have all the specified flags set.</para>
     /// <see cref="av_opt_find2(void*, string, string, int, int, void**)"/>
     /// </summary>
-    public (FFmpegOption? option, IntPtr @object) Find2(string name, string unit, AV_OPT_FLAG AV_OPT_FLAG = default, AV_OPT_SEARCH searchFlags = default)
+    public (FFmpegOption? option, IntPtr @object) Find2(string name, string unit, AV_OPT_FLAG AV_OPT_FLAG = default, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children)
     {
         void* obj;
         AVOption* val = av_opt_find2(_obj, name, unit, (int)AV_OPT_FLAG, (int)searchFlags, &obj);
@@ -56,51 +57,37 @@ public unsafe class FFmpegOptions
     /// <summary>
     /// <see cref="av_opt_set(void*, string, string, int)"/>
     /// </summary>
-    public void Set(string name, string? value, AV_OPT_SEARCH searchFlags = default) => 
+    public void Set(string name, string? value, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children) => 
         av_opt_set(_obj, name, value, (int)searchFlags).ThrowIfError();
 
     /// <summary>
     /// <see cref="av_opt_set_int(void*, string, long, int)"/>
     /// </summary>
-    public void Set(string name, long value, AV_OPT_SEARCH searchFlags = default) => 
+    public void Set(string name, long value, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children) => 
         av_opt_set_int(_obj, name, value, (int)searchFlags).ThrowIfError();
 
     /// <summary>
     /// <see cref="av_opt_set_double(void*, string, double, int)"/>
     /// </summary>
-    public void Set(string name, double value, AV_OPT_SEARCH searchFlags = default) => 
+    public void Set(string name, double value, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children) => 
         av_opt_set_double(_obj, name, value, (int)searchFlags).ThrowIfError();
 
     /// <summary>
     /// <see cref="av_opt_set_q(void*, string, AVRational, int)"/>
     /// </summary>
-    public void Set(string name, AVRational value, AV_OPT_SEARCH searchFlags = default) => 
+    public void Set(string name, AVRational value, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children) => 
         av_opt_set_q(_obj, name, value, (int)searchFlags).ThrowIfError();
 
     /// <summary>
     /// <see cref="av_opt_set_bin(void*, string, byte*, int, int)"/>
     /// </summary>
-    public void Set(string name, DataPointer value, AV_OPT_SEARCH searchFlags = default) => 
+    public void Set(string name, DataPointer value, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children) => 
         av_opt_set_bin(_obj, name, (byte*)value.Pointer, value.Length, (int)searchFlags).ThrowIfError();
 
     /// <summary>
     /// <see cref="av_opt_set_bin(void*, string, byte*, int, int)"/>
     /// </summary>
-    public void SetIntList(string name, int[] value, int terminator, AV_OPT_SEARCH searchFlags = default)
-    {
-        int length = Array.IndexOf(value, terminator);
-        if (length == -1) throw new ArgumentOutOfRangeException(nameof(terminator));
-
-        fixed (int* ptr = value)
-        {
-            av_opt_set_bin(_obj, name, (byte*)ptr, length * 4, (int)searchFlags).ThrowIfError();
-        }
-    }
-
-    /// <summary>
-    /// <see cref="av_opt_set_bin(void*, string, byte*, int, int)"/>
-    /// </summary>
-    public void SetIntList(string name, int[] value, AV_OPT_SEARCH searchFlags = default)
+    public void Set(string name, int[] value, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children)
     {
         fixed (int* ptr = value)
         {
@@ -111,44 +98,44 @@ public unsafe class FFmpegOptions
     /// <summary>
     /// <see cref="av_opt_set_image_size(void*, string, int, int, int)"/>
     /// </summary>
-    public void Set(string name, int width, int height, AV_OPT_SEARCH searchFlags = default) => 
+    public void Set(string name, int width, int height, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children) => 
         av_opt_set_image_size(_obj, name, width, height, (int)searchFlags).ThrowIfError();
 
     /// <summary>
     /// <see cref="av_opt_set_pixel_fmt(void*, string, AVPixelFormat, int)"/>
     /// </summary>
-    public void Set(string name, AVPixelFormat value, AV_OPT_SEARCH searchFlags = default) => 
+    public void Set(string name, AVPixelFormat value, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children) => 
         av_opt_set_pixel_fmt(_obj, name, value, (int)searchFlags).ThrowIfError();
 
     /// <summary>
     /// <see cref="av_opt_set_sample_fmt(void*, string, AVSampleFormat, int)"/>
     /// </summary>
-    public void Set(string name, AVSampleFormat value, AV_OPT_SEARCH searchFlags = default) => 
+    public void Set(string name, AVSampleFormat value, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children) => 
         av_opt_set_sample_fmt(_obj, name, (AVSampleFormat)value, (int)searchFlags).ThrowIfError();
 
     /// <summary>
     /// <see cref="av_opt_set_video_rate(void*, string, AVRational, int)"/>
     /// </summary>
-    public void SetVideoRate(string name, AVRational value, AV_OPT_SEARCH searchFlags = default) => 
+    public void SetVideoRate(string name, AVRational value, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children) => 
         av_opt_set_video_rate(_obj, name, value, (int)searchFlags).ThrowIfError();
 
     /// <summary>
     /// <see cref="av_opt_set_channel_layout(void*, string, long, int)"/>
     /// </summary>
     [Obsolete]
-    public void Set(string name, AV_CH value, AV_OPT_SEARCH searchFlags = default) => 
+    public void Set(string name, AV_CH value, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children) => 
         av_opt_set_channel_layout(_obj, name, (long)value, (int)searchFlags).ThrowIfError();
 
     /// <summary>
     /// <see cref="av_opt_set_dict_val(void*, string, AVDictionary*, int)"/>
     /// </summary>
-    public void Set(string name, AVDictionary* value, AV_OPT_SEARCH searchFlags = default) => 
+    public void Set(string name, MediaDictionary value, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children) => 
         av_opt_set_dict_val(_obj, name, value, (int)searchFlags).ThrowIfError();
 
     /// <summary>
     /// <see cref="av_opt_get(void*, string, int, byte**)"/>
     /// </summary>
-    public DisposableNativeString GetData(string name, AV_OPT_SEARCH searchFlags = default)
+    public DisposableNativeString GetData(string name, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children)
     {
         byte* outVal;
         av_opt_get(_obj, name, (int)searchFlags, &outVal).ThrowIfError($"name: {name}");
@@ -158,7 +145,7 @@ public unsafe class FFmpegOptions
     /// <summary>
     /// <see cref="av_opt_get_int(void*, string, int, long*)"/>
     /// </summary>
-    public long GetInt64(string name, AV_OPT_SEARCH searchFlags = default)
+    public long GetInt64(string name, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children)
     {
         long val;
         av_opt_get_int(_obj, name, (int)searchFlags, &val).ThrowIfError();
@@ -168,7 +155,7 @@ public unsafe class FFmpegOptions
     /// <summary>
     /// <see cref="av_opt_get_double(void*, string, int, double*)"/>
     /// </summary>
-    public double GetDouble(string name, AV_OPT_SEARCH searchFlags = default)
+    public double GetDouble(string name, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children)
     {
         double val;
         av_opt_get_double(_obj, name, (int)searchFlags, &val).ThrowIfError();
@@ -178,7 +165,7 @@ public unsafe class FFmpegOptions
     /// <summary>
     /// <see cref="av_opt_get_q(void*, string, int, AVRational*)"/>
     /// </summary>
-    public AVRational GetRational(string name, AV_OPT_SEARCH searchFlags = default)
+    public AVRational GetRational(string name, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children)
     {
         AVRational rational;
         av_opt_get_q(_obj, name, (int)searchFlags, &rational).ThrowIfError();
@@ -188,7 +175,7 @@ public unsafe class FFmpegOptions
     /// <summary>
     /// <see cref="av_opt_get_image_size(void*, string, int, int*, int*)"/>
     /// </summary>
-    public (int width, int height) GetImageSize(string name, AV_OPT_SEARCH searchFlags = default)
+    public (int width, int height) GetImageSize(string name, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children)
     {
         int width, height;
         av_opt_get_image_size(_obj, name, (int)searchFlags, &width, &height).ThrowIfError();
@@ -198,7 +185,7 @@ public unsafe class FFmpegOptions
     /// <summary>
     /// <see cref="av_opt_get_pixel_fmt(void*, string, int, AVPixelFormat*)"/>
     /// </summary>
-    public AVPixelFormat GetPixelFormat(string name, AV_OPT_SEARCH searchFlags = default)
+    public AVPixelFormat GetPixelFormat(string name, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children)
     {
         AVPixelFormat pixelFormat;
         av_opt_get_pixel_fmt(_obj, name, (int)searchFlags, &pixelFormat);
@@ -208,7 +195,7 @@ public unsafe class FFmpegOptions
     /// <summary>
     /// <see cref="av_opt_get_video_rate(void*, string, int, AVRational*)"/>
     /// </summary>
-    public AVRational GetVideoRate(string name, AV_OPT_SEARCH searchFlags = default)
+    public AVRational GetVideoRate(string name, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children)
     {
         AVRational rational;
         av_opt_get_video_rate(_obj, name, (int)searchFlags, &rational).ThrowIfError();
@@ -219,7 +206,7 @@ public unsafe class FFmpegOptions
     /// <see cref="av_opt_get_channel_layout(void*, string, int, long*)"/>
     /// </summary>
     [Obsolete]
-    public AV_CH GetChannelLayout(string name, AV_OPT_SEARCH searchFlags = default)
+    public AV_CH GetChannelLayout(string name, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children)
     {
         long channelLayout;
         av_opt_get_channel_layout(_obj, name, (int)searchFlags, &channelLayout);
@@ -229,12 +216,11 @@ public unsafe class FFmpegOptions
     /// <summary>
     /// <see cref="av_opt_get_dict_val(void*, string, int, AVDictionary**)"/>
     /// </summary>
-    public AVDictionary* GetDictionary(string name, AV_OPT_SEARCH searchFlags = default)
+    public MediaDictionary GetDictionary(string name, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children)
     {
         AVDictionary* dict;
         av_opt_get_dict_val(_obj, name, (int)searchFlags, &dict);
-        return dict;
-        //return MediaDictionary.FromNative(dict, isOwner: true);
+        return MediaDictionary.FromNative(dict, isOwner: true);
     }
 
     public IEnumerable<FFmpegOption> ConstValues => GetKnownOptions()

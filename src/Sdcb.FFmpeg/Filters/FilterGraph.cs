@@ -1,10 +1,7 @@
 using Sdcb.FFmpeg.Common;
-using Sdcb.FFmpeg.Codecs;
-using Sdcb.FFmpeg.Formats;
 using Sdcb.FFmpeg.Utils;
 using Sdcb.FFmpeg.Raw;
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using static Sdcb.FFmpeg.Raw.ffmpeg;
 
@@ -20,6 +17,8 @@ public unsafe partial class FilterGraph : SafeHandle
     public FilterGraph() : this(avfilter_graph_alloc(), isOwner: true)
     {
     }
+
+    public FFmpegOptions Options => new FFmpegOptions(this);
 
     /// <summary>
     /// <para>Create a new filter instance in a filter graph.</para>
