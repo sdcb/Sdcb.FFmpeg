@@ -32,9 +32,17 @@ public unsafe partial class FilterGraph : SafeHandle
     }
 
     /// <summary>
+    /// <para>Create a new filter instance in a filter graph.</para>
+    /// <see cref="avfilter_graph_alloc_filter"/>
+    /// </summary>
+    /// <param name="filterName">the filter name to create an instance of</param>
+    /// <param name="name">Name to give to the new instance (will be copied to AVFilterContext.name). This may be used by the caller to identify different filters, libavfilter itself assigns no semantics to this parameter. May be NULL.</param>
+    public FilterContext AllocFilter(string filterName, string? name = null) => AllocFilter(Filter.GetByName(filterName), name);
+
+    /// <summary>
     /// <para>original API: <see cref="avfilter_graph_create_filter(AVFilterContext**, AVFilter*, string, string, void*, AVFilterGraph*)"/></para>
     /// short-hand API for calling following APIs at once:
-    /// <para><see cref="AllocFilter"/></para>
+    /// <para><see cref="AllocFilter(Filter, string?)"/></para>
     /// <para><see cref="FilterContext.InitializeFromString"/></para>
     /// </summary>
     /// <param name="name">the instance name to give to the created filter instance</param>
@@ -44,6 +52,15 @@ public unsafe partial class FilterGraph : SafeHandle
         avfilter_graph_create_filter(&resultPtr, filter, name, args, null, this).ThrowIfError();
         return FilterContext.FromNative(resultPtr, isOwner: false);
     }
+
+    /// <summary>
+    /// <para>original API: <see cref="avfilter_graph_create_filter(AVFilterContext**, AVFilter*, string, string, void*, AVFilterGraph*)"/></para>
+    /// short-hand API for calling following APIs at once:
+    /// <para><see cref="AllocFilter(string, string?)"/></para>
+    /// <para><see cref="FilterContext.InitializeFromString"/></para>
+    /// </summary>
+    /// <param name="name">the instance name to give to the created filter instance</param>
+    public FilterContext CreateFilter(string filterName, string args, string? name = null) => CreateFilter(Filter.GetByName(filterName), args, name);
 
     /// <summary>
     /// Get a filter instance identified by instance name from graph.

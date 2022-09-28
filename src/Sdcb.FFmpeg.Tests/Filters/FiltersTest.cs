@@ -32,14 +32,14 @@ public class FiltersTest
     [Fact]
     public void GetByName()
     {
-        Filter? formatFilter = Filter.GetByName("format");
+        Filter? formatFilter = Filter.GetByNameOrNull("format");
         Assert.NotNull(formatFilter);
     }
 
     [Fact]
     public  void FilterOutputs()
     {
-        Filter formatFilter = Filter.GetByName("format").Value;
+        Filter formatFilter = Filter.GetByName("format");
         _console.WriteLine(string.Join("\n", formatFilter.Outputs.Select(x => $"{x.MediaType}: {x.Name}").Take(2)));
     }
 

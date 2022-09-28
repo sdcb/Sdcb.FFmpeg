@@ -31,7 +31,21 @@ public unsafe partial struct Filter
     /// </summary>
     public static string License => avfilter_license();
 
-    /// <summary>Get a filter definition matching the given name.</summary>
+    /// <summary>
+    /// <para>Get a filter definition matching the given name.</para>
+    /// <see cref="avfilter_get_by_name"/>
+    /// </summary>
     /// <param name="name">the filter name to find</param>
-    public static Filter? GetByName(string name) => FromNativeOrNull(avfilter_get_by_name(name));
+    public static Filter GetByName(string name) => avfilter_get_by_name(name) switch
+    {
+        null => throw new FFmpegException($"filter name '{name}' not found."),
+        var x => FromNative(x),
+    };
+
+    /// <summary>
+    /// <para>Get a filter definition matching the given name.</para>
+    /// <see cref="avfilter_get_by_name"/>
+    /// </summary>
+    /// <param name="name">the filter name to find</param>
+    public static Filter? GetByNameOrNull(string name) => FromNativeOrNull(avfilter_get_by_name(name));
 }
