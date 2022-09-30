@@ -5,5 +5,6 @@
         Codecs,
         Formats,
         Utils,
+        Filters,
     }
 }

@@ -3,6 +3,7 @@
 using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Codecs;
 using Sdcb.FFmpeg.Utils;
+using Sdcb.FFmpeg.Filters;
 using Sdcb.FFmpeg.Raw;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ public unsafe partial class FormatContext : SafeHandle
     }
     
     public static FormatContext FromNative(AVFormatContext* ptr, bool isOwner) => new FormatContext(ptr, isOwner);
+    
+    internal static FormatContext FromNative(IntPtr ptr, bool isOwner) => new FormatContext((AVFormatContext*)ptr, isOwner);
     
     public static FormatContext? FromNativeOrNull(AVFormatContext* ptr, bool isOwner) => ptr == null ? null : new FormatContext(ptr, isOwner);
     

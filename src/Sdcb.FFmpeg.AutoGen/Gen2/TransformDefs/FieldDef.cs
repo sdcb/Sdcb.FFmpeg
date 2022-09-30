@@ -57,6 +57,8 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
 
         public static FieldDef CreateTypeCast(string name, TypeCastDef typeCast) => new FieldDef(name, name, typeCast);
 
+        public static FieldDef CreateTypeCastReadonly(string name, TypeCastDef typeCast) => new FieldDef(name, name, typeCast, isReadonly: true);
+
         public static FieldDef CreateTypeCastNullable(string name, TypeCastDef typeCast) => new FieldDef(name, name, typeCast, nullable: true);
 
         public static FieldDef CreateHide(string name) => new FieldDef(name, name, display: false);

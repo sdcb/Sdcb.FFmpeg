@@ -3,6 +3,7 @@
 using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Formats;
 using Sdcb.FFmpeg.Utils;
+using Sdcb.FFmpeg.Filters;
 using Sdcb.FFmpeg.Raw;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ public unsafe partial class CodecParameters : SafeHandle
     }
     
     public static CodecParameters FromNative(AVCodecParameters* ptr, bool isOwner) => new CodecParameters(ptr, isOwner);
+    
+    internal static CodecParameters FromNative(IntPtr ptr, bool isOwner) => new CodecParameters((AVCodecParameters*)ptr, isOwner);
     
     public static CodecParameters? FromNativeOrNull(AVCodecParameters* ptr, bool isOwner) => ptr == null ? null : new CodecParameters(ptr, isOwner);
     

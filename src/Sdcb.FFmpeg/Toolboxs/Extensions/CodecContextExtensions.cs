@@ -11,6 +11,8 @@ namespace Sdcb.FFmpeg.Toolboxs.Extensions;
 public static class CodecContextExtensions
 {
     /// <summary>
+    /// <para>For video, convert frame pixel format, width, height into the same as CodecContext</para>
+    /// <para>For audio, convert frame sames format into the same as CodecContext</para>
     /// <see cref="sws_getCachedContext(SwsContext*, int, int, AVPixelFormat, int, int, AVPixelFormat, int, SwsFilter*, SwsFilter*, double*)"/>
     /// <see cref="sws_scale(SwsContext*, byte*[], int[], int, int, byte*[], int[])"/>
     /// </summary>
@@ -38,5 +40,5 @@ public static class CodecContextExtensions
                 yield return destFrame;
             }
         }
-    }
+    }    
 }

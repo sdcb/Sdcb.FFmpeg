@@ -3,6 +3,7 @@
 using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Formats;
 using Sdcb.FFmpeg.Utils;
+using Sdcb.FFmpeg.Filters;
 using Sdcb.FFmpeg.Raw;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ public unsafe partial class Packet : SafeHandle
     }
     
     public static Packet FromNative(AVPacket* ptr, bool isOwner) => new Packet(ptr, isOwner);
+    
+    internal static Packet FromNative(IntPtr ptr, bool isOwner) => new Packet((AVPacket*)ptr, isOwner);
     
     public static Packet? FromNativeOrNull(AVPacket* ptr, bool isOwner) => ptr == null ? null : new Packet(ptr, isOwner);
     

@@ -3,6 +3,7 @@
 using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Formats;
 using Sdcb.FFmpeg.Utils;
+using Sdcb.FFmpeg.Filters;
 using Sdcb.FFmpeg.Raw;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,8 @@ public unsafe partial class CodecParserContext : SafeHandle
     }
     
     public static CodecParserContext FromNative(AVCodecParserContext* ptr, bool isOwner) => new CodecParserContext(ptr, isOwner);
+    
+    internal static CodecParserContext FromNative(IntPtr ptr, bool isOwner) => new CodecParserContext((AVCodecParserContext*)ptr, isOwner);
     
     public static CodecParserContext? FromNativeOrNull(AVCodecParserContext* ptr, bool isOwner) => ptr == null ? null : new CodecParserContext(ptr, isOwner);
     

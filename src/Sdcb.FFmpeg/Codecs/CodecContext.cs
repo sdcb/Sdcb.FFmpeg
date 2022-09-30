@@ -110,7 +110,7 @@ public unsafe partial class CodecContext : SafeHandle
     /// <summary>
     /// frames -> packets
     /// </summary>
-    public IEnumerable<Packet> EncodeFrames(IEnumerable<Frame> frames, bool makeSequential = false)
+    public IEnumerable<Packet> EncodeFrames(IEnumerable<Frame> frames, bool makeWritable = true, bool makeSequential = false)
     {
         using var packet = new Packet();
         int pts = 0;
@@ -123,6 +123,8 @@ public unsafe partial class CodecContext : SafeHandle
 
             foreach (var _ in EncodeFrame(frame, packet))
                 yield return packet;
+
+            if (makeWritable) frame.MakeWritable();
         }
 
         foreach (var _ in EncodeFrame(null, packet))

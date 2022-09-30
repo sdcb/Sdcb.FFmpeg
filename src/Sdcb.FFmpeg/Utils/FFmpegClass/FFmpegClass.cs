@@ -16,7 +16,7 @@ public unsafe struct FFmpegClass
     private FFmpegClass(AVClass* p)
     {
         if (p == null) throw new ArgumentNullException(nameof(p));
-        _p = p; 
+        _p = p;
     }
 
     public static FFmpegClass FromNative(AVClass* p) => new FFmpegClass(p);

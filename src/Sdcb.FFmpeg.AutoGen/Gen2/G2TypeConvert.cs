@@ -89,38 +89,6 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             valGetter: p => *({elementType}*)p)");
         }
 
-        public static TypeCastDef ReadonlyPtrList(string elementType, string returnElementType, string countElement, string converterMethod)
-        {
-            return new ReadOnlyFunctionCallCastDef(
-                elementType + "**", 
-                $"IReadOnlyList<{returnElementType}>", 
-                $@"new ReadOnlyPtrList<{elementType}, {returnElementType}>({{0}}, (int)_ptr->{countElement}, {returnElementType}.{converterMethod})");
-        }
-
-        public static TypeCastDef ReadonlyDataPointer(string elementType, string countElement)
-        {
-            return new ReadOnlyFunctionCallCastDef(
-                elementType + "*",
-                $"DataPointer",
-                $@"new DataPointer({{0}}, (int)_ptr->{countElement})");
-        }
-
-        public static TypeCastDef ReadonlyNativeListWithCast(string elementType, string returnElementType, string countElement, string converterMethod)
-        {
-            return new ReadOnlyFunctionCallCastDef(
-                elementType + "*",
-                $"IReadOnlyList<{returnElementType}>",
-                $@"new ReadOnlyNativeListWithCast<{elementType}, {returnElementType}>({{0}}, (int)_ptr->{countElement}, {returnElementType}.{converterMethod})");
-        }
-
-        public static TypeCastDef ReadonlyNativeList(string elementType, string countElement)
-        {
-            return new ReadOnlyFunctionCallCastDef(
-                elementType + "*",
-                $"IReadOnlyList<{elementType}>",
-                $@"new ReadOnlyNativeList<{elementType}>({{0}}, (int)_ptr->{countElement})");
-        }
-
         public static TypeCastDef ReadSequenceAndCast(string elementType, string finalType, string exitCondition, string getter = "*{0}")
         {
             string finalGetter = string.Format(getter, $"({elementType}*)p");
@@ -131,10 +99,53 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             valGetter: p => {finalGetter})");
         }
 
+        public static TypeCastDef ReadSequenceRaw(string elementType, string finalType, string unitSize, string exitCondition, string getter)
+        {
+            return new ReadOnlyFunctionCallCastDef(elementType + '*', $"IEnumerable<{finalType}>", $@"NativeUtils.ReadSequence(
+            p: (IntPtr){{0}},
+            unitSize: {unitSize},
+            exitCondition: p => {exitCondition}, 
+            valGetter: p => {getter})");
+        }
+
+        public static TypeCastDef ReadonlyPtrList(string elementType, string returnElementType, string countElement, string converterMethod)
+        {
+            return new ReadOnlyFunctionCallCastDef(
+                elementType + "**", 
+                $"IReadOnlyList<{returnElementType}>", 
+                $@"new ReadOnlyPtrList<{elementType}, {returnElementType}>({{0}}, (int)_ptr->{countElement}, {converterMethod})");
+        }
+
+        public static TypeCastDef ReadonlyDataPointer(string elementType, string countElement)
+        {
+            return new ReadOnlyFunctionCallCastDef(
+                elementType + "*",
+                $"DataPointer",
+                $@"new DataPointer({{0}}, (int)_ptr->{countElement})");
+        }
+
+        public static TypeCastDef ReadonlyNativeListWithCast(string elementType, string returnElementType, string countAccessor, string converterMethod)
+        {
+            return new ReadOnlyFunctionCallCastDef(
+                elementType + "*",
+                $"IReadOnlyList<{returnElementType}>",
+                $@"new ReadOnlyNativeListWithCast<{elementType}, {returnElementType}>({{0}}, {countAccessor}, {returnElementType}.{converterMethod})");
+        }
+
+        public static TypeCastDef ReadonlyNativeList(string elementType, string countElement)
+        {
+            return new ReadOnlyFunctionCallCastDef(
+                elementType + "*",
+                $"IReadOnlyList<{elementType}>",
+                $@"new ReadOnlyNativeList<{elementType}>({{0}}, (int)_ptr->{countElement})");
+        }
+
 
         public static TypeCastDef ReadOnlyUtf8String() => CustomReadonly("byte*", "string", $"PtrExtensions.PtrToStringUTF8((IntPtr){{0}})");
 
         public static TypeCastDef OptUtf8String() => Custom("byte*", "string", $"PtrExtensions.PtrToStringUTF8((IntPtr){{0}})", $"Options.Set(\"{{oldName}}\", value)");
+
+        public static TypeCastDef DupUtf8String() => Custom("byte*", "string", $"PtrExtensions.PtrToStringUTF8((IntPtr){{0}})", $"{{ptr}}->{{oldName}} = ffmpeg.av_strdup(value)");
 
         internal protected virtual string GetPropertyGetter(string ptr, string oldName, PropStatus prop)
         {
@@ -203,6 +214,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
         private record FunctionCallCastDef(string OldType, string NewType, string ReadCallFormat, string WriteCallFormat) : ReadOnlyFunctionCallCastDef(OldType, NewType, ReadCallFormat)
         {
             protected internal override string GetPropertySetter(string ptr, string oldName, PropStatus prop) => WriteCallFormat
+                .Replace("{ptr}", ptr)
                 .Replace("{oldName}", oldName);
         }
     }

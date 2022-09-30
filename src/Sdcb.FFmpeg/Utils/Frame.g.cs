@@ -3,6 +3,7 @@
 using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Codecs;
 using Sdcb.FFmpeg.Formats;
+using Sdcb.FFmpeg.Filters;
 using Sdcb.FFmpeg.Raw;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ public unsafe partial class Frame : SafeHandle
     }
     
     public static Frame FromNative(AVFrame* ptr, bool isOwner) => new Frame(ptr, isOwner);
+    
+    internal static Frame FromNative(IntPtr ptr, bool isOwner) => new Frame((AVFrame*)ptr, isOwner);
     
     public static Frame? FromNativeOrNull(AVFrame* ptr, bool isOwner) => ptr == null ? null : new Frame(ptr, isOwner);
     

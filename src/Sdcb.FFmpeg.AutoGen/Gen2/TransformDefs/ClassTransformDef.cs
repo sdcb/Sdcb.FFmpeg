@@ -24,6 +24,8 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
             yield return "";
             yield return $"public static {NewName} FromNative({OldName}* ptr, bool isOwner) => new {NewName}(ptr, isOwner);";
             yield return "";
+            yield return $"internal static {NewName} FromNative(IntPtr ptr, bool isOwner) => new {NewName}(({OldName}*)ptr, isOwner);";
+            yield return "";
             yield return $"public static {NewName}? FromNativeOrNull({OldName}* ptr, bool isOwner) => ptr == null ? null : new {NewName}(ptr, isOwner);";
             yield return "";
             yield return $"public override bool IsInvalid => handle == IntPtr.Zero;";
