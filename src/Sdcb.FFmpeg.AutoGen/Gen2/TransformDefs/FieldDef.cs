@@ -36,14 +36,14 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
 
             if (propStatus.IsReadonly)
             {
-                yield return $"public {typeCastDef.GetReturnType(propStatus)} {newName} => {typeCastDef.GetPropertyGetter($"{_ptr}->{oldName}", propStatus)};";
+                yield return $"public {typeCastDef.GetReturnType(propStatus)} {newName} => {typeCastDef.GetPropertyGetter(_ptr, oldName, propStatus)};";
             }
             else
             {
                 yield return $"public {typeCastDef.GetReturnType(propStatus)} {newName}";
                 yield return "{";
-                yield return $"    get => {typeCastDef.GetPropertyGetter($"{_ptr}->{oldName}", propStatus)};";
-                yield return $"    set => {_ptr}->{oldName} = {typeCastDef.GetPropertySetter(propStatus)};";
+                yield return $"    get => {typeCastDef.GetPropertyGetter(_ptr, oldName, propStatus)};";
+                yield return $"    set => {typeCastDef.GetPropertySetter(_ptr, oldName, propStatus)};";
                 yield return "}";
             }
         }
@@ -57,9 +57,13 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
 
         public static FieldDef CreateTypeCast(string name, TypeCastDef typeCast) => new FieldDef(name, name, typeCast);
 
+        public static FieldDef CreateTypeCastReadonly(string name, TypeCastDef typeCast) => new FieldDef(name, name, typeCast, isReadonly: true);
+
+        public static FieldDef CreateTypeCastNullable(string name, TypeCastDef typeCast) => new FieldDef(name, name, typeCast, nullable: true);
+
         public static FieldDef CreateHide(string name) => new FieldDef(name, name, display: false);
 
-        public static FieldDef CreateRename(string name, string newName) => new FieldDef(name, newName);
+        public static FieldDef CreateRenameNullable(string name, string newName) => new FieldDef(name, newName, nullable: true);
 
         public static FieldDef CreateDefault(string name) => new FieldDef(name, name);
 

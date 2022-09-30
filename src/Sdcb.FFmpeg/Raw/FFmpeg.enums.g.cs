@@ -6,6 +6,16 @@ using System.Runtime.InteropServices;
 #pragma warning disable CS0108
 namespace Sdcb.FFmpeg.Raw
 {
+    /// <summary>Macro enum, prefix: AV_BUFFERSINK_FLAG_</summary>
+    [Flags]
+    public enum AV_BUFFERSINK_FLAG : int
+    {
+        /// <summary>AV_BUFFERSINK_FLAG_PEEK</summary>
+        Peek = 1,
+        /// <summary>AV_BUFFERSINK_FLAG_NO_REQUEST</summary>
+        NoRequest = 2,
+    }
+    
     /// <summary>Macro enum, prefix: AV_CH_</summary>
     [Flags]
     public enum AV_CH : int
@@ -1212,6 +1222,36 @@ namespace Sdcb.FFmpeg.Raw
         Bb = 3,
         Tb = 4,
         Bt = 5,
+    }
+    
+    /// <summary>Macro enum, prefix: AVFILTER_CMD_FLAG_</summary>
+    [Flags]
+    public enum AVFILTER_CMD_FLAG : int
+    {
+        /// <summary>AVFILTER_CMD_FLAG_ONE</summary>
+        One = 1,
+        /// <summary>AVFILTER_CMD_FLAG_FAST</summary>
+        Fast = 2,
+    }
+    
+    /// <summary>Macro enum, prefix: AVFILTER_FLAG_</summary>
+    [Flags]
+    public enum AVFILTER_FLAG : int
+    {
+        /// <summary>AVFILTER_FLAG_DYNAMIC_INPUTS</summary>
+        DynamicInputs = 1 << 0,
+        /// <summary>AVFILTER_FLAG_DYNAMIC_OUTPUTS</summary>
+        DynamicOutputs = 1 << 1,
+        /// <summary>AVFILTER_FLAG_SLICE_THREADS</summary>
+        SliceThreads = 1 << 2,
+        /// <summary>AVFILTER_FLAG_METADATA_ONLY</summary>
+        MetadataOnly = 1 << 3,
+        /// <summary>AVFILTER_FLAG_SUPPORT_TIMELINE_GENERIC</summary>
+        SupportTimelineGeneric = 1 << 16,
+        /// <summary>AVFILTER_FLAG_SUPPORT_TIMELINE_INTERNAL</summary>
+        SupportTimelineInternal = 1 << 17,
+        /// <summary>AVFILTER_FLAG_SUPPORT_TIMELINE</summary>
+        SupportTimeline = SupportTimelineGeneric | SupportTimelineInternal,
     }
     
     /// <summary>stage of the initialization of the link properties (dimensions, etc)</summary>

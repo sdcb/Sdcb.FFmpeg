@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sdcb.FFmpeg.Codecs
+namespace Sdcb.FFmpeg.Codecs;
+
+public enum CodecResult
 {
-    public enum CodecResult
-    {
-        Success = 0,
-        Again = 1,
-        EOF = 2,
-    }
+    Success = 0,
+    Again = 1,
+    EOF = 2,
 }

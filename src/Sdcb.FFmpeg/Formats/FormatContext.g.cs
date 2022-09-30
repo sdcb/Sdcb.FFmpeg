@@ -2,6 +2,8 @@
 #nullable enable
 using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Codecs;
+using Sdcb.FFmpeg.Utils;
+using Sdcb.FFmpeg.Filters;
 using Sdcb.FFmpeg.Raw;
 using System;
 using System.Collections.Generic;
@@ -25,6 +27,8 @@ public unsafe partial class FormatContext : SafeHandle
     
     public static FormatContext FromNative(AVFormatContext* ptr, bool isOwner) => new FormatContext(ptr, isOwner);
     
+    internal static FormatContext FromNative(IntPtr ptr, bool isOwner) => new FormatContext((AVFormatContext*)ptr, isOwner);
+    
     public static FormatContext? FromNativeOrNull(AVFormatContext* ptr, bool isOwner) => ptr == null ? null : new FormatContext(ptr, isOwner);
     
     public override bool IsInvalid => handle == IntPtr.Zero;
@@ -45,9 +49,9 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>The input container format.</para>
     /// <see cref="AVFormatContext.iformat" />
     /// </summary>
-    public InputFormat InputFormat
+    public InputFormat? InputFormat
     {
-        get => InputFormat.FromNative(_ptr->iformat);
+        get => Sdcb.FFmpeg.Formats.InputFormat.FromNativeOrNull(_ptr->iformat);
         set => _ptr->iformat = (AVInputFormat*)value;
     }
     
@@ -56,9 +60,9 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>The output container format.</para>
     /// <see cref="AVFormatContext.oformat" />
     /// </summary>
-    public OutputFormat OutputFormat
+    public OutputFormat? OutputFormat
     {
-        get => OutputFormat.FromNative(_ptr->oformat);
+        get => Sdcb.FFmpeg.Formats.OutputFormat.FromNativeOrNull(_ptr->oformat);
         set => _ptr->oformat = (AVOutputFormat*)value;
     }
     
@@ -95,24 +99,11 @@ public unsafe partial class FormatContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>Number of elements in AVFormatContext.streams.</para>
-    /// <see cref="AVFormatContext.nb_streams" />
-    /// </summary>
-    public uint NbStreams
-    {
-        get => _ptr->nb_streams;
-        set => _ptr->nb_streams = value;
-    }
-    
-    /// <summary>
+    /// <para>original type: AVStream**</para>
     /// <para>A list of all streams in the file. New streams are created with avformat_new_stream().</para>
     /// <see cref="AVFormatContext.streams" />
     /// </summary>
-    public AVStream** Streams
-    {
-        get => _ptr->streams;
-        set => _ptr->streams = value;
-    }
+    public IReadOnlyList<MediaStream> Streams => new ReadOnlyPtrList<AVStream, MediaStream>(_ptr->streams, (int)_ptr->nb_streams, MediaStream.FromNative)!;
     
     /// <summary>
     /// <para>original type: byte*</para>
@@ -174,13 +165,14 @@ public unsafe partial class FormatContext : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: int</para>
     /// <para>Flags modifying the (de)muxer behaviour. A combination of AVFMT_FLAG_*. Set by the user before avformat_open_input() / avformat_write_header().</para>
     /// <see cref="AVFormatContext.flags" />
     /// </summary>
-    public int Flags
+    public AVFMT_FLAG Flags
     {
-        get => _ptr->flags;
-        set => _ptr->flags = value;
+        get => (AVFMT_FLAG)_ptr->flags;
+        set => _ptr->flags = (int)value;
     }
     
     /// <summary>
@@ -223,22 +215,10 @@ public unsafe partial class FormatContext : SafeHandle
     }
     
     /// <summary>
-    /// <see cref="AVFormatContext.nb_programs" />
-    /// </summary>
-    public uint NbPrograms
-    {
-        get => _ptr->nb_programs;
-        set => _ptr->nb_programs = value;
-    }
-    
-    /// <summary>
+    /// <para>original type: AVProgram**</para>
     /// <see cref="AVFormatContext.programs" />
     /// </summary>
-    public AVProgram** Programs
-    {
-        get => _ptr->programs;
-        set => _ptr->programs = value;
-    }
+    public IReadOnlyList<MediaProgram> Programs => new ReadOnlyPtrList<AVProgram, MediaProgram>(_ptr->programs, (int)_ptr->nb_programs, MediaProgram.FromNative)!;
     
     /// <summary>
     /// <para>Forced video codec_id. Demuxing: Set by user.</para>
@@ -291,32 +271,20 @@ public unsafe partial class FormatContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>Number of chapters in AVChapter array. When muxing, chapters are normally written in the file header, so nb_chapters should normally be initialized before write_header is called. Some muxers (e.g. mov and mkv) can also write chapters in the trailer. To write chapters in the trailer, nb_chapters must be zero when write_header is called and non-zero when write_trailer is called. - muxing: set by user - demuxing: set by libavformat</para>
-    /// <see cref="AVFormatContext.nb_chapters" />
-    /// </summary>
-    public uint NbChapters
-    {
-        get => _ptr->nb_chapters;
-        set => _ptr->nb_chapters = value;
-    }
-    
-    /// <summary>
+    /// <para>original type: AVChapter**</para>
     /// <see cref="AVFormatContext.chapters" />
     /// </summary>
-    public AVChapter** Chapters
-    {
-        get => _ptr->chapters;
-        set => _ptr->chapters = value;
-    }
+    public IReadOnlyList<MediaChapter> Chapters => new ReadOnlyPtrList<AVChapter, MediaChapter>(_ptr->chapters, (int)_ptr->nb_chapters, MediaChapter.FromNative)!;
     
     /// <summary>
+    /// <para>original type: AVDictionary*</para>
     /// <para>Metadata that applies to the whole file.</para>
     /// <see cref="AVFormatContext.metadata" />
     /// </summary>
-    public AVDictionary* Metadata
+    public MediaDictionary Metadata
     {
-        get => _ptr->metadata;
-        set => _ptr->metadata = value;
+        get => MediaDictionary.FromNative(_ptr->metadata, false);
+        set => _ptr->metadata = (AVDictionary*)value;
     }
     
     /// <summary>
@@ -586,9 +554,9 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>Forced video codec. This allows forcing a specific decoder, even when there are multiple with the same codec_id. Demuxing: Set by user</para>
     /// <see cref="AVFormatContext.video_codec" />
     /// </summary>
-    public Codec VideoCodec
+    public Codec? VideoCodec
     {
-        get => Codec.FromNative(_ptr->video_codec);
+        get => Codec.FromNativeOrNull(_ptr->video_codec);
         set => _ptr->video_codec = (AVCodec*)value;
     }
     
@@ -597,9 +565,9 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>Forced audio codec. This allows forcing a specific decoder, even when there are multiple with the same codec_id. Demuxing: Set by user</para>
     /// <see cref="AVFormatContext.audio_codec" />
     /// </summary>
-    public Codec AudioCodec
+    public Codec? AudioCodec
     {
-        get => Codec.FromNative(_ptr->audio_codec);
+        get => Codec.FromNativeOrNull(_ptr->audio_codec);
         set => _ptr->audio_codec = (AVCodec*)value;
     }
     
@@ -608,9 +576,9 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>Forced subtitle codec. This allows forcing a specific decoder, even when there are multiple with the same codec_id. Demuxing: Set by user</para>
     /// <see cref="AVFormatContext.subtitle_codec" />
     /// </summary>
-    public Codec SubtitleCodec
+    public Codec? SubtitleCodec
     {
-        get => Codec.FromNative(_ptr->subtitle_codec);
+        get => Codec.FromNativeOrNull(_ptr->subtitle_codec);
         set => _ptr->subtitle_codec = (AVCodec*)value;
     }
     
@@ -619,9 +587,9 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>Forced data codec. This allows forcing a specific decoder, even when there are multiple with the same codec_id. Demuxing: Set by user</para>
     /// <see cref="AVFormatContext.data_codec" />
     /// </summary>
-    public Codec DataCodec
+    public Codec? DataCodec
     {
-        get => Codec.FromNative(_ptr->data_codec);
+        get => Codec.FromNativeOrNull(_ptr->data_codec);
         set => _ptr->data_codec = (AVCodec*)value;
     }
     
@@ -661,10 +629,10 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>dump format separator. can be ", " or " " or anything else - muxing: Set by user. - demuxing: Set by user.</para>
     /// <see cref="AVFormatContext.dump_separator" />
     /// </summary>
-    public IntPtr DumpSeparator
+    public string? DumpSeparator
     {
-        get => (IntPtr)_ptr->dump_separator;
-        set => _ptr->dump_separator = (byte*)value;
+        get => _ptr->dump_separator != null ? PtrExtensions.PtrToStringUTF8((IntPtr)_ptr->dump_separator)! : null;
+        set => Options.Set("dump_separator", value);
     }
     
     /// <summary>
@@ -682,10 +650,10 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>',' separated list of allowed protocols. - encoding: unused - decoding: set by user</para>
     /// <see cref="AVFormatContext.protocol_whitelist" />
     /// </summary>
-    public IntPtr ProtocolWhitelist
+    public string? ProtocolWhitelist
     {
-        get => (IntPtr)_ptr->protocol_whitelist;
-        set => _ptr->protocol_whitelist = (byte*)value;
+        get => _ptr->protocol_whitelist != null ? PtrExtensions.PtrToStringUTF8((IntPtr)_ptr->protocol_whitelist)! : null;
+        set => Options.Set("protocol_whitelist", value);
     }
     
     /// <summary>
@@ -693,10 +661,10 @@ public unsafe partial class FormatContext : SafeHandle
     /// <para>',' separated list of disallowed protocols. - encoding: unused - decoding: set by user</para>
     /// <see cref="AVFormatContext.protocol_blacklist" />
     /// </summary>
-    public IntPtr ProtocolBlacklist
+    public string? ProtocolBlacklist
     {
-        get => (IntPtr)_ptr->protocol_blacklist;
-        set => _ptr->protocol_blacklist = (byte*)value;
+        get => _ptr->protocol_blacklist != null ? PtrExtensions.PtrToStringUTF8((IntPtr)_ptr->protocol_blacklist)! : null;
+        set => Options.Set("protocol_blacklist", value);
     }
     
     /// <summary>

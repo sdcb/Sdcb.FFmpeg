@@ -2,6 +2,8 @@
 #nullable enable
 using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Codecs;
+using Sdcb.FFmpeg.Utils;
+using Sdcb.FFmpeg.Filters;
 using Sdcb.FFmpeg.Raw;
 using System;
 using System.Collections.Generic;
@@ -63,30 +65,19 @@ public unsafe partial struct MediaProgram
     }
     
     /// <summary>
+    /// <para>original type: uint*</para>
     /// <see cref="AVProgram.stream_index" />
     /// </summary>
-    public uint* StreamIndex
-    {
-        get => _ptr->stream_index;
-        set => _ptr->stream_index = value;
-    }
+    public IReadOnlyList<uint> StreamIndex => new ReadOnlyNativeList<uint>(_ptr->stream_index, (int)_ptr->nb_stream_indexes)!;
     
     /// <summary>
-    /// <see cref="AVProgram.nb_stream_indexes" />
-    /// </summary>
-    public uint NbStreamIndexes
-    {
-        get => _ptr->nb_stream_indexes;
-        set => _ptr->nb_stream_indexes = value;
-    }
-    
-    /// <summary>
+    /// <para>original type: AVDictionary*</para>
     /// <see cref="AVProgram.metadata" />
     /// </summary>
-    public AVDictionary* Metadata
+    public MediaDictionary Metadata
     {
-        get => _ptr->metadata;
-        set => _ptr->metadata = value;
+        get => MediaDictionary.FromNative(_ptr->metadata, false);
+        set => _ptr->metadata = (AVDictionary*)value;
     }
     
     /// <summary>

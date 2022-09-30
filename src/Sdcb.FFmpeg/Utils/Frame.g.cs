@@ -1,13 +1,15 @@
 // This file was genereated from Sdcb.FFmpeg.AutoGen, DO NOT CHANGE DIRECTLY.
 #nullable enable
 using Sdcb.FFmpeg.Common;
+using Sdcb.FFmpeg.Codecs;
 using Sdcb.FFmpeg.Formats;
+using Sdcb.FFmpeg.Filters;
 using Sdcb.FFmpeg.Raw;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace Sdcb.FFmpeg.Codecs;
+namespace Sdcb.FFmpeg.Utils;
 
 /// <summary>
 /// <para>This structure describes decoded (raw) audio or video data.</para>
@@ -24,6 +26,8 @@ public unsafe partial class Frame : SafeHandle
     }
     
     public static Frame FromNative(AVFrame* ptr, bool isOwner) => new Frame(ptr, isOwner);
+    
+    internal static Frame FromNative(IntPtr ptr, bool isOwner) => new Frame((AVFrame*)ptr, isOwner);
     
     public static Frame? FromNativeOrNull(AVFrame* ptr, bool isOwner) => ptr == null ? null : new Frame(ptr, isOwner);
     
@@ -302,22 +306,10 @@ public unsafe partial class Frame : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVFrameSideData**</para>
     /// <see cref="AVFrame.side_data" />
     /// </summary>
-    public AVFrameSideData** SideData
-    {
-        get => _ptr->side_data;
-        set => _ptr->side_data = value;
-    }
-    
-    /// <summary>
-    /// <see cref="AVFrame.nb_side_data" />
-    /// </summary>
-    public int NbSideData
-    {
-        get => _ptr->nb_side_data;
-        set => _ptr->nb_side_data = value;
-    }
+    public IReadOnlyList<FrameSideData> SideData => new ReadOnlyPtrList<AVFrameSideData, FrameSideData>(_ptr->side_data, (int)_ptr->nb_side_data, FrameSideData.FromNative)!;
     
     /// <summary>
     /// <para>Frame flags, a combination of lavu_frame_flags</para>
@@ -407,13 +399,14 @@ public unsafe partial class Frame : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVDictionary*</para>
     /// <para>metadata. - encoding: Set by user. - decoding: Set by libavcodec.</para>
     /// <see cref="AVFrame.metadata" />
     /// </summary>
-    public AVDictionary* Metadata
+    public MediaDictionary Metadata
     {
-        get => _ptr->metadata;
-        set => _ptr->metadata = value;
+        get => MediaDictionary.FromNative(_ptr->metadata, false);
+        set => _ptr->metadata = (AVDictionary*)value;
     }
     
     /// <summary>
@@ -448,23 +441,25 @@ public unsafe partial class Frame : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVBufferRef*</para>
     /// <para>For hwaccel-format frames, this should be a reference to the AVHWFramesContext describing the frame.</para>
     /// <see cref="AVFrame.hw_frames_ctx" />
     /// </summary>
-    public AVBufferRef* HwFramesContext
+    public BufferRef? HwFramesContext
     {
-        get => _ptr->hw_frames_ctx;
-        set => _ptr->hw_frames_ctx = value;
+        get => BufferRef.FromNativeOrNull(_ptr->hw_frames_ctx, false);
+        set => _ptr->hw_frames_ctx = value != null ? (AVBufferRef*)value : null;
     }
     
     /// <summary>
+    /// <para>original type: AVBufferRef*</para>
     /// <para>AVBufferRef for free use by the API user. FFmpeg will never check the contents of the buffer ref. FFmpeg calls av_buffer_unref() on it when the frame is unreferenced. av_frame_copy_props() calls create a new reference with av_buffer_ref() for the target frame's opaque_ref field.</para>
     /// <see cref="AVFrame.opaque_ref" />
     /// </summary>
-    public AVBufferRef* OpaqueRef
+    public BufferRef? OpaqueRef
     {
-        get => _ptr->opaque_ref;
-        set => _ptr->opaque_ref = value;
+        get => BufferRef.FromNativeOrNull(_ptr->opaque_ref, false);
+        set => _ptr->opaque_ref = value != null ? (AVBufferRef*)value : null;
     }
     
     /// <summary>
@@ -505,13 +500,14 @@ public unsafe partial class Frame : SafeHandle
     }
     
     /// <summary>
+    /// <para>original type: AVBufferRef*</para>
     /// <para>AVBufferRef for internal use by a single libav* library. Must not be used to transfer data between libraries. Has to be NULL when ownership of the frame leaves the respective library.</para>
     /// <see cref="AVFrame.private_ref" />
     /// </summary>
-    public AVBufferRef* PrivateRef
+    public BufferRef? PrivateRef
     {
-        get => _ptr->private_ref;
-        set => _ptr->private_ref = value;
+        get => BufferRef.FromNativeOrNull(_ptr->private_ref, false);
+        set => _ptr->private_ref = value != null ? (AVBufferRef*)value : null;
     }
     
     /// <summary>

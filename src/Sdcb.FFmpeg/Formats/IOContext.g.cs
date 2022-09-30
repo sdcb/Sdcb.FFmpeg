@@ -2,6 +2,8 @@
 #nullable enable
 using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Codecs;
+using Sdcb.FFmpeg.Utils;
+using Sdcb.FFmpeg.Filters;
 using Sdcb.FFmpeg.Raw;
 using System;
 using System.Collections.Generic;
@@ -24,6 +26,8 @@ public unsafe partial class IOContext : SafeHandle
     }
     
     public static IOContext FromNative(AVIOContext* ptr, bool isOwner) => new IOContext(ptr, isOwner);
+    
+    internal static IOContext FromNative(IntPtr ptr, bool isOwner) => new IOContext((AVIOContext*)ptr, isOwner);
     
     public static IOContext? FromNativeOrNull(AVIOContext* ptr, bool isOwner) => ptr == null ? null : new IOContext(ptr, isOwner);
     

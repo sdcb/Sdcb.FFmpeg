@@ -2,6 +2,8 @@
 #nullable enable
 using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Formats;
+using Sdcb.FFmpeg.Utils;
+using Sdcb.FFmpeg.Filters;
 using Sdcb.FFmpeg.Raw;
 using System;
 using System.Collections.Generic;
@@ -37,20 +39,7 @@ public unsafe partial struct PacketSideData
     /// <para>original type: byte*</para>
     /// <see cref="AVPacketSideData.data" />
     /// </summary>
-    public IntPtr Data
-    {
-        get => (IntPtr)_ptr->data;
-        set => _ptr->data = (byte*)value;
-    }
-    
-    /// <summary>
-    /// <see cref="AVPacketSideData.size" />
-    /// </summary>
-    public ulong Size
-    {
-        get => _ptr->size;
-        set => _ptr->size = value;
-    }
+    public DataPointer Data => new DataPointer(_ptr->data, (int)_ptr->size)!;
     
     /// <summary>
     /// <see cref="AVPacketSideData.type" />
