@@ -126,9 +126,10 @@ public class Examples
         using DynamicIOContext io = IOContext.OpenDynamic();
         fc.Pb = io;
         fc.WriteHeader();
-        foreach (Packet packet in vcodec.EncodeFrames(vcodec.ConvertFrames(
+        foreach (Packet packet in vcodec.EncodeFrames(
             VideoFrameGenerator.Yuv420pSequence(vcodec.Width, vcodec.Height).Take(40)
-            )))
+            .ConvertFrames(vcodec)
+            ))
         {
             try
             {
@@ -146,5 +147,48 @@ public class Examples
         byte[] gif = io.GetBuffer().ToArray();
         Assert.NotEmpty(gif);
         //File.WriteAllBytes("test.gif", gif);
+    }
+
+    [Fact]
+    public void MakeGifWithFilter()
+    {
+        using FormatContext fc = FormatContext.AllocOutput(formatName: "gif");
+        fc.VideoCodec = Codec.CommonEncoders.Gif;
+        MediaStream vstream = fc.NewStream(fc.VideoCodec);
+        using CodecContext vcodec = new CodecContext(fc.VideoCodec)
+        {
+            Width = 400,
+            Height = 300,
+            TimeBase = new AVRational(1, 10),
+            PixelFormat = AVPixelFormat.Pal8,
+        };
+        vcodec.Open(fc.VideoCodec);
+        vstream.Codecpar.CopyFrom(vcodec);
+
+        using DynamicIOContext io = IOContext.OpenDynamic();
+        fc.Pb = io;
+        fc.WriteHeader();
+        string filter = $"fps={vcodec.TimeBase.Inverse().ToDouble()},scale={vcodec.Width}:{vcodec.Height}:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse";
+        foreach (Packet packet in vcodec.EncodeFrames(
+            VideoFrameGenerator.Yuv420pSequence(800, 600).Take(40)
+            .ApplyVideoFilters(new AVRational(1, 30), vcodec.PixelFormat, filter)
+            ))
+        {
+            try
+            {
+                packet.RescaleTimestamp(vcodec.TimeBase, vstream.TimeBase);
+                long after = packet.Dts;
+                packet.StreamIndex = vstream.Index;
+                fc.InterleavedWritePacket(packet);
+            }
+            finally
+            {
+                packet.Unreference();
+            }
+        }
+        fc.WriteTrailer();
+        byte[] gif = io.GetBuffer().ToArray();
+        Assert.NotEmpty(gif);
+        File.WriteAllBytes("test.gif", gif);
     }
 }

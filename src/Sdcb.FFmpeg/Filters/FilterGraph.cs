@@ -46,11 +46,31 @@ public unsafe partial class FilterGraph : SafeHandle
     /// <para><see cref="FilterContext.InitializeFromString"/></para>
     /// </summary>
     /// <param name="name">the instance name to give to the created filter instance</param>
-    public FilterContext CreateFilter(Filter filter, string args, string? name = null)
+    public FilterContext CreateFilter(Filter filter, string? name = null, string? args = null)
     {
         AVFilterContext* resultPtr;
         avfilter_graph_create_filter(&resultPtr, filter, name, args, null, this).ThrowIfError();
         return FilterContext.FromNative(resultPtr, isOwner: false);
+    }
+
+    /// <summary>
+    /// Short hand api for <see cref="AllocFilter(Filter, string?)"/> and <see cref="FilterContext.InitializeFromDictionary"/>
+    /// </summary>
+    public FilterContext CreateFilter(string filterName, string name, MediaDictionary opts)
+    {
+        FilterContext ctx = AllocFilter(filterName, name);
+        ctx.InitializeFromDictionary(opts);
+        return ctx;
+    }
+
+    /// <summary>
+    /// Short hand api for <see cref="AllocFilter(Filter, string?)"/> and <see cref="FilterContext.InitializeFromDictionary"/>
+    /// </summary>
+    public FilterContext CreateFilter(Filter filter, string name, MediaDictionary opts)
+    {
+        FilterContext ctx = AllocFilter(filter, name);
+        ctx.InitializeFromDictionary(opts);
+        return ctx;
     }
 
     /// <summary>
@@ -60,7 +80,7 @@ public unsafe partial class FilterGraph : SafeHandle
     /// <para><see cref="FilterContext.InitializeFromString"/></para>
     /// </summary>
     /// <param name="name">the instance name to give to the created filter instance</param>
-    public FilterContext CreateFilter(string filterName, string args, string? name = null) => CreateFilter(Filter.GetByName(filterName), args, name);
+    public FilterContext CreateFilter(string filterName, string? name = null, string? args = null) => CreateFilter(Filter.GetByName(filterName), name, args);
 
     /// <summary>
     /// Get a filter instance identified by instance name from graph.

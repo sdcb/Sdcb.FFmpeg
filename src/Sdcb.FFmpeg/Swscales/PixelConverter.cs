@@ -43,8 +43,8 @@ public unsafe class PixelConverter : SafeHandle
         int destWidth, int destHeight, AVPixelFormat destPixelFormat,
         SWS flags) =>
         string.Format("Impossible to create scale context for the conversion fmt:{0} s:{1}x{2} -> fmt:{3} s:{4}x{5} (sws_flags: {6})",
-            PixelUtils.GetPixelFormatName(sourcePixelFormat), sourceWidth, sourceHeight,
-            PixelUtils.GetPixelFormatName(destPixelFormat), destWidth, destHeight, flags);
+            NameUtils.GetPixelFormatName(sourcePixelFormat), sourceWidth, sourceHeight,
+            NameUtils.GetPixelFormatName(destPixelFormat), destWidth, destHeight, flags);
 
     /// <summary>
     /// <see cref="sws_scale(SwsContext*, byte*[], int[], int, int, byte*[], int[])"/>
