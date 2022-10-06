@@ -19,12 +19,12 @@ public static class FramesExtensions
     /// </summary>
     public static IEnumerable<Frame> ConvertFrames(this IEnumerable<Frame> sourceFrames, CodecContext c, SWS swsFlags = SWS.Bilinear)
     {
-        using var destFrame = c.CreateFrame();
+        using Frame destFrame = c.CreateFrame();
         int pts = 0;
         if (c.Codec.Type == AVMediaType.Video)
         {
-            using var frameConverter = new VideoFrameConverter();
-            foreach (var sourceFrame in sourceFrames)
+            using VideoFrameConverter frameConverter = new();
+            foreach (Frame sourceFrame in sourceFrames)
             {
                 frameConverter.ConvertFrame(sourceFrame, destFrame, swsFlags);
                 destFrame.Pts = pts++;
@@ -33,8 +33,8 @@ public static class FramesExtensions
         }
         else if (c.Codec.Type == AVMediaType.Audio)
         {
-            using var frameConverter = new SampleConverter();
-            foreach (var sourceFrame in sourceFrames)
+            using SampleConverter frameConverter = new();
+            foreach (Frame sourceFrame in sourceFrames)
             {
                 frameConverter.ConvertFrame(destFrame, sourceFrame);
                 destFrame.Pts = pts += c.FrameSize;

@@ -161,6 +161,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateTypeCast("data", TypeCastDef.ReadonlyDataPointer("byte*", "size")) with { ReadOnly = true },
                 FieldDef.CreateHide("size"),
             }),
+            G2TransformDef.MakeClass(ClassCategories.Utils, "AVAudioFifo", "AudioFifo"),
             #endregion
 
             #region filters
