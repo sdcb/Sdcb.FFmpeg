@@ -54,7 +54,8 @@ public class Examples
         using DynamicIOContext io = IOContext.OpenDynamic();
         fc.Pb = io;
         fc.WriteHeader();
-        foreach (Packet packet in vcodec.EncodeFrames(VideoFrameGenerator.Yuv420pSequence(vcodec.Width, vcodec.Height).Take(60)))
+        foreach (Packet packet in VideoFrameGenerator.Yuv420pSequence(vcodec.Width, vcodec.Height).Take(60)
+            .EncodeFrames(vcodec))
         {
             try
             {
@@ -98,7 +99,8 @@ public class Examples
 
         using VideoFrameConverter sws = new();
         using Frame dest = Frame.CreateWritableVideo(videoStream.Codecpar.Width, videoStream.Codecpar.Height, AVPixelFormat.Rgb0);
-        foreach (Frame frame in videoDecoder.DecodePackets(fc.ReadPackets()))
+        foreach (Frame frame in fc.ReadPackets()
+            .DecodePackets(videoDecoder))
         {
             Stopwatch sw = Stopwatch.StartNew();
             sws.ConvertFrame(frame, dest);
@@ -126,10 +128,9 @@ public class Examples
         using DynamicIOContext io = IOContext.OpenDynamic();
         fc.Pb = io;
         fc.WriteHeader();
-        foreach (Packet packet in vcodec.EncodeFrames(
-            VideoFrameGenerator.Yuv420pSequence(vcodec.Width, vcodec.Height).Take(40)
+        foreach (Packet packet in VideoFrameGenerator.Yuv420pSequence(vcodec.Width, vcodec.Height).Take(40)
             .ConvertFrames(vcodec)
-            ))
+            .EncodeFrames(vcodec))
         {
             try
             {
@@ -169,10 +170,9 @@ public class Examples
         fc.Pb = io;
         fc.WriteHeader();
         string filter = $"fps={vcodec.TimeBase.Inverse().ToDouble()},scale={vcodec.Width}:{vcodec.Height}:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse";
-        foreach (Packet packet in vcodec.EncodeFrames(
-            VideoFrameGenerator.Yuv420pSequence(800, 600).Take(40)
+        foreach (Packet packet in VideoFrameGenerator.Yuv420pSequence(800, 600).Take(40)
             .ApplyVideoFilters(new AVRational(1, 30), vcodec.PixelFormat, filter)
-            ))
+            .EncodeFrames(vcodec))
         {
             try
             {

@@ -85,7 +85,7 @@ public unsafe static class FrameExtensions
     private static void WriteAction(Frame frame, FormatContext fc, CodecContext codecContext)
     {
         fc.WriteHeader();
-        foreach (Packet packet in codecContext.EncodeFrames(new[] { frame }))
+        foreach (Packet packet in new[] { frame }.EncodeFrames(codecContext))
         {
             fc.WritePacket(packet);
         }

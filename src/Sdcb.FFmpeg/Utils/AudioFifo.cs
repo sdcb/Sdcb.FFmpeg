@@ -36,6 +36,13 @@ public unsafe partial class AudioFifo : SafeHandle
         return av_audio_fifo_write(this, data, sampleCount).ThrowIfError();
     }
 
+    public int Write(Frame frame)
+    {
+        byte_ptrArray8 data = frame.Data;
+        void** ptr = (void**)&data;
+        return av_audio_fifo_write(this, ptr, frame.NbSamples).ThrowIfError();
+    }
+
     /// <summary>
     /// <para>Peek data from an AVAudioFifo.</para>
     /// <para>The AVAudioFifo will be reallocated automatically if the available space is less than sampleCount.</para>
@@ -47,6 +54,13 @@ public unsafe partial class AudioFifo : SafeHandle
     public int Peek(void** data, int sampleCount)
     {
         return av_audio_fifo_peek(this, data, sampleCount).ThrowIfError();
+    }
+
+    public int Peek(Frame frame)
+    {
+        byte_ptrArray8 data = frame.Data;
+        void** ptr = (void**)&data;
+        return av_audio_fifo_peek(this, ptr, frame.NbSamples).ThrowIfError();
     }
 
     /// <summary>
@@ -63,6 +77,13 @@ public unsafe partial class AudioFifo : SafeHandle
         return av_audio_fifo_peek_at(this, data, sampleCount, offset).ThrowIfError();
     }
 
+    public int PeekAt(Frame frame, int offset)
+    {
+        byte_ptrArray8 data = frame.Data;
+        void** ptr = (void**)&data;
+        return PeekAt(ptr, frame.NbSamples, offset);
+    }
+
     /// <summary>
     /// <para>Read data from an AVAudioFifo.</para>
     /// <see cref="av_audio_fifo_read(AVAudioFifo*, void**, int)"/>
@@ -73,6 +94,13 @@ public unsafe partial class AudioFifo : SafeHandle
     public int Read(void** data, int sampleCount)
     {
         return av_audio_fifo_read(this, data, sampleCount).ThrowIfError();
+    }
+
+    public int Read(Frame frame)
+    {
+        byte_ptrArray8 data = frame.Data;
+        void** ptr = (void**)&data;
+        return Read(ptr, frame.NbSamples);
     }
 
     /// <summary>

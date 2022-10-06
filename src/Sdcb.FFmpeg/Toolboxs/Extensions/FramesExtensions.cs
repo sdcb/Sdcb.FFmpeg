@@ -112,4 +112,68 @@ public static class FramesExtensions
             }
         }
     }
+
+    public static IEnumerable<Frame> AudioFifo(this IEnumerable<Frame> frames, CodecContext encoder)
+    {
+        using AudioFifo fifo = new AudioFifo(encoder.SampleFormat, encoder.Channels, 1);
+        int frameSize = encoder.FrameSize;
+        using Frame result = Frame.CreateWritableAudio(encoder.SampleFormat, encoder.ChannelLayout, encoder.SampleRate, frameSize);
+
+        foreach (Frame frame in frames)
+        {
+            if (fifo.Size < frameSize)
+            {
+                fifo.Write(frame);
+            }
+            while (fifo.Size >= frameSize)
+            {
+                fifo.Read(result);
+                yield return result;
+            }
+        }
+        while (fifo.Size > 0)
+        {
+            fifo.Read(result);
+            yield return result;
+        }
+    }
+
+    /// <summary>
+    /// frames -> packets
+    /// </summary>
+    public static IEnumerable<Packet> EncodeFrames(this IEnumerable<Frame> frames, CodecContext c, bool makeWritable = true, bool makeSequential = false)
+    {
+        using var packet = new Packet();
+        int pts = 0;
+        foreach (Frame frame in frames)
+        {
+            if (makeSequential && c.Codec.Type == AVMediaType.Video)
+                frame.Pts = pts++;
+            else if (makeSequential && c.SampleRate > 0 && c.Codec.Type == AVMediaType.Audio)
+                frame.Pts = (pts += c.FrameSize);
+
+            foreach (var _ in c.EncodeFrame(frame, packet))
+                yield return packet;
+
+            if (makeWritable) frame.MakeWritable();
+        }
+
+        foreach (var _ in c.EncodeFrame(null, packet))
+            yield return packet;
+    }
+
+    /// <summary>
+    /// packets -> frames
+    /// </summary>
+    public static IEnumerable<Frame> DecodePackets(this IEnumerable<Packet> packets, CodecContext c)
+    {
+        using var frame = new Frame();
+
+        foreach (Packet packet in packets)
+            foreach (var _ in c.DecodePacket(packet, frame))
+                yield return frame;
+
+        foreach (var _ in c.DecodePacket(null, frame))
+            yield return frame;
+    }
 }
