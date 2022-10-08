@@ -56,6 +56,14 @@ public struct AVRational
         return b;
     }
 
+    public static unsafe AVRational operator *(AVRational b, long c)
+    {
+        av_reduce(&b.Num, &b.Den,
+            b.Num * (long)c,
+            b.Den * (long)1, int.MaxValue);
+        return b;
+    }
+
     public static AVRational operator /(in AVRational b, in AVRational c) => b * new AVRational(c.Den, c.Num);
 
     public static unsafe AVRational operator +(AVRational b, in AVRational c)

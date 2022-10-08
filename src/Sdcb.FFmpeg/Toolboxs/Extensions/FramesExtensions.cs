@@ -38,11 +38,10 @@ public static class FramesExtensions
         {
             using Frame destFrame = c.CreateAudioFrame();
             int pts = 0;
-            bool inited = false;
             using SampleConverter frameConverter = new();
             foreach (Frame sourceFrame in sourceFrames)
             {
-                if (!inited)
+                if (!frameConverter.Initialized)
                 {
                     frameConverter.Options.Set("in_channel_layout", sourceFrame.ChannelLayout, default(AV_OPT_SEARCH));
                     frameConverter.Options.Set("in_sample_rate", sourceFrame.SampleRate, default(AV_OPT_SEARCH));
@@ -51,7 +50,6 @@ public static class FramesExtensions
                     frameConverter.Options.Set("out_sample_rate", destFrame.SampleRate, default(AV_OPT_SEARCH));
                     frameConverter.Options.Set("out_sample_fmt", (AVSampleFormat)destFrame.Format, default(AV_OPT_SEARCH));
                     frameConverter.Initialize();
-                    inited = true;
                 }
                 int destSampleCount = (int)av_rescale_rnd(frameConverter.GetDelay(sourceFrame.SampleRate) + sourceFrame.NbSamples, sourceFrame.SampleRate, destFrame.SampleRate, AVRounding.Up);
                 int converted = frameConverter.Convert(destFrame.Data, destSampleCount, sourceFrame.Data, sourceFrame.NbSamples);
@@ -63,7 +61,7 @@ public static class FramesExtensions
         }
     }
 
-    public static IEnumerable<Frame> ConvertFrames(this IEnumerable<Frame> sourceFrames, CodecContext audioContext, CodecContext videoContext, SWS swsFlags = SWS.Bilinear)
+    public static IEnumerable<Frame> ConvertAllFrames(this IEnumerable<Frame> sourceFrames, CodecContext audioContext, CodecContext videoContext, SWS swsFlags = SWS.Bilinear)
     {
         using Frame destAudioFrame = audioContext.CreateFrame();
         using Frame destVideoFrame = videoContext.CreateFrame();
@@ -82,8 +80,21 @@ public static class FramesExtensions
             }
             else if (sourceFrame.SampleRate > 0)
             {
-                sampleConverter.ConvertFrame(destAudioFrame, sourceFrame);
-                destAudioFrame.Pts = audioPts += audioContext.FrameSize;
+                if (!sampleConverter.Initialized)
+                {
+                    sampleConverter.Options.Set("in_channel_layout", sourceFrame.ChannelLayout, default(AV_OPT_SEARCH));
+                    sampleConverter.Options.Set("in_sample_rate", sourceFrame.SampleRate, default(AV_OPT_SEARCH));
+                    sampleConverter.Options.Set("in_sample_fmt", (AVSampleFormat)sourceFrame.Format, default(AV_OPT_SEARCH));
+                    sampleConverter.Options.Set("out_channel_layout", destAudioFrame.ChannelLayout, default(AV_OPT_SEARCH));
+                    sampleConverter.Options.Set("out_sample_rate", destAudioFrame.SampleRate, default(AV_OPT_SEARCH));
+                    sampleConverter.Options.Set("out_sample_fmt", (AVSampleFormat)destAudioFrame.Format, default(AV_OPT_SEARCH));
+                    sampleConverter.Initialize();
+                }
+                int destSampleCount = (int)av_rescale_rnd(sampleConverter.GetDelay(sourceFrame.SampleRate) + sourceFrame.NbSamples, sourceFrame.SampleRate, destAudioFrame.SampleRate, AVRounding.Up);
+                int converted = sampleConverter.Convert(destAudioFrame.Data, destSampleCount, sourceFrame.Data, sourceFrame.NbSamples);
+                destAudioFrame.Pts = audioPts;
+                destAudioFrame.NbSamples = converted;
+                audioPts += converted;
                 yield return destAudioFrame;
             }
             else
@@ -215,7 +226,7 @@ public static class FramesExtensions
             {
                 frame.Pts = pts;
                 pts += c.FrameSize;
-            }   
+            }
 
             foreach (var _ in c.EncodeFrame(frame, packet))
                 yield return packet;
@@ -225,66 +236,6 @@ public static class FramesExtensions
 
         foreach (var _ in c.EncodeFrame(null, packet))
             yield return packet;
-    }
-
-    /// <summary>
-    /// packets -> frames
-    /// </summary>
-    public static IEnumerable<Frame> DecodePackets(this IEnumerable<Packet> packets, CodecContext c)
-    {
-        using var frame = new Frame();
-
-        foreach (Packet packet in packets)
-            foreach (var _ in c.DecodePacket(packet, frame))
-                yield return frame;
-
-        foreach (var _ in c.DecodePacket(null, frame))
-            yield return frame;
-    }
-
-    /// <summary>
-    /// packets -> frames
-    /// </summary>
-    public static IEnumerable<Frame> DecodeAllPackets(this IEnumerable<Packet> packets, FormatContext fc,
-        CodecContext? audioCodec = null,
-        CodecContext? videoCodec = null)
-    {
-        using var frame = new Frame();
-
-        foreach (Packet packet in packets)
-        {
-            CodecContext c = GetCodecContext(fc, audioCodec, videoCodec, packet);
-
-            foreach (var _ in c.DecodePacket(packet, frame))
-                yield return frame;
-        }
-
-        if (videoCodec != null)
-        {
-            foreach (var _ in videoCodec.DecodePacket(null, frame))
-                yield return frame;
-        }
-
-        if (audioCodec != null)
-        {
-            foreach (var _ in audioCodec.DecodePacket(null, frame))
-                yield return frame;
-        }
-
-        static CodecContext GetCodecContext(FormatContext fc, CodecContext? audioCodec, CodecContext? videoCodec, Packet packet)
-        {
-            MediaStream stream = fc.Streams[packet.StreamIndex];
-            if (stream.Codecpar == null) throw new FFmpegException($"FormatContext.Streams[{packet.StreamIndex}].Codecpar should not be null.");
-
-            CodecContext c = stream.Codecpar.CodecType switch
-            {
-                AVMediaType.Audio => audioCodec == null ? throw new ArgumentNullException(nameof(audioCodec)) : audioCodec,
-                AVMediaType.Video => videoCodec == null ? throw new ArgumentNullException(nameof(videoCodec)) : videoCodec,
-                var x => throw new FFmpegException($"FormatContext.Streams[{packet.StreamIndex}].Codecpar.CodecType {x} not supported in DecodePackets."),
-            };
-
-            return c;
-        }
     }
 
     /// <summary>
@@ -313,13 +264,15 @@ public static class FramesExtensions
             (MediaStream stream, CodecContext c) = GetCodecContext(frame, audio, video);
 
             if (frame.Width > 0)
+            {
                 frame.Pts = videoPts++;
+            }
             else if (frame.SampleRate > 0)
             {
                 frame.Pts = audioPts;
                 audioPts += frame.NbSamples;
             }
-                
+
 
             foreach (var _ in c.EncodeFrame(frame, packet))
             {
@@ -331,54 +284,31 @@ public static class FramesExtensions
             if (makeWritable) frame.MakeWritable();
         }
 
-        if (video != null && audio != null)
+        bool encodeVideo = video != null;
+        bool encodeAudio = audio != null;
+        while (encodeVideo || encodeAudio)
         {
-            bool encodeVideo = true;
-            bool encodeAudio = true;
-            while (encodeVideo || encodeAudio)
+            if (encodeVideo && (!encodeAudio || av_compare_ts(videoPts, videoCodec!.TimeBase, audioPts, audioCodec!.TimeBase) <= 0))
             {
-                if (encodeVideo && (!encodeAudio || av_compare_ts(videoPts, videoCodec!.TimeBase, audioPts, audioCodec!.TimeBase) <= 0))
+                (MediaStream stream, CodecContext c) = video!.Value;
+                foreach (var _ in c.EncodeFrame(null, packet))
                 {
-                    (MediaStream stream, CodecContext c) = video.Value;
-                    foreach (var _ in c.EncodeFrame(null, packet))
-                    {
-                        packet.RescaleTimestamp(c.TimeBase, stream.TimeBase);
-                        packet.StreamIndex = stream.Index;
-                        yield return packet;
-                    }
-                    encodeVideo = false;
+                    packet.RescaleTimestamp(c.TimeBase, stream.TimeBase);
+                    packet.StreamIndex = stream.Index;
+                    yield return packet;
                 }
-                else
+                encodeVideo = false;
+            }
+            else
+            {
+                (MediaStream stream, CodecContext c) = audio!.Value;
+                foreach (var _ in c.EncodeFrame(null, packet))
                 {
-                    (MediaStream stream, CodecContext c) = audio.Value;
-                    foreach (var _ in c.EncodeFrame(null, packet))
-                    {
-                        packet.RescaleTimestamp(c.TimeBase, stream.TimeBase);
-                        packet.StreamIndex = stream.Index;
-                        yield return packet;
-                    }
-                    encodeAudio = false;
+                    packet.RescaleTimestamp(c.TimeBase, stream.TimeBase);
+                    packet.StreamIndex = stream.Index;
+                    yield return packet;
                 }
-            }
-        }
-        else if (video != null)
-        {
-            (MediaStream stream, CodecContext c) = video.Value;
-            foreach (var _ in c.EncodeFrame(null, packet))
-            {
-                packet.RescaleTimestamp(c.TimeBase, stream.TimeBase);
-                packet.StreamIndex = stream.Index;
-                yield return packet;
-            }
-        }
-        else if (audio != null)
-        {
-            (MediaStream stream, CodecContext c) = audio.Value;
-            foreach (var _ in c.EncodeFrame(null, packet))
-            {
-                packet.RescaleTimestamp(c.TimeBase, stream.TimeBase);
-                packet.StreamIndex = stream.Index;
-                yield return packet;
+                encodeAudio = false;
             }
         }
 
