@@ -114,10 +114,11 @@ public static class FramesExtensions
         using Frame destFrame = new();
         foreach (Frame srcFrame in srcFrames)
         {
-            if (!initialized)
+            if (srcFrame.Width > 0)
             {
-                if (srcFrame.Width > 0)
+                if (!initialized)
                 {
+
                     // video
                     srcCtx.InitializeFromDictionary(new MediaDictionary
                     {
@@ -127,8 +128,58 @@ public static class FramesExtensions
                         ["time_base"] = srcTimebase.ToString(),
                         ["sar"] = srcFrame.SampleAspectRatio.ToString(),
                     });
+                    sinkCtx.Options.Set("pix_fmts", new int[] { (int)destPixelFormat }, AV_OPT_SEARCH.Children);
+                    graph.ParsePtr(filterText, new FilterInOut("out", sinkCtx), new FilterInOut("in", srcCtx));
+                    graph.Configure();
+                    initialized = true;
                 }
-                else
+
+                srcCtx.WriteFrame(srcFrame);
+
+                while (true)
+                {
+                    CodecResult r = CodecContext.ToCodecResult(sinkCtx.GetFrame(destFrame));
+                    if (r == CodecResult.Again || r == CodecResult.EOF) break;
+
+                    if (r == CodecResult.Success)
+                    {
+                        yield return destFrame;
+                        destFrame.Unreference();
+                    }
+                }
+            }
+            else
+            {
+                yield return srcFrame;
+            }
+        }
+
+        srcCtx.WriteFrame(null);
+        while (true)
+        {
+            CodecResult r = CodecContext.ToCodecResult(sinkCtx.GetFrame(destFrame));
+            if (r == CodecResult.Again || r == CodecResult.EOF) break;
+            if (r == CodecResult.Success)
+            {
+                yield return destFrame;
+                destFrame.Unreference();
+            }
+        }
+    }
+
+    public static IEnumerable<Frame> ApplyAudioFilters(this IEnumerable<Frame> srcFrames, AVRational srcTimebase, AVPixelFormat destPixelFormat, string filterText)
+    {
+        using FilterGraph graph = new();
+        using FilterContext srcCtx = graph.AllocFilter("abuffer", "in");
+        using FilterContext sinkCtx = graph.CreateFilter("abuffersink", "out");
+        bool initialized = false;
+
+        using Frame destFrame = new();
+        foreach (Frame srcFrame in srcFrames)
+        {
+            if (srcFrame.SampleRate > 0)
+            {
+                if (!initialized)
                 {
                     // audio
                     srcCtx.InitializeFromDictionary(new MediaDictionary
@@ -139,25 +190,29 @@ public static class FramesExtensions
                         ["channel_layout"] = NameUtils.GetChannelLayoutString(srcFrame.ChannelLayout, srcFrame.Channels),
                         ["channels"] = srcFrame.Channels.ToString(),
                     });
+                    sinkCtx.Options.Set("pix_fmts", new int[] { (int)destPixelFormat }, AV_OPT_SEARCH.Children);
+                    graph.ParsePtr(filterText, new FilterInOut("out", sinkCtx), new FilterInOut("in", srcCtx));
+                    graph.Configure();
+                    initialized = true;
                 }
-                sinkCtx.Options.Set("pix_fmts", new int[] { (int)destPixelFormat }, AV_OPT_SEARCH.Children);
-                graph.ParsePtr(filterText, new FilterInOut("out", sinkCtx), new FilterInOut("in", srcCtx));
-                graph.Configure();
-                initialized = true;
-            }
 
-            srcCtx.WriteFrame(srcFrame);
+                srcCtx.WriteFrame(srcFrame);
 
-            while (true)
-            {
-                CodecResult r = CodecContext.ToCodecResult(sinkCtx.GetFrame(destFrame));
-                if (r == CodecResult.Again || r == CodecResult.EOF) break;
-
-                if (r == CodecResult.Success)
+                while (true)
                 {
-                    yield return destFrame;
-                    destFrame.Unreference();
+                    CodecResult r = CodecContext.ToCodecResult(sinkCtx.GetFrame(destFrame));
+                    if (r == CodecResult.Again || r == CodecResult.EOF) break;
+
+                    if (r == CodecResult.Success)
+                    {
+                        yield return destFrame;
+                        destFrame.Unreference();
+                    }
                 }
+            }
+            else
+            {
+                yield return srcFrame;
             }
         }
 
