@@ -30,6 +30,12 @@ public unsafe class SampleConverter : SafeHandle
     public FFmpegOptions Options => new FFmpegOptions((void*)handle);
 
     /// <summary>
+    /// <para>Gets the delay the next input sample will experience relative to the next output sample.</para>
+    /// <see cref="swr_get_delay"/>
+    /// </summary>
+    public long GetDelay(int sourceSampleRate) => swr_get_delay(this, sourceSampleRate);
+
+    /// <summary>
     /// <see cref="swr_alloc_set_opts(SwrContext*, long, AVSampleFormat, int, long, AVSampleFormat, int, int, void*)"/>
     /// </summary>
     public void Reset(

@@ -127,6 +127,15 @@ public unsafe partial class FormatContext : SafeHandle
     }
 
     /// <summary>
+    /// <see cref="av_find_best_stream(AVFormatContext*, AVMediaType, int, int, AVCodec**, int)"/>
+    /// </summary>
+    public MediaStream? FindBestStreamOrNull(AVMediaType type, int wantedStreamId = -1, int relatedStream = -1)
+    {
+        int streamId = av_find_best_stream(this, type, wantedStreamId, relatedStream, decoder_ret: null, flags: 0).ThrowIfError();
+        return MediaStream.FromNativeOrNull(_ptr->streams[streamId]);
+    }
+
+    /// <summary>
     /// <see cref="av_read_frame(AVFormatContext*, AVPacket*)"/>
     /// </summary>
     public CodecResult ReadFrame(Packet packet) => CodecContext.ToCodecResult(av_read_frame(this, packet));
