@@ -798,14 +798,6 @@ namespace Sdcb.FFmpeg.Raw
         public const uint LIBAVUTIL_VERSION_MAJOR = 56;
         public const uint LIBAVUTIL_VERSION_MICRO = 100;
         public const uint LIBAVUTIL_VERSION_MINOR = 70;
-        public static readonly uint LIBPOSTPROC_BUILD = LIBPOSTPROC_VERSION_INT;
-        /// <summary>LIBPOSTPROC_IDENT = &quot;postproc&quot; AV_STRINGIFY(LIBPOSTPROC_VERSION)</summary>
-        public const string LIBPOSTPROC_IDENT = "postproc" + "LIBPOSTPROC_VERSION";
-        public static readonly string LIBPOSTPROC_VERSION = AV_VERSION(LIBPOSTPROC_VERSION_MAJOR, LIBPOSTPROC_VERSION_MINOR, LIBPOSTPROC_VERSION_MICRO);
-        public static readonly uint LIBPOSTPROC_VERSION_INT = AV_VERSION_INT(LIBPOSTPROC_VERSION_MAJOR, LIBPOSTPROC_VERSION_MINOR, LIBPOSTPROC_VERSION_MICRO);
-        public const uint LIBPOSTPROC_VERSION_MAJOR = 55;
-        public const uint LIBPOSTPROC_VERSION_MICRO = 100;
-        public const uint LIBPOSTPROC_VERSION_MINOR = 9;
         public static readonly uint LIBSWRESAMPLE_BUILD = LIBSWRESAMPLE_VERSION_INT;
         /// <summary>LIBSWRESAMPLE_IDENT = &quot;SwR&quot; AV_STRINGIFY(LIBSWRESAMPLE_VERSION)</summary>
         public const string LIBSWRESAMPLE_IDENT = "SwR" + "LIBSWRESAMPLE_VERSION";
@@ -837,24 +829,6 @@ namespace Sdcb.FFmpeg.Raw
         public const uint PARSER_FLAG_FETCHED_OFFSET = 0x0004;
         public const uint PARSER_FLAG_ONCE = 0x0002;
         public const uint PARSER_FLAG_USE_CODEC_TS = 0x1000;
-        public const uint PP_CPU_CAPS_3DNOW = 0x40000000;
-        public const uint PP_CPU_CAPS_ALTIVEC = 0x10000000;
-        public const uint PP_CPU_CAPS_AUTO = 0x00080000;
-        public const uint PP_CPU_CAPS_MMX = 0x80000000;
-        public const uint PP_CPU_CAPS_MMX2 = 0x20000000;
-        public const uint PP_FORMAT = 0x00000008;
-        /// <summary>PP_FORMAT_411 = (0x00000002|PP_FORMAT)</summary>
-        public const uint PP_FORMAT_411 = 0x00000002 | PP_FORMAT;
-        /// <summary>PP_FORMAT_420 = (0x00000011|PP_FORMAT)</summary>
-        public const uint PP_FORMAT_420 = 0x00000011 | PP_FORMAT;
-        /// <summary>PP_FORMAT_422 = (0x00000001|PP_FORMAT)</summary>
-        public const uint PP_FORMAT_422 = 0x00000001 | PP_FORMAT;
-        /// <summary>PP_FORMAT_440 = (0x00000010|PP_FORMAT)</summary>
-        public const uint PP_FORMAT_440 = 0x00000010 | PP_FORMAT;
-        /// <summary>PP_FORMAT_444 = (0x00000000|PP_FORMAT)</summary>
-        public const uint PP_FORMAT_444 = 0x00000000 | PP_FORMAT;
-        public const uint PP_PICT_TYPE_QP2 = 0x00000010;
-        public const int PP_QUALITY_MAX = 6;
         // public static PUT_UTF16 = (val, tmp, PUT_16BIT){uint32_t in = val;if (in < 0x10000) {tmp = in;PUT_16BIT} else {tmp = 0xD800 | ((in - 0x10000) >> 10);PUT_16BITtmp = 0xDC00 | ((in - 0x10000) & 0x3FF);PUT_16BIT}};
         // public static PUT_UTF8 = (val, tmp, PUT_BYTE){int bytes, shift;uint32_t in = val;if (in < 0x80) {tmp = in;PUT_BYTE} else {bytes = (av_log2(in) + 4) / 5;shift = (bytes - 1) * 6;tmp = (256 - (256 >> bytes)) | (in >> shift);PUT_BYTEwhile (shift >= 6) {shift -= 6;tmp = 0x80 | ((in >> shift) & 0x3f);PUT_BYTE}}};
         // public static ROUNDED_DIV = (a,b) (((a)>=0 ? (a) + ((b)>>1) : (a) - ((b)>>1))/(b));

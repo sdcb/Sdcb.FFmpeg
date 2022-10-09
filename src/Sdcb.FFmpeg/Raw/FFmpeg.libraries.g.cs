@@ -17,7 +17,6 @@ namespace Sdcb.FFmpeg.Raw
             ["avfilter"] = 7,
             ["avformat"] = 58,
             ["avutil"] = 56,
-            ["postproc"] = 55,
             ["swresample"] = 3,
             ["swscale"] = 5,
         };
