@@ -4640,6 +4640,41 @@ namespace Sdcb.FFmpeg.Raw
         [DllImport("avutil-56", EntryPoint = "avutil_version", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern uint avutil_version();
         
+        /// <summary>Return the libpostproc build-time configuration.</summary>
+        [DllImport("postproc-55", EntryPoint = "postproc_configuration", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(ConstCharPtrMarshaler))]
+        public static extern string postproc_configuration();
+        
+        /// <summary>Return the libpostproc license.</summary>
+        [DllImport("postproc-55", EntryPoint = "postproc_license", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(ConstCharPtrMarshaler))]
+        public static extern string postproc_license();
+        
+        /// <summary>Return the LIBPOSTPROC_VERSION_INT constant.</summary>
+        [DllImport("postproc-55", EntryPoint = "postproc_version", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern uint postproc_version();
+        
+        [DllImport("postproc-55", EntryPoint = "pp_free_context", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern void pp_free_context(void* ppContext);
+        
+        [DllImport("postproc-55", EntryPoint = "pp_free_mode", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern void pp_free_mode(void* mode);
+        
+        [DllImport("postproc-55", EntryPoint = "pp_get_context", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern void* pp_get_context(int width, int height, int flags);
+        
+        /// <summary>Return a pp_mode or NULL if an error occurred.</summary>
+        /// <param name="name">the string after &quot;-pp&quot; on the command line</param>
+        /// <param name="quality">a number from 0 to PP_QUALITY_MAX</param>
+        [DllImport("postproc-55", EntryPoint = "pp_get_mode_by_name_and_quality", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern void* pp_get_mode_by_name_and_quality([MarshalAs(UnmanagedType.LPUTF8Str)] string name, int quality);
+        
+        [DllImport("postproc-55", EntryPoint = "pp_postprocess", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern void pp_postprocess(byte_ptrArray3 src, int_array3 srcStride, ref byte_ptrArray3 dst, int_array3 dstStride, int horizontalSize, int verticalSize, sbyte* QP_store, int QP_stride, void* mode, void* ppContext, int pict_type);
+        
+        [DllImport("postproc-55", EntryPoint = "pp_postprocess", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern void pp_postprocess(byte** src, int* srcStride, byte** dst, int* dstStride, int horizontalSize, int verticalSize, sbyte* QP_store, int QP_stride, void* mode, void* ppContext, int pict_type);
+        
         /// <summary>Allocate SwrContext.</summary>
         [DllImport("swresample-3", EntryPoint = "swr_alloc", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern SwrContext* swr_alloc();
