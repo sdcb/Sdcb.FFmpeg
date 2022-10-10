@@ -1,4 +1,4 @@
-## FFmpeg.AutoGen [![main](https://github.com/sdcb/FFmpeg.AutoGen/actions/workflows/main.yml/badge.svg)](https://github.com/sdcb/FFmpeg.AutoGen/actions/workflows/main.yml)
+## Sdcb.FFmpeg [![main](https://github.com/sdcb/FFmpeg.AutoGen/actions/workflows/main.yml/badge.svg)](https://github.com/sdcb/FFmpeg.AutoGen/actions/workflows/main.yml)
 
 ## NuGet Packages
 | Package | Link |
