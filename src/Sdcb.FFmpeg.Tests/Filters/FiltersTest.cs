@@ -16,6 +16,7 @@ public class FiltersTest
     public FiltersTest(ITestOutputHelper console)
     {
         _console = console;
+        FFmpegLogger.LogWriter = (a, b) => _console.WriteLine(b);
     }
 
     [Fact]
@@ -58,7 +59,7 @@ public class FiltersTest
     }
 
     [Fact]
-    public void CheckFilterSink()
+    public void CheckVideoFilterSink()
     {
         using FilterGraph graph = new();
         using FilterContext srcCtx = graph.AllocFilter("buffer", "in");
@@ -83,5 +84,31 @@ public class FiltersTest
         Assert.Equal(new AVRational(1, 15), sinkCtx.Inputs[0].TimeBase);
         Assert.Equal(AVPixelFormat.Yuv444p, (AVPixelFormat)sinkCtx.Inputs[0].Format);
         Assert.Equal(sar, sinkCtx.Inputs[0].SampleAspectRatio);
+    }
+
+    [Fact]
+    public void CheckAudioFilterSink()
+    {
+        using FilterGraph graph = new();
+        using FilterContext srcCtx = graph.AllocFilter("abuffer", "in");
+        using FilterContext sinkCtx = graph.CreateFilter("abuffersink", "out");
+        int sampleRate = 44100;
+        int channels = 1;
+        AVSampleFormat sampleFormat = AVSampleFormat.S16p;
+        srcCtx.InitializeFromDictionary(new MediaDictionary
+        {
+            ["time_base"] = new AVRational(1, sampleRate).ToString(),
+            ["sample_rate"] = sampleRate.ToString(),
+            ["sample_fmt"] = NameUtils.GetSampleFormatName(sampleFormat),
+            ["channel_layout"] = NameUtils.GetChannelLayoutString((ulong)ffmpeg.av_get_default_channel_layout(channels), channels),
+            ["channels"] = channels.ToString(),
+        });
+        //sinkCtx.Options.Set("pix_fmts", new int[] { (int) AVPixelFormat.Yuv444p }, AV_OPT_SEARCH.Children);
+        graph.ParsePtr("aformat=sample_fmts=fltp:channel_layouts=mono:sample_rates=48000", new FilterInOut("out", sinkCtx), new FilterInOut("in", srcCtx));
+        graph.Configure();
+
+        Assert.Equal(48000, sinkCtx.Inputs[0].SampleRate);
+        Assert.Equal(1, sinkCtx.Inputs[0].Channels);
+        Assert.Equal(AVSampleFormat.Fltp, (AVSampleFormat)sinkCtx.Inputs[0].Format);
     }
 }
