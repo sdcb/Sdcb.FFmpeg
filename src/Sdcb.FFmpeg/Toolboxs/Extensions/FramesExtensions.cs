@@ -118,7 +118,6 @@ public static class FramesExtensions
             {
                 if (!initialized)
                 {
-
                     // video
                     srcCtx.InitializeFromDictionary(new MediaDictionary
                     {
@@ -134,18 +133,9 @@ public static class FramesExtensions
                     initialized = true;
                 }
 
-                srcCtx.WriteFrame(srcFrame);
-
-                while (true)
+                foreach (Frame frame in WriteFilterFrame(srcCtx, sinkCtx, destFrame, srcFrame))
                 {
-                    CodecResult r = CodecContext.ToCodecResult(sinkCtx.GetFrame(destFrame));
-                    if (r == CodecResult.Again || r == CodecResult.EOF) break;
-
-                    if (r == CodecResult.Success)
-                    {
-                        yield return destFrame;
-                        destFrame.Unreference();
-                    }
+                    yield return frame;
                 }
             }
             else
@@ -154,11 +144,21 @@ public static class FramesExtensions
             }
         }
 
-        srcCtx.WriteFrame(null);
+        foreach (Frame frame in WriteFilterFrame(srcCtx, sinkCtx, destFrame, null))
+        {
+            yield return frame;
+        }
+    }
+
+    private static IEnumerable<Frame> WriteFilterFrame(FilterContext srcCtx, FilterContext sinkCtx, Frame destFrame, Frame? srcFrame)
+    {
+        srcCtx.WriteFrame(srcFrame);
+
         while (true)
         {
             CodecResult r = CodecContext.ToCodecResult(sinkCtx.GetFrame(destFrame));
             if (r == CodecResult.Again || r == CodecResult.EOF) break;
+
             if (r == CodecResult.Success)
             {
                 yield return destFrame;
