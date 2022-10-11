@@ -8,6 +8,7 @@ using Sdcb.FFmpeg.Utils;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -41,7 +42,7 @@ public class Examples
         {
             Width = width,
             Height = height,
-            TimeBase = new AVRational(1, 30),
+            TimeBase = new AVRational(1, 15),
             PixelFormat = AVPixelFormat.Yuv420p,
             Flags = AV_CODEC_FLAG.GlobalHeader,
         };
@@ -54,7 +55,7 @@ public class Examples
         using DynamicIOContext io = IOContext.OpenDynamic();
         fc.Pb = io;
         fc.WriteHeader();
-        foreach (Packet packet in VideoFrameGenerator.Yuv420pSequence(vcodec.Width, vcodec.Height).Take(60)
+        foreach (Packet packet in VideoFrameGenerator.Yuv420pSequence(vcodec.Width, vcodec.Height).Take(30)
             .EncodeFrames(vcodec))
         {
             try
@@ -76,7 +77,7 @@ public class Examples
     public void CreateMp4()
     {
         FFmpegLogger.LogWriter = (level, msg) => _console.WriteLine(msg.Trim());
-        byte[] mp4 = MakeMp4(Codec.CommonEncoders.Libx264, width: 640, height: 480);
+        byte[] mp4 = MakeMp4(Codec.CommonEncoders.Libx264, width: 320, height: 240);
         Assert.NotEmpty(mp4);
         _console.WriteLine($"mp4 size: {mp4.Length}");
     }
@@ -85,7 +86,7 @@ public class Examples
     public void DecodeMp4()
     {
         FFmpegLogger.LogWriter = (level, msg) => { };
-        byte[] mp4 = MakeMp4(Codec.CommonEncoders.Libx264, width: 640, height: 480);
+        byte[] mp4 = MakeMp4(Codec.CommonEncoders.Libx264, width: 320, height: 240);
         _console.WriteLine($"mp4 size: {mp4.Length}");
 
         FFmpegLogger.LogWriter = (level, msg) => _console.WriteLine(msg.Trim());
@@ -158,8 +159,8 @@ public class Examples
         MediaStream vstream = fc.NewStream(fc.VideoCodec);
         using CodecContext vcodec = new CodecContext(fc.VideoCodec)
         {
-            Width = 400,
-            Height = 300,
+            Width = 150,
+            Height = 100,
             TimeBase = new AVRational(1, 10),
             PixelFormat = AVPixelFormat.Pal8,
         };
@@ -170,14 +171,13 @@ public class Examples
         fc.Pb = io;
         fc.WriteHeader();
         string filter = $"fps={vcodec.TimeBase.Inverse().ToDouble()},scale={vcodec.Width}:{vcodec.Height}:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse";
-        foreach (Packet packet in VideoFrameGenerator.Yuv420pSequence(800, 600).Take(40)
+        foreach (Packet packet in VideoFrameGenerator.Yuv420pSequence(150, 100).Take(30)
             .ApplyVideoFilters(new AVRational(1, 30), vcodec.PixelFormat, filter)
             .EncodeFrames(vcodec))
         {
             try
             {
                 packet.RescaleTimestamp(vcodec.TimeBase, vstream.TimeBase);
-                long after = packet.Dts;
                 packet.StreamIndex = vstream.Index;
                 fc.InterleavedWritePacket(packet);
             }
@@ -189,6 +189,6 @@ public class Examples
         fc.WriteTrailer();
         byte[] gif = io.GetBuffer().ToArray();
         Assert.NotEmpty(gif);
-        File.WriteAllBytes("test.gif", gif);
+        //File.WriteAllBytes("test.gif", gif);
     }
 }

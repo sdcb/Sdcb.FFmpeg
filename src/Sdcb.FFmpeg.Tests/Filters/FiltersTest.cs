@@ -1,7 +1,7 @@
-﻿using Sdcb.FFmpeg.Codecs;
-using Sdcb.FFmpeg.Filters;
+﻿using Sdcb.FFmpeg.Filters;
 using Sdcb.FFmpeg.Raw;
 using Sdcb.FFmpeg.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -9,7 +9,7 @@ using Xunit.Abstractions;
 
 namespace Sdcb.FFmpeg.Tests.Filters;
 
-public class FiltersTest
+public class FiltersTest : IDisposable
 {
     private readonly ITestOutputHelper _console;
 
@@ -110,5 +110,10 @@ public class FiltersTest
         Assert.Equal(48000, sinkCtx.Inputs[0].SampleRate);
         Assert.Equal(1, sinkCtx.Inputs[0].Channels);
         Assert.Equal(AVSampleFormat.Fltp, (AVSampleFormat)sinkCtx.Inputs[0].Format);
+    }
+
+    public void Dispose()
+    {
+        FFmpegLogger.LogWriter = null;
     }
 }

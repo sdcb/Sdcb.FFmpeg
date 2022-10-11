@@ -135,6 +135,7 @@ public unsafe partial class CodecContext : SafeHandle
         AVCodecContext* ptr = this;
         avcodec_free_context(&ptr);
         handle = (IntPtr)ptr;
+        SetHandleAsInvalid();
     }
 
     protected override bool ReleaseHandle()
