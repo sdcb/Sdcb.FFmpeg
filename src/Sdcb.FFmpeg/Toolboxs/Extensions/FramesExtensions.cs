@@ -106,147 +106,114 @@ public static class FramesExtensions
 
     public static IEnumerable<Frame> ApplyVideoFilters(this IEnumerable<Frame> srcFrames, AVRational srcTimebase, AVPixelFormat destPixelFormat, string filterText)
     {
-        using FilterGraph graph = new();
-        using FilterContext srcCtx = graph.AllocFilter("buffer", "in");
-        using FilterContext sinkCtx = graph.CreateFilter("buffersink", "out");
-        bool initialized = false;
+        VideoFilterContext? ctx = null;
 
+        try
+        {
+            using Frame destFrame = new();
+            foreach (Frame srcFrame in srcFrames)
+            {
+                if (srcFrame.Width > 0)
+                {
+                    if (ctx == null)
+                    {
+                        ctx = VideoFilterContext.Create(srcFrame, srcTimebase, filterText, destPixelFormat);
+                    }
+
+                    foreach (Frame frame in ctx.WriteFrame(destFrame, srcFrame))
+                    {
+                        yield return frame;
+                    }
+                }
+                else
+                {
+                    yield return srcFrame;
+                }
+            }
+
+            if (ctx == null) throw new InvalidOperationException($"Unable to apply filter, no frame provided.");
+            foreach (Frame frame in ctx.WriteFrame(destFrame, null))
+            {
+                yield return frame;
+            }
+        }
+        finally
+        {
+            ctx?.Dispose();
+        }
+    }
+
+    public static IEnumerable<Frame> ApplyVideoFilters(this IEnumerable<Frame> srcFrames, VideoFilterContext ctx)
+    {
         using Frame destFrame = new();
         foreach (Frame srcFrame in srcFrames)
         {
             if (srcFrame.Width > 0)
             {
-                if (!initialized)
+                foreach (Frame frame in ctx.WriteFrame(destFrame, srcFrame))
                 {
-                    // video
-                    srcCtx.InitializeFromDictionary(new MediaDictionary
+                    yield return frame;
+                }
+            }
+            else
+            {
+                yield return srcFrame;
+            }
+        }
+
+        foreach (Frame frame in ctx.WriteFrame(destFrame, null))
+        {
+            yield return frame;
+        }
+    }
+
+    public static IEnumerable<Frame> ApplyAudioFilters(this IEnumerable<Frame> srcFrames, AudioSinkParams sinkParams, string filterText)
+    {
+        AudioFilterContext? ctx = null;
+
+        try
+        {
+            using Frame destFrame = new();
+            foreach (Frame srcFrame in srcFrames)
+            {
+                if (srcFrame.SampleRate > 0)
+                {
+                    if (ctx == null)
                     {
-                        ["width"] = srcFrame.Width.ToString(),
-                        ["height"] = srcFrame.Height.ToString(),
-                        ["pix_fmt"] = NameUtils.GetPixelFormatName((AVPixelFormat)srcFrame.Format),
-                        ["time_base"] = srcTimebase.ToString(),
-                        ["sar"] = srcFrame.SampleAspectRatio.ToString(),
-                    });
-                    sinkCtx.Options.Set("pix_fmts", new int[] { (int)destPixelFormat }, AV_OPT_SEARCH.Children);
-                    graph.ParsePtr(filterText, new FilterInOut("out", sinkCtx), new FilterInOut("in", srcCtx));
-                    graph.Configure();
-                    initialized = true;
-                }
+                        ctx = AudioFilterContext.Create(srcFrame, filterText, sinkParams);
+                    }
 
-                foreach (Frame frame in WriteFilterFrame(srcCtx, sinkCtx, destFrame, srcFrame))
+                    foreach (Frame frame in ctx.WriteFrame(destFrame, srcFrame))
+                    {
+                        yield return frame;
+                    }
+                }
+                else
                 {
-                    yield return frame;
+                    yield return srcFrame;
                 }
             }
-            else
+
+            if (ctx == null) throw new InvalidOperationException($"Unable to apply filter, no frame provided.");
+            foreach (Frame frame in ctx.WriteFrame(destFrame, null))
             {
-                yield return srcFrame;
+                yield return frame;
             }
         }
-
-        foreach (Frame frame in WriteFilterFrame(srcCtx, sinkCtx, destFrame, null))
+        finally
         {
-            yield return frame;
+            ctx?.Dispose();
         }
     }
 
-    public static IEnumerable<Frame> ApplyVideoFilters(this IEnumerable<Frame> srcFrames, MediaStream sourceStream, AVPixelFormat destPixelFormat, string filterText)
+    public static IEnumerable<Frame> ApplyAudioFilters(this IEnumerable<Frame> srcFrames, AudioFilterContext ctx)
     {
-        if (sourceStream.Codecpar == null)
-        {
-            throw new ArgumentNullException($"{nameof(sourceStream)}.{nameof(sourceStream.Codecpar)} should not be null.");
-        }
-        CodecParameters codecpar = sourceStream.Codecpar;
-        if (codecpar.Width == 0)
-        {
-            throw new InvalidOperationException($"{nameof(sourceStream)} is not a video.");
-        }
-
-        using FilterGraph graph = new();
-        using FilterContext srcCtx = graph.CreateFilter("buffer", "in", new MediaDictionary
-        {
-            ["width"] = codecpar.Width.ToString(),
-            ["height"] = codecpar.Height.ToString(),
-            ["pix_fmt"] = NameUtils.GetPixelFormatName((AVPixelFormat)codecpar.Format),
-            ["time_base"] = sourceStream.TimeBase.ToString(),
-            ["sar"] = codecpar.SampleAspectRatio.ToString(),
-        });
-        using FilterContext sinkCtx = graph.CreateFilter("buffersink", "out");
-        sinkCtx.Options.Set("pix_fmts", new int[] { (int)destPixelFormat }, AV_OPT_SEARCH.Children);
-        graph.ParsePtr(filterText, new FilterInOut("out", sinkCtx), new FilterInOut("in", srcCtx));
-        graph.Configure();
-
-        using Frame destFrame = new();
-        foreach (Frame srcFrame in srcFrames)
-        {
-            if (srcFrame.Width > 0)
-            {
-                foreach (Frame frame in WriteFilterFrame(srcCtx, sinkCtx, destFrame, srcFrame))
-                {
-                    yield return frame;
-                }
-            }
-            else
-            {
-                yield return srcFrame;
-            }
-        }
-
-        foreach (Frame frame in WriteFilterFrame(srcCtx, sinkCtx, destFrame, null))
-        {
-            yield return frame;
-        }
-    }
-
-    private static IEnumerable<Frame> WriteFilterFrame(FilterContext srcCtx, FilterContext sinkCtx, Frame destFrame, Frame? srcFrame)
-    {
-        srcCtx.WriteFrame(srcFrame);
-
-        while (true)
-        {
-            CodecResult r = CodecContext.ToCodecResult(sinkCtx.GetFrame(destFrame));
-            if (r == CodecResult.Again || r == CodecResult.EOF) break;
-
-            if (r == CodecResult.Success)
-            {
-                yield return destFrame;
-                destFrame.Unreference();
-            }
-        }
-    }
-
-    public static IEnumerable<Frame> ApplyAudioFilters(this IEnumerable<Frame> srcFrames, AVRational srcTimebase, AVPixelFormat destPixelFormat, string filterText)
-    {
-        using FilterGraph graph = new();
-        using FilterContext srcCtx = graph.AllocFilter("abuffer", "in");
-        using FilterContext sinkCtx = graph.CreateFilter("abuffersink", "out");
-        bool initialized = false;
-
         using Frame destFrame = new();
         foreach (Frame srcFrame in srcFrames)
         {
             if (srcFrame.SampleRate > 0)
             {
-                if (!initialized)
-                {
-                    // audio
-                    srcCtx.InitializeFromDictionary(new MediaDictionary
-                    {
-                        ["time_base"] = srcTimebase.ToString(),
-                        ["sample_rate"] = srcFrame.SampleRate.ToString(),
-                        ["sample_fmt"] = NameUtils.GetSampleFormatName((AVSampleFormat)srcFrame.Format),
-                        ["channel_layout"] = NameUtils.GetChannelLayoutString(srcFrame.ChannelLayout, srcFrame.Channels),
-                        ["channels"] = srcFrame.Channels.ToString(),
-                    });
-                    sinkCtx.Options.Set("pix_fmts", new int[] { (int)destPixelFormat }, AV_OPT_SEARCH.Children);
-                    graph.ParsePtr(filterText, new FilterInOut("out", sinkCtx), new FilterInOut("in", srcCtx));
-                    graph.Configure();
-                    initialized = true;
-                }
-
-                srcCtx.WriteFrame(srcFrame);
-
-                foreach (Frame frame in WriteFilterFrame(srcCtx, sinkCtx, destFrame, null))
+                foreach (Frame frame in ctx.WriteFrame(destFrame, srcFrame))
                 {
                     yield return frame;
                 }
@@ -257,54 +224,7 @@ public static class FramesExtensions
             }
         }
 
-        foreach (Frame frame in WriteFilterFrame(srcCtx, sinkCtx, destFrame, null))
-        {
-            yield return frame;
-        }
-    }
-
-    public static IEnumerable<Frame> ApplyAudioFilters(this IEnumerable<Frame> srcFrames, MediaStream sourceStream, AVPixelFormat destPixelFormat, string filterText)
-    {
-        if (sourceStream.Codecpar == null)
-        {
-            throw new ArgumentNullException($"{nameof(sourceStream)}.{nameof(sourceStream.Codecpar)} should not be null.");
-        }
-        CodecParameters codecpar = sourceStream.Codecpar;
-        if (codecpar.SampleRate == 0)
-        {
-            throw new InvalidOperationException($"{nameof(sourceStream)} is not a audio.");
-        }
-
-        using FilterGraph graph = new();
-        using FilterContext srcCtx = graph.CreateFilter("abuffer", "in", new MediaDictionary
-        {
-            ["time_base"] = sourceStream.TimeBase.ToString(),
-            ["sample_rate"] = codecpar.SampleRate.ToString(),
-            ["sample_fmt"] = NameUtils.GetSampleFormatName((AVSampleFormat)codecpar.Format),
-            ["channel_layout"] = NameUtils.GetChannelLayoutString(codecpar.ChannelLayout, codecpar.Channels),
-            ["channels"] = codecpar.Channels.ToString(),
-        });
-        using FilterContext sinkCtx = graph.CreateFilter("abuffersink", "out");
-
-        using Frame destFrame = new();
-        foreach (Frame srcFrame in srcFrames)
-        {
-            if (srcFrame.SampleRate > 0)
-            {
-                srcCtx.WriteFrame(srcFrame);
-
-                foreach (Frame frame in WriteFilterFrame(srcCtx, sinkCtx, destFrame, null))
-                {
-                    yield return frame;
-                }
-            }
-            else
-            {
-                yield return srcFrame;
-            }
-        }
-
-        foreach (Frame frame in WriteFilterFrame(srcCtx, sinkCtx, destFrame, null))
+        foreach (Frame frame in ctx.WriteFrame(destFrame, null))
         {
             yield return frame;
         }
