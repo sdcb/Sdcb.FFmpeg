@@ -150,6 +150,54 @@ public static class FramesExtensions
         }
     }
 
+    public static IEnumerable<Frame> ApplyVideoFilters(this IEnumerable<Frame> srcFrames, MediaStream sourceStream, AVPixelFormat destPixelFormat, string filterText)
+    {
+        if (sourceStream.Codecpar == null)
+        {
+            throw new ArgumentNullException($"{nameof(sourceStream)}.{nameof(sourceStream.Codecpar)} should not be null.");
+        }
+        CodecParameters codecpar = sourceStream.Codecpar;
+        if (codecpar.Width == 0)
+        {
+            throw new InvalidOperationException($"{nameof(sourceStream)} is not a video.");
+        }
+
+        using FilterGraph graph = new();
+        using FilterContext srcCtx = graph.CreateFilter("buffer", "in", new MediaDictionary
+        {
+            ["width"] = codecpar.Width.ToString(),
+            ["height"] = codecpar.Height.ToString(),
+            ["pix_fmt"] = NameUtils.GetPixelFormatName((AVPixelFormat)codecpar.Format),
+            ["time_base"] = sourceStream.TimeBase.ToString(),
+            ["sar"] = codecpar.SampleAspectRatio.ToString(),
+        });
+        using FilterContext sinkCtx = graph.CreateFilter("buffersink", "out");
+        sinkCtx.Options.Set("pix_fmts", new int[] { (int)destPixelFormat }, AV_OPT_SEARCH.Children);
+        graph.ParsePtr(filterText, new FilterInOut("out", sinkCtx), new FilterInOut("in", srcCtx));
+        graph.Configure();
+
+        using Frame destFrame = new();
+        foreach (Frame srcFrame in srcFrames)
+        {
+            if (srcFrame.Width > 0)
+            {
+                foreach (Frame frame in WriteFilterFrame(srcCtx, sinkCtx, destFrame, srcFrame))
+                {
+                    yield return frame;
+                }
+            }
+            else
+            {
+                yield return srcFrame;
+            }
+        }
+
+        foreach (Frame frame in WriteFilterFrame(srcCtx, sinkCtx, destFrame, null))
+        {
+            yield return frame;
+        }
+    }
+
     private static IEnumerable<Frame> WriteFilterFrame(FilterContext srcCtx, FilterContext sinkCtx, Frame destFrame, Frame? srcFrame)
     {
         srcCtx.WriteFrame(srcFrame);
@@ -198,16 +246,9 @@ public static class FramesExtensions
 
                 srcCtx.WriteFrame(srcFrame);
 
-                while (true)
+                foreach (Frame frame in WriteFilterFrame(srcCtx, sinkCtx, destFrame, null))
                 {
-                    CodecResult r = CodecContext.ToCodecResult(sinkCtx.GetFrame(destFrame));
-                    if (r == CodecResult.Again || r == CodecResult.EOF) break;
-
-                    if (r == CodecResult.Success)
-                    {
-                        yield return destFrame;
-                        destFrame.Unreference();
-                    }
+                    yield return frame;
                 }
             }
             else
@@ -216,16 +257,56 @@ public static class FramesExtensions
             }
         }
 
-        srcCtx.WriteFrame(null);
-        while (true)
+        foreach (Frame frame in WriteFilterFrame(srcCtx, sinkCtx, destFrame, null))
         {
-            CodecResult r = CodecContext.ToCodecResult(sinkCtx.GetFrame(destFrame));
-            if (r == CodecResult.Again || r == CodecResult.EOF) break;
-            if (r == CodecResult.Success)
+            yield return frame;
+        }
+    }
+
+    public static IEnumerable<Frame> ApplyAudioFilters(this IEnumerable<Frame> srcFrames, MediaStream sourceStream, AVPixelFormat destPixelFormat, string filterText)
+    {
+        if (sourceStream.Codecpar == null)
+        {
+            throw new ArgumentNullException($"{nameof(sourceStream)}.{nameof(sourceStream.Codecpar)} should not be null.");
+        }
+        CodecParameters codecpar = sourceStream.Codecpar;
+        if (codecpar.SampleRate == 0)
+        {
+            throw new InvalidOperationException($"{nameof(sourceStream)} is not a audio.");
+        }
+
+        using FilterGraph graph = new();
+        using FilterContext srcCtx = graph.CreateFilter("abuffer", "in", new MediaDictionary
+        {
+            ["time_base"] = sourceStream.TimeBase.ToString(),
+            ["sample_rate"] = codecpar.SampleRate.ToString(),
+            ["sample_fmt"] = NameUtils.GetSampleFormatName((AVSampleFormat)codecpar.Format),
+            ["channel_layout"] = NameUtils.GetChannelLayoutString(codecpar.ChannelLayout, codecpar.Channels),
+            ["channels"] = codecpar.Channels.ToString(),
+        });
+        using FilterContext sinkCtx = graph.CreateFilter("abuffersink", "out");
+
+        using Frame destFrame = new();
+        foreach (Frame srcFrame in srcFrames)
+        {
+            if (srcFrame.SampleRate > 0)
             {
-                yield return destFrame;
-                destFrame.Unreference();
+                srcCtx.WriteFrame(srcFrame);
+
+                foreach (Frame frame in WriteFilterFrame(srcCtx, sinkCtx, destFrame, null))
+                {
+                    yield return frame;
+                }
             }
+            else
+            {
+                yield return srcFrame;
+            }
+        }
+
+        foreach (Frame frame in WriteFilterFrame(srcCtx, sinkCtx, destFrame, null))
+        {
+            yield return frame;
         }
     }
 
