@@ -26,16 +26,17 @@ public record VideoFilterContext(FilterGraph FilterGraph, FilterContext SourceCo
         return new VideoFilterContext(graph, srcCtx, sinkCtx);
     }
 
-    public AudioSinkParams SinkParams
+    public VideoSinkParams SinkParams
     {
         get
         {
             FilterLink sinkInput = SinkContext.Inputs[0];
-            return new AudioSinkParams(
-                SampleRate: sinkInput.SampleRate,
-                SampleFormat: (AVSampleFormat)sinkInput.Format,
-                ChannelLayout: sinkInput.ChannelLayout,
-                Channels: sinkInput.Channels);
+            return new VideoSinkParams(
+                Width: sinkInput.W,
+                Height: sinkInput.H,
+                Timebase: sinkInput.TimeBase,
+                Framerate: sinkInput.FrameRate,
+                PixelFormat: (AVPixelFormat)sinkInput.Format);
         }
     }
 
@@ -72,6 +73,7 @@ public record VideoFilterContext(FilterGraph FilterGraph, FilterContext SourceCo
             ["height"] = codecpar.Height.ToString(),
             ["pix_fmt"] = NameUtils.GetPixelFormatName((AVPixelFormat)codecpar.Format),
             ["time_base"] = sourceStream.TimeBase.ToString(),
+            ["frame_rate"] = sourceStream.RFrameRate.ToString(),
             ["sar"] = codecpar.SampleAspectRatio.ToString(),
         };
     }
@@ -93,14 +95,14 @@ public record VideoFilterContext(FilterGraph FilterGraph, FilterContext SourceCo
         };
     }
 
-    public override void ConfigureCodec(CodecContext c)
+    public override void ConfigureEncoder(CodecContext c)
     {
-        AudioSinkParams p = SinkParams;
-        c.SampleRate = p.SampleRate;
-        c.SampleFormat = p.SampleFormat;
-        c.ChannelLayout = p.ChannelLayout;
-        c.Channels = p.Channels;
-        c.TimeBase = new AVRational(1, p.SampleRate);
+        VideoSinkParams p = SinkParams;
+        c.Width = p.Width;
+        c.Height = p.Height;
+        c.TimeBase = p.Timebase;
+        c.Framerate = p.Framerate;
+        c.PixelFormat = p.PixelFormat;
     }
 }
 
@@ -122,16 +124,16 @@ public record AudioFilterContext(FilterGraph FilterGraph, FilterContext SourceCo
         return new AudioFilterContext(graph, srcCtx, sinkCtx);
     }
 
-    public VideoSinkParams SinkParams
+    public AudioSinkParams SinkParams
     {
         get
         {
             FilterLink sinkInput = SinkContext.Inputs[0];
-            return new VideoSinkParams(
-                Width: sinkInput.W,
-                Height: sinkInput.H,
-                Framerate: sinkInput.FrameRate,
-                PixelFormat: (AVPixelFormat)sinkInput.Format);
+            return new AudioSinkParams(
+                SampleRate: sinkInput.SampleRate,
+                SampleFormat: (AVSampleFormat)sinkInput.Format,
+                ChannelLayout: sinkInput.ChannelLayout,
+                Channels: sinkInput.Channels);
         }
     }
 
@@ -204,14 +206,14 @@ public record AudioFilterContext(FilterGraph FilterGraph, FilterContext SourceCo
         };
     }
 
-    public override void ConfigureCodec(CodecContext c)
+    public override void ConfigureEncoder(CodecContext c)
     {
-        VideoSinkParams p = SinkParams;
-        c.Width = p.Width;
-        c.Height = p.Height;
-        c.TimeBase = p.Framerate.Inverse();
-        c.Framerate = p.Framerate;
-        c.PixelFormat = p.PixelFormat;
+        AudioSinkParams p = SinkParams;
+        c.SampleRate = p.SampleRate;
+        c.SampleFormat = p.SampleFormat;
+        c.ChannelLayout = p.ChannelLayout;
+        c.Channels = p.Channels;
+        c.TimeBase = new AVRational(1, p.SampleRate);
     }
 }
 
@@ -234,7 +236,7 @@ public abstract record CommonFilterContext(FilterGraph FilterGraph, FilterContex
         }
     }
 
-    public abstract void ConfigureCodec(CodecContext c);
+    public abstract void ConfigureEncoder(CodecContext c);
 
     public void Dispose()
     {
@@ -248,6 +250,6 @@ public record AudioSinkParams(int SampleRate = -1, AVSampleFormat SampleFormat =
 {
 }
 
-public record VideoSinkParams(int Width, int Height, AVRational Framerate, AVPixelFormat PixelFormat)
+public record VideoSinkParams(int Width, int Height, AVRational Timebase, AVRational Framerate, AVPixelFormat PixelFormat)
 {
 }

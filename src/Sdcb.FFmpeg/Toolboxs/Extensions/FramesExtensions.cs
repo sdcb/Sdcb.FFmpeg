@@ -298,26 +298,48 @@ public static class FramesExtensions
     /// frames -> packets
     /// </summary>
     public static IEnumerable<Packet> EncodeAllFrames(this IEnumerable<Frame> frames, FormatContext fc,
-        CodecContext? audioCodec = null,
-        CodecContext? videoCodec = null,
-        bool makeWritable = true)
+        CodecContext? audioEncoder = null,
+        CodecContext? videoEncoder = null,
+        bool makeWritable = true, 
+        bool allowSkipFrame = true)
     {
         using Packet packet = new();
         int audioPts = 0, videoPts = 0;
         (MediaStream stream, CodecContext c)? audio = fc.FindBestStreamOrNull(AVMediaType.Audio) switch
         {
             null => null,
-            var x => (x.Value, audioCodec ?? throw new ArgumentNullException(nameof(audioCodec)))
+            var x => (x.Value, audioEncoder ?? throw new ArgumentNullException(nameof(audioEncoder)))
         };
         (MediaStream stream, CodecContext c)? video = fc.FindBestStreamOrNull(AVMediaType.Video) switch
         {
             null => null,
-            var x => (x.Value, videoCodec ?? throw new ArgumentNullException(nameof(videoCodec)))
+            var x => (x.Value, videoEncoder ?? throw new ArgumentNullException(nameof(videoEncoder)))
         };
 
         foreach (Frame frame in frames)
         {
-            (MediaStream stream, CodecContext c) = GetCodecContext(frame, audio, video);
+            (MediaStream stream, CodecContext c)? ctx = frame switch
+            {
+                { Width: > 0 } => video,
+                { SampleRate: > 0 } => audio,
+                _ => null,
+            };
+            if (ctx == null)
+            {
+                if (allowSkipFrame)
+                {
+                    continue;
+                }
+                else
+                {
+                    throw frame switch
+                    {
+                        { Width: > 0 } => new InvalidOperationException($"Received a video frame but no {nameof(videoEncoder)} provided and {nameof(allowSkipFrame)}=false"),
+                        { SampleRate: > 0 } => new InvalidOperationException($"Received a audio frame but no {nameof(videoEncoder)} provided and {nameof(allowSkipFrame)}=false"),
+                        _ => new InvalidOperationException($"Received a frame but no correspoding encoder provided and {nameof(allowSkipFrame)}=false"),
+                    };
+                }
+            }
 
             if (frame.Width > 0)
             {
@@ -329,10 +351,10 @@ public static class FramesExtensions
                 audioPts += frame.NbSamples;
             }
 
-
+            (MediaStream stream, CodecContext c) = ctx.Value;
             foreach (var _ in c.EncodeFrame(frame, packet))
             {
-                packet.RescaleTimestamp(c.TimeBase, stream.TimeBase);
+                packet.RescaleTimestamp(c.TimeBase, ctx.Value.stream.TimeBase);
                 packet.StreamIndex = stream.Index;
                 yield return packet;
             }
@@ -344,7 +366,7 @@ public static class FramesExtensions
         bool encodeAudio = audio != null;
         while (encodeVideo || encodeAudio)
         {
-            if (encodeVideo && (!encodeAudio || av_compare_ts(videoPts, videoCodec!.TimeBase, audioPts, audioCodec!.TimeBase) <= 0))
+            if (encodeVideo && (!encodeAudio || av_compare_ts(videoPts, videoEncoder!.TimeBase, audioPts, audioEncoder!.TimeBase) <= 0))
             {
                 (MediaStream stream, CodecContext c) = video!.Value;
                 foreach (var _ in c.EncodeFrame(null, packet))
@@ -366,17 +388,6 @@ public static class FramesExtensions
                 }
                 encodeAudio = false;
             }
-        }
-
-        static (MediaStream, CodecContext) GetCodecContext(Frame frame,
-            (MediaStream stream, CodecContext codec)? audio,
-            (MediaStream stream, CodecContext codec)? video)
-        {
-            return (frame.Width > 0) switch
-            {
-                true => video == null ? throw new ArgumentNullException(nameof(video)) : video.Value,
-                false => audio == null ? throw new ArgumentNullException(nameof(audio)) : audio.Value,
-            };
         }
     }
 }

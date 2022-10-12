@@ -31,7 +31,7 @@ public static class FFmpegLogger
     /// <summary>
     /// <see cref="av_log_set_callback(av_log_set_callback_callback_func)"/>
     /// </summary>
-    public static unsafe Action<LogLevel, string?> LogWriter
+    public static unsafe Action<LogLevel, string?>? LogWriter
     {
         set => av_log_set_callback(LogCallback = value switch
         {

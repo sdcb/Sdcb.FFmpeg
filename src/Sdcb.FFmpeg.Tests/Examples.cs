@@ -2,6 +2,7 @@
 using Sdcb.FFmpeg.Formats;
 using Sdcb.FFmpeg.Raw;
 using Sdcb.FFmpeg.Swscales;
+using Sdcb.FFmpeg.Toolboxs;
 using Sdcb.FFmpeg.Toolboxs.Extensions;
 using Sdcb.FFmpeg.Toolboxs.Generators;
 using Sdcb.FFmpeg.Utils;
@@ -33,7 +34,7 @@ public class Examples
         Assert.NotEmpty(pngData);
     }
 
-    private byte[] MakeMp4(Codec codec, int width, int height)
+    private byte[] MakeMp4(Codec codec, int width, int height, int frameCount = 30)
     {
         using FormatContext fc = FormatContext.AllocOutput(formatName: "mp4");
         fc.VideoCodec = codec;
@@ -50,12 +51,12 @@ public class Examples
         {
             ["preset"] = "ultrafast"
         });
-        vstream.Codecpar.CopyFrom(vcodec);
+        vstream.Codecpar!.CopyFrom(vcodec);
 
         using DynamicIOContext io = IOContext.OpenDynamic();
         fc.Pb = io;
         fc.WriteHeader();
-        foreach (Packet packet in VideoFrameGenerator.Yuv420pSequence(vcodec.Width, vcodec.Height).Take(30)
+        foreach (Packet packet in VideoFrameGenerator.Yuv420pSequence(vcodec.Width, vcodec.Height).Take(frameCount)
             .EncodeFrames(vcodec))
         {
             try
@@ -76,7 +77,7 @@ public class Examples
     [Fact]
     public void CreateMp4()
     {
-        FFmpegLogger.LogWriter = (level, msg) => _console.WriteLine(msg.Trim());
+        FFmpegLogger.LogWriter = (level, msg) => _console.WriteLine(msg?.Trim());
         byte[] mp4 = MakeMp4(Codec.CommonEncoders.Libx264, width: 320, height: 240);
         Assert.NotEmpty(mp4);
         _console.WriteLine($"mp4 size: {mp4.Length}");
@@ -89,12 +90,12 @@ public class Examples
         byte[] mp4 = MakeMp4(Codec.CommonEncoders.Libx264, width: 320, height: 240);
         _console.WriteLine($"mp4 size: {mp4.Length}");
 
-        FFmpegLogger.LogWriter = (level, msg) => _console.WriteLine(msg.Trim());
+        FFmpegLogger.LogWriter = (level, msg) => _console.WriteLine(msg?.Trim());
         using IOContext io = IOContext.ReadStream(new MemoryStream(mp4));
         using FormatContext fc = FormatContext.OpenInputIO(io);
         MediaStream videoStream = fc.GetVideoStream();
 
-        using CodecContext videoDecoder = new CodecContext(Codec.FindDecoderById(videoStream.Codecpar.CodecId));
+        using CodecContext videoDecoder = new CodecContext(Codec.FindDecoderById(videoStream.Codecpar!.CodecId));
         videoDecoder.FillParameters(videoStream.Codecpar);
         videoDecoder.Open();
 
@@ -124,7 +125,7 @@ public class Examples
             PixelFormat = AVPixelFormat.Rgb8,
         };
         vcodec.Open(fc.VideoCodec);
-        vstream.Codecpar.CopyFrom(vcodec);
+        vstream.Codecpar!.CopyFrom(vcodec);
 
         using DynamicIOContext io = IOContext.OpenDynamic();
         fc.Pb = io;
@@ -165,7 +166,7 @@ public class Examples
             PixelFormat = AVPixelFormat.Pal8,
         };
         vcodec.Open(fc.VideoCodec);
-        vstream.Codecpar.CopyFrom(vcodec);
+        vstream.Codecpar!.CopyFrom(vcodec);
 
         using DynamicIOContext io = IOContext.OpenDynamic();
         fc.Pb = io;
@@ -190,5 +191,52 @@ public class Examples
         byte[] gif = io.GetBuffer().ToArray();
         Assert.NotEmpty(gif);
         //File.WriteAllBytes("test.gif", gif);
+    }
+
+    [Fact]
+    public void RemuxMp4WithFilter()
+    {
+        FFmpegLogger.LogWriter = (level, msg) => { };
+        byte[] mp4 = MakeMp4(Codec.CommonEncoders.Libx264, width: 320, height: 240, frameCount: 30);
+        _console.WriteLine($"mp4 size: {mp4.Length}");
+
+        FFmpegLogger.LogWriter = (level, msg) => _console.WriteLine(msg?.Trim());
+        using IOContext input = IOContext.ReadStream(new MemoryStream(mp4));
+        using FormatContext inFc = FormatContext.OpenInputIO(input);
+        inFc.FindStreamInfo();
+        MediaStream inVideoStream = inFc.GetVideoStream();
+
+        using CodecContext videoDecoder = new CodecContext(Codec.FindDecoderById(inVideoStream.Codecpar!.CodecId));
+        videoDecoder.FillParameters(inVideoStream.Codecpar);
+        videoDecoder.Open();
+
+        using VideoFilterContext filter = VideoFilterContext.Create(inVideoStream, "scale=480:-1,fps=30");
+
+        using FormatContext outFc = FormatContext.AllocOutput(formatName: "mp4");
+        outFc.VideoCodec = Codec.CommonEncoders.Libx264;
+        MediaStream outVideoStream = outFc.NewStream(outFc.VideoCodec);
+        using CodecContext videoEncoder = new CodecContext(outFc.VideoCodec)
+        {
+            Flags = AV_CODEC_FLAG.GlobalHeader,
+        };
+        filter.ConfigureEncoder(videoEncoder);
+        videoEncoder.Open(inFc.VideoCodec, new MediaDictionary
+        {
+            ["preset"] = "ultrafast"
+        });
+        outVideoStream.Codecpar!.CopyFrom(videoEncoder);
+
+        using DynamicIOContext io = IOContext.OpenDynamic();
+        outFc.Pb = io;
+        outFc.WriteHeader();
+        inFc.ReadPackets()
+            .DecodePackets(videoDecoder)
+            .ApplyVideoFilters(filter)
+            .EncodeAllFrames(outFc, null, videoEncoder)
+            .WriteAll(outFc);
+        outFc.WriteTrailer();
+        byte[] remuxMp4 = io.GetBuffer().ToArray();
+        Assert.NotEmpty(remuxMp4);
+        File.WriteAllBytes("test.mp4", remuxMp4);
     }
 }
