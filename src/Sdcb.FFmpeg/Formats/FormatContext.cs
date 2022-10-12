@@ -90,11 +90,9 @@ public unsafe partial class FormatContext : SafeHandle
     /// <summary>
     /// <see cref="avformat_find_stream_info(AVFormatContext*, AVDictionary**)"/>
     /// </summary>
-    public MediaDictionary FindStreamInfo()
+    public void LoadStreamInfo()
     {
-        AVDictionary* dict;
-        avformat_find_stream_info(this, &dict);
-        return MediaDictionary.FromNative(dict, isOwner: true);
+        avformat_find_stream_info(this, null).ThrowIfError();
     }
 
     /// <summary>

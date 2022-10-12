@@ -72,7 +72,7 @@ public record VideoFilterContext(FilterGraph FilterGraph, FilterContext SourceCo
             ["width"] = codecpar.Width.ToString(),
             ["height"] = codecpar.Height.ToString(),
             ["pix_fmt"] = NameUtils.GetPixelFormatName((AVPixelFormat)codecpar.Format),
-            ["time_base"] = sourceStream.TimeBase.ToString(),
+            ["time_base"] = sourceStream.RFrameRate.Inverse().ToString(),
             ["frame_rate"] = sourceStream.RFrameRate.ToString(),
             ["sar"] = codecpar.SampleAspectRatio.ToString(),
         };
@@ -91,6 +91,7 @@ public record VideoFilterContext(FilterGraph FilterGraph, FilterContext SourceCo
             ["height"] = videoFirstFrame.Height.ToString(),
             ["pix_fmt"] = NameUtils.GetPixelFormatName((AVPixelFormat)videoFirstFrame.Format),
             ["time_base"] = timebase.ToString(),
+            ["frame_rate"] = timebase.Inverse().ToString(),
             ["sar"] = videoFirstFrame.SampleAspectRatio.ToString(),
         };
     }
