@@ -9,13 +9,13 @@ namespace Sdcb.FFmpeg.Utils;
 public unsafe partial class BufferRef : SafeHandle
 {
     /// <summary>Allocate an AVBuffer of the given size using av_malloc().</summary>
-    public static BufferRef Alloc(int size) => new BufferRef(av_buffer_alloc(size), isOwner: true);
+    public static BufferRef Alloc(int size, bool isOwner = true) => new BufferRef(av_buffer_alloc(size), isOwner);
 
     /// <summary>Same as av_buffer_alloc(), except the returned buffer will be initialized to zero.</summary>
-    public static BufferRef AllocZ(int size) => new BufferRef(av_buffer_allocz(size), isOwner: true);
+    public static BufferRef AllocZ(int size, bool isOwner = true) => new BufferRef(av_buffer_allocz(size), isOwner);
 
     /// <summary>Create a new reference to an AVBuffer.</summary>
-    public static BufferRef Ref(BufferRef other) => new BufferRef(av_buffer_ref(other), isOwner: true);
+    public static BufferRef Ref(BufferRef other, bool isOwner = true) => new BufferRef(av_buffer_ref(other), isOwner);
 
     /// <summary>Returns 1 if the caller may write to the data referred to by buf (which is true if and only if buf is the only reference to the underlying AVBuffer). Return 0 otherwise. A positive answer is valid until av_buffer_ref() is called on buf.</summary>
     public bool IsWritable => av_buffer_is_writable(this) != 0;
