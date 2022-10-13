@@ -51,12 +51,12 @@ public unsafe partial class Frame : SafeHandle
     /// <summary>
     /// <see cref="av_frame_ref(AVFrame*, AVFrame*)"/>
     /// </summary>
-    public void Reference(Frame other) => av_frame_ref(this, other).ThrowIfError();
+    public void Ref(Frame other) => av_frame_ref(this, other).ThrowIfError();
 
     /// <summary>
     /// <see cref="av_frame_unref(AVFrame*)"/>
     /// </summary>
-    public void Unreference() => av_frame_unref(this);
+    public void Unref() => av_frame_unref(this);
 
     /// <summary>
     /// <see cref="av_frame_clone(AVFrame*)"/>
@@ -76,7 +76,7 @@ public unsafe partial class Frame : SafeHandle
     /// <summary>
     /// <see cref="av_frame_move_ref(AVFrame*, AVFrame*)"/>
     /// </summary>
-    public void MoveReferenceTo(Frame dest) => av_frame_move_ref(dest, this);
+    public void MoveRef(Frame dest) => av_frame_move_ref(dest, this);
 
     /// <summary>
     /// <see cref="av_frame_get_buffer(AVFrame*, int)"/>

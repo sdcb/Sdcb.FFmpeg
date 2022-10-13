@@ -84,7 +84,7 @@ public static class PacketsExtensions
             }
             finally
             {
-                packet.Unreference();
+                packet.Unref();
             }
         }
     }

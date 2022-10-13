@@ -156,7 +156,7 @@ public unsafe partial class FormatContext : SafeHandle
             }
             finally
             {
-                packet.Unreference();
+                packet.Unref();
             }
         }
     }

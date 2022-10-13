@@ -67,7 +67,7 @@ public class Examples
             }
             finally
             {
-                packet.Unreference();
+                packet.Unref();
             }
         }
         fc.WriteTrailer();
@@ -143,7 +143,7 @@ public class Examples
             }
             finally
             {
-                packet.Unreference();
+                packet.Unref();
             }
         }
         fc.WriteTrailer();
@@ -184,7 +184,7 @@ public class Examples
             }
             finally
             {
-                packet.Unreference();
+                packet.Unref();
             }
         }
         fc.WriteTrailer();

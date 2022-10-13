@@ -102,7 +102,7 @@ public unsafe partial class CodecContext : SafeHandle
             }
             finally
             {
-                packet.Unreference();
+                packet.Unref();
             }
         }
     }

@@ -232,7 +232,7 @@ public abstract record CommonFilterContext(FilterGraph FilterGraph, FilterContex
             if (r == CodecResult.Success)
             {
                 yield return destFrame;
-                destFrame.Unreference();
+                destFrame.Unref();
             }
         }
     }
