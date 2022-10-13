@@ -15,11 +15,29 @@ namespace Sdcb.FFmpeg.Toolboxs.Extensions;
 public static class PacketsExtensions
 {
     /// <summary>
+    /// Calling every frame with following apis:
+    /// <list type="bullet">
+    /// <item><see cref="av_packet_clone"/></item>
+    /// <item><see cref="av_packet_make_writable"/></item>
+    /// </list>
+    /// </summary>
+    /// <returns>The result must free manually, and packets can be stored.</returns>
+    public static IEnumerable<Packet> MakeWritable(this IEnumerable<Packet> packets)
+    {
+        foreach (Packet packet in packets)
+        {
+            Packet cloned = packet.Clone();
+            cloned.MakeWritable();
+            yield return cloned;
+        }
+    }
+
+    /// <summary>
     /// packets -> frames
     /// </summary>
     public static IEnumerable<Frame> DecodePackets(this IEnumerable<Packet> packets, CodecContext c)
     {
-        using var frame = new Frame();
+        using Frame frame = new();
 
         foreach (Packet packet in packets)
             foreach (var _ in c.DecodePacket(packet, frame))

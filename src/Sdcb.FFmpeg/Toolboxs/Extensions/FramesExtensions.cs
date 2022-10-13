@@ -15,6 +15,24 @@ namespace Sdcb.FFmpeg.Toolboxs.Extensions;
 public static class FramesExtensions
 {
     /// <summary>
+    /// Calling every frame with following apis:
+    /// <list type="bullet">
+    /// <item><see cref="av_frame_clone"/></item>
+    /// <item><see cref="av_frame_make_writable"/></item>
+    /// </list>
+    /// </summary>
+    /// <returns>The result must free manually, and frames can be stored.</returns>
+    public static IEnumerable<Frame> MakeWritable(this IEnumerable<Frame> frames)
+    {
+        foreach (Frame frame in frames)
+        {
+            Frame cloned = frame.Clone();
+            cloned.MakeWritable();
+            yield return cloned;
+        }
+    }
+
+    /// <summary>
     /// <para>For video, convert frame pixel format, width, height into the same as CodecContext</para>
     /// <para>For audio, convert frame sames format into the same as CodecContext</para>
     /// <see cref="sws_getCachedContext(SwsContext*, int, int, AVPixelFormat, int, int, AVPixelFormat, int, SwsFilter*, SwsFilter*, double*)"/>
