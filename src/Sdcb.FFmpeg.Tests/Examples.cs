@@ -200,17 +200,17 @@ public class Examples
         byte[] mp4 = MakeMp4(Codec.CommonEncoders.Libx264, width: 320, height: 240, frameCount: 30);
         _console.WriteLine($"mp4 size: {mp4.Length}");
 
-        FFmpegLogger.LogWriter = (level, msg) => _console.WriteLine(msg?.Trim());
+        //FFmpegLogger.LogWriter = (level, msg) => _console.WriteLine(msg?.Trim());
         using IOContext input = IOContext.ReadStream(new MemoryStream(mp4));
         using FormatContext inFc = FormatContext.OpenInputIO(input);
-        inFc.FindStreamInfo();
+        inFc.LoadStreamInfo();
         MediaStream inVideoStream = inFc.GetVideoStream();
 
         using CodecContext videoDecoder = new CodecContext(Codec.FindDecoderById(inVideoStream.Codecpar!.CodecId));
         videoDecoder.FillParameters(inVideoStream.Codecpar);
         videoDecoder.Open();
 
-        using VideoFilterContext filter = VideoFilterContext.Create(inVideoStream, "scale=480:-1,fps=30");
+        using VideoFilterContext filter = VideoFilterContext.Create(inVideoStream, "scale=480:-1");
 
         using FormatContext outFc = FormatContext.AllocOutput(formatName: "mp4");
         outFc.VideoCodec = Codec.CommonEncoders.Libx264;
@@ -237,6 +237,6 @@ public class Examples
         outFc.WriteTrailer();
         byte[] remuxMp4 = io.GetBuffer().ToArray();
         Assert.NotEmpty(remuxMp4);
-        File.WriteAllBytes("test.mp4", remuxMp4);
+        //File.WriteAllBytes("test.mp4", remuxMp4);
     }
 }

@@ -49,16 +49,22 @@ public unsafe partial class Frame : SafeHandle
     public bool IsWritable => av_frame_is_writable(this) != 0;
 
     /// <summary>
+    /// <para>Set up a new reference to the data described by the source frame.</para>
+    /// <para>Copy frame properties from src to dst and create a new reference for each AVBufferRef from src.</para>
+    /// <para>If src is not reference counted, new buffers are allocated and the data is copied.</para>
     /// <see cref="av_frame_ref(AVFrame*, AVFrame*)"/>
     /// </summary>
     public void Ref(Frame other) => av_frame_ref(this, other).ThrowIfError();
 
     /// <summary>
+    /// <para>Unreference all the buffers referenced by frame and reset the frame fields.</para>
     /// <see cref="av_frame_unref(AVFrame*)"/>
     /// </summary>
     public void Unref() => av_frame_unref(this);
 
     /// <summary>
+    /// <para>Create a new frame that references the same data as src.</para>
+    /// <para>This is a shortcut for av_frame_alloc()+av_frame_ref().</para>
     /// <see cref="av_frame_clone(AVFrame*)"/>
     /// </summary>
     public Frame Clone() => FromNative(av_frame_clone(this), isOwner: true);

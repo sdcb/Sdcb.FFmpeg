@@ -8,13 +8,22 @@ namespace Sdcb.FFmpeg.Toolboxs.Generators;
 
 public static class VideoFrameGenerator
 {
-    public static IEnumerable<Frame> Yuv420pSequence(int width, int height, CancellationToken cancellationToken = default)
+    public static IEnumerable<Frame> Yuv420pSequence(int width, int height, bool writable = false, CancellationToken cancellationToken = default)
     {
         using Frame frame = Frame.CreateWritableVideo(width, height, AVPixelFormat.Yuv420p);
         for (int i = 0; !cancellationToken.IsCancellationRequested; ++i)
         {
             FillYuv420p(frame, i);
-            yield return frame;
+            if (writable)
+            {
+                Frame cloned = frame.Clone();
+                cloned.MakeWritable();
+                yield return cloned;
+            }
+            else
+            {
+                yield return frame;
+            }
         }
     }
 
