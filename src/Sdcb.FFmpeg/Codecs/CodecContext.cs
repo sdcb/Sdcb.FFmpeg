@@ -86,61 +86,11 @@ public unsafe partial class CodecContext : SafeHandle
         _ => throw new FFmpegException($"Unknown {nameof(callerMember)} status: {result}"),
     };
 
-    /// <summary>
-    /// 1 frame -> 0..N packet
-    /// </summary>
-    public IEnumerable<Packet> EncodeFrame(Frame? frame, Packet packet, bool unref = true)
-    {
-        try
-        {
-            SendFrame(frame);
-        }
-        finally
-        {
-            if (unref && frame != null)
-            {
-                frame.Unref();
-            }
-        }
-        
-        while (true)
-        {
-            CodecResult s = ReceivePacket(packet);
-            if (s == CodecResult.Again || s == CodecResult.EOF) yield break;
-            yield return packet;
-        }
-    }
-
     internal Frame CreateVideoFrame() => Frame.CreateVideo(Width, Height, PixelFormat);
     internal Frame CreateAudioFrame() => Frame.CreateAudio(SampleFormat, ChannelLayout, SampleRate,
         Codec.Capabilities.HasFlag(AV_CODEC_CAP.VariableFrameSize) ? 10000 : FrameSize);
 
     public Frame CreateFrame() => Width > 0 ? CreateVideoFrame() : CreateAudioFrame();
-
-    /// <summary>
-    /// 1 packet -> 0..N frame
-    /// </summary>
-    public IEnumerable<Frame> DecodePacket(Packet? packet, Frame frame, bool unref = true)
-    {
-        try
-        {
-            SendPacket(packet);
-        }
-        finally
-        {
-            if (unref && packet != null)
-            {
-                packet.Unref();
-            }
-        }
-        
-        while (true)
-        {
-            CodecResult s = ReceiveFrame(frame);
-            if (s == CodecResult.Again || s == CodecResult.EOF) yield break;
-            yield return frame;
-        }
-    }
 
     /// <summary>
     /// <see cref="avcodec_free_context(AVCodecContext**)"/>
