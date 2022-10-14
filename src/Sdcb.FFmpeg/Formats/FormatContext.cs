@@ -142,19 +142,29 @@ public unsafe partial class FormatContext : SafeHandle
     /// </summary>
     public CodecResult ReadFrame(Packet packet) => CodecContext.ToCodecResult(av_read_frame(this, packet));
 
-    public IEnumerable<Packet> ReadPackets()
+    /// <summary>
+    /// Read <see cref="Packet"/> from <see cref="FormatContext"/>, whitelisted by <paramref name="allowedStreamIndexs"/>
+    /// </summary>
+    /// <param name="allowedStreamIndexs">
+    /// <list type="bullet">
+    /// <item>If 0 element, then return all <see cref="Packet"/></item>
+    /// <item>If have any element, then return all <see cref="Packet"/> corresponding to specific <paramref name="allowedStreamIndexs"/></item>
+    /// </list>
+    /// </param>
+    public IEnumerable<Packet> ReadPackets(params int[] allowedStreamIndexs)
     {
-        using var packet = new Packet();
+        using Packet packet = new();
         while (true)
         {
             CodecResult result = ReadFrame(packet);
             if (result == CodecResult.EOF) break;
             System.Diagnostics.Debug.Assert(result == CodecResult.Success);
-            try
+
+            if (allowedStreamIndexs.Length == 0 || allowedStreamIndexs.Length > 0 && allowedStreamIndexs.Contains(packet.StreamIndex))
             {
                 yield return packet;
             }
-            finally
+            else
             {
                 packet.Unref();
             }

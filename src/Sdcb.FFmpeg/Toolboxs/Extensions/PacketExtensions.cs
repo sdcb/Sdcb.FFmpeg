@@ -1,10 +1,7 @@
 ﻿using Sdcb.FFmpeg.Codecs;
 using Sdcb.FFmpeg.Common;
-using Sdcb.FFmpeg.Filters;
 using Sdcb.FFmpeg.Formats;
 using Sdcb.FFmpeg.Raw;
-using Sdcb.FFmpeg.Swresamples;
-using Sdcb.FFmpeg.Swscales;
 using Sdcb.FFmpeg.Utils;
 using System;
 using System.Collections.Generic;
@@ -21,12 +18,13 @@ public static class PacketsExtensions
     /// <item><see cref="av_packet_make_writable"/></item>
     /// </list>
     /// </summary>
-    /// <returns>The result must free manually, and packets can be stored.</returns>
-    public static IEnumerable<Packet> MakeWritable(this IEnumerable<Packet> packets)
+    /// <returns>The result must call <see cref="Packet.Free"/> manually, and packets can be stored.</returns>
+    public static IEnumerable<Packet> CloneMakeWritable(this IEnumerable<Packet> packets, bool unref = true)
     {
         foreach (Packet packet in packets)
         {
             Packet cloned = packet.Clone();
+            if (unref) packet.Unref();
             cloned.MakeWritable();
             yield return cloned;
         }
@@ -35,44 +33,46 @@ public static class PacketsExtensions
     /// <summary>
     /// packets -> frames
     /// </summary>
+    /// <returns>Caller must call <see cref="Frame.Unref"/> to the result when not used.</returns>
     public static IEnumerable<Frame> DecodePackets(this IEnumerable<Packet> packets, CodecContext c)
     {
-        using Frame frame = new();
+        using Frame destRef = new Frame();
 
         foreach (Packet packet in packets)
-            foreach (var _ in c.DecodePacket(packet, frame))
+            foreach (Frame frame in c.DecodePacket(packet, destRef))
                 yield return frame;
 
-        foreach (var _ in c.DecodePacket(null, frame))
+        foreach (Frame frame in c.DecodePacket(null, destRef))
             yield return frame;
     }
 
     /// <summary>
     /// packets -> frames
     /// </summary>
+    /// <returns>Caller must call <see cref="Frame.Unref"/> to the result when not used.</returns>
     public static IEnumerable<Frame> DecodeAllPackets(this IEnumerable<Packet> packets, FormatContext fc,
         CodecContext? audioCodec = null,
         CodecContext? videoCodec = null)
     {
-        using var frame = new Frame();
+        using Frame destRef = new Frame();
 
         foreach (Packet packet in packets)
         {
             CodecContext c = GetCodecContext(fc, audioCodec, videoCodec, packet);
 
-            foreach (var _ in c.DecodePacket(packet, frame))
+            foreach (Frame frame in c.DecodePacket(packet, destRef))
                 yield return frame;
         }
 
         if (videoCodec != null)
         {
-            foreach (var _ in videoCodec.DecodePacket(null, frame))
+            foreach (Frame frame in videoCodec.DecodePacket(null, destRef))
                 yield return frame;
         }
 
         if (audioCodec != null)
         {
-            foreach (var _ in audioCodec.DecodePacket(null, frame))
+            foreach (Frame frame in audioCodec.DecodePacket(null, destRef))
                 yield return frame;
         }
 
@@ -92,7 +92,7 @@ public static class PacketsExtensions
         }
     }
 
-    public static void WriteAll(this IEnumerable<Packet> packets, FormatContext fc)
+    public static void WriteAll(this IEnumerable<Packet> packets, FormatContext fc, bool unref = true)
     {
         foreach (Packet packet in packets)
         {
@@ -102,7 +102,10 @@ public static class PacketsExtensions
             }
             finally
             {
-                packet.Unref();
+                if (unref)
+                {
+                    packet.Unref();
+                }
             }
         }
     }

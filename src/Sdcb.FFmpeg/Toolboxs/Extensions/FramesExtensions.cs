@@ -1,6 +1,4 @@
 ﻿using Sdcb.FFmpeg.Codecs;
-using Sdcb.FFmpeg.Common;
-using Sdcb.FFmpeg.Filters;
 using Sdcb.FFmpeg.Formats;
 using Sdcb.FFmpeg.Raw;
 using Sdcb.FFmpeg.Swresamples;
@@ -8,6 +6,7 @@ using Sdcb.FFmpeg.Swscales;
 using Sdcb.FFmpeg.Utils;
 using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using static Sdcb.FFmpeg.Raw.ffmpeg;
 
 namespace Sdcb.FFmpeg.Toolboxs.Extensions;
@@ -22,11 +21,12 @@ public static class FramesExtensions
     /// </list>
     /// </summary>
     /// <returns>The result must free manually, and frames can be stored.</returns>
-    public static IEnumerable<Frame> MakeWritable(this IEnumerable<Frame> frames)
+    public static IEnumerable<Frame> CloneMakeWritable(this IEnumerable<Frame> frames, bool unref = true)
     {
         foreach (Frame frame in frames)
         {
             Frame cloned = frame.Clone();
+            if (unref) frame.Unref();
             cloned.MakeWritable();
             yield return cloned;
         }
@@ -38,23 +38,29 @@ public static class FramesExtensions
     /// <see cref="sws_getCachedContext(SwsContext*, int, int, AVPixelFormat, int, int, AVPixelFormat, int, SwsFilter*, SwsFilter*, double*)"/>
     /// <see cref="sws_scale(SwsContext*, byte*[], int[], int, int, byte*[], int[])"/>
     /// </summary>
-    public static IEnumerable<Frame> ConvertFrames(this IEnumerable<Frame> sourceFrames, CodecContext c, SWS swsFlags = SWS.Bilinear)
+    /// <returns>Caller must call <see cref="Frame.Unref"/> to the result when not used.</returns>
+    public static IEnumerable<Frame> ConvertFrames(this IEnumerable<Frame> sourceFrames, CodecContext c, SWS swsFlags = SWS.Bilinear, bool unref = true)
     {
         if (c.Codec.Type == AVMediaType.Video)
         {
-            using Frame destFrame = c.CreateVideoFrame();
+            using Frame dest = c.CreateVideoFrame();
+            using Frame destRef = new Frame();
             int pts = 0;
             using VideoFrameConverter frameConverter = new();
             foreach (Frame sourceFrame in sourceFrames)
             {
-                frameConverter.ConvertFrame(sourceFrame, destFrame, swsFlags);
-                destFrame.Pts = pts++;
-                yield return destFrame;
+                dest.MakeWritable();
+                frameConverter.ConvertFrame(sourceFrame, dest, swsFlags);
+                if (unref) sourceFrame.Unref();
+                dest.Pts = pts++;
+                destRef.Ref(dest);
+                yield return destRef;
             }
         }
         else if (c.Codec.Type == AVMediaType.Audio)
         {
-            using Frame destFrame = c.CreateAudioFrame();
+            using Frame dest = c.CreateAudioFrame();
+            using Frame destRef = new Frame();
             int pts = 0;
             using SampleConverter frameConverter = new();
             foreach (Frame sourceFrame in sourceFrames)
@@ -64,71 +70,85 @@ public static class FramesExtensions
                     frameConverter.Options.Set("in_channel_layout", sourceFrame.ChannelLayout, default(AV_OPT_SEARCH));
                     frameConverter.Options.Set("in_sample_rate", sourceFrame.SampleRate, default(AV_OPT_SEARCH));
                     frameConverter.Options.Set("in_sample_fmt", (AVSampleFormat)sourceFrame.Format, default(AV_OPT_SEARCH));
-                    frameConverter.Options.Set("out_channel_layout", destFrame.ChannelLayout, default(AV_OPT_SEARCH));
-                    frameConverter.Options.Set("out_sample_rate", destFrame.SampleRate, default(AV_OPT_SEARCH));
-                    frameConverter.Options.Set("out_sample_fmt", (AVSampleFormat)destFrame.Format, default(AV_OPT_SEARCH));
+                    frameConverter.Options.Set("out_channel_layout", dest.ChannelLayout, default(AV_OPT_SEARCH));
+                    frameConverter.Options.Set("out_sample_rate", dest.SampleRate, default(AV_OPT_SEARCH));
+                    frameConverter.Options.Set("out_sample_fmt", (AVSampleFormat)dest.Format, default(AV_OPT_SEARCH));
                     frameConverter.Initialize();
                 }
-                int destSampleCount = (int)av_rescale_rnd(frameConverter.GetDelay(sourceFrame.SampleRate) + sourceFrame.NbSamples, sourceFrame.SampleRate, destFrame.SampleRate, AVRounding.Up);
-                int converted = frameConverter.Convert(destFrame.Data, destSampleCount, sourceFrame.Data, sourceFrame.NbSamples);
-                destFrame.Pts = pts;
-                destFrame.NbSamples = converted;
+                int destSampleCount = (int)av_rescale_rnd(frameConverter.GetDelay(sourceFrame.SampleRate) + sourceFrame.NbSamples, sourceFrame.SampleRate, dest.SampleRate, AVRounding.Up);
+                dest.MakeWritable();
+                int converted = frameConverter.Convert(dest.Data, destSampleCount, sourceFrame.Data, sourceFrame.NbSamples);
+                if (unref) sourceFrame.Unref();
+                dest.Pts = pts;
+                dest.NbSamples = converted;
                 pts += converted;
-                yield return destFrame;
+                destRef.Ref(dest);
+                yield return destRef;
             }
         }
     }
 
-    public static IEnumerable<Frame> ConvertAllFrames(this IEnumerable<Frame> sourceFrames, CodecContext audioContext, CodecContext videoContext, SWS swsFlags = SWS.Bilinear)
+    /// <returns>Caller must call <see cref="Frame.Unref"/> to the result when not used.</returns>
+    public static IEnumerable<Frame> ConvertAllFrames(this IEnumerable<Frame> sourceFrames, CodecContext audioContext, CodecContext videoContext, SWS swsFlags = SWS.Bilinear, bool unref = true)
     {
         using Frame destAudioFrame = audioContext.CreateFrame();
         using Frame destVideoFrame = videoContext.CreateFrame();
+        using Frame destRef = new Frame();
         int videoPts = 0;
         int audioPts = 0;
         using VideoFrameConverter frameConverter = new();
         using SampleConverter sampleConverter = new();
 
-        foreach (Frame sourceFrame in sourceFrames)
+        foreach (Frame src in sourceFrames)
         {
-            if (sourceFrame.Width > 0)
+            if (src.Width > 0)
             {
-                frameConverter.ConvertFrame(sourceFrame, destVideoFrame, swsFlags);
+                destVideoFrame.MakeWritable();
+                frameConverter.ConvertFrame(src, destVideoFrame, swsFlags);
+                if (unref) src.Unref();
+
                 destVideoFrame.Pts = videoPts++;
-                yield return destVideoFrame;
+                destRef.Ref(destVideoFrame);
+                yield return destRef;
             }
-            else if (sourceFrame.SampleRate > 0)
+            else if (src.SampleRate > 0)
             {
                 if (!sampleConverter.Initialized)
                 {
-                    sampleConverter.Options.Set("in_channel_layout", sourceFrame.ChannelLayout, default(AV_OPT_SEARCH));
-                    sampleConverter.Options.Set("in_sample_rate", sourceFrame.SampleRate, default(AV_OPT_SEARCH));
-                    sampleConverter.Options.Set("in_sample_fmt", (AVSampleFormat)sourceFrame.Format, default(AV_OPT_SEARCH));
+                    sampleConverter.Options.Set("in_channel_layout", src.ChannelLayout, default(AV_OPT_SEARCH));
+                    sampleConverter.Options.Set("in_sample_rate", src.SampleRate, default(AV_OPT_SEARCH));
+                    sampleConverter.Options.Set("in_sample_fmt", (AVSampleFormat)src.Format, default(AV_OPT_SEARCH));
                     sampleConverter.Options.Set("out_channel_layout", destAudioFrame.ChannelLayout, default(AV_OPT_SEARCH));
                     sampleConverter.Options.Set("out_sample_rate", destAudioFrame.SampleRate, default(AV_OPT_SEARCH));
                     sampleConverter.Options.Set("out_sample_fmt", (AVSampleFormat)destAudioFrame.Format, default(AV_OPT_SEARCH));
                     sampleConverter.Initialize();
                 }
-                int destSampleCount = (int)av_rescale_rnd(sampleConverter.GetDelay(sourceFrame.SampleRate) + sourceFrame.NbSamples, sourceFrame.SampleRate, destAudioFrame.SampleRate, AVRounding.Up);
-                int converted = sampleConverter.Convert(destAudioFrame.Data, destSampleCount, sourceFrame.Data, sourceFrame.NbSamples);
+                int destSampleCount = (int)av_rescale_rnd(sampleConverter.GetDelay(src.SampleRate) + src.NbSamples, src.SampleRate, destAudioFrame.SampleRate, AVRounding.Up);
+                destAudioFrame.MakeWritable();
+                int converted = sampleConverter.Convert(destAudioFrame.Data, destSampleCount, src.Data, src.NbSamples);
+                if (unref) src.Unref();
+
                 destAudioFrame.Pts = audioPts;
                 destAudioFrame.NbSamples = converted;
                 audioPts += converted;
-                yield return destAudioFrame;
+                destRef.Ref(destAudioFrame);
+                yield return destRef;
             }
             else
             {
-                yield return sourceFrame;
+                yield return src;
             }
         }
     }
 
-    public static IEnumerable<Frame> ApplyVideoFilters(this IEnumerable<Frame> srcFrames, AVRational srcTimebase, AVPixelFormat destPixelFormat, string filterText)
+    /// <returns>Caller must call <see cref="Frame.Unref"/> to the result when not used.</returns>
+    public static IEnumerable<Frame> ApplyVideoFilters(this IEnumerable<Frame> srcFrames, AVRational srcTimebase, AVPixelFormat destPixelFormat, string filterText, bool unref = true)
     {
         VideoFilterContext? ctx = null;
 
         try
         {
-            using Frame destFrame = new();
+            using Frame destRef = new();
             foreach (Frame srcFrame in srcFrames)
             {
                 if (srcFrame.Width > 0)
@@ -138,7 +158,7 @@ public static class FramesExtensions
                         ctx = VideoFilterContext.Create(srcFrame, srcTimebase, filterText, destPixelFormat);
                     }
 
-                    foreach (Frame frame in ctx.WriteFrame(destFrame, srcFrame))
+                    foreach (Frame frame in ctx.WriteFrame(destRef, srcFrame, unref))
                     {
                         yield return frame;
                     }
@@ -150,7 +170,7 @@ public static class FramesExtensions
             }
 
             if (ctx == null) throw new InvalidOperationException($"Unable to apply filter, no frame provided.");
-            foreach (Frame frame in ctx.WriteFrame(destFrame, null))
+            foreach (Frame frame in ctx.WriteFrame(destRef, null, unref))
             {
                 yield return frame;
             }
@@ -161,14 +181,15 @@ public static class FramesExtensions
         }
     }
 
-    public static IEnumerable<Frame> ApplyVideoFilters(this IEnumerable<Frame> srcFrames, VideoFilterContext ctx)
+    /// <returns>Caller must call <see cref="Frame.Unref"/> to the result when not used.</returns>
+    public static IEnumerable<Frame> ApplyVideoFilters(this IEnumerable<Frame> srcFrames, VideoFilterContext ctx, bool unref = true)
     {
-        using Frame destFrame = new();
+        using Frame destRef = new();
         foreach (Frame srcFrame in srcFrames)
         {
             if (srcFrame.Width > 0)
             {
-                foreach (Frame frame in ctx.WriteFrame(destFrame, srcFrame))
+                foreach (Frame frame in ctx.WriteFrame(destRef, srcFrame, unref))
                 {
                     yield return frame;
                 }
@@ -179,19 +200,20 @@ public static class FramesExtensions
             }
         }
 
-        foreach (Frame frame in ctx.WriteFrame(destFrame, null))
+        foreach (Frame frame in ctx.WriteFrame(destRef, null, unref))
         {
             yield return frame;
         }
     }
 
-    public static IEnumerable<Frame> ApplyAudioFilters(this IEnumerable<Frame> srcFrames, AudioSinkParams sinkParams, string filterText)
+    /// <returns>Caller must call <see cref="Frame.Unref"/> to the result when not used.</returns>
+    public static IEnumerable<Frame> ApplyAudioFilters(this IEnumerable<Frame> srcFrames, AudioSinkParams sinkParams, string filterText, bool unref = true)
     {
         AudioFilterContext? ctx = null;
 
         try
         {
-            using Frame destFrame = new();
+            using Frame destRef = new();
             foreach (Frame srcFrame in srcFrames)
             {
                 if (srcFrame.SampleRate > 0)
@@ -201,7 +223,7 @@ public static class FramesExtensions
                         ctx = AudioFilterContext.Create(srcFrame, filterText, sinkParams);
                     }
 
-                    foreach (Frame frame in ctx.WriteFrame(destFrame, srcFrame))
+                    foreach (Frame frame in ctx.WriteFrame(destRef, srcFrame, unref))
                     {
                         yield return frame;
                     }
@@ -213,7 +235,7 @@ public static class FramesExtensions
             }
 
             if (ctx == null) throw new InvalidOperationException($"Unable to apply filter, no frame provided.");
-            foreach (Frame frame in ctx.WriteFrame(destFrame, null))
+            foreach (Frame frame in ctx.WriteFrame(destRef, null, unref))
             {
                 yield return frame;
             }
@@ -224,14 +246,15 @@ public static class FramesExtensions
         }
     }
 
-    public static IEnumerable<Frame> ApplyAudioFilters(this IEnumerable<Frame> srcFrames, AudioFilterContext ctx)
+    /// <returns>Caller must call <see cref="Frame.Unref"/> to the result when not used.</returns>
+    public static IEnumerable<Frame> ApplyAudioFilters(this IEnumerable<Frame> srcFrames, AudioFilterContext ctx, bool unref = true)
     {
-        using Frame destFrame = new();
+        using Frame destRef = new();
         foreach (Frame srcFrame in srcFrames)
         {
             if (srcFrame.SampleRate > 0)
             {
-                foreach (Frame frame in ctx.WriteFrame(destFrame, srcFrame))
+                foreach (Frame frame in ctx.WriteFrame(destRef, srcFrame, unref))
                 {
                     yield return frame;
                 }
@@ -242,17 +265,64 @@ public static class FramesExtensions
             }
         }
 
-        foreach (Frame frame in ctx.WriteFrame(destFrame, null))
+        foreach (Frame frame in ctx.WriteFrame(destRef, null, unref))
         {
             yield return frame;
         }
     }
 
-    public static IEnumerable<Frame> AudioFifo(this IEnumerable<Frame> frames, CodecContext encoder)
+    /// <returns>Caller must call <see cref="Frame.Unref"/> to the result when not used.</returns>
+    public static IEnumerable<Frame> ApplyFilters(this IEnumerable<Frame> srcFrames, 
+        AudioFilterContext? audioCtx = null, 
+        VideoFilterContext? videoCtx = null, 
+        bool unref = true)
+    {
+        using Frame destRef = new();
+        foreach (Frame srcFrame in srcFrames)
+        {
+            if (srcFrame.SampleRate > 0 && audioCtx != null)
+            {
+                foreach (Frame frame in audioCtx.WriteFrame(destRef, srcFrame, unref))
+                {
+                    yield return frame;
+                }
+            }
+            else if (srcFrame.Width > 0 && videoCtx != null)
+            {
+                foreach (Frame frame in videoCtx.WriteFrame(destRef, srcFrame, unref))
+                {
+                    yield return frame;
+                }
+            }
+            else
+            {
+                yield return srcFrame;
+            }
+        }
+
+        if (audioCtx != null)
+        {
+            foreach (Frame frame in audioCtx.WriteFrame(destRef, null, unref))
+            {
+                yield return frame;
+            }
+        }
+        if (videoCtx != null)
+        {
+            foreach (Frame frame in videoCtx.WriteFrame(destRef, null, unref))
+            {
+                yield return frame;
+            }
+        }
+    }
+
+    /// <returns>Caller must call <see cref="Frame.Unref"/> to the result when not used.</returns>
+    public static IEnumerable<Frame> AudioFifo(this IEnumerable<Frame> frames, CodecContext encoder, bool unref = true)
     {
         using AudioFifo fifo = new AudioFifo(encoder.SampleFormat, encoder.Channels, 1);
         int frameSize = encoder.FrameSize;
-        using Frame result = Frame.CreateWritableAudio(encoder.SampleFormat, encoder.ChannelLayout, encoder.SampleRate, frameSize);
+        using Frame dest = Frame.CreateWritableAudio(encoder.SampleFormat, encoder.ChannelLayout, encoder.SampleRate, frameSize);
+        using Frame destRef = new Frame();
         int nextPts = 0;
         foreach (Frame frame in frames)
         {
@@ -261,13 +331,16 @@ public static class FramesExtensions
                 if (fifo.Size < frameSize)
                 {
                     fifo.Write(frame);
+                    if (unref) frame.Unref();
                 }
                 while (fifo.Size >= frameSize)
                 {
-                    fifo.Read(result);
-                    result.Pts = nextPts;
-                    nextPts += result.NbSamples;
-                    yield return result;
+                    fifo.Read(dest);
+                    dest.Pts = nextPts;
+                    nextPts += dest.NbSamples;
+
+                    destRef.Ref(dest);
+                    yield return destRef;
                 }
             }
             else
@@ -278,19 +351,22 @@ public static class FramesExtensions
         }
         while (fifo.Size > 0)
         {
-            fifo.Read(result);
-            result.Pts = nextPts;
-            nextPts += result.NbSamples;
-            yield return result;
+            fifo.Read(dest);
+            dest.Pts = nextPts;
+            nextPts += dest.NbSamples;
+
+            destRef.Ref(dest);
+            yield return destRef;
         }
     }
 
     /// <summary>
     /// frames -> packets
     /// </summary>
-    public static IEnumerable<Packet> EncodeFrames(this IEnumerable<Frame> frames, CodecContext c, bool makeWritable = true, bool makeSequential = false)
+    /// <returns>Caller must call <see cref="Packet.Unref"/> to the result when not used.</returns>
+    public static IEnumerable<Packet> EncodeFrames(this IEnumerable<Frame> frames, CodecContext c, bool makeSequential = false)
     {
-        using var packet = new Packet();
+        using Packet packetRef = new Packet();
         int pts = 0;
         foreach (Frame frame in frames)
         {
@@ -302,26 +378,24 @@ public static class FramesExtensions
                 pts += c.FrameSize;
             }
 
-            foreach (var _ in c.EncodeFrame(frame, packet))
+            foreach (Packet packet in c.EncodeFrame(frame, packetRef))
                 yield return packet;
-
-            if (makeWritable) frame.MakeWritable();
         }
 
-        foreach (var _ in c.EncodeFrame(null, packet))
+        foreach (Packet packet in c.EncodeFrame(null, packetRef))
             yield return packet;
     }
 
     /// <summary>
     /// frames -> packets
     /// </summary>
+    /// <returns>Caller must call <see cref="Packet.Unref"/> to the result when not used.</returns>
     public static IEnumerable<Packet> EncodeAllFrames(this IEnumerable<Frame> frames, FormatContext fc,
         CodecContext? audioEncoder = null,
         CodecContext? videoEncoder = null,
-        bool makeWritable = true, 
         bool allowSkipFrame = true)
     {
-        using Packet packet = new();
+        using Packet packetRef = new();
         int audioPts = 0, videoPts = 0;
         (MediaStream stream, CodecContext c)? audio = fc.FindBestStreamOrNull(AVMediaType.Audio) switch
         {
@@ -370,14 +444,12 @@ public static class FramesExtensions
             }
 
             (MediaStream stream, CodecContext c) = ctx.Value;
-            foreach (var _ in c.EncodeFrame(frame, packet))
+            foreach (Packet packet in c.EncodeFrame(frame, packetRef))
             {
                 packet.RescaleTimestamp(c.TimeBase, ctx.Value.stream.TimeBase);
                 packet.StreamIndex = stream.Index;
                 yield return packet;
             }
-
-            if (makeWritable) frame.MakeWritable();
         }
 
         bool encodeVideo = video != null;
@@ -387,18 +459,18 @@ public static class FramesExtensions
             if (encodeVideo && (!encodeAudio || av_compare_ts(videoPts, videoEncoder!.TimeBase, audioPts, audioEncoder!.TimeBase) <= 0))
             {
                 (MediaStream stream, CodecContext c) = video!.Value;
-                foreach (var _ in c.EncodeFrame(null, packet))
+                foreach (Packet packet in c.EncodeFrame(null, packetRef))
                 {
                     packet.RescaleTimestamp(c.TimeBase, stream.TimeBase);
                     packet.StreamIndex = stream.Index;
-                    yield return packet;
+                    yield return packetRef;
                 }
                 encodeVideo = false;
             }
             else
             {
                 (MediaStream stream, CodecContext c) = audio!.Value;
-                foreach (var _ in c.EncodeFrame(null, packet))
+                foreach (Packet packet in c.EncodeFrame(null, packetRef))
                 {
                     packet.RescaleTimestamp(c.TimeBase, stream.TimeBase);
                     packet.StreamIndex = stream.Index;

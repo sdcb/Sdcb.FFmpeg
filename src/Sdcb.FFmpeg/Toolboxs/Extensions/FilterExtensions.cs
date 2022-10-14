@@ -224,7 +224,8 @@ public record AudioFilterContext(FilterGraph FilterGraph, FilterContext SourceCo
 
 public abstract record CommonFilterContext(FilterGraph FilterGraph, FilterContext SourceContext, FilterContext SinkContext) : IDisposable
 {
-    public IEnumerable<Frame> WriteFrame(Frame destFrame, Frame? srcFrame)
+    /// <returns>Note: returned Frame must be disposed manually.</returns>
+    public IEnumerable<Frame> WriteFrame(Frame destFrame, Frame? srcFrame, bool unref = true)
     {
         try
         {
@@ -232,7 +233,10 @@ public abstract record CommonFilterContext(FilterGraph FilterGraph, FilterContex
         }
         finally
         {
-            srcFrame?.Unref();
+            if (unref && srcFrame != null)
+            {
+                srcFrame.Unref();
+            }
         }
 
         while (true)

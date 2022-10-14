@@ -1,15 +1,35 @@
 ﻿using Sdcb.FFmpeg.Raw;
+using Sdcb.FFmpeg.Toolboxs.Extensions;
 using Sdcb.FFmpeg.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 namespace Sdcb.FFmpeg.Toolboxs.Generators;
 
 public static class VideoFrameGenerator
 {
-    /// <returns>Note: result frame must be disposed manuall.</returns>
-    public static IEnumerable<Frame> Yuv420pSequence(int width, int height, int frameCount) => Enumerable
+    /// <returns>Caller must call <see cref="Frame.Unref"/> to the result when not used.</returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    public static IEnumerable<Frame> Yuv420pSequence(int width, int height, int frameCount)
+    {
+        using Frame dest = Frame.CreateWritableVideo(width, height, AVPixelFormat.Yuv420p);
+        using Frame destRef = new ();
+        for (int i = 0; i < frameCount; ++i)
+        {
+            dest.MakeWritable();
+            FillYuv420p(dest, i);
+
+            destRef.Ref(dest);
+            yield return destRef;
+        }
+    }
+
+    /// <summary>
+    /// This function will generate much faster samples because it benifits from parallism.
+    /// </summary>
+    /// <returns>Same as <see cref="Yuv420pSequence"/>, but caller must call <see cref="Frame.Free"/> to the result when not used.</returns>
+    public static IEnumerable<Frame> WritableYuv420pSequence(int width, int height, int frameCount) => Enumerable
         .Range(0, frameCount)
         .AsParallel()
         .AsOrdered()

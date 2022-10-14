@@ -4,8 +4,6 @@ using Sdcb.FFmpeg.Raw;
 using Sdcb.FFmpeg.Toolboxs.Extensions;
 using Sdcb.FFmpeg.Toolboxs.Generators;
 using Sdcb.FFmpeg.Utils;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -49,12 +47,12 @@ public class VideoGeneratorTest
         fc.WriteHeader();
         {
             Stopwatch sw = Stopwatch.StartNew();
-            Frame[] frames = VideoFrameGenerator.Yuv420pSequence(vcodec.Width, vcodec.Height, 30)
+            Frame[] frames = VideoFrameGenerator.WritableYuv420pSequence(vcodec.Width, vcodec.Height, 30)
                 .ToArray();
             _console.WriteLine($"generate sequence elapsed: {sw.ElapsedMilliseconds}ms.");
 
             sw.Restart();
-            Packet[] packets = frames.EncodeAllFrames(fc, null, vcodec).MakeWritable().ToArray();
+            Packet[] packets = frames.EncodeAllFrames(fc, null, vcodec).CloneMakeWritable().ToArray();
             frames.DisposeAll();
             _console.WriteLine($"encode frames elapsed: {sw.ElapsedMilliseconds}ms");
 

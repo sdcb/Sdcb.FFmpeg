@@ -4,6 +4,7 @@ using Sdcb.FFmpeg.Formats;
 using Sdcb.FFmpeg.Raw;
 using Sdcb.FFmpeg.Swscales;
 using Sdcb.FFmpeg.Utils;
+using System;
 using System.IO;
 using System.Linq;
 
@@ -11,6 +12,10 @@ namespace Sdcb.FFmpeg.Toolboxs.Extensions;
 
 public unsafe static class FrameExtensions
 {
+#if DEBUG
+    public static int GetRefCount(this Frame frame) => frame.Buf[0] != null ? ffmpeg.av_buffer_get_ref_count(frame.Buf[0]) : 0;
+#endif
+
     public static void WriteImageTo(this Frame frame, string url, OutputFormat? format = null, string? formatName = null)
     {
         using FormatContext fc = FormatContext.AllocOutput(format, formatName, url);

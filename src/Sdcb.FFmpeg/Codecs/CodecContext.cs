@@ -89,21 +89,25 @@ public unsafe partial class CodecContext : SafeHandle
     /// <summary>
     /// 1 frame -> 0..N packet
     /// </summary>
-    public IEnumerable<Packet> EncodeFrame(Frame? frame, Packet packet)
+    public IEnumerable<Packet> EncodeFrame(Frame? frame, Packet packet, bool unref = true)
     {
-        SendFrame(frame);
+        try
+        {
+            SendFrame(frame);
+        }
+        finally
+        {
+            if (unref && frame != null)
+            {
+                frame.Unref();
+            }
+        }
+        
         while (true)
         {
             CodecResult s = ReceivePacket(packet);
             if (s == CodecResult.Again || s == CodecResult.EOF) yield break;
-            try
-            {
-                yield return packet;
-            }
-            finally
-            {
-                packet.Unref();
-            }
+            yield return packet;
         }
     }
 
@@ -116,9 +120,20 @@ public unsafe partial class CodecContext : SafeHandle
     /// <summary>
     /// 1 packet -> 0..N frame
     /// </summary>
-    public IEnumerable<Frame> DecodePacket(Packet? packet, Frame frame)
+    public IEnumerable<Frame> DecodePacket(Packet? packet, Frame frame, bool unref = true)
     {
-        SendPacket(packet);
+        try
+        {
+            SendPacket(packet);
+        }
+        finally
+        {
+            if (unref && packet != null)
+            {
+                packet.Unref();
+            }
+        }
+        
         while (true)
         {
             CodecResult s = ReceiveFrame(frame);
