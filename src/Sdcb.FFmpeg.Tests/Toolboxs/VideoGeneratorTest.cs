@@ -49,7 +49,7 @@ public class VideoGeneratorTest
         fc.WriteHeader();
         {
             Stopwatch sw = Stopwatch.StartNew();
-            Frame[] frames = VideoFrameGenerator.WritableYuv420pSequence(vcodec.Width, vcodec.Height, 30)
+            Frame[] frames = VideoFrameGenerator.Yuv420pSequence(vcodec.Width, vcodec.Height, 30)
                 .ToArray();
             _console.WriteLine($"generate sequence elapsed: {sw.ElapsedMilliseconds}ms.");
 

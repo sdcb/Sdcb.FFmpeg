@@ -56,7 +56,7 @@ public class Examples
         using DynamicIOContext io = IOContext.OpenDynamic();
         fc.Pb = io;
         fc.WriteHeader();
-        foreach (Packet packet in VideoFrameGenerator.Yuv420pSequence(vcodec.Width, vcodec.Height).Take(frameCount)
+        foreach (Packet packet in VideoFrameGenerator.Yuv420pSequence(vcodec.Width, vcodec.Height, frameCount)
             .EncodeFrames(vcodec))
         {
             try
@@ -130,7 +130,7 @@ public class Examples
         using DynamicIOContext io = IOContext.OpenDynamic();
         fc.Pb = io;
         fc.WriteHeader();
-        foreach (Packet packet in VideoFrameGenerator.Yuv420pSequence(vcodec.Width, vcodec.Height).Take(40)
+        foreach (Packet packet in VideoFrameGenerator.Yuv420pSequence(vcodec.Width, vcodec.Height, 40)
             .ConvertFrames(vcodec)
             .EncodeFrames(vcodec))
         {
@@ -172,7 +172,7 @@ public class Examples
         fc.Pb = io;
         fc.WriteHeader();
         string filter = $"fps={vcodec.TimeBase.Inverse().ToDouble()},scale={vcodec.Width}:{vcodec.Height}:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse";
-        foreach (Packet packet in VideoFrameGenerator.Yuv420pSequence(150, 100).Take(30)
+        foreach (Packet packet in VideoFrameGenerator.Yuv420pSequence(150, 100, 30)
             .ApplyVideoFilters(new AVRational(1, 30), vcodec.PixelFormat, filter)
             .EncodeFrames(vcodec))
         {

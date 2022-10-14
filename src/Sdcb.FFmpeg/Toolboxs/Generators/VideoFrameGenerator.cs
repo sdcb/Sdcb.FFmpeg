@@ -8,18 +8,8 @@ namespace Sdcb.FFmpeg.Toolboxs.Generators;
 
 public static class VideoFrameGenerator
 {
-    public static IEnumerable<Frame> Yuv420pSequence(int width, int height, CancellationToken cancellationToken = default)
-    {
-        using Frame frame = Frame.CreateWritableVideo(width, height, AVPixelFormat.Yuv420p);
-        for (int i = 0; !cancellationToken.IsCancellationRequested; ++i)
-        {
-            FillYuv420p(frame, i);
-            yield return frame;
-        }
-    }
-
-    /// <returns>Same as <see cref="Yuv420pSequence"/>, but user need to dispose the <see cref="Frame"/> manually.</returns>
-    public static IEnumerable<Frame> WritableYuv420pSequence(int width, int height, int frameCount) => Enumerable
+    /// <returns>Note: result frame must be disposed manuall.</returns>
+    public static IEnumerable<Frame> Yuv420pSequence(int width, int height, int frameCount) => Enumerable
         .Range(0, frameCount)
         .AsParallel()
         .AsOrdered()
