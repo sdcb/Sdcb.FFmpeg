@@ -16,7 +16,7 @@ public unsafe partial class Frame : SafeHandle
     {
     }
 
-    public static Frame CreateWritableVideo(int width, int height, AVPixelFormat pixelFormat)
+    public static Frame CreateVideo(int width, int height, AVPixelFormat pixelFormat)
     {
         var frame = new Frame
         {
@@ -25,11 +25,10 @@ public unsafe partial class Frame : SafeHandle
             Height = height,
         };
         frame.EnsureBuffer();
-        frame.MakeWritable();
         return frame;
     }
 
-    public static Frame CreateWritableAudio(AVSampleFormat sampleFormat, ulong channelLayout, int sampleRate, int sampleCount)
+    public static Frame CreateAudio(AVSampleFormat sampleFormat, ulong channelLayout, int sampleRate, int sampleCount)
     {
         var frame = new Frame
         {
@@ -39,7 +38,6 @@ public unsafe partial class Frame : SafeHandle
             NbSamples = sampleCount,
         };
         frame.EnsureBuffer();
-        frame.MakeWritable();
         return frame;
     }
 

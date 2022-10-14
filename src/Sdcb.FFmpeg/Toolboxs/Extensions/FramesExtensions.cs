@@ -321,7 +321,7 @@ public static class FramesExtensions
     {
         using AudioFifo fifo = new AudioFifo(encoder.SampleFormat, encoder.Channels, 1);
         int frameSize = encoder.FrameSize;
-        using Frame dest = Frame.CreateWritableAudio(encoder.SampleFormat, encoder.ChannelLayout, encoder.SampleRate, frameSize);
+        using Frame dest = Frame.CreateAudio(encoder.SampleFormat, encoder.ChannelLayout, encoder.SampleRate, frameSize);
         using Frame destRef = new Frame();
         int nextPts = 0;
         foreach (Frame frame in frames)

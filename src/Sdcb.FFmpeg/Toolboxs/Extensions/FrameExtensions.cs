@@ -80,7 +80,7 @@ public unsafe static class FrameExtensions
         }
         else
         {
-            using var tempFrame = Frame.CreateWritableVideo(frame.Width, frame.Height, codecContext.PixelFormat);
+            using var tempFrame = Frame.CreateVideo(frame.Width, frame.Height, codecContext.PixelFormat);
             using var frameConverter = new VideoFrameConverter();
             frameConverter.ConvertFrame(frame, tempFrame);
             WriteAction(tempFrame, fc, codecContext);

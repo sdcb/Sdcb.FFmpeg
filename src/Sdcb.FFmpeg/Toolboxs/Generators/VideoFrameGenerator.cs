@@ -1,5 +1,4 @@
 ﻿using Sdcb.FFmpeg.Raw;
-using Sdcb.FFmpeg.Toolboxs.Extensions;
 using Sdcb.FFmpeg.Utils;
 using System;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ public static class VideoFrameGenerator
     /// <exception cref="InvalidOperationException"></exception>
     public static IEnumerable<Frame> Yuv420pSequence(int width, int height, int frameCount)
     {
-        using Frame dest = Frame.CreateWritableVideo(width, height, AVPixelFormat.Yuv420p);
+        using Frame dest = Frame.CreateVideo(width, height, AVPixelFormat.Yuv420p);
         using Frame destRef = new ();
         for (int i = 0; i < frameCount; ++i)
         {
@@ -35,7 +34,7 @@ public static class VideoFrameGenerator
         .AsOrdered()
         .Select(i =>
         {
-            Frame frame = Frame.CreateWritableVideo(width, height, AVPixelFormat.Yuv420p);
+            Frame frame = Frame.CreateVideo(width, height, AVPixelFormat.Yuv420p);
             FillYuv420p(frame, i);
             return frame;
         });

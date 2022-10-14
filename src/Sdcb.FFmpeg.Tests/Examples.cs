@@ -27,7 +27,7 @@ public class Examples
     [Fact]
     public void CreatePng()
     {
-        using Frame frame = Frame.CreateWritableVideo(800, 600, AVPixelFormat.Yuv420p);
+        using Frame frame = Frame.CreateVideo(800, 600, AVPixelFormat.Yuv420p);
         VideoFrameGenerator.FillYuv420p(frame, 0);
         byte[] pngData = frame.EncodeToBytes(formatName: "apng");
         //File.WriteAllBytes("test.png", pngData);
@@ -100,7 +100,7 @@ public class Examples
         videoDecoder.Open();
 
         using VideoFrameConverter sws = new();
-        using Frame dest = Frame.CreateWritableVideo(videoStream.Codecpar.Width, videoStream.Codecpar.Height, AVPixelFormat.Rgb0);
+        using Frame dest = Frame.CreateVideo(videoStream.Codecpar.Width, videoStream.Codecpar.Height, AVPixelFormat.Rgb0);
         foreach (Frame frame in fc.ReadPackets()
             .DecodePackets(videoDecoder))
         {
