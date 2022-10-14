@@ -179,6 +179,10 @@ public record AudioFilterContext(FilterGraph FilterGraph, FilterContext SourceCo
         {
             throw new InvalidOperationException($"{nameof(sourceStream)} is not a audio.");
         }
+        if (codecpar.ChannelLayout == 0 && codecpar.Channels != 0)
+        {
+            codecpar.ChannelLayout = (ulong)ffmpeg.av_get_default_channel_layout(codecpar.Channels);
+        }
 
         return new MediaDictionary
         {
@@ -222,7 +226,14 @@ public abstract record CommonFilterContext(FilterGraph FilterGraph, FilterContex
 {
     public IEnumerable<Frame> WriteFrame(Frame destFrame, Frame? srcFrame)
     {
-        SourceContext.WriteFrame(srcFrame);
+        try
+        {
+            SourceContext.WriteFrame(srcFrame);
+        }
+        finally
+        {
+            srcFrame?.Unref();
+        }
 
         while (true)
         {
@@ -232,7 +243,6 @@ public abstract record CommonFilterContext(FilterGraph FilterGraph, FilterContex
             if (r == CodecResult.Success)
             {
                 yield return destFrame;
-                destFrame.Unref();
             }
         }
     }
