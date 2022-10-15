@@ -45,24 +45,24 @@ You also need to install FFmpeg binaries native assets or related nuget packages
   * For FFmpeg 4.4.2: https://www.nuget.org/packages/Sdcb.FFmpeg.runtime.windows-x64/4.4.2
   * For FFmpeg 5.1.1: https://www.nuget.org/packages/Sdcb.FFmpeg.runtime.windows-x64/5.1.1
 
-  Note: these packages is under **GPL** license.
+  **Note**: these packages is under published under **GPL** license, you can also download/compile your own native assets, `Sdcb.FFmpeg` will link to specific `ffmpeg` native dynamic libraries automatically according your environment variable.
 
 - Linux:  
-  Use your package manager of choice, in `Ubuntu 22.04` & `ffmpeg 5` specificly, you can write following commands:
+  Use your package manager of choice, in `Ubuntu 22.04` & `ffmpeg 4.4.2` specificly, you can write following commands:
+  ```bash
+  apt update
+  apt install software-properties-common
+  add-apt-repository ppa:savoury1/ffmpeg4 -y
+  apt update
+  apt install ffmpeg -y
+  ```
+
+  For `ffmpeg 5.x`, you can write following commands:
   ```bash
   apt update
   apt install software-properties-common
   add-apt-repository ppa:savoury1/ffmpeg4 -y
   add-apt-repository ppa:savoury1/ffmpeg5 -y
-  apt update
-  apt install ffmpeg -y
-  ```
-
-  For `ffmpeg 4.4.2`, you can write following commands:
-  ```bash
-  apt update
-  apt install software-properties-common
-  add-apt-repository ppa:savoury1/ffmpeg4 -y
   apt update
   apt install ffmpeg -y
   ```
