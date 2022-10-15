@@ -1,45 +1,86 @@
 ## Sdcb.FFmpeg [![main](https://github.com/sdcb/FFmpeg.AutoGen/actions/workflows/main.yml/badge.svg)](https://github.com/sdcb/FFmpeg.AutoGen/actions/workflows/main.yml)
+FFmpeg auto generated unsafe bindings for C#/.NET, forked from https://github.com/Ruslan-B/FFmpeg.AutoGen.
 
-## NuGet Packages
-| Package | Link |
-| ------- | ---- |
-| Sdcb.FFmpeg | [![NuGet](https://img.shields.io/nuget/v/Sdcb.FFmpeg.svg)](https://nuget.org/packages/Sdcb.FFmpeg) |
-| Sdcb.FFmpeg.runtime.windows-x64 | [![NuGet](https://img.shields.io/nuget/v/Sdcb.FFmpeg.runtime.windows-x64.svg)](https://nuget.org/packages/Sdcb.FFmpeg.runtime.windows-x64) |
-
-
-FFmpeg auto generated unsafe bindings for C#/.NET, forked from https://github.com/Ruslan-B/FFmpeg.AutoGen, optimized for:
+Compared to original version, For low-level APIs, `Sdcb.FFmpeg` optimized for:
 * Using standard `[DllImport]` instead of `LoadLibrary`
-* Minimized repository size, removed all ffmpeg `*.dll` binaries using `bfg`
-* Auto download FFmpeg binaries from known existing sources
-* Omiting shorter enum values like `AVCodecID.H264` instead of `AVCodecID.AV_CODEC_ID_H264`
-* Omiting same prefix macro into a combined enum like `AVChannels.LayoutStereo` instead of `AV_CH_LAYOUT_STEREO`
+* Deleted common prefix or enums, for example it emited `AVCodecID.H264` instead of `AVCodecID.AV_CODEC_ID_H264`
+* Combined same prefix macros into a enum, for example `AV_DICT_READ.MatchCase` instead of `AV_DICT_MATCH_CASE`
 * Other optimization and fixs...
 
-## Usage
+`Sdcb.FFmpeg` also provided some high level APIs:
+* wrapper of class-like APIs like `FormatContext`/`CodecContext`/`MediaDictionary`
+* helper of wrapping existing APIs like `FramesExtensions.ApplyFilters`
+* some source generators like `VideoFrameGenerator.Yuv420pSequence`
+
+For code generations, `Sdcb.FFmpeg` have benifits from:
+* Minimized repository size, removed all ffmpeg `*.dll` binaries using `bfg`
+* Auto download FFmpeg binaries from known existing sources
+
+## NuGet Packages
+* FFmpeg 4.4.2:
+  | Package                         | Link                                                                                                                                       |
+  | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+  | Sdcb.FFmpeg                     | [![NuGet](https://img.shields.io/badge/nuget-4.4.2-blue)](https://www.nuget.org/packages/Sdcb.FFmpeg/4.4.2-preview.6)                      |
+  | Sdcb.FFmpeg.runtime.windows-x64 | [![NuGet](https://img.shields.io/badge/nuget-4.4.2-blue)](https://www.nuget.org/packages/Sdcb.FFmpeg.runtime.windows-x64/4.4.2)            |
+
+* FFmpeg 5.x:
+  | Package                         | Link                                                                                                                                       |
+  | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+  | Sdcb.FFmpeg                     | [![NuGet](https://img.shields.io/nuget/vpre/Sdcb.FFmpeg.svg?color=red)](https://nuget.org/packages/Sdcb.FFmpeg)                            |
+  | Sdcb.FFmpeg.runtime.windows-x64 | [![NuGet](https://img.shields.io/nuget/v/Sdcb.FFmpeg.runtime.windows-x64.svg)](https://nuget.org/packages/Sdcb.FFmpeg.runtime.windows-x64) |
+
+
+## Install
+
+Install the PInvoke nuget package(please try install the latest version of **4.x**):
+* https://www.nuget.org/packages/Sdcb.FFmpeg/4.4.2-preview.6
+
+Note: 
+* I'm maintaince both `4.4.2` and `5.x` version at same time, but `4.4.2` is my higher priority. because current LTS version of Ubuntu is install `4.x` version by default.
+* some API isn't stable enough and subjected to change at any time, please try install the specific version and keep a eye on latest updates.
+
+You also need to install FFmpeg binaries native assets or related nuget packages:
+- Windows:  
+  Install `NuGet` package:
+  * For FFmpeg 4.4.2: https://www.nuget.org/packages/Sdcb.FFmpeg.runtime.windows-x64/4.4.2
+  * For FFmpeg 5.1.1: https://www.nuget.org/packages/Sdcb.FFmpeg.runtime.windows-x64/5.1.1
+
+  Note: these packages is under **GPL** license.
+
+- Linux:  
+  Use your package manager of choice, in `Ubuntu 22.04` & `ffmpeg 5` specificly, you can write following commands:
+  ```bash
+  apt update
+  apt install software-properties-common
+  add-apt-repository ppa:savoury1/ffmpeg4 -y
+  add-apt-repository ppa:savoury1/ffmpeg5 -y
+  apt update
+  apt install ffmpeg -y
+  ```
+
+  For `ffmpeg 4.4.2`, you can write following commands:
+  ```bash
+  apt update
+  apt install software-properties-common
+  add-apt-repository ppa:savoury1/ffmpeg4 -y
+  apt update
+  apt install ffmpeg -y
+  ```
+
+- Mac OS X:  
+  Install ffmpeg via [Homebrew](https://formulae.brew.sh/formula/ffmpeg):
+  ```bash
+  brew install ffmpeg
+  ```
 
 For the more sophisticated operations please refer to offical [ffmpeg Documentation](https://www.ffmpeg.org/documentation.html) expecially API section of it.
 
-- on Windows:  
-Install `NuGet` package: `https://www.nuget.org/packages/Sdcb.FFmpeg.runtime.windows-x64`
+## Tutorial and examples
 
-- on OS X:  
-Install ffmpeg via [Homebrew](https://formulae.brew.sh/formula/ffmpeg):
-```bash
-brew install ffmpeg
-```
+You can refer to [Examples.cs](src/Sdcb.FFmpeg.Tests/Examples.cs) for multiple tutorial and examples.
 
-- on Linux:  
-Use your package manager of choice, in Ubuntu 22.04 & ffmpeg 5.0.1 specificly, you can write following commands:
-```
-apt update
-apt install software-properties-common
-add-apt-repository ppa:savoury1/ffmpeg4 -y
-add-apt-repository ppa:savoury1/ffmpeg5 -y
-apt update
-apt install ffmpeg -y
-```
 
-## Generation
+## Build & Generation
 
 The bindings generator uses [CppSharp](https://github.com/mono/CppSharp).
 
@@ -58,15 +99,3 @@ All rights reserved.
 
 Distributed under the GNU Lesser General Public License (LGPL) version 3.  
 http://www.gnu.org/licenses/lgpl.html
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
