@@ -6,7 +6,11 @@ using Sdcb.FFmpeg.Swscales;
 using Sdcb.FFmpeg.Toolboxs.FilterTools;
 using Sdcb.FFmpeg.Utils;
 using System;
+using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using static Sdcb.FFmpeg.Raw.ffmpeg;
 
 namespace Sdcb.FFmpeg.Toolboxs.Extensions;
@@ -272,9 +276,9 @@ public static class FramesExtensions
     }
 
     /// <returns>Caller must call <see cref="Frame.Unref"/> to the result when not used.</returns>
-    public static IEnumerable<Frame> ApplyFilters(this IEnumerable<Frame> srcFrames, 
-        AudioFilterContext? audioCtx = null, 
-        VideoFilterContext? videoCtx = null, 
+    public static IEnumerable<Frame> ApplyFilters(this IEnumerable<Frame> srcFrames,
+        AudioFilterContext? audioCtx = null,
+        VideoFilterContext? videoCtx = null,
         bool unref = true)
     {
         using Frame destRef = new();
@@ -479,5 +483,5 @@ public static class FramesExtensions
                 encodeAudio = false;
             }
         }
-    }
+    }    
 }
