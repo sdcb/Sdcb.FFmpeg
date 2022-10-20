@@ -3,41 +3,46 @@ using Sdcb.FFmpeg.Utils;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Sdcb.FFmpeg.Toolboxs.Extensions
 {
-    public class MediaQueue<T> : IDisposable where T : IDisposable
+    public class MediaThreadQueue<T> : IDisposable where T : IDisposable
     {
-        readonly BlockingCollection<T> _queue;
+        private readonly BlockingCollection<T> _queue;
         private readonly Task _task;
 
         public string? Name { get; init; }
 
-        public MediaQueue(BlockingCollection<T> queue, Task task, string? name = null)
+        public int Count => _queue.Count;
+
+        internal MediaThreadQueue(BlockingCollection<T> queue, Task task, string? name = null)
         {
             _queue = queue;
             _task = task;
             Name = name;
         }
 
-        public int Count => _queue.Count;
-
-        public IEnumerable<T> GetConsumingEnumerable(bool dispose = true)
+        public IEnumerable<T> GetConsumingEnumerable(bool dispose = true, bool disposeSelf = true)
         {
-            foreach (T frame in _queue.GetConsumingEnumerable())
+            try
             {
-                try
+                foreach (T frame in _queue.GetConsumingEnumerable())
                 {
-                    yield return frame;
+                    try
+                    {
+                        yield return frame;
+                    }
+                    finally
+                    {
+                        if (dispose) frame.Dispose();
+                    }
                 }
-                finally
-                {
-                    if (dispose) frame.Dispose();
-                }
+            }
+            finally
+            {
+                if (disposeSelf) Dispose();
             }
         }
 
@@ -54,14 +59,14 @@ namespace Sdcb.FFmpeg.Toolboxs.Extensions
 
     public static class MediaQueueExtensions
     {
-        public static MediaQueue<Frame> ToQueue(this IEnumerable<Frame> frames, int boundedCapacity = 512,
+        public static MediaThreadQueue<Frame> ToThreadQueue(this IEnumerable<Frame> frames, int boundedCapacity = 512,
             string? name = null,
             ManualResetEventSlim? startEvent = null,
             bool unref = true,
             CancellationToken cancellationToken = default)
         {
             BlockingCollection<Frame> queue = new BlockingCollection<Frame>(boundedCapacity);
-            MediaQueue<Frame> result = new MediaQueue<Frame>(queue, Task.Run(() =>
+            MediaThreadQueue<Frame> result = new MediaThreadQueue<Frame>(queue, Task.Run(() =>
             {
                 if (startEvent != null) startEvent.Wait(cancellationToken);
 
@@ -97,14 +102,14 @@ namespace Sdcb.FFmpeg.Toolboxs.Extensions
             return result;
         }
 
-        public static MediaQueue<Packet> ToQueue(this IEnumerable<Packet> packets, int boundedCapacity = 512,
+        public static MediaThreadQueue<Packet> ToThreadQueue(this IEnumerable<Packet> packets, int boundedCapacity = 512,
             string? name = null,
             ManualResetEventSlim? startEvent = null,
             bool unref = true,
             CancellationToken cancellationToken = default)
         {
             BlockingCollection<Packet> queue = new BlockingCollection<Packet>(boundedCapacity);
-            MediaQueue<Packet> result = new MediaQueue<Packet>(queue, Task.Run(() =>
+            MediaThreadQueue<Packet> result = new MediaThreadQueue<Packet>(queue, Task.Run(() =>
             {
                 if (startEvent != null) startEvent.Wait(cancellationToken);
 
@@ -123,7 +128,7 @@ namespace Sdcb.FFmpeg.Toolboxs.Extensions
                         {
                             if (!blockingWarned)
                             {
-                                FFmpegLogger.LogWarning($"{name ?? "Frame"} queue blocking, consider raising the {nameof(boundedCapacity)}(current value: {boundedCapacity})\n");
+                                FFmpegLogger.LogWarning($"{name ?? "Packet"} queue blocking, consider raising the {nameof(boundedCapacity)}(current value: {boundedCapacity})\n");
                                 blockingWarned = true;
                             }
 
