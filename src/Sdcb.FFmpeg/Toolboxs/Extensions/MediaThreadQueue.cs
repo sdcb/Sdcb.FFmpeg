@@ -57,7 +57,7 @@ namespace Sdcb.FFmpeg.Toolboxs.Extensions
 
     public static class MediaQueueExtensions
     {
-        public static MediaThreadQueue<T> ToThreadQueue<T>(this IEnumerable<T> sources, int boundedCapacity = 512,
+        public static MediaThreadQueue<T> ToThreadQueue<T>(this IEnumerable<T> sources, int boundedCapacity = 64,
             string? name = null,
             ManualResetEventSlim? startEvent = null,
             bool unref = true,
