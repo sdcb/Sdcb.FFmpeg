@@ -6,7 +6,7 @@ using static Sdcb.FFmpeg.Raw.ffmpeg;
 
 namespace Sdcb.FFmpeg.Utils;
 
-public unsafe partial class Frame : SafeHandle
+public unsafe partial class Frame : SafeHandle, IBufferRefed
 {
     /// <summary>
     /// <see cref="av_frame_alloc"/>
@@ -132,4 +132,19 @@ public unsafe partial class Frame : SafeHandle
     }
 
     public static string GetColorspaceName(AVColorSpace val) => av_color_space_name((AVColorSpace)val);
+
+    void IBufferRefed.Ref(IBufferRefed other)
+    {
+        if (other is Frame frame)
+        {
+            Ref(frame);
+        }
+        throw new ArgumentException($"{other} is not a frame.");
+    }
+
+    void IBufferRefed.Unref() => Unref();
+
+    void IBufferRefed.MakeWritable() => MakeWritable();
+
+    IBufferRefed IBufferRefed.Clone() => Clone();
 }

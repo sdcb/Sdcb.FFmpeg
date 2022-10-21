@@ -7,7 +7,7 @@ using static Sdcb.FFmpeg.Raw.ffmpeg;
 
 namespace Sdcb.FFmpeg.Codecs;
 
-public unsafe partial class Packet : SafeHandle
+public unsafe partial class Packet : SafeHandle, IBufferRefed
 {
     /// <summary>
     /// <see cref="av_packet_alloc"/>
@@ -169,4 +169,19 @@ public unsafe partial class Packet : SafeHandle
         }
         return MediaDictionary.FromNative(dict, isOwner: true);
     }
+
+    void IBufferRefed.Ref(IBufferRefed other)
+    {
+        if (other is Packet packet)
+        {
+            Ref(packet);
+        }
+        throw new ArgumentException($"{other} is not a packet.");
+    }
+
+    void IBufferRefed.Unref() => Unref();
+
+    void IBufferRefed.MakeWritable() => MakeWritable();
+
+    IBufferRefed IBufferRefed.Clone() => Clone();
 }
