@@ -1,7 +1,7 @@
 name: main
 on:
   push:
-    branches: [main,release/4.4.2]
+    branches: [main,release/4.4.3]
   pull_request:
     branches: [main]
 
