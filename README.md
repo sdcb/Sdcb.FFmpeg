@@ -20,8 +20,8 @@ For code generations, `Sdcb.FFmpeg` have benifits from:
 * FFmpeg 4.4.2:
   | Package                         | Link                                                                                                                                       |
   | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-  | Sdcb.FFmpeg                     | [![NuGet](https://img.shields.io/badge/nuget-4.4.2-blue)](https://www.nuget.org/packages/Sdcb.FFmpeg/4.4.2-preview.6)                      |
-  | Sdcb.FFmpeg.runtime.windows-x64 | [![NuGet](https://img.shields.io/badge/nuget-4.4.2-blue)](https://www.nuget.org/packages/Sdcb.FFmpeg.runtime.windows-x64/4.4.2)            |
+  | Sdcb.FFmpeg                     | [![NuGet](https://img.shields.io/badge/nuget-4.4.2-blue)](https://www.nuget.org/packages/Sdcb.FFmpeg/4.4.2)                      |
+  | Sdcb.FFmpeg.runtime.windows-x64 | [![NuGet](https://img.shields.io/badge/nuget-4.4.3-blue)](https://www.nuget.org/packages/Sdcb.FFmpeg.runtime.windows-x64/4.4.3)            |
 
 * FFmpeg 5.x:
   | Package                         | Link                                                                                                                                       |
