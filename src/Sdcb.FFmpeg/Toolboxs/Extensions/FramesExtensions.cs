@@ -53,12 +53,19 @@ public static class FramesExtensions
             using VideoFrameConverter frameConverter = new();
             foreach (Frame sourceFrame in sourceFrames)
             {
-                dest.MakeWritable();
-                frameConverter.ConvertFrame(sourceFrame, dest, swsFlags);
-                if (unref) sourceFrame.Unref();
-                dest.Pts = pts++;
-                destRef.Ref(dest);
-                yield return destRef;
+                if (sourceFrame.Width > 0)
+                {
+                    dest.MakeWritable();
+                    frameConverter.ConvertFrame(sourceFrame, dest, swsFlags);
+                    if (unref) sourceFrame.Unref();
+                    dest.Pts = pts++;
+                    destRef.Ref(dest);
+                    yield return destRef;
+                }
+                else
+                {
+                    yield return sourceFrame;
+                }
             }
         }
         else if (c.Codec.Type == AVMediaType.Audio)
@@ -69,25 +76,32 @@ public static class FramesExtensions
             using SampleConverter frameConverter = new();
             foreach (Frame sourceFrame in sourceFrames)
             {
-                if (!frameConverter.Initialized)
+                if (sourceFrame.SampleRate > 0)
                 {
-                    frameConverter.Options.Set("in_channel_layout", sourceFrame.ChannelLayout, default(AV_OPT_SEARCH));
-                    frameConverter.Options.Set("in_sample_rate", sourceFrame.SampleRate, default(AV_OPT_SEARCH));
-                    frameConverter.Options.Set("in_sample_fmt", (AVSampleFormat)sourceFrame.Format, default(AV_OPT_SEARCH));
-                    frameConverter.Options.Set("out_channel_layout", dest.ChannelLayout, default(AV_OPT_SEARCH));
-                    frameConverter.Options.Set("out_sample_rate", dest.SampleRate, default(AV_OPT_SEARCH));
-                    frameConverter.Options.Set("out_sample_fmt", (AVSampleFormat)dest.Format, default(AV_OPT_SEARCH));
-                    frameConverter.Initialize();
+                    if (!frameConverter.Initialized)
+                    {
+                        frameConverter.Options.Set("in_channel_layout", sourceFrame.ChannelLayout, default(AV_OPT_SEARCH));
+                        frameConverter.Options.Set("in_sample_rate", sourceFrame.SampleRate, default(AV_OPT_SEARCH));
+                        frameConverter.Options.Set("in_sample_fmt", (AVSampleFormat)sourceFrame.Format, default(AV_OPT_SEARCH));
+                        frameConverter.Options.Set("out_channel_layout", dest.ChannelLayout, default(AV_OPT_SEARCH));
+                        frameConverter.Options.Set("out_sample_rate", dest.SampleRate, default(AV_OPT_SEARCH));
+                        frameConverter.Options.Set("out_sample_fmt", (AVSampleFormat)dest.Format, default(AV_OPT_SEARCH));
+                        frameConverter.Initialize();
+                    }
+                    int destSampleCount = (int)av_rescale_rnd(frameConverter.GetDelay(sourceFrame.SampleRate) + sourceFrame.NbSamples, sourceFrame.SampleRate, dest.SampleRate, AVRounding.Up);
+                    dest.MakeWritable();
+                    int converted = frameConverter.Convert(dest.Data, destSampleCount, sourceFrame.Data, sourceFrame.NbSamples);
+                    if (unref) sourceFrame.Unref();
+                    dest.Pts = pts;
+                    dest.NbSamples = converted;
+                    pts += converted;
+                    destRef.Ref(dest);
+                    yield return destRef;
                 }
-                int destSampleCount = (int)av_rescale_rnd(frameConverter.GetDelay(sourceFrame.SampleRate) + sourceFrame.NbSamples, sourceFrame.SampleRate, dest.SampleRate, AVRounding.Up);
-                dest.MakeWritable();
-                int converted = frameConverter.Convert(dest.Data, destSampleCount, sourceFrame.Data, sourceFrame.NbSamples);
-                if (unref) sourceFrame.Unref();
-                dest.Pts = pts;
-                dest.NbSamples = converted;
-                pts += converted;
-                destRef.Ref(dest);
-                yield return destRef;
+                else
+                {
+                    yield return sourceFrame;
+                }
             }
         }
     }
