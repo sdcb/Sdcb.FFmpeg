@@ -3,7 +3,7 @@
     <PropertyGroup>
         <PackageId>Sdcb.FFmpeg</PackageId>
         <VersionPrefix>4.4.2</VersionPrefix>
-        <VersionSuffix>preview.11</VersionSuffix>
+        <VersionSuffix>preview.12</VersionSuffix>
         <LangVersion>latest</LangVersion>
         <!-- Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
         <IncludeSymbols>true</IncludeSymbols>
@@ -25,6 +25,22 @@
         <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
         <WarningsAsErrors />
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6|AnyCPU'">
+      <LangVersion>preview</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
+      <LangVersion>preview</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
+      <LangVersion>preview</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6|AnyCPU'">
+      <LangVersion>preview</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
