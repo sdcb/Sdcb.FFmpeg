@@ -6,16 +6,15 @@ using Sdcb.FFmpeg.Toolboxs.Extensions;
 using Sdcb.FFmpeg.Toolboxs.FilterTools;
 using Sdcb.FFmpeg.Toolboxs.Generators;
 using Sdcb.FFmpeg.Utils;
+using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Threading;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Sdcb.FFmpeg.Tests;
 
-public class Examples
+public class Examples : IDisposable
 {
     private readonly ITestOutputHelper _console;
 
@@ -227,5 +226,10 @@ public class Examples
         byte[] remuxMp4 = io.GetBuffer().ToArray();
         Assert.NotEmpty(remuxMp4);
         //File.WriteAllBytes("test.mp4", remuxMp4);
+    }
+
+    public void Dispose()
+    {
+        FFmpegLogger.LogWriter = null;
     }
 }
