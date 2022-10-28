@@ -35,7 +35,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateNullable("side_data"),
                 FieldDef.CreateNullable("buf"),
                 FieldDef.CreateNullable("opaque_ref"),
-                FieldDef.CreateTypeCast("data", TypeCastDef.ReadonlyDataPointer("byte*", "size")) with { ReadOnly = true },
+                FieldDef.CreateTypeCast("data", TypeCastDef.DataPointer("byte*", "size")),
                 FieldDef.CreateHide("size"),
             }),
             G2TransformDef.MakeReadonlyStruct(ClassCategories.Codecs, "AVProfile", "MediaProfile", new FieldDef[]
@@ -77,7 +77,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             G2TransformDef.MakeClass(ClassCategories.Codecs, "AVCodecParserContext", "CodecParserContext"),
             G2TransformDef.MakeStruct(ClassCategories.Codecs, "AVPacketSideData", "PacketSideData", new FieldDef[]
             {
-                FieldDef.CreateTypeCast("data", TypeCastDef.ReadonlyDataPointer("byte*", "size")) with { ReadOnly = true },
+                FieldDef.CreateTypeCast("data", TypeCastDef.DataPointer("byte*", "size")),
                 FieldDef.CreateHide("size"),
             }),
             #endregion
@@ -152,13 +152,13 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
             G2TransformDef.MakeStruct(ClassCategories.Utils, "AVFrameSideData", "FrameSideData", new FieldDef[]
             {
                 FieldDef.CreateNullable("buf"),
-                FieldDef.CreateTypeCast("data", TypeCastDef.ReadonlyDataPointer("byte*", "size")) with { ReadOnly = true },
+                FieldDef.CreateTypeCast("data", TypeCastDef.DataPointer("byte*", "size")),
                 FieldDef.CreateHide("size"),
             }),
             G2TransformDef.MakeClass(ClassCategories.Utils, "AVBufferRef", "BufferRef", new FieldDef[]
             {
                 FieldDef.CreateTypeCast("buffer", TypeCastDef.Force("AVBuffer*", "IntPtr")),
-                FieldDef.CreateTypeCast("data", TypeCastDef.ReadonlyDataPointer("byte*", "size")) with { ReadOnly = true },
+                FieldDef.CreateTypeCast("data", TypeCastDef.DataPointer("byte*", "size")),
                 FieldDef.CreateHide("size"),
             }),
             G2TransformDef.MakeClass(ClassCategories.Utils, "AVAudioFifo", "AudioFifo"),

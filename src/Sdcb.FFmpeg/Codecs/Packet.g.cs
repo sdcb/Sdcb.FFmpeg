@@ -68,7 +68,11 @@ public unsafe partial class Packet : SafeHandle
     /// <para>original type: byte*</para>
     /// <see cref="AVPacket.data" />
     /// </summary>
-    public DataPointer Data => new DataPointer(_ptr->data, (int)_ptr->size)!;
+    public DataPointer Data
+    {
+        get => new DataPointer(_ptr->data, (int)_ptr->size)!;
+        set => ((IntPtr)(_ptr->data = (byte*)value.Pointer) + (_ptr->size = value.Length)).ToPointer();
+    }
     
     /// <summary>
     /// <see cref="AVPacket.stream_index" />
