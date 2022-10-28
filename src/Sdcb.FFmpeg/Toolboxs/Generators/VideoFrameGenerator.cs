@@ -46,9 +46,9 @@ public static class VideoFrameGenerator
         int linesize1 = linesize._[1];
         int linesize2 = linesize._[2];
 
-        byte* data0 = frame.Data._0;
-        byte* data1 = frame.Data._1;
-        byte* data2 = frame.Data._2;
+        byte* data0 = (byte*)frame.Data._0;
+        byte* data1 = (byte*)frame.Data._1;
+        byte* data2 = (byte*)frame.Data._2;
 
         /* prepare a dummy image */
         /* Y */

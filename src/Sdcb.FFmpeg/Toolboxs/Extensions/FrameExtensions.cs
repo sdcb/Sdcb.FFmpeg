@@ -101,7 +101,7 @@ public unsafe static class FrameExtensions
     public unsafe static void SetData0(this Frame frame, IntPtr data0, int rowPitch)
     {
         AVFrame* ptr = (AVFrame*)frame;
-        ptr->data[0] = (byte*)data0;
+        ptr->data[0] = data0;
         ptr->linesize[0] = rowPitch;
     }
 }

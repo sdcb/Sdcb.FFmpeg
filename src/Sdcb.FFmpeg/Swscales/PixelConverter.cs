@@ -51,16 +51,16 @@ public unsafe class PixelConverter : SafeHandle
     /// </summary>
     public void Convert(byte_ptrArray4 sourceData, int_array4 sourceLinesize, int sourceSliceH, byte_ptrArray4 destData, int_array4 destLinesize, int sourceSliceY = 0) =>
         sws_scale(this,
-            srcSlice: sourceData.ToArray(), srcStride: sourceLinesize.ToArray(), srcSliceY: sourceSliceY, srcSliceH: sourceSliceH,
-            destData.ToArray(), destLinesize.ToArray()).ThrowIfError();
+            srcSlice: sourceData.ToRawArray(), srcStride: sourceLinesize.ToArray(), srcSliceY: sourceSliceY, srcSliceH: sourceSliceH,
+            destData.ToRawArray(), destLinesize.ToArray()).ThrowIfError();
 
     /// <summary>
     /// <see cref="sws_scale(SwsContext*, byte*[], int[], int, int, byte*[], int[])"/>
     /// </summary>
     public void Convert(byte_ptrArray8 sourceData, int_array8 sourceLinesize, int sourceSliceH, byte_ptrArray8 destData, int_array8 destLinesize, int sourceSliceY = 0) =>
         sws_scale(this,
-            srcSlice: sourceData.ToArray(), srcStride: sourceLinesize.ToArray(), srcSliceY: sourceSliceY, srcSliceH: sourceSliceH,
-            destData.ToArray(), destLinesize.ToArray()).ThrowIfError();
+            srcSlice: sourceData.ToRawArray(), srcStride: sourceLinesize.ToArray(), srcSliceY: sourceSliceY, srcSliceH: sourceSliceH,
+            destData.ToRawArray(), destLinesize.ToArray()).ThrowIfError();
 
     public FFmpegOptions Options => new FFmpegOptions(this);
 

@@ -12,11 +12,11 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 2;
         public AVRational _0, _1;
         
-        public AVRational this[uint i]
+        public AVRational this[int i]
         {
             get
             {
-                if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
+                if (i < 0 || i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size}]");
                 fixed (AVRational* p0 = &_0)
                 {
                     return *(p0 + i);
@@ -54,17 +54,17 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 2;
         public fixed short _[2];
         
-        public short this[uint i]
+        public short this[int i]
         {
             get => i switch
             {
-                < Size => _[i],
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => _[i],
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
             set => _[i] = i switch
             {
-                < Size => value,
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => value,
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
         }
         
@@ -89,14 +89,16 @@ namespace Sdcb.FFmpeg.Raw
     public unsafe struct void_ptrArray2
     {
         public const int Size = 2;
-        public void* _0, _1;
+        /// <summary>original type: void*</summary>
+        public IntPtr _0, _1;
         
-        public void* this[uint i]
+        /// <summary>original type: void*</summary>
+        public IntPtr this[int i]
         {
             get
             {
-                if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
-                fixed (void** p0 = &_0)
+                if (i < 0 || i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size}]");
+                fixed (IntPtr* p0 = &_0)
                 {
                     return *(p0 + i);
                 }
@@ -104,32 +106,31 @@ namespace Sdcb.FFmpeg.Raw
             set
             {
                 if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
-                fixed (void** p0 = &_0)
+                fixed (IntPtr* p0 = &_0)
                 {
                     *(p0 + i) = value;
                 }
             }
         }
         
-        public void*[] ToArray() => new [] { _0, _1 };
+        public void*[] ToRawArray() => new [] { (void*)_0, (void*)_1 };
         
-        public void UpdateFrom(void*[] array)
+        /// <summary>original type: void*</summary>
+        public IntPtr[] ToArray() => new [] { _0, _1 };
+        
+        /// <summary>original type: void*</summary>
+        public void UpdateFrom(IntPtr[] array)
         {
             if (array.Length != Size)
             {
                 throw new ArgumentOutOfRangeException($"array size({array.Length}) should == {Size}");
             }
             
-            fixed (void** p = array)
+            fixed (IntPtr* p = array)
             {
                 _0 = p[0];
                 _1 = p[1];
             }
-        }
-        
-        public unsafe Span<IntPtr> GetPinnableReference()
-        {
-            fixed (void** p = &_0) return new Span<IntPtr>(p, Size); 
         }
     }
     
@@ -138,11 +139,11 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 3;
         public AVHDRPlusColorTransformParams _0, _1, _2;
         
-        public AVHDRPlusColorTransformParams this[uint i]
+        public AVHDRPlusColorTransformParams this[int i]
         {
             get
             {
-                if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
+                if (i < 0 || i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size}]");
                 fixed (AVHDRPlusColorTransformParams* p0 = &_0)
                 {
                     return *(p0 + i);
@@ -181,11 +182,11 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 3;
         public AVRational _0, _1, _2;
         
-        public AVRational this[uint i]
+        public AVRational this[int i]
         {
             get
             {
-                if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
+                if (i < 0 || i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size}]");
                 fixed (AVRational* p0 = &_0)
                 {
                     return *(p0 + i);
@@ -224,11 +225,11 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 3;
         public AVRational_array2 _0, _1, _2;
         
-        public AVRational_array2 this[uint i]
+        public AVRational_array2 this[int i]
         {
             get
             {
-                if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
+                if (i < 0 || i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size}]");
                 fixed (AVRational_array2* p0 = &_0)
                 {
                     return *(p0 + i);
@@ -265,14 +266,16 @@ namespace Sdcb.FFmpeg.Raw
     public unsafe struct byte_ptrArray3
     {
         public const int Size = 3;
-        public byte* _0, _1, _2;
+        /// <summary>original type: byte*</summary>
+        public IntPtr _0, _1, _2;
         
-        public byte* this[uint i]
+        /// <summary>original type: byte*</summary>
+        public IntPtr this[int i]
         {
             get
             {
-                if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
-                fixed (byte** p0 = &_0)
+                if (i < 0 || i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size}]");
+                fixed (IntPtr* p0 = &_0)
                 {
                     return *(p0 + i);
                 }
@@ -280,33 +283,32 @@ namespace Sdcb.FFmpeg.Raw
             set
             {
                 if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
-                fixed (byte** p0 = &_0)
+                fixed (IntPtr* p0 = &_0)
                 {
                     *(p0 + i) = value;
                 }
             }
         }
         
-        public byte*[] ToArray() => new [] { _0, _1, _2 };
+        public byte*[] ToRawArray() => new [] { (byte*)_0, (byte*)_1, (byte*)_2 };
         
-        public void UpdateFrom(byte*[] array)
+        /// <summary>original type: byte*</summary>
+        public IntPtr[] ToArray() => new [] { _0, _1, _2 };
+        
+        /// <summary>original type: byte*</summary>
+        public void UpdateFrom(IntPtr[] array)
         {
             if (array.Length != Size)
             {
                 throw new ArgumentOutOfRangeException($"array size({array.Length}) should == {Size}");
             }
             
-            fixed (byte** p = array)
+            fixed (IntPtr* p = array)
             {
                 _0 = p[0];
                 _1 = p[1];
                 _2 = p[2];
             }
-        }
-        
-        public unsafe Span<IntPtr> GetPinnableReference()
-        {
-            fixed (byte** p = &_0) return new Span<IntPtr>(p, Size); 
         }
     }
     
@@ -315,17 +317,17 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 3;
         public fixed int _[3];
         
-        public int this[uint i]
+        public int this[int i]
         {
             get => i switch
             {
-                < Size => _[i],
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => _[i],
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
             set => _[i] = i switch
             {
-                < Size => value,
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => value,
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
         }
         
@@ -353,11 +355,11 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 3;
         public short_array2 _0, _1, _2;
         
-        public short_array2 this[uint i]
+        public short_array2 this[int i]
         {
             get
             {
-                if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
+                if (i < 0 || i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size}]");
                 fixed (short_array2* p0 = &_0)
                 {
                     return *(p0 + i);
@@ -396,11 +398,11 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 4;
         public AVComponentDescriptor _0, _1, _2, _3;
         
-        public AVComponentDescriptor this[uint i]
+        public AVComponentDescriptor this[int i]
         {
             get
             {
-                if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
+                if (i < 0 || i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size}]");
                 fixed (AVComponentDescriptor* p0 = &_0)
                 {
                     return *(p0 + i);
@@ -438,14 +440,16 @@ namespace Sdcb.FFmpeg.Raw
     public unsafe struct byte_ptrArray4
     {
         public const int Size = 4;
-        public byte* _0, _1, _2, _3;
+        /// <summary>original type: byte*</summary>
+        public IntPtr _0, _1, _2, _3;
         
-        public byte* this[uint i]
+        /// <summary>original type: byte*</summary>
+        public IntPtr this[int i]
         {
             get
             {
-                if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
-                fixed (byte** p0 = &_0)
+                if (i < 0 || i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size}]");
+                fixed (IntPtr* p0 = &_0)
                 {
                     return *(p0 + i);
                 }
@@ -453,34 +457,33 @@ namespace Sdcb.FFmpeg.Raw
             set
             {
                 if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
-                fixed (byte** p0 = &_0)
+                fixed (IntPtr* p0 = &_0)
                 {
                     *(p0 + i) = value;
                 }
             }
         }
         
-        public byte*[] ToArray() => new [] { _0, _1, _2, _3 };
+        public byte*[] ToRawArray() => new [] { (byte*)_0, (byte*)_1, (byte*)_2, (byte*)_3 };
         
-        public void UpdateFrom(byte*[] array)
+        /// <summary>original type: byte*</summary>
+        public IntPtr[] ToArray() => new [] { _0, _1, _2, _3 };
+        
+        /// <summary>original type: byte*</summary>
+        public void UpdateFrom(IntPtr[] array)
         {
             if (array.Length != Size)
             {
                 throw new ArgumentOutOfRangeException($"array size({array.Length}) should == {Size}");
             }
             
-            fixed (byte** p = array)
+            fixed (IntPtr* p = array)
             {
                 _0 = p[0];
                 _1 = p[1];
                 _2 = p[2];
                 _3 = p[3];
             }
-        }
-        
-        public unsafe Span<IntPtr> GetPinnableReference()
-        {
-            fixed (byte** p = &_0) return new Span<IntPtr>(p, Size); 
         }
     }
     
@@ -489,17 +492,17 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 4;
         public fixed int _[4];
         
-        public int this[uint i]
+        public int this[int i]
         {
             get => i switch
             {
-                < Size => _[i],
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => _[i],
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
             set => _[i] = i switch
             {
-                < Size => value,
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => value,
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
         }
         
@@ -528,17 +531,17 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 4;
         public fixed long _[4];
         
-        public long this[uint i]
+        public long this[int i]
         {
             get => i switch
             {
-                < Size => _[i],
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => _[i],
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
             set => _[i] = i switch
             {
-                < Size => value,
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => value,
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
         }
         
@@ -567,17 +570,17 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 4;
         public fixed ulong _[4];
         
-        public ulong this[uint i]
+        public ulong this[int i]
         {
             get => i switch
             {
-                < Size => _[i],
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => _[i],
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
             set => _[i] = i switch
             {
-                < Size => value,
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => value,
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
         }
         
@@ -606,17 +609,17 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 5;
         public fixed int _[5];
         
-        public int this[uint i]
+        public int this[int i]
         {
             get => i switch
             {
-                < Size => _[i],
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => _[i],
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
             set => _[i] = i switch
             {
-                < Size => value,
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => value,
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
         }
         
@@ -644,14 +647,16 @@ namespace Sdcb.FFmpeg.Raw
     public unsafe struct AVBufferRef_ptrArray8
     {
         public const int Size = 8;
-        public AVBufferRef* _0, _1, _2, _3, _4, _5, _6, _7;
+        /// <summary>original type: AVBufferRef*</summary>
+        public IntPtr _0, _1, _2, _3, _4, _5, _6, _7;
         
-        public AVBufferRef* this[uint i]
+        /// <summary>original type: AVBufferRef*</summary>
+        public IntPtr this[int i]
         {
             get
             {
-                if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
-                fixed (AVBufferRef** p0 = &_0)
+                if (i < 0 || i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size}]");
+                fixed (IntPtr* p0 = &_0)
                 {
                     return *(p0 + i);
                 }
@@ -659,23 +664,27 @@ namespace Sdcb.FFmpeg.Raw
             set
             {
                 if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
-                fixed (AVBufferRef** p0 = &_0)
+                fixed (IntPtr* p0 = &_0)
                 {
                     *(p0 + i) = value;
                 }
             }
         }
         
-        public AVBufferRef*[] ToArray() => new [] { _0, _1, _2, _3, _4, _5, _6, _7 };
+        public AVBufferRef*[] ToRawArray() => new [] { (AVBufferRef*)_0, (AVBufferRef*)_1, (AVBufferRef*)_2, (AVBufferRef*)_3, (AVBufferRef*)_4, (AVBufferRef*)_5, (AVBufferRef*)_6, (AVBufferRef*)_7 };
         
-        public void UpdateFrom(AVBufferRef*[] array)
+        /// <summary>original type: AVBufferRef*</summary>
+        public IntPtr[] ToArray() => new [] { _0, _1, _2, _3, _4, _5, _6, _7 };
+        
+        /// <summary>original type: AVBufferRef*</summary>
+        public void UpdateFrom(IntPtr[] array)
         {
             if (array.Length != Size)
             {
                 throw new ArgumentOutOfRangeException($"array size({array.Length}) should == {Size}");
             }
             
-            fixed (AVBufferRef** p = array)
+            fixed (IntPtr* p = array)
             {
                 _0 = p[0];
                 _1 = p[1];
@@ -694,17 +703,17 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 8;
         public fixed byte _[8];
         
-        public byte this[uint i]
+        public byte this[int i]
         {
             get => i switch
             {
-                < Size => _[i],
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => _[i],
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
             set => _[i] = i switch
             {
-                < Size => value,
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => value,
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
         }
         
@@ -735,14 +744,16 @@ namespace Sdcb.FFmpeg.Raw
     public unsafe struct byte_ptrArray8
     {
         public const int Size = 8;
-        public byte* _0, _1, _2, _3, _4, _5, _6, _7;
+        /// <summary>original type: byte*</summary>
+        public IntPtr _0, _1, _2, _3, _4, _5, _6, _7;
         
-        public byte* this[uint i]
+        /// <summary>original type: byte*</summary>
+        public IntPtr this[int i]
         {
             get
             {
-                if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
-                fixed (byte** p0 = &_0)
+                if (i < 0 || i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size}]");
+                fixed (IntPtr* p0 = &_0)
                 {
                     return *(p0 + i);
                 }
@@ -750,16 +761,16 @@ namespace Sdcb.FFmpeg.Raw
             set
             {
                 if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
-                fixed (byte** p0 = &_0)
+                fixed (IntPtr* p0 = &_0)
                 {
                     *(p0 + i) = value;
                 }
             }
         }
         
-        public byte*[] ToArray4() => new [] { _0, _1, _2, _3 };
+        public byte*[] ToRawArray() => new [] { (byte*)_0, (byte*)_1, (byte*)_2, (byte*)_3, (byte*)_4, (byte*)_5, (byte*)_6, (byte*)_7 };
         
-        public static unsafe explicit operator byte_ptrArray4(byte_ptrArray8 me)
+        public static explicit operator byte_ptrArray4(byte_ptrArray8 me)
         {
             byte_ptrArray4 r = new ();
             r._0 = me._0;
@@ -769,16 +780,18 @@ namespace Sdcb.FFmpeg.Raw
             return r;
         }
         
-        public byte*[] ToArray() => new [] { _0, _1, _2, _3, _4, _5, _6, _7 };
+        /// <summary>original type: byte*</summary>
+        public IntPtr[] ToArray() => new [] { _0, _1, _2, _3, _4, _5, _6, _7 };
         
-        public void UpdateFrom(byte*[] array)
+        /// <summary>original type: byte*</summary>
+        public void UpdateFrom(IntPtr[] array)
         {
             if (array.Length != Size)
             {
                 throw new ArgumentOutOfRangeException($"array size({array.Length}) should == {Size}");
             }
             
-            fixed (byte** p = array)
+            fixed (IntPtr* p = array)
             {
                 _0 = p[0];
                 _1 = p[1];
@@ -790,11 +803,6 @@ namespace Sdcb.FFmpeg.Raw
                 _7 = p[7];
             }
         }
-        
-        public unsafe Span<IntPtr> GetPinnableReference()
-        {
-            fixed (byte** p = &_0) return new Span<IntPtr>(p, Size); 
-        }
     }
     
     public unsafe struct int_array8
@@ -802,17 +810,17 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 8;
         public fixed int _[8];
         
-        public int this[uint i]
+        public int this[int i]
         {
             get => i switch
             {
-                < Size => _[i],
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => _[i],
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
             set => _[i] = i switch
             {
-                < Size => value,
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => value,
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
         }
         
@@ -856,17 +864,17 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 8;
         public fixed ulong _[8];
         
-        public ulong this[uint i]
+        public ulong this[int i]
         {
             get => i switch
             {
-                < Size => _[i],
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => _[i],
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
             set => _[i] = i switch
             {
-                < Size => value,
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => value,
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
         }
         
@@ -910,11 +918,11 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 15;
         public AVHDRPlusPercentile _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14;
         
-        public AVHDRPlusPercentile this[uint i]
+        public AVHDRPlusPercentile this[int i]
         {
             get
             {
-                if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
+                if (i < 0 || i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size}]");
                 fixed (AVHDRPlusPercentile* p0 = &_0)
                 {
                     return *(p0 + i);
@@ -965,11 +973,11 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 15;
         public AVRational _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14;
         
-        public AVRational this[uint i]
+        public AVRational this[int i]
         {
             get
             {
-                if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
+                if (i < 0 || i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size}]");
                 fixed (AVRational* p0 = &_0)
                 {
                     return *(p0 + i);
@@ -1020,17 +1028,17 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 17;
         public fixed long _[17];
         
-        public long this[uint i]
+        public long this[int i]
         {
             get => i switch
             {
-                < Size => _[i],
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => _[i],
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
             set => _[i] = i switch
             {
-                < Size => value,
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => value,
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
         }
         
@@ -1072,11 +1080,11 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 25;
         public AVRational _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24;
         
-        public AVRational this[uint i]
+        public AVRational this[int i]
         {
             get
             {
-                if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
+                if (i < 0 || i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size}]");
                 fixed (AVRational* p0 = &_0)
                 {
                     return *(p0 + i);
@@ -1137,11 +1145,11 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 25;
         public AVRational_array25 _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24;
         
-        public AVRational_array25 this[uint i]
+        public AVRational_array25 this[int i]
         {
             get
             {
-                if (i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should < {Size}");
+                if (i < 0 || i >= Size) throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size}]");
                 fixed (AVRational_array25* p0 = &_0)
                 {
                     return *(p0 + i);
@@ -1202,17 +1210,17 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 1024;
         public fixed byte _[1024];
         
-        public byte this[uint i]
+        public byte this[int i]
         {
             get => i switch
             {
-                < Size => _[i],
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => _[i],
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
             set => _[i] = i switch
             {
-                < Size => value,
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => value,
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
         }
         
@@ -1251,17 +1259,17 @@ namespace Sdcb.FFmpeg.Raw
         public const int Size = 61440;
         public fixed byte _[61440];
         
-        public byte this[uint i]
+        public byte this[int i]
         {
             get => i switch
             {
-                < Size => _[i],
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => _[i],
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
             set => _[i] = i switch
             {
-                < Size => value,
-                _ => throw new ArgumentOutOfRangeException($"i({i}) should < {Size}"),
+                >= 0 and < Size => value,
+                _ => throw new ArgumentOutOfRangeException($"i({i}) should in [0, {Size})"),
             };
         }
         
