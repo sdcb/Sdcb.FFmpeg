@@ -37,10 +37,9 @@ public unsafe partial class Frame : SafeHandle
     /// <para>pointer to the picture/channel planes. This might be different from the first allocated byte</para>
     /// <see cref="AVFrame.data" />
     /// </summary>
-    public byte_ptrArray8 Data
+    public ref byte_ptrArray8 Data
     {
-        get => _ptr->data;
-        set => _ptr->data = value;
+        get => ref _ptr->data;
     }
     
     /// <summary>
@@ -287,10 +286,9 @@ public unsafe partial class Frame : SafeHandle
     /// <para>AVBuffer references backing the data for this frame. If all elements of this array are NULL, then this frame is not reference counted. This array must be filled contiguously -- if buf[i] is non-NULL then buf[j] must also be non-NULL for all j &lt; i.</para>
     /// <see cref="AVFrame.buf" />
     /// </summary>
-    public AVBufferRef_ptrArray8 Buf
+    public ref AVBufferRef_ptrArray8 Buf
     {
-        get => _ptr->buf;
-        set => _ptr->buf = value;
+        get => ref _ptr->buf;
     }
     
     /// <summary>

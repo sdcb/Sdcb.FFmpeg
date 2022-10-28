@@ -31,6 +31,7 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
         public static bool ShouldMakeRefReadonly(string newTypeName) => newTypeName switch
         {
             var _ when newTypeName.Contains("_array") => true,
+            var _ when newTypeName.Contains("_ptrArray") => true,
             _ => false,
         };
 
