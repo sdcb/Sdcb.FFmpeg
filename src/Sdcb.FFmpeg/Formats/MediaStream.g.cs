@@ -359,10 +359,9 @@ public unsafe partial struct MediaStream
     /// <summary>
     /// <see cref="AVStream.unused5" />
     /// </summary>
-    public long_array17 Unused5
+    public ref long_array17 Unused5
     {
-        get => _ptr->unused5;
-        set => _ptr->unused5 = value;
+        get => ref _ptr->unused5;
     }
     
     /// <summary>

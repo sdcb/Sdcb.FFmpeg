@@ -28,13 +28,26 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2.TransformDefs
             Nullable = nullable;
         }
 
+        public static bool ShouldMakeRefReadonly(string newTypeName) => newTypeName switch
+        {
+            var _ when newTypeName.Contains("_array") => true,
+            _ => false,
+        };
+
         public virtual IEnumerable<string> GetPropertyBody(string fieldName, TypeCastDef typeCastDef, PropStatus propStatus)
         {
             const string _ptr = "_ptr";
             string oldName = StringExtensions.CSharpKeywordTransform(fieldName);
             string newName = propStatus.Name;
 
-            if (propStatus.IsReadonly)
+            if (ShouldMakeRefReadonly(typeCastDef.NewType))
+            {
+                yield return $"public ref {typeCastDef.GetReturnType(propStatus)} {newName}";
+                yield return "{";
+                yield return $"    get => ref {typeCastDef.GetPropertyGetter(_ptr, oldName, propStatus)};";
+                yield return "}";
+            }
+            else if (propStatus.IsReadonly)
             {
                 yield return $"public {typeCastDef.GetReturnType(propStatus)} {newName} => {typeCastDef.GetPropertyGetter(_ptr, oldName, propStatus)};";
             }

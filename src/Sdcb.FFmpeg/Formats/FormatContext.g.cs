@@ -110,10 +110,9 @@ public unsafe partial class FormatContext : SafeHandle
     /// <see cref="AVFormatContext.filename" />
     /// </summary>
     [Obsolete("Use url instead.")]
-    public byte_array1024 Filename
+    public ref byte_array1024 Filename
     {
-        get => _ptr->filename;
-        set => _ptr->filename = value;
+        get => ref _ptr->filename;
     }
     
     /// <summary>

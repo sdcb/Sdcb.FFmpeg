@@ -47,10 +47,9 @@ public unsafe partial class Frame : SafeHandle
     /// <para>For video, size in bytes of each picture line. For audio, size in bytes of each plane.</para>
     /// <see cref="AVFrame.linesize" />
     /// </summary>
-    public int_array8 Linesize
+    public ref int_array8 Linesize
     {
-        get => _ptr->linesize;
-        set => _ptr->linesize = value;
+        get => ref _ptr->linesize;
     }
     
     /// <summary>
@@ -209,10 +208,9 @@ public unsafe partial class Frame : SafeHandle
     /// <see cref="AVFrame.error" />
     /// </summary>
     [Obsolete("unused")]
-    public ulong_array8 Error
+    public ref ulong_array8 Error
     {
-        get => _ptr->error;
-        set => _ptr->error = value;
+        get => ref _ptr->error;
     }
     
     /// <summary>
