@@ -27,13 +27,10 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build
-        run: |
-          dotnet build -c Release
-      - name: Codegen Build & Test
+      - name: Codegen & Build
         run: |
           dotnet run -c Release --project src/Sdcb.FFmpeg.AutoGen --
-          dotnet build src/Sdcb.FFmpeg
+          dotnet build -c Release
       - name: Test
         run: |
           dotnet test -c Release
