@@ -109,4 +109,11 @@ public static class PacketsExtensions
             }
         }
     }
+
+    public unsafe static void SetData(this Packet packet, IntPtr data, int size)
+    {
+        AVPacket* ptr = (AVPacket*)packet;
+        ptr->data = (byte*)data;
+        ptr->size = size;
+    }
 }

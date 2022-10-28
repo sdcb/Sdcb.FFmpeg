@@ -96,4 +96,12 @@ public unsafe static class FrameExtensions
         }
         fc.WriteTrailer();
     }
+
+    /// <param name="rowPitch">rowPitch = size/height</param>
+    public unsafe static void SetData0(this Frame frame, IntPtr data0, int rowPitch)
+    {
+        AVFrame* ptr = (AVFrame*)frame;
+        ptr->data[0] = (byte*)data0;
+        ptr->linesize[0] = rowPitch;
+    }
 }
