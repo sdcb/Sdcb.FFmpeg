@@ -54,7 +54,7 @@ namespace Sdcb.FFmpeg.AutoGen
         [Option("using-online-ffmpeg-binaries", Required = false, Default = true)]
         public bool UsingOnlineFFmpegBinaries { get; set; }
 
-        [Option("ffmpeg-binary-url", Required = false, Default = NuGetBuilder.DownloadUrlBuilder.Url)]
+        [Option("ffmpeg-binary-url", Required = false, Default = NuGetBuilder.PackageInfo.Url)]
         public string FFmpegBinaryUrl { get; set; }
 
         public static CliOptions ParseArgumentsStrict(string[] args)

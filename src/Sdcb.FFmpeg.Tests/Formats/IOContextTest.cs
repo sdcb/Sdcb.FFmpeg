@@ -82,7 +82,7 @@ public class IOContextTest
     [Fact]
     public void CheckRead()
     {
-        AVIO_FLAG result = IOContext.Check("https://www.baidu.com", AVIO_FLAG.Read);
+        AVIO_FLAG result = IOContext.Check(Environment.CurrentDirectory, AVIO_FLAG.Read);
         Assert.Equal(AVIO_FLAG.Read, result);
     }
 

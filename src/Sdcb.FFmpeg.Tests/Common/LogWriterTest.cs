@@ -17,7 +17,7 @@ public class LogWriterTest
     [Fact]
     public void WriteLog()
     {
-        string lastLog = default;
+        string? lastLog = default;
         LogLevel logLevel = default;
         FFmpegLogger.LogWriter = (level, log) => (logLevel, lastLog) = (level, log);
         FFmpegLogger.LogError("hello");

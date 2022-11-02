@@ -169,15 +169,15 @@ namespace Sdcb.FFmpeg.AutoGen
             WriteLine();
 
             // indexer
-            WriteLine($"public {elementType} this[uint i]");
+            WriteLine($"public {elementType} this[int i]");
             using (BeginBlock())
             {
-                string outOfRange = $"throw new ArgumentOutOfRangeException($\"i({{i}}) should < {{Size}}\")";
+                string outOfRange = $"throw new ArgumentOutOfRangeException($\"i({{i}}) should in [0, {{Size}})\")";
 
                 WriteLine($"get => i switch");
                 using (BeginBlock(inline: true))
                 {
-                    WriteLine($"< Size => {prefix}[i],");
+                    WriteLine($">= 0 and < Size => {prefix}[i],");
                     WriteLine($"_ => {outOfRange},");
                 }
                 WriteLine(";");
@@ -185,7 +185,7 @@ namespace Sdcb.FFmpeg.AutoGen
                 WriteLine($"set => {prefix}[i] = i switch");
                 using (BeginBlock(inline: true))
                 {
-                    WriteLine("< Size => value,");
+                    WriteLine(">= 0 and < Size => value,");
                     WriteLine($"_ => {outOfRange},");
                 }
                 WriteLine(";");
@@ -274,14 +274,17 @@ namespace Sdcb.FFmpeg.AutoGen
             }
         }
 
-        private void WriteComplexFixedArray(string arrayName, string elementType, int size, string prefix)
+        private void WriteComplexFixedArray(string arrayName, string rawElementType, int size, string prefix)
         {
+            (string elementType, bool diff) = rawElementType.EndsWith("*") ? ("IntPtr", true) : (rawElementType, false);
             string seq = string.Join(", ", Enumerable.Range(0, size).Select(i => prefix + i));
+            WriteDiffComment();
             WriteLine($"public {elementType} {seq};");
             WriteLine();
 
             // indexer
-            WriteLine($"public {elementType} this[uint i]");
+            WriteDiffComment();
+            WriteLine($"public {elementType} this[int i]");
             using (BeginBlock())
             {
                 var @fixed = $"fixed ({elementType}* p0 = &{prefix}0)";
@@ -289,7 +292,7 @@ namespace Sdcb.FFmpeg.AutoGen
                 WriteLine($"get");
                 using (BeginBlock())
                 {
-                    WriteLine($"if (i >= Size) throw new ArgumentOutOfRangeException($\"i({{i}}) should < {{Size}}\");");
+                    WriteLine($"if (i < 0 || i >= Size) throw new ArgumentOutOfRangeException($\"i({{i}}) should in [0, {{Size}}]\");");
                     WriteLine(@fixed);
                     using (BeginBlock())
                     {
@@ -309,15 +312,19 @@ namespace Sdcb.FFmpeg.AutoGen
             }
             WriteLine();
 
-            // ToArray4
-            if (size == 8 && elementType == "byte*")
+            // ToRawArray
+            if (diff)
             {
-                string seq4 = string.Join(", ", Enumerable.Range(0, 4).Select(i => prefix + i));
-                WriteLine($"public {elementType}[] ToArray4() => new [] {{ {seq4} }};");
+                string rawSeq = string.Join(", ", Enumerable.Range(0, size).Select(i => $"({rawElementType}){prefix}{i}"));
+                WriteLine($"public {rawElementType}[] ToRawArray() => new [] {{ {rawSeq} }};");
                 WriteLine();
+            }
 
+            // To4
+            if (size == 8 && rawElementType == "byte*")
+            {
                 string arr4 = arrayName.Replace('8', '4');
-                WriteLine($"public static unsafe explicit operator {arr4}({arrayName} me)");
+                WriteLine($"public static explicit operator {arr4}({arrayName} me)");
                 using (BeginBlock())
                 {
                     WriteLine($"{arr4} r = new ();");
@@ -331,10 +338,12 @@ namespace Sdcb.FFmpeg.AutoGen
             }
 
             // ToArray
+            WriteDiffComment();
             WriteLine($"public {elementType}[] ToArray() => new [] {{ {seq} }};");
             WriteLine();
 
             // UpdateFrom
+            WriteDiffComment();
             WriteLine($"public void UpdateFrom({elementType}[] array)");
             using (BeginBlock())
             {
@@ -355,19 +364,9 @@ namespace Sdcb.FFmpeg.AutoGen
                 }
             }
 
-            if (elementType == "void*")
+            void WriteDiffComment()
             {
-                WriteLine();
-                WriteLine($"public unsafe Span<IntPtr> GetPinnableReference()");
-                using (BeginBlock())
-                    WriteLine($"fixed (void** p = &_0) return new Span<IntPtr>(p, Size); ");
-            }
-            if (elementType == "byte*")
-            {
-                WriteLine();
-                WriteLine($"public unsafe Span<IntPtr> GetPinnableReference()");
-                using (BeginBlock())
-                    WriteLine($"fixed (byte** p = &_0) return new Span<IntPtr>(p, Size); ");
+                if (diff) WriteLine($"/// <summary>original type: {rawElementType}</summary>");
             }
         }
 
