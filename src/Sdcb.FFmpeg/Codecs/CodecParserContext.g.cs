@@ -154,28 +154,25 @@ public unsafe partial class CodecParserContext : SafeHandle
     /// <summary>
     /// <see cref="AVCodecParserContext.cur_frame_offset" />
     /// </summary>
-    public long_array4 CurFrameOffset
+    public ref long_array4 CurFrameOffset
     {
-        get => _ptr->cur_frame_offset;
-        set => _ptr->cur_frame_offset = value;
+        get => ref _ptr->cur_frame_offset;
     }
     
     /// <summary>
     /// <see cref="AVCodecParserContext.cur_frame_pts" />
     /// </summary>
-    public long_array4 CurFramePts
+    public ref long_array4 CurFramePts
     {
-        get => _ptr->cur_frame_pts;
-        set => _ptr->cur_frame_pts = value;
+        get => ref _ptr->cur_frame_pts;
     }
     
     /// <summary>
     /// <see cref="AVCodecParserContext.cur_frame_dts" />
     /// </summary>
-    public long_array4 CurFrameDts
+    public ref long_array4 CurFrameDts
     {
-        get => _ptr->cur_frame_dts;
-        set => _ptr->cur_frame_dts = value;
+        get => ref _ptr->cur_frame_dts;
     }
     
     /// <summary>
@@ -200,10 +197,9 @@ public unsafe partial class CodecParserContext : SafeHandle
     /// <summary>
     /// <see cref="AVCodecParserContext.cur_frame_end" />
     /// </summary>
-    public long_array4 CurFrameEnd
+    public ref long_array4 CurFrameEnd
     {
-        get => _ptr->cur_frame_end;
-        set => _ptr->cur_frame_end = value;
+        get => ref _ptr->cur_frame_end;
     }
     
     /// <summary>
@@ -250,10 +246,9 @@ public unsafe partial class CodecParserContext : SafeHandle
     /// <para>Position of the packet in file.</para>
     /// <see cref="AVCodecParserContext.cur_frame_pos" />
     /// </summary>
-    public long_array4 CurFramePosition
+    public ref long_array4 CurFramePosition
     {
-        get => _ptr->cur_frame_pos;
-        set => _ptr->cur_frame_pos = value;
+        get => ref _ptr->cur_frame_pos;
     }
     
     /// <summary>

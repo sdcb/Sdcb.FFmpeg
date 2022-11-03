@@ -37,20 +37,18 @@ public unsafe partial class Frame : SafeHandle
     /// <para>pointer to the picture/channel planes. This might be different from the first allocated byte. For video, it could even point to the end of the image data.</para>
     /// <see cref="AVFrame.data" />
     /// </summary>
-    public byte_ptrArray8 Data
+    public ref byte_ptrArray8 Data
     {
-        get => _ptr->data;
-        set => _ptr->data = value;
+        get => ref _ptr->data;
     }
     
     /// <summary>
     /// <para>For video, a positive or negative value, which is typically indicating the size in bytes of each picture line, but it can also be: - the negative byte size of lines for vertical flipping (with data[n] pointing to the end of the data - a positive or negative multiple of the byte size as for accessing even and odd fields of a frame (possibly flipped)</para>
     /// <see cref="AVFrame.linesize" />
     /// </summary>
-    public int_array8 Linesize
+    public ref int_array8 Linesize
     {
-        get => _ptr->linesize;
-        set => _ptr->linesize = value;
+        get => ref _ptr->linesize;
     }
     
     /// <summary>
@@ -279,10 +277,9 @@ public unsafe partial class Frame : SafeHandle
     /// <para>AVBuffer references backing the data for this frame. All the pointers in data and extended_data must point inside one of the buffers in buf or extended_buf. This array must be filled contiguously -- if buf[i] is non-NULL then buf[j] must also be non-NULL for all j &lt; i.</para>
     /// <see cref="AVFrame.buf" />
     /// </summary>
-    public AVBufferRef_ptrArray8 Buf
+    public ref AVBufferRef_ptrArray8 Buf
     {
-        get => _ptr->buf;
-        set => _ptr->buf = value;
+        get => ref _ptr->buf;
     }
     
     /// <summary>

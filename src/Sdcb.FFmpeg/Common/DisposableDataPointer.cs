@@ -36,7 +36,7 @@ public ref struct DisposableDataPointer
         if (start > Length) throw new ArgumentOutOfRangeException(nameof(start));
         if (end < 0) throw new ArgumentOutOfRangeException(nameof(end));
         return new DataPointer(Pointer + start, end);
-    }
+    } 
 
     public unsafe Span<byte> AsSpan() => new Span<byte>((byte*)Pointer, Length);
 

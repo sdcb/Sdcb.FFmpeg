@@ -39,7 +39,11 @@ public unsafe partial struct PacketSideData
     /// <para>original type: byte*</para>
     /// <see cref="AVPacketSideData.data" />
     /// </summary>
-    public DataPointer Data => new DataPointer(_ptr->data, (int)_ptr->size)!;
+    public DataPointer Data
+    {
+        get => new DataPointer(_ptr->data, (int)_ptr->size)!;
+        set => ((IntPtr)(_ptr->data = (byte*)value.Pointer) + (int)(_ptr->size = (ulong)value.Length)).ToPointer();
+    }
     
     /// <summary>
     /// <see cref="AVPacketSideData.type" />

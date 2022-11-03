@@ -56,6 +56,14 @@ public struct AVRational
         return b;
     }
 
+    public static unsafe AVRational operator *(AVRational b, long c)
+    {
+        av_reduce(&b.Num, &b.Den,
+            b.Num * (long)c,
+            b.Den * (long)1, int.MaxValue);
+        return b;
+    }
+
     public static AVRational operator /(in AVRational b, in AVRational c) => b * new AVRational(c.Den, c.Num);
 
     public static unsafe AVRational operator +(AVRational b, in AVRational c)
@@ -81,7 +89,7 @@ public struct AVRational
     public static unsafe int FindNearestIndex(in AVRational q, AVRational* list) => av_find_nearest_q_idx(q, list);
 
     public static AVRational Gcd(in AVRational a, in AVRational b, int maxDenominator, AVRational def = default) => av_gcd_q(a, b, maxDenominator, def);
-    public override string ToString() => $"{Num}/{Den}({ToDouble():F4})";
+    public override string ToString() => $"{Num}/{Den}";
     public override readonly bool Equals(object? obj) => obj is AVRational r && Equals(r);
 
     public readonly bool Equals(AVRational other) => this == other;

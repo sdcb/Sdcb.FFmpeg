@@ -1,13 +1,12 @@
 using Sdcb.FFmpeg.Common;
 using Sdcb.FFmpeg.Raw;
-using Sdcb.FFmpeg.Utils;
 using System;
 using System.Runtime.InteropServices;
 using static Sdcb.FFmpeg.Raw.ffmpeg;
 
 namespace Sdcb.FFmpeg.Utils;
 
-public unsafe partial class Frame : SafeHandle
+public unsafe partial class Frame : SafeHandle, IBufferRefed
 {
     /// <summary>
     /// <see cref="av_frame_alloc"/>
@@ -16,7 +15,7 @@ public unsafe partial class Frame : SafeHandle
     {
     }
 
-    public static Frame CreateWritableVideo(int width, int height, AVPixelFormat pixelFormat)
+    public static Frame CreateVideo(int width, int height, AVPixelFormat pixelFormat)
     {
         var frame = new Frame
         {
@@ -25,21 +24,19 @@ public unsafe partial class Frame : SafeHandle
             Height = height,
         };
         frame.EnsureBuffer();
-        frame.MakeWritable();
         return frame;
     }
 
-    public static Frame CreateWritableAudio(AVSampleFormat sampleFormat, AVChannelLayout channelLayout, int sampleRate, int sampleCount)
+    public static Frame CreateAudio(AVSampleFormat sampleFormat, AVChannelLayout chLayout, int sampleRate, int sampleCount)
     {
         var frame = new Frame
         {
             Format = (int)sampleFormat,
-            ChLayout = channelLayout,
+            ChLayout = chLayout,
             SampleRate = sampleRate,
             NbSamples = sampleCount,
         };
         frame.EnsureBuffer();
-        frame.MakeWritable();
         return frame;
     }
 
@@ -49,16 +46,22 @@ public unsafe partial class Frame : SafeHandle
     public bool IsWritable => av_frame_is_writable(this) != 0;
 
     /// <summary>
+    /// <para>Set up a new reference to the data described by the source frame.</para>
+    /// <para>Copy frame properties from src to dst and create a new reference for each AVBufferRef from src.</para>
+    /// <para>If src is not reference counted, new buffers are allocated and the data is copied.</para>
     /// <see cref="av_frame_ref(AVFrame*, AVFrame*)"/>
     /// </summary>
-    public void Reference(Frame other) => av_frame_ref(this, other).ThrowIfError();
+    public void Ref(Frame other) => av_frame_ref(this, other).ThrowIfError();
 
     /// <summary>
+    /// <para>Unreference all the buffers referenced by frame and reset the frame fields.</para>
     /// <see cref="av_frame_unref(AVFrame*)"/>
     /// </summary>
-    public void Unreference() => av_frame_unref(this);
+    public void Unref() => av_frame_unref(this);
 
     /// <summary>
+    /// <para>Create a new frame that references the same data as src.</para>
+    /// <para>This is a shortcut for av_frame_alloc()+av_frame_ref().</para>
     /// <see cref="av_frame_clone(AVFrame*)"/>
     /// </summary>
     public Frame Clone() => FromNative(av_frame_clone(this), isOwner: true);
@@ -76,7 +79,7 @@ public unsafe partial class Frame : SafeHandle
     /// <summary>
     /// <see cref="av_frame_move_ref(AVFrame*, AVFrame*)"/>
     /// </summary>
-    public void MoveReferenceTo(Frame dest) => av_frame_move_ref(dest, this);
+    public void MoveRef(Frame dest) => av_frame_move_ref(dest, this);
 
     /// <summary>
     /// <see cref="av_frame_get_buffer(AVFrame*, int)"/>
@@ -129,4 +132,19 @@ public unsafe partial class Frame : SafeHandle
     }
 
     public static string GetColorspaceName(AVColorSpace val) => av_color_space_name((AVColorSpace)val);
+
+    void IBufferRefed.Ref(IBufferRefed other)
+    {
+        if (other is Frame frame)
+        {
+            Ref(frame);
+        }
+        throw new ArgumentException($"{other} is not a frame.");
+    }
+
+    void IBufferRefed.Unref() => Unref();
+
+    void IBufferRefed.MakeWritable() => MakeWritable();
+
+    IBufferRefed IBufferRefed.Clone() => Clone();
 }

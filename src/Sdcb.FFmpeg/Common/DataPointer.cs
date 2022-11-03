@@ -2,17 +2,8 @@
 
 namespace Sdcb.FFmpeg.Common;
 
-public struct DataPointer
+public record struct DataPointer(IntPtr Pointer, int Length)
 {
-    public IntPtr Pointer { get; }
-    public int Length { get; }
-
-    public DataPointer(IntPtr pointer, int length)
-    {
-        Pointer = pointer;
-        Length = length;
-    }
-
     public unsafe DataPointer(byte* pointer, int length) : this((IntPtr)pointer, length)
     {
     }

@@ -43,24 +43,24 @@ public unsafe class PixelConverter : SafeHandle
         int destWidth, int destHeight, AVPixelFormat destPixelFormat,
         SWS flags) =>
         string.Format("Impossible to create scale context for the conversion fmt:{0} s:{1}x{2} -> fmt:{3} s:{4}x{5} (sws_flags: {6})",
-            PixelUtils.GetPixelFormatName(sourcePixelFormat), sourceWidth, sourceHeight,
-            PixelUtils.GetPixelFormatName(destPixelFormat), destWidth, destHeight, flags);
+            NameUtils.GetPixelFormatName(sourcePixelFormat), sourceWidth, sourceHeight,
+            NameUtils.GetPixelFormatName(destPixelFormat), destWidth, destHeight, flags);
 
     /// <summary>
     /// <see cref="sws_scale(SwsContext*, byte*[], int[], int, int, byte*[], int[])"/>
     /// </summary>
     public void Convert(byte_ptrArray4 sourceData, int_array4 sourceLinesize, int sourceSliceH, byte_ptrArray4 destData, int_array4 destLinesize, int sourceSliceY = 0) =>
         sws_scale(this,
-            srcSlice: sourceData.ToArray(), srcStride: sourceLinesize.ToArray(), srcSliceY: sourceSliceY, srcSliceH: sourceSliceH,
-            destData.ToArray(), destLinesize.ToArray()).ThrowIfError();
+            srcSlice: sourceData.ToRawArray(), srcStride: sourceLinesize.ToArray(), srcSliceY: sourceSliceY, srcSliceH: sourceSliceH,
+            destData.ToRawArray(), destLinesize.ToArray()).ThrowIfError();
 
     /// <summary>
     /// <see cref="sws_scale(SwsContext*, byte*[], int[], int, int, byte*[], int[])"/>
     /// </summary>
     public void Convert(byte_ptrArray8 sourceData, int_array8 sourceLinesize, int sourceSliceH, byte_ptrArray8 destData, int_array8 destLinesize, int sourceSliceY = 0) =>
         sws_scale(this,
-            srcSlice: sourceData.ToArray(), srcStride: sourceLinesize.ToArray(), srcSliceY: sourceSliceY, srcSliceH: sourceSliceH,
-            destData.ToArray(), destLinesize.ToArray()).ThrowIfError();
+            srcSlice: sourceData.ToRawArray(), srcStride: sourceLinesize.ToArray(), srcSliceY: sourceSliceY, srcSliceH: sourceSliceH,
+            destData.ToRawArray(), destLinesize.ToArray()).ThrowIfError();
 
     public FFmpegOptions Options => new FFmpegOptions(this);
 

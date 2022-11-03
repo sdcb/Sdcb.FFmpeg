@@ -1,8 +1,8 @@
 ﻿using System;
 using Sdcb.FFmpeg.Raw;
+using Sdcb.FFmpeg.Common;
 using System.Collections.Generic;
 using System.Linq;
-using Sdcb.FFmpeg.Common;
 
 namespace Sdcb.FFmpeg.Utils;
 
@@ -38,10 +38,10 @@ public unsafe struct FFmpegClass
         .Where(x => x.Type != AVOptionType.Const);
 
     public IEnumerable<FFmpegOption> GetKnownOptions() => ReadSequence(
-        p            : (IntPtr)_p->option, 
-        unitSize     : sizeof(AVOption), 
-        exitCondition: _p => ((AVOption*)_p)->name == null, 
-        valGetter    : _p => new FFmpegOption((AVOption*)_p));
+        p: (IntPtr)_p->option,
+        unitSize: sizeof(AVOption),
+        exitCondition: _p => ((AVOption*)_p)->name == null,
+        valGetter: _p => new FFmpegOption((AVOption*)_p));
 
     private static IEnumerable<T> ReadSequence<T>(IntPtr p, int unitSize, Func<IntPtr, bool> exitCondition, Func<IntPtr, T> valGetter)
     {

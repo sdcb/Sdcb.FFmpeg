@@ -55,14 +55,14 @@ public unsafe partial struct Filter
     /// <para>List of static inputs.</para>
     /// <see cref="AVFilter.inputs" />
     /// </summary>
-    public FilterPadList Inputs => new FilterPadList(_ptr->inputs, (int)_ptr->nb_inputs)!;
+    public FilterPadList Inputs => new FilterPadList(_ptr->inputs)!;
     
     /// <summary>
     /// <para>original type: AVFilterPad*</para>
     /// <para>List of static outputs.</para>
     /// <see cref="AVFilter.outputs" />
     /// </summary>
-    public FilterPadList Outputs => new FilterPadList(_ptr->outputs, (int)_ptr->nb_outputs)!;
+    public FilterPadList Outputs => new FilterPadList(_ptr->outputs)!;
     
     /// <summary>
     /// <para>original type: AVClass*</para>
@@ -77,6 +77,18 @@ public unsafe partial struct Filter
     /// <see cref="AVFilter.flags" />
     /// </summary>
     public AVFILTER_FLAG Flags => (AVFILTER_FLAG)_ptr->flags;
+    
+    /// <summary>
+    /// <para>The number of entries in the list of inputs.</para>
+    /// <see cref="AVFilter.nb_inputs" />
+    /// </summary>
+    public byte NbInputs => _ptr->nb_inputs;
+    
+    /// <summary>
+    /// <para>The number of entries in the list of outputs.</para>
+    /// <see cref="AVFilter.nb_outputs" />
+    /// </summary>
+    public byte NbOutputs => _ptr->nb_outputs;
     
     /// <summary>
     /// <para>This field determines the state of the formats union. It is an enum FilterFormatsState value.</para>

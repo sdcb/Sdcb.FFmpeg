@@ -4,6 +4,7 @@ using Sdcb.FFmpeg.Formats;
 using Sdcb.FFmpeg.Raw;
 using Sdcb.FFmpeg.Swscales;
 using Sdcb.FFmpeg.Utils;
+using System;
 using System.IO;
 using System.Linq;
 
@@ -75,7 +76,7 @@ public unsafe static class FrameExtensions
         }
         else
         {
-            using var tempFrame = Frame.CreateWritableVideo(frame.Width, frame.Height, codecContext.PixelFormat);
+            using var tempFrame = Frame.CreateVideo(frame.Width, frame.Height, codecContext.PixelFormat);
             using var frameConverter = new VideoFrameConverter();
             frameConverter.ConvertFrame(frame, tempFrame);
             WriteAction(tempFrame, fc, codecContext);
@@ -85,7 +86,7 @@ public unsafe static class FrameExtensions
     private static void WriteAction(Frame frame, FormatContext fc, CodecContext codecContext)
     {
         fc.WriteHeader();
-        foreach (Packet packet in codecContext.EncodeFrames(new[] { frame }))
+        foreach (Packet packet in new[] { frame }.EncodeFrames(codecContext))
         {
             fc.WritePacket(packet);
         }

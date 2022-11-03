@@ -86,85 +86,11 @@ public unsafe partial class CodecContext : SafeHandle
         _ => throw new FFmpegException($"Unknown {nameof(callerMember)} status: {result}"),
     };
 
-    /// <summary>
-    /// 1 frame -> 0..N packet
-    /// </summary>
-    public IEnumerable<Packet> EncodeFrame(Frame? frame, Packet packet)
-    {
-        SendFrame(frame);
-        while (true)
-        {
-            CodecResult s = ReceivePacket(packet);
-            if (s == CodecResult.Again || s == CodecResult.EOF) yield break;
-            try
-            {
-                yield return packet;
-            }
-            finally
-            {
-                packet.Unreference();
-            }
-        }
-    }
-
-    /// <summary>
-    /// frames -> packets
-    /// </summary>
-    public IEnumerable<Packet> EncodeFrames(IEnumerable<Frame> frames, bool makeWritable = true, bool makeSequential = false)
-    {
-        using var packet = new Packet();
-        int pts = 0;
-        foreach (Frame frame in frames)
-        {
-            if (makeSequential && Codec.Type == AVMediaType.Video)
-                frame.Pts = pts++;
-            else if (makeSequential && SampleRate > 0 && Codec.Type == AVMediaType.Audio)
-                frame.Pts = (pts += FrameSize);
-
-            foreach (var _ in EncodeFrame(frame, packet))
-                yield return packet;
-
-            if (makeWritable) frame.MakeWritable();
-        }
-
-        foreach (var _ in EncodeFrame(null, packet))
-            yield return packet;
-    }
-
-    internal Frame CreateVideoFrame() => Frame.CreateWritableVideo(Width, Height, PixelFormat);
-    internal Frame CreateAudioFrame() => Frame.CreateWritableAudio(SampleFormat, ChLayout, SampleRate,
+    internal Frame CreateVideoFrame() => Frame.CreateVideo(Width, Height, PixelFormat);
+    internal Frame CreateAudioFrame() => Frame.CreateAudio(SampleFormat, ChLayout, SampleRate,
         Codec.Capabilities.HasFlag(AV_CODEC_CAP.VariableFrameSize) ? 10000 : FrameSize);
 
     public Frame CreateFrame() => Width > 0 ? CreateVideoFrame() : CreateAudioFrame();
-
-    /// <summary>
-    /// packets -> frames
-    /// </summary>
-    public IEnumerable<Frame> DecodePackets(IEnumerable<Packet> packets)
-    {
-        using var frame = new Frame();
-
-        foreach (Packet packet in packets)
-            foreach (var _ in DecodePacket(packet, frame))
-                yield return frame;
-
-        foreach (var _ in DecodePacket(null, frame))
-            yield return frame;
-    }
-
-    /// <summary>
-    /// 1 packet -> 0..N frame
-    /// </summary>
-    public IEnumerable<Frame> DecodePacket(Packet? packet, Frame frame)
-    {
-        SendPacket(packet);
-        while (true)
-        {
-            CodecResult s = ReceiveFrame(frame);
-            if (s == CodecResult.Again || s == CodecResult.EOF) yield break;
-            yield return frame;
-        }
-    }
 
     /// <summary>
     /// <see cref="avcodec_free_context(AVCodecContext**)"/>
@@ -174,6 +100,7 @@ public unsafe partial class CodecContext : SafeHandle
         AVCodecContext* ptr = this;
         avcodec_free_context(&ptr);
         handle = (IntPtr)ptr;
+        SetHandleAsInvalid();
     }
 
     protected override bool ReleaseHandle()

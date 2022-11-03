@@ -96,6 +96,25 @@ public unsafe class FFmpegOptions
     }
 
     /// <summary>
+    /// <see cref="av_opt_set_chlayout"/>
+    /// </summary>
+    public void Set(string name, AVChannelLayout value, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children)
+    {
+        av_opt_set_chlayout(_obj, name, &value, (int)searchFlags).ThrowIfError();
+    }
+
+    /// <summary>
+    /// <see cref="av_opt_set_bin(void*, string, byte*, int, int)"/>
+    /// </summary>
+    public void Set(string name, ulong[] value, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children)
+    {
+        fixed (ulong* ptr = value)
+        {
+            av_opt_set_bin(_obj, name, (byte*)ptr, value.Length * 8, (int)searchFlags).ThrowIfError();
+        }
+    }
+
+    /// <summary>
     /// <see cref="av_opt_set_image_size(void*, string, int, int, int)"/>
     /// </summary>
     public void Set(string name, int width, int height, AV_OPT_SEARCH searchFlags = AV_OPT_SEARCH.Children) => 

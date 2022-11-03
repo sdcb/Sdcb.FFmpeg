@@ -30,6 +30,12 @@ namespace Sdcb.FFmpeg.Filters
             Count = count;
         }
 
+        public FilterPadList(AVFilterPad* filterPads)
+        {
+            _pads = filterPads;
+            Count = avfilter_pad_count(filterPads);
+        }
+
         public static implicit operator AVFilterPad*(FilterPadList list) => list._pads;
 
         public FilterPad this[int index]

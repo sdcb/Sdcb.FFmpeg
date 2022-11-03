@@ -7,7 +7,7 @@ using static Sdcb.FFmpeg.Raw.ffmpeg;
 
 namespace Sdcb.FFmpeg.Codecs;
 
-public unsafe partial class Packet : SafeHandle
+public unsafe partial class Packet : SafeHandle, IBufferRefed
 {
     /// <summary>
     /// <see cref="av_packet_alloc"/>
@@ -101,17 +101,17 @@ public unsafe partial class Packet : SafeHandle
     /// <summary>
     /// <see cref="av_packet_ref(AVPacket*, AVPacket*)"/>
     /// </summary>
-    public void Reference(Packet dest) => av_packet_ref(dest, this);
+    public void Ref(Packet dest) => av_packet_ref(dest, this);
 
     /// <summary>
     /// <see cref="av_packet_unref(AVPacket*)"/>
     /// </summary>
-    public void Unreference() => av_packet_unref(this);
+    public void Unref() => av_packet_unref(this);
 
     /// <summary>
     /// <see cref="av_packet_move_ref(AVPacket*, AVPacket*)"/>
     /// </summary>
-    public void MoveReference(Packet dest) => av_packet_move_ref(dest, this);
+    public void MoveRef(Packet dest) => av_packet_move_ref(dest, this);
 
     /// <summary>
     /// <see cref="av_packet_copy_props(AVPacket*, AVPacket*)"/>
@@ -121,7 +121,7 @@ public unsafe partial class Packet : SafeHandle
     /// <summary>
     /// <see cref="av_packet_make_refcounted(AVPacket*)"/>
     /// </summary>
-    public void MakeReferenceCounted() => av_packet_make_refcounted(this).ThrowIfError();
+    public void MakeRefCounted() => av_packet_make_refcounted(this).ThrowIfError();
 
     /// <summary>
     /// <see cref="av_packet_make_writable(AVPacket*)"/>
@@ -169,4 +169,19 @@ public unsafe partial class Packet : SafeHandle
         }
         return MediaDictionary.FromNative(dict, isOwner: true);
     }
+
+    void IBufferRefed.Ref(IBufferRefed other)
+    {
+        if (other is Packet packet)
+        {
+            Ref(packet);
+        }
+        throw new ArgumentException($"{other} is not a packet.");
+    }
+
+    void IBufferRefed.Unref() => Unref();
+
+    void IBufferRefed.MakeWritable() => MakeWritable();
+
+    IBufferRefed IBufferRefed.Clone() => Clone();
 }

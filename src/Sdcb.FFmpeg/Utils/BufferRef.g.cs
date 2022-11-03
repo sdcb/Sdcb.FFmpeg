@@ -48,6 +48,10 @@ public unsafe partial class BufferRef : SafeHandle
     /// <para>The data buffer. It is considered writable if and only if this is the only reference to the buffer, in which case av_buffer_is_writable() returns 1.</para>
     /// <see cref="AVBufferRef.data" />
     /// </summary>
-    public DataPointer Data => new DataPointer(_ptr->data, (int)_ptr->size)!;
+    public DataPointer Data
+    {
+        get => new DataPointer(_ptr->data, (int)_ptr->size)!;
+        set => ((IntPtr)(_ptr->data = (byte*)value.Pointer) + (int)(_ptr->size = (ulong)value.Length)).ToPointer();
+    }
     
 }

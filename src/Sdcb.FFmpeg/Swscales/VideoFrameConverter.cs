@@ -38,10 +38,10 @@ public unsafe class VideoFrameConverter : SafeHandle
                 destFrame.Width, destFrame.Height, (AVPixelFormat)destFrame.Format, flags));
 
         sws_scale(this,
-            srcSlice: sourceFrame.Data.ToArray4(),
-            srcStride: sourceFrame.Linesize.ToArray4(),
+            srcSlice: sourceFrame.Data.ToRawArray(),
+            srcStride: sourceFrame.Linesize.ToArray(),
             srcSliceY: 0, srcSliceH: sourceFrame.Height,
-            dst: destFrame.Data.ToArray4(), destFrame.Linesize.ToArray4()).ThrowIfError();
+            dst: destFrame.Data.ToRawArray(), destFrame.Linesize.ToArray()).ThrowIfError();
     }
 
     /// <summary>

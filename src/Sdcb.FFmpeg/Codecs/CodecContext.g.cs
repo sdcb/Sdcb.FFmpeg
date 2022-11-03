@@ -1092,10 +1092,9 @@ public unsafe partial class CodecContext : SafeHandle
     /// <para>error - encoding: Set by libavcodec if flags &amp; AV_CODEC_FLAG_PSNR. - decoding: unused</para>
     /// <see cref="AVCodecContext.error" />
     /// </summary>
-    public ulong_array8 Error
+    public ref ulong_array8 Error
     {
-        get => _ptr->error;
-        set => _ptr->error = value;
+        get => ref _ptr->error;
     }
     
     /// <summary>
