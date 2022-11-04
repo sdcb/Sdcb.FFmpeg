@@ -108,7 +108,7 @@ public class FiltersTest : IDisposable
         graph.Configure();
 
         Assert.Equal(48000, sinkCtx.Inputs[0].SampleRate);
-        Assert.Equal(1, sinkCtx.Inputs[0].Channels);
+        Assert.Equal(1, sinkCtx.Inputs[0].ChLayout.nb_channels);
         Assert.Equal(AVSampleFormat.Fltp, (AVSampleFormat)sinkCtx.Inputs[0].Format);
     }
 
