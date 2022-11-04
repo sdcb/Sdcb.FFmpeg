@@ -117,11 +117,21 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 $@"new ReadOnlyPtrList<{elementType}, {returnElementType}>({{0}}, (int)_ptr->{countElement}, {converterMethod})");
         }
 
-        public static TypeCastDef DataPointer(string elementType, string countElement)
+        public static TypeCastDef DataPointer(string elementType, string countElement, string countType)
         {
+            string outCvt = countType switch
+            {
+                "int" => "", 
+                _ => "(int)", 
+            };
+            string inCvt = countType switch
+            {
+                "int" => "", 
+                _ => $"({countType})"
+            };
             return new FunctionCallCastDef(elementType + "*", $"DataPointer",
                 $@"new DataPointer({{0}}, (int)_ptr->{countElement})",
-                $"((IntPtr)({{ptr}}->{{oldName}} = ({elementType})value.Pointer) + (int)({{ptr}}->{countElement} = (ulong)value.Length)).ToPointer()");
+                $"((IntPtr)({{ptr}}->{{oldName}} = ({elementType})value.Pointer) + {outCvt}({{ptr}}->{countElement} = {inCvt}value.Length)).ToPointer()");
         }
 
         public static TypeCastDef ReadonlyNativeListWithCast(string elementType, string returnElementType, string countAccessor, string converterMethod)

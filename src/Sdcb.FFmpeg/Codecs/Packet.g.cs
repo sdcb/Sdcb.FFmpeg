@@ -71,7 +71,7 @@ public unsafe partial class Packet : SafeHandle
     public DataPointer Data
     {
         get => new DataPointer(_ptr->data, (int)_ptr->size)!;
-        set => ((IntPtr)(_ptr->data = (byte*)value.Pointer) + (int)(_ptr->size = (ulong)value.Length)).ToPointer();
+        set => ((IntPtr)(_ptr->data = (byte*)value.Pointer) + (_ptr->size = value.Length)).ToPointer();
     }
     
     /// <summary>
