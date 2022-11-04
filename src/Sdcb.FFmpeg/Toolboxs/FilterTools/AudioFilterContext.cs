@@ -53,7 +53,7 @@ public record AudioFilterContext(FilterGraph FilterGraph, FilterContext SourceCo
             }
             if (paras.ChLayout.order != AVChannelOrder.Unspec && paras.ChLayout.nb_channels != 0)
             {
-                sinkCtx.Options.Set("ch_layouts", paras.ChLayout.ToString(), AV_OPT_SEARCH.Children);
+                sinkCtx.Options.Set("ch_layouts", paras.ChLayout.Describe(), AV_OPT_SEARCH.Children);
             }
         }
 
@@ -62,7 +62,7 @@ public record AudioFilterContext(FilterGraph FilterGraph, FilterContext SourceCo
         return (srcCtx, sinkCtx);
     }
 
-    internal static MediaDictionary GetAudioSrcMetadata(MediaStream sourceStream)
+    internal unsafe static MediaDictionary GetAudioSrcMetadata(MediaStream sourceStream)
     {
         if (sourceStream.Codecpar == null)
         {
@@ -74,9 +74,11 @@ public record AudioFilterContext(FilterGraph FilterGraph, FilterContext SourceCo
         {
             throw new InvalidOperationException($"{nameof(sourceStream)} is not a audio.");
         }
-        if (codecpar.ChannelLayout == 0 && codecpar.Channels != 0)
+        if (codecpar.ChLayout.order == AVChannelOrder.Unspec && codecpar.ChLayout.nb_channels != 0)
         {
-            codecpar.ChannelLayout = (ulong)ffmpeg.av_get_default_channel_layout(codecpar.Channels);
+            AVChannelLayout chLayout;
+            ffmpeg.av_channel_layout_default(&chLayout, codecpar.ChLayout.nb_channels);
+            codecpar.ChLayout = chLayout;
         }
 
         return new MediaDictionary
@@ -84,8 +86,8 @@ public record AudioFilterContext(FilterGraph FilterGraph, FilterContext SourceCo
             ["time_base"] = sourceStream.TimeBase.ToString(),
             ["sample_rate"] = codecpar.SampleRate.ToString(),
             ["sample_fmt"] = NameUtils.GetSampleFormatName((AVSampleFormat)codecpar.Format),
-            ["channel_layout"] = NameUtils.GetChannelLayoutString(codecpar.ChannelLayout, codecpar.Channels),
-            ["channels"] = codecpar.Channels.ToString(),
+            ["channel_layout"] = codecpar.ChLayout.Describe(),
+            ["channels"] = codecpar.ChLayout.nb_channels.ToString(),
         };
     }
 
@@ -101,8 +103,8 @@ public record AudioFilterContext(FilterGraph FilterGraph, FilterContext SourceCo
             ["time_base"] = new AVRational(1, audioFirstFrame.SampleRate).ToString(),
             ["sample_rate"] = audioFirstFrame.SampleRate.ToString(),
             ["sample_fmt"] = NameUtils.GetSampleFormatName((AVSampleFormat)audioFirstFrame.Format),
-            ["channel_layout"] = NameUtils.GetChannelLayoutString(audioFirstFrame.ChannelLayout, audioFirstFrame.Channels),
-            ["channels"] = audioFirstFrame.Channels.ToString(),
+            ["channel_layout"] = audioFirstFrame.ChLayout.Describe(),
+            ["channels"] = audioFirstFrame.ChLayout.nb_channels.ToString(),
         };
     }
 

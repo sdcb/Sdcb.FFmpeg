@@ -80,10 +80,10 @@ public static class FramesExtensions
                 {
                     if (!frameConverter.Initialized)
                     {
-                        frameConverter.Options.Set("in_channel_layout", sourceFrame.ChannelLayout, default(AV_OPT_SEARCH));
+                        frameConverter.Options.Set("in_chlayout", sourceFrame.ChLayout, default(AV_OPT_SEARCH));
                         frameConverter.Options.Set("in_sample_rate", sourceFrame.SampleRate, default(AV_OPT_SEARCH));
                         frameConverter.Options.Set("in_sample_fmt", (AVSampleFormat)sourceFrame.Format, default(AV_OPT_SEARCH));
-                        frameConverter.Options.Set("out_channel_layout", dest.ChannelLayout, default(AV_OPT_SEARCH));
+                        frameConverter.Options.Set("out_chlayout", dest.ChLayout, default(AV_OPT_SEARCH));
                         frameConverter.Options.Set("out_sample_rate", dest.SampleRate, default(AV_OPT_SEARCH));
                         frameConverter.Options.Set("out_sample_fmt", (AVSampleFormat)dest.Format, default(AV_OPT_SEARCH));
                         frameConverter.Initialize();
@@ -133,10 +133,10 @@ public static class FramesExtensions
             {
                 if (!sampleConverter.Initialized)
                 {
-                    sampleConverter.Options.Set("in_channel_layout", src.ChannelLayout, default(AV_OPT_SEARCH));
+                    sampleConverter.Options.Set("in_chlayout", src.ChLayout, default(AV_OPT_SEARCH));
                     sampleConverter.Options.Set("in_sample_rate", src.SampleRate, default(AV_OPT_SEARCH));
                     sampleConverter.Options.Set("in_sample_fmt", (AVSampleFormat)src.Format, default(AV_OPT_SEARCH));
-                    sampleConverter.Options.Set("out_channel_layout", destAudioFrame.ChannelLayout, default(AV_OPT_SEARCH));
+                    sampleConverter.Options.Set("out_chlayout", destAudioFrame.ChLayout, default(AV_OPT_SEARCH));
                     sampleConverter.Options.Set("out_sample_rate", destAudioFrame.SampleRate, default(AV_OPT_SEARCH));
                     sampleConverter.Options.Set("out_sample_fmt", (AVSampleFormat)destAudioFrame.Format, default(AV_OPT_SEARCH));
                     sampleConverter.Initialize();

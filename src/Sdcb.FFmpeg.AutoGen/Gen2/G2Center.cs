@@ -172,8 +172,10 @@ namespace Sdcb.FFmpeg.AutoGen.Gen2
                 FieldDef.CreateTypeCast("flags", TypeCastDef.Force("int", "AVFILTER_FLAG")),
                 FieldDef.CreateNullable("priv_class"),
                 FieldDef.CreateHide("next"),
-                FieldDef.CreateTypeCast("inputs", TypeCastDef.CustomReadonly("AVFilterPad*", "FilterPadList", "new FilterPadList({0})")),
-                FieldDef.CreateTypeCast("outputs", TypeCastDef.CustomReadonly("AVFilterPad*", "FilterPadList", "new FilterPadList({0})"))
+                FieldDef.CreateTypeCast("inputs", TypeCastDef.CustomReadonly("AVFilterPad*", "FilterPadList", "new FilterPadList({0}, _ptr->nb_inputs)")),
+                FieldDef.CreateTypeCast("outputs", TypeCastDef.CustomReadonly("AVFilterPad*", "FilterPadList", "new FilterPadList({0}, _ptr->nb_outputs)")),
+                FieldDef.CreateHide("nb_inputs"),
+                FieldDef.CreateHide("nb_outputs"),
             }),
             G2TransformDef.MakeClass(ClassCategories.Filters, "AVFilterGraph", "FilterGraph", new FieldDef[]
             {

@@ -16,7 +16,7 @@ public static class NameUtils
     /// <summary>
     /// <see cref="av_get_channel_layout_string"/>
     /// </summary>
-    [Obsolete("use AVChannelLayout.ToString()")]
+    [Obsolete("use AVChannelLayout.Describe()")]
     public unsafe static string GetChannelLayoutString(ulong channelLayout, int channels = 0)
     {
         byte[] buffer = new byte[64];
@@ -40,7 +40,7 @@ public static class AVChannelLayoutExtensions
     /// <summary>
     /// <see cref="av_channel_layout_describe"/>
     /// </summary>
-    public unsafe static string ToString(this AVChannelLayout chLayout)
+    public unsafe static string Describe(this AVChannelLayout chLayout)
     {
         byte[] buffer = new byte[64];
         fixed (byte* ptr = buffer)

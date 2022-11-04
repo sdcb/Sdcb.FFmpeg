@@ -38,6 +38,7 @@ public unsafe class SampleConverter : SafeHandle
     /// <summary>
     /// <see cref="swr_alloc_set_opts(SwrContext*, long, AVSampleFormat, int, long, AVSampleFormat, int, int, void*)"/>
     /// </summary>
+    [Obsolete]
     public void Reset(
         long outputChannelLayout, AVSampleFormat outputSampleFormat, int outputSampleRate,
         long inputChannelLayout, AVSampleFormat inputSampleFormat, int inputSampleRate)
@@ -46,6 +47,21 @@ public unsafe class SampleConverter : SafeHandle
             outputChannelLayout, outputSampleFormat, outputSampleRate,
             inputChannelLayout, inputSampleFormat, inputSampleRate,
             log_offset: 0, log_ctx: null));
+    }
+
+    /// <summary>
+    /// <see cref="swr_alloc_set_opts(SwrContext*, long, AVSampleFormat, int, long, AVSampleFormat, int, int, void*)"/>
+    /// </summary>
+    public void Reset(
+        AVChannelLayout outputChLayout, AVSampleFormat outputSampleFormat, int outputSampleRate,
+        AVChannelLayout inputChLayout, AVSampleFormat inputSampleFormat, int inputSampleRate)
+    {
+        SwrContext* ptr = (SwrContext*)handle;
+        swr_alloc_set_opts2(&ptr,
+            &outputChLayout, outputSampleFormat, outputSampleRate,
+            &inputChLayout, inputSampleFormat, inputSampleRate,
+            log_offset: 0, log_ctx: null).ThrowIfError();
+        handle = (IntPtr)ptr;
     }
 
     /// <summary>

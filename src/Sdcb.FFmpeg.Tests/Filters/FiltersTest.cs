@@ -87,7 +87,7 @@ public class FiltersTest : IDisposable
     }
 
     [Fact]
-    public void CheckAudioFilterSink()
+    public unsafe void CheckAudioFilterSink()
     {
         using FilterGraph graph = new();
         using FilterContext srcCtx = graph.AllocFilter("abuffer", "in");
@@ -95,12 +95,14 @@ public class FiltersTest : IDisposable
         int sampleRate = 44100;
         int channels = 1;
         AVSampleFormat sampleFormat = AVSampleFormat.S16p;
+        AVChannelLayout chLayout;
+        ffmpeg.av_channel_layout_default(&chLayout, channels);
         srcCtx.InitializeFromDictionary(new MediaDictionary
         {
             ["time_base"] = new AVRational(1, sampleRate).ToString(),
             ["sample_rate"] = sampleRate.ToString(),
             ["sample_fmt"] = NameUtils.GetSampleFormatName(sampleFormat),
-            ["channel_layout"] = NameUtils.GetChannelLayoutString((ulong)ffmpeg.av_get_default_channel_layout(channels), channels),
+            ["channel_layout"] = chLayout.ToString()!,
             ["channels"] = channels.ToString(),
         });
         //sinkCtx.Options.Set("pix_fmts", new int[] { (int) AVPixelFormat.Yuv444p }, AV_OPT_SEARCH.Children);
