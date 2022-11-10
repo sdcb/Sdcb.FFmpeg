@@ -501,12 +501,12 @@ public static class FramesExtensions
 
     public static IEnumerable<Frame> ConvertVideoFrames(this IEnumerable<Frame> sourceFrames, Func<(int width, int height)> sizeAccessor, AVPixelFormat pixelFormat, SWS swsFlags = SWS.Bilinear, bool unref = true)
     {
-        Frame dest = null!;
+        Frame dest;
         {
             (int width, int height) = sizeAccessor();
             dest = Frame.CreateVideo(width, height, pixelFormat);
         }
-        using Frame destRef = new Frame();
+        using Frame destRef = new();
 
         try
         {

@@ -102,7 +102,7 @@ public class FiltersTest : IDisposable
             ["time_base"] = new AVRational(1, sampleRate).ToString(),
             ["sample_rate"] = sampleRate.ToString(),
             ["sample_fmt"] = NameUtils.GetSampleFormatName(sampleFormat),
-            ["channel_layout"] = chLayout.ToString()!,
+            ["channel_layout"] = chLayout.Describe()!,
             ["channels"] = channels.ToString(),
         });
         //sinkCtx.Options.Set("pix_fmts", new int[] { (int) AVPixelFormat.Yuv444p }, AV_OPT_SEARCH.Children);
