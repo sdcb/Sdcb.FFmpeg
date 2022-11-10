@@ -497,5 +497,49 @@ public static class FramesExtensions
                 encodeAudio = false;
             }
         }
-    }    
+    }
+
+    public static IEnumerable<Frame> ConvertVideoFrames(this IEnumerable<Frame> sourceFrames, Func<(int width, int height)> sizeAccessor, AVPixelFormat pixelFormat, SWS swsFlags = SWS.Bilinear, bool unref = true)
+    {
+        Frame dest;
+        {
+            (int width, int height) = sizeAccessor();
+            dest = Frame.CreateVideo(width, height, pixelFormat);
+        }
+        using Frame destRef = new();
+
+        try
+        {
+            int pts = 0;
+            using VideoFrameConverter frameConverter = new();
+            foreach (Frame sourceFrame in sourceFrames)
+            {
+                if (sourceFrame.Width > 0)
+                {
+                    (int width, int height) = sizeAccessor();
+                    if (dest.Width != width || dest.Height != height)
+                    {
+                        dest.Dispose();
+                        dest = Frame.CreateVideo(width, height, pixelFormat);
+                    }
+
+                    dest.MakeWritable();
+                    frameConverter.ConvertFrame(sourceFrame, dest, swsFlags);
+                    if (unref) sourceFrame.Unref();
+                    dest.Pts = pts++;
+                    destRef.Ref(dest);
+                    yield return destRef;
+                }
+                else
+                {
+                    // bypass not a video frame
+                    yield return sourceFrame;
+                }
+            }
+        }
+        finally
+        {
+            dest.Dispose();
+        }
+    }
 }

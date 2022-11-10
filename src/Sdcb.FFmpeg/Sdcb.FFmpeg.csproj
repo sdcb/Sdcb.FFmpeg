@@ -3,7 +3,7 @@
     <PropertyGroup>
         <PackageId>Sdcb.FFmpeg</PackageId>
         <VersionPrefix>4.4.3</VersionPrefix>
-        <VersionSuffix>preview.5</VersionSuffix>
+        <VersionSuffix>preview.6</VersionSuffix>
         <LangVersion>latest</LangVersion>
         <!-- Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
         <IncludeSymbols>true</IncludeSymbols>
