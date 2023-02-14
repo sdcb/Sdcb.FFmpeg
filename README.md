@@ -17,7 +17,7 @@ For code generations, `Sdcb.FFmpeg` have benifits from:
 * Auto download FFmpeg binaries from known existing sources
 
 ## NuGet Packages
-* FFmpeg 4.4.2:
+* FFmpeg 4.4.x:
   | Package                         | Link                                                                                                                            |
   | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
   | Sdcb.FFmpeg                     | [![NuGet](https://img.shields.io/badge/nuget-4.4.2-blue)](https://www.nuget.org/packages/Sdcb.FFmpeg/4.4.2)                     |
@@ -26,7 +26,7 @@ For code generations, `Sdcb.FFmpeg` have benifits from:
 * FFmpeg 5.x:
   | Package                         | Link                                                                                                                                       |
   | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-  | Sdcb.FFmpeg                     | [![NuGet](https://img.shields.io/nuget/vpre/Sdcb.FFmpeg.svg?color=red)](https://nuget.org/packages/Sdcb.FFmpeg)                            |
+  | Sdcb.FFmpeg                     | [![NuGet](https://img.shields.io/nuget/vpre/Sdcb.FFmpeg.svg)](https://nuget.org/packages/Sdcb.FFmpeg)                            |
   | Sdcb.FFmpeg.runtime.windows-x64 | [![NuGet](https://img.shields.io/nuget/v/Sdcb.FFmpeg.runtime.windows-x64.svg)](https://nuget.org/packages/Sdcb.FFmpeg.runtime.windows-x64) |
 
 
