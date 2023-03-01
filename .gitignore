@@ -108,3 +108,4 @@ UpgradeLog*.XML
 # Local 
 /FFmpeg.AutoGen.Example/frame.*.jpg
 /ffmpeg-binary-cache
+/src/Sdcb.FFmpeg.Tests/Sdcb.FFmpeg.runtime.windows-x64.6.0.0-preview.1

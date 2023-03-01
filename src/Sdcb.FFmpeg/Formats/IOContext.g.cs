@@ -229,16 +229,6 @@ public unsafe partial class IOContext : SafeHandle
     }
     
     /// <summary>
-    /// <see cref="AVIOContext.written" />
-    /// </summary>
-    [Obsolete("field utilized privately by libavformat. For a public statistic of how many bytes were written out, see AVIOContext::bytes_written.")]
-    public long Written
-    {
-        get => _ptr->written;
-        set => _ptr->written = value;
-    }
-    
-    /// <summary>
     /// <para>original type: byte*</para>
     /// <para>Maximum reached position before a backward seek in the write buffer, used keeping track of already written data for a later flush.</para>
     /// <see cref="AVIOContext.buf_ptr_max" />

@@ -37,6 +37,17 @@ public unsafe partial struct MediaStream
         => ptr != null ? new MediaStream?(new MediaStream(ptr)) : null;
     
     /// <summary>
+    /// <para>original type: AVClass*</para>
+    /// <para>A class for avoptions. Set on stream creation.</para>
+    /// <see cref="AVStream.av_class" />
+    /// </summary>
+    public FFmpegClass AvClass
+    {
+        get => FFmpegClass.FromNative(_ptr->av_class);
+        set => _ptr->av_class = (AVClass*)value;
+    }
+    
+    /// <summary>
     /// <para>stream index in AVFormatContext</para>
     /// <see cref="AVStream.index" />
     /// </summary>
@@ -54,6 +65,17 @@ public unsafe partial struct MediaStream
     {
         get => _ptr->id;
         set => _ptr->id = value;
+    }
+    
+    /// <summary>
+    /// <para>original type: AVCodecParameters*</para>
+    /// <para>Codec parameters associated with this stream. Allocated and freed by libavformat in avformat_new_stream() and avformat_free_context() respectively.</para>
+    /// <see cref="AVStream.codecpar" />
+    /// </summary>
+    public CodecParameters? Codecpar
+    {
+        get => CodecParameters.FromNativeOrNull(_ptr->codecpar, false);
+        set => _ptr->codecpar = value != null ? (AVCodecParameters*)value : null;
     }
     
     /// <summary>
@@ -205,17 +227,6 @@ public unsafe partial struct MediaStream
     {
         get => _ptr->r_frame_rate;
         set => _ptr->r_frame_rate = value;
-    }
-    
-    /// <summary>
-    /// <para>original type: AVCodecParameters*</para>
-    /// <para>Codec parameters associated with this stream. Allocated and freed by libavformat in avformat_new_stream() and avformat_free_context() respectively.</para>
-    /// <see cref="AVStream.codecpar" />
-    /// </summary>
-    public CodecParameters? Codecpar
-    {
-        get => CodecParameters.FromNativeOrNull(_ptr->codecpar, false);
-        set => _ptr->codecpar = value != null ? (AVCodecParameters*)value : null;
     }
     
     /// <summary>

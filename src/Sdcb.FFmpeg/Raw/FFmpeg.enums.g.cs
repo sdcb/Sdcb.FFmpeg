@@ -130,8 +130,12 @@ namespace Sdcb.FFmpeg.Raw
         Layout_7POINT1Wide = Layout_5POINT1 | FrontLeftOfCenter | FrontRightOfCenter,
         /// <summary>AV_CH_LAYOUT_7POINT1_WIDE_BACK</summary>
         Layout_7POINT1WideBack = Layout_5POINT1Back | FrontLeftOfCenter | FrontRightOfCenter,
+        /// <summary>AV_CH_LAYOUT_7POINT1_TOP_BACK</summary>
+        Layout_7POINT1TopBack = Layout_5POINT1Back | TopFrontLeft | TopFrontRight,
         /// <summary>AV_CH_LAYOUT_OCTAGONAL</summary>
         LayoutOctagonal = Layout_5POINT0 | BackLeft | BackCenter | BackRight,
+        /// <summary>AV_CH_LAYOUT_CUBE</summary>
+        LayoutCube = LayoutQuad | TopFrontLeft | TopFrontRight | TopBackLeft | TopBackRight,
         /// <summary>AV_CH_LAYOUT_HEXADECAGONAL</summary>
         LayoutHexadecagonal = LayoutOctagonal | WideLeft | WideRight | TopBackLeft | TopBackRight | TopBackCenter | TopFrontCenter | TopFrontLeft | TopFrontRight,
         /// <summary>AV_CH_LAYOUT_STEREO_DOWNMIX</summary>
@@ -142,14 +146,12 @@ namespace Sdcb.FFmpeg.Raw
     
     /// <summary>Macro enum, prefix: AV_CODEC_CAP_</summary>
     [Flags]
-    public enum AV_CODEC_CAP : uint
+    public enum AV_CODEC_CAP : int
     {
         /// <summary>AV_CODEC_CAP_DRAW_HORIZ_BAND</summary>
         DrawHorizBand = 1 << 0,
         /// <summary>AV_CODEC_CAP_DR1</summary>
         Dr1 = 1 << 1,
-        /// <summary>AV_CODEC_CAP_TRUNCATED</summary>
-        Truncated = 1 << 3,
         /// <summary>AV_CODEC_CAP_DELAY</summary>
         Delay = 1 << 5,
         /// <summary>AV_CODEC_CAP_SMALL_LAST_FRAME</summary>
@@ -168,16 +170,10 @@ namespace Sdcb.FFmpeg.Raw
         ParamChange = 1 << 14,
         /// <summary>AV_CODEC_CAP_OTHER_THREADS</summary>
         OtherThreads = 1 << 15,
-        /// <summary>AV_CODEC_CAP_AUTO_THREADS</summary>
-        AutoThreads = OtherThreads,
         /// <summary>AV_CODEC_CAP_VARIABLE_FRAME_SIZE</summary>
         VariableFrameSize = 1 << 16,
         /// <summary>AV_CODEC_CAP_AVOID_PROBING</summary>
         AvoidProbing = 1 << 17,
-        /// <summary>AV_CODEC_CAP_INTRA_ONLY</summary>
-        IntraOnly = 0x40000000,
-        /// <summary>AV_CODEC_CAP_LOSSLESS</summary>
-        Lossless = 0x80000000,
         /// <summary>AV_CODEC_CAP_HARDWARE</summary>
         Hardware = 1 << 18,
         /// <summary>AV_CODEC_CAP_HYBRID</summary>
@@ -186,6 +182,8 @@ namespace Sdcb.FFmpeg.Raw
         EncoderReorderedOpaque = 1 << 20,
         /// <summary>AV_CODEC_CAP_ENCODER_FLUSH</summary>
         EncoderFlush = 1 << 21,
+        /// <summary>AV_CODEC_CAP_ENCODER_RECON_FRAME</summary>
+        EncoderReconFrame = 1 << 22,
     }
     
     /// <summary>Macro enum, prefix: AV_CODEC_FLAG_</summary>
@@ -204,6 +202,12 @@ namespace Sdcb.FFmpeg.Raw
         Qpel = 1 << 4,
         /// <summary>AV_CODEC_FLAG_DROPCHANGED</summary>
         Dropchanged = 1 << 5,
+        /// <summary>AV_CODEC_FLAG_RECON_FRAME</summary>
+        ReconFrame = 1 << 6,
+        /// <summary>AV_CODEC_FLAG_COPY_OPAQUE</summary>
+        CopyOpaque = 1 << 7,
+        /// <summary>AV_CODEC_FLAG_FRAME_DURATION</summary>
+        FrameDuration = 1 << 8,
         /// <summary>AV_CODEC_FLAG_PASS1</summary>
         Pass1 = 1 << 9,
         /// <summary>AV_CODEC_FLAG_PASS2</summary>
@@ -214,8 +218,6 @@ namespace Sdcb.FFmpeg.Raw
         Gray = 1 << 13,
         /// <summary>AV_CODEC_FLAG_PSNR</summary>
         Psnr = 1 << 15,
-        /// <summary>AV_CODEC_FLAG_TRUNCATED</summary>
-        Truncated = 1 << 16,
         /// <summary>AV_CODEC_FLAG_INTERLACED_DCT</summary>
         InterlacedDct = 1 << 18,
         /// <summary>AV_CODEC_FLAG_LOW_DELAY</summary>
@@ -242,8 +244,6 @@ namespace Sdcb.FFmpeg.Raw
         NoOutput = 1 << 2,
         /// <summary>AV_CODEC_FLAG2_LOCAL_HEADER</summary>
         LocalHeader = 1 << 3,
-        /// <summary>AV_CODEC_FLAG2_DROP_FRAME_TIMECODE</summary>
-        DropFrameTimecode = 1 << 13,
         /// <summary>AV_CODEC_FLAG2_CHUNKS</summary>
         Chunks = 1 << 15,
         /// <summary>AV_CODEC_FLAG2_IGNORE_CROP</summary>
@@ -256,6 +256,8 @@ namespace Sdcb.FFmpeg.Raw
         SkipManual = 1 << 29,
         /// <summary>AV_CODEC_FLAG2_RO_FLUSH_NOOP</summary>
         RoFlushNoop = 1 << 30,
+        /// <summary>AV_CODEC_FLAG2_ICC_PROFILES</summary>
+        IccProfiles = 1 << 31,
     }
     
     /// <summary>Macro enum, prefix: AV_DICT_</summary>
@@ -403,7 +405,7 @@ namespace Sdcb.FFmpeg.Raw
         Nb = 9,
     }
     
-    /// <summary>@{</summary>
+    /// <summary>Audio channel layout utility functions</summary>
     public enum AVChannel : int
     {
         None = -1,
@@ -777,6 +779,10 @@ namespace Sdcb.FFmpeg.Raw
         Jpegxl = 259,
         Qoi = 260,
         Phm = 261,
+        RadianceHdr = 262,
+        Wbmp = 263,
+        Media100 = 264,
+        Vqc = 265,
         /// <summary>A dummy id pointing at the start of audio codecs</summary>
         FirstAudio = 65536,
         PcmS16le = 65536,
@@ -867,6 +873,7 @@ namespace Sdcb.FFmpeg.Raw
         AdpcmImaCunning = 69680,
         AdpcmImaMoflex = 69681,
         AdpcmImaAcorn = 69682,
+        AdpcmXmd = 69683,
         AmrNb = 73728,
         AmrWb = 73729,
         Ra_144 = 77824,
@@ -878,6 +885,8 @@ namespace Sdcb.FFmpeg.Raw
         Sdx2Dpcm = 81924,
         GremlinDpcm = 81925,
         DerfDpcm = 81926,
+        WadyDpcm = 81927,
+        Cbd2Dpcm = 81928,
         Mp2 = 86016,
         /// <summary>preferred ID for decoding MPEG audio layer 1, 2 or 3</summary>
         Mp3 = 86017,
@@ -977,6 +986,12 @@ namespace Sdcb.FFmpeg.Raw
         Fastaudio = 86110,
         Msnsiren = 86111,
         Dfpwm = 86112,
+        Bonk = 86113,
+        Misc4 = 86114,
+        Apac = 86115,
+        Ftr = 86116,
+        Wavarc = 86117,
+        Rka = 86118,
         /// <summary>A dummy ID pointing at the start of subtitle codecs.</summary>
         FirstSubtitle = 94208,
         DvdSubtitle = 94208,
@@ -1030,6 +1045,10 @@ namespace Sdcb.FFmpeg.Raw
         Ffmetadata = 135168,
         /// <summary>Passthrough codec, AVFrames wrapped in AVPacket</summary>
         WrappedAvframe = 135169,
+        /// <summary>Dummy null video codec, useful mainly for development and debugging. Null encoder/decoder discard all input and never return any output.</summary>
+        Vnull = 135170,
+        /// <summary>Dummy null audio codec, useful mainly for development and debugging. Null encoder/decoder discard all input and never return any output.</summary>
+        Anull = 135171,
     }
     
     /// <summary>Chromaticity coordinates of the source primaries. These values match the ones defined by ISO/IEC 23091-2_2019 subclause 8.1 and ITU-T H.273.</summary>
@@ -1214,13 +1233,18 @@ namespace Sdcb.FFmpeg.Raw
         Bitrate = 2,
     }
     
+    /// <summary>@{</summary>
     public enum AVFieldOrder : int
     {
         Unknown = 0,
         Progressive = 1,
+        /// <summary>Top coded_first, top displayed first</summary>
         Tt = 2,
+        /// <summary>Bottom coded first, bottom displayed first</summary>
         Bb = 3,
+        /// <summary>Top coded first, bottom displayed first</summary>
         Tb = 4,
+        /// <summary>Bottom coded first, top displayed first</summary>
         Bt = 5,
     }
     
@@ -1351,8 +1375,6 @@ namespace Sdcb.FFmpeg.Raw
         Bitexact = 0x0400,
         /// <summary>AVFMT_FLAG_SORT_DTS</summary>
         SortDts = 0x10000,
-        /// <summary>AVFMT_FLAG_PRIV_OPT</summary>
-        PrivOpt = 0x20000,
         /// <summary>AVFMT_FLAG_FAST_SEEK</summary>
         FastSeek = 0x80000,
         /// <summary>AVFMT_FLAG_SHORTEST</summary>
@@ -1416,6 +1438,8 @@ namespace Sdcb.FFmpeg.Raw
         DoviMetadata = 24,
         /// <summary>HDR Vivid dynamic metadata associated with a video frame. The payload is an AVDynamicHDRVivid type and contains information for color volume transform - CUVA 005.1-2021.</summary>
         DynamicHdrVivid = 25,
+        /// <summary>Ambient viewing environment metadata, as defined by H.274.</summary>
+        AmbientViewingEnvironment = 26,
     }
     
     /// <summary>Option for overlapping elliptical pixel selectors in an image.</summary>
@@ -1627,9 +1651,13 @@ namespace Sdcb.FFmpeg.Raw
     /// <summary>@{</summary>
     public enum AVPictureStructure : int
     {
+        /// <summary>unknown</summary>
         Unknown = 0,
+        /// <summary>coded as top field</summary>
         TopField = 1,
+        /// <summary>coded as bottom field</summary>
         BottomField = 2,
+        /// <summary>coded as frame</summary>
         Frame = 3,
     }
     
@@ -2075,8 +2103,40 @@ namespace Sdcb.FFmpeg.Raw
         P416be = 204,
         /// <summary>interleaved chroma YUV 4:4:4, 48bpp, little-endian</summary>
         P416le = 205,
+        /// <summary>packed VUYA 4:4:4, 32bpp, VUYAVUYA...</summary>
+        Vuya = 206,
+        /// <summary>IEEE-754 half precision packed RGBA 16:16:16:16, 64bpp, RGBARGBA..., big-endian</summary>
+        Rgbaf16be = 207,
+        /// <summary>IEEE-754 half precision packed RGBA 16:16:16:16, 64bpp, RGBARGBA..., little-endian</summary>
+        Rgbaf16le = 208,
+        /// <summary>packed VUYX 4:4:4, 32bpp, Variant of VUYA where alpha channel is left undefined</summary>
+        Vuyx = 209,
+        /// <summary>like NV12, with 12bpp per component, data in the high bits, zeros in the low bits, little-endian</summary>
+        P012le = 210,
+        /// <summary>like NV12, with 12bpp per component, data in the high bits, zeros in the low bits, big-endian</summary>
+        P012be = 211,
+        /// <summary>packed YUV 4:2:2 like YUYV422, 24bpp, data in the high bits, zeros in the low bits, big-endian</summary>
+        Y212be = 212,
+        /// <summary>packed YUV 4:2:2 like YUYV422, 24bpp, data in the high bits, zeros in the low bits, little-endian</summary>
+        Y212le = 213,
+        /// <summary>packed XVYU 4:4:4, 32bpp, (msb)2X 10V 10Y 10U(lsb), big-endian, variant of Y410 where alpha channel is left undefined</summary>
+        Xv30be = 214,
+        /// <summary>packed XVYU 4:4:4, 32bpp, (msb)2X 10V 10Y 10U(lsb), little-endian, variant of Y410 where alpha channel is left undefined</summary>
+        Xv30le = 215,
+        /// <summary>packed XVYU 4:4:4, 48bpp, data in the high bits, zeros in the low bits, big-endian, variant of Y412 where alpha channel is left undefined</summary>
+        Xv36be = 216,
+        /// <summary>packed XVYU 4:4:4, 48bpp, data in the high bits, zeros in the low bits, little-endian, variant of Y412 where alpha channel is left undefined</summary>
+        Xv36le = 217,
+        /// <summary>IEEE-754 single precision packed RGB 32:32:32, 96bpp, RGBRGB..., big-endian</summary>
+        Rgbf32be = 218,
+        /// <summary>IEEE-754 single precision packed RGB 32:32:32, 96bpp, RGBRGB..., little-endian</summary>
+        Rgbf32le = 219,
+        /// <summary>IEEE-754 single precision packed RGBA 32:32:32:32, 128bpp, RGBARGBA..., big-endian</summary>
+        Rgbaf32be = 220,
+        /// <summary>IEEE-754 single precision packed RGBA 32:32:32:32, 128bpp, RGBARGBA..., little-endian</summary>
+        Rgbaf32le = 221,
         /// <summary>number of pixel formats, DO NOT USE THIS if you want to link with shared libav* because the number of formats might differ between versions</summary>
-        Nb = 206,
+        Nb = 222,
     }
     
     /// <summary>Rounding methods.</summary>
@@ -2385,6 +2445,8 @@ namespace Sdcb.FFmpeg.Raw
         HevcMainStillPicture = 3,
         /// <summary>FF_PROFILE_HEVC_REXT</summary>
         HevcRext = 4,
+        /// <summary>FF_PROFILE_HEVC_SCC</summary>
+        HevcScc = 9,
         /// <summary>FF_PROFILE_VVC_MAIN_10</summary>
         VvcMain_10 = 1,
         /// <summary>FF_PROFILE_VVC_MAIN_10_444</summary>

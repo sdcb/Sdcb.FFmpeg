@@ -246,6 +246,7 @@ public unsafe partial class Frame : SafeHandle
     /// <para>reordered opaque 64 bits (generally an integer or a double precision float PTS but can be anything). The user sets AVCodecContext.reordered_opaque to represent the input at that time, the decoder reorders values as needed and sets AVFrame.reordered_opaque to exactly one of the values provided by the user through AVCodecContext.reordered_opaque</para>
     /// <see cref="AVFrame.reordered_opaque" />
     /// </summary>
+    [Obsolete("Use AV_CODEC_FLAG_COPY_OPAQUE instead")]
     public long ReorderedOpaque
     {
         get => _ptr->reordered_opaque;
@@ -389,6 +390,7 @@ public unsafe partial class Frame : SafeHandle
     /// <para>duration of the corresponding packet, expressed in AVStream-&gt;time_base units, 0 if unknown. - encoding: unused - decoding: Read by user.</para>
     /// <see cref="AVFrame.pkt_duration" />
     /// </summary>
+    [Obsolete("use duration instead")]
     public long PktDuration
     {
         get => _ptr->pkt_duration;
@@ -515,5 +517,15 @@ public unsafe partial class Frame : SafeHandle
     {
         get => _ptr->ch_layout;
         set => _ptr->ch_layout = value;
+    }
+    
+    /// <summary>
+    /// <para>Duration of the frame, in the same units as pts. 0 if unknown.</para>
+    /// <see cref="AVFrame.duration" />
+    /// </summary>
+    public long Duration
+    {
+        get => _ptr->duration;
+        set => _ptr->duration = value;
     }
 }

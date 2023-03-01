@@ -778,6 +778,7 @@ public unsafe partial class CodecContext : SafeHandle
     /// <para>Frame counter, set by libavcodec.</para>
     /// <see cref="AVCodecContext.frame_number" />
     /// </summary>
+    [Obsolete("use frame_num instead")]
     public int FrameNumber
     {
         get => _ptr->frame_number;
@@ -1018,7 +1019,7 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>strictly follow the standard (MPEG-4, ...). - encoding: Set by user. - decoding: Set by user. Setting this to STRICT or higher means the encoder and decoder will generally do stupid things, whereas setting it to unofficial or lower will mean the encoder might produce output that is not supported by all spec-compliant decoders. Decoders don't differentiate between normal, unofficial and experimental (that is, they always try to decode things when they can) unless they are explicitly asked to behave stupidly (=strictly conform to the specs)</para>
+    /// <para>strictly follow the standard (MPEG-4, ...). - encoding: Set by user. - decoding: Set by user. Setting this to STRICT or higher means the encoder and decoder will generally do stupid things, whereas setting it to unofficial or lower will mean the encoder might produce output that is not supported by all spec-compliant decoders. Decoders don't differentiate between normal, unofficial and experimental (that is, they always try to decode things when they can) unless they are explicitly asked to behave stupidly (=strictly conform to the specs) This may only be set to one of the FF_COMPLIANCE_* values in defs.h.</para>
     /// <see cref="AVCodecContext.strict_std_compliance" />
     /// </summary>
     public int StrictStdCompliance
@@ -1048,7 +1049,7 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>Error recognition; may misdetect some more or less valid parts as errors. - encoding: Set by user. - decoding: Set by user.</para>
+    /// <para>Error recognition; may misdetect some more or less valid parts as errors. This is a bitfield of the AV_EF_* values defined in defs.h.</para>
     /// <see cref="AVCodecContext.err_recognition" />
     /// </summary>
     public int ErrRecognition
@@ -1061,6 +1062,7 @@ public unsafe partial class CodecContext : SafeHandle
     /// <para>opaque 64-bit number (generally a PTS) that will be reordered and output in AVFrame.reordered_opaque - encoding: Set by libavcodec to the reordered_opaque of the input frame corresponding to the last returned packet. Only supported by encoders with the AV_CODEC_CAP_ENCODER_REORDERED_OPAQUE capability. - decoding: Set by user.</para>
     /// <see cref="AVCodecContext.reordered_opaque" />
     /// </summary>
+    [Obsolete("Use AV_CODEC_FLAG_COPY_OPAQUE instead")]
     public long ReorderedOpaque
     {
         get => _ptr->reordered_opaque;
@@ -1079,7 +1081,7 @@ public unsafe partial class CodecContext : SafeHandle
     
     /// <summary>
     /// <para>original type: void*</para>
-    /// <para>Hardware accelerator context. For some hardware accelerators, a global context needs to be provided by the user. In that case, this holds display-dependent data FFmpeg cannot instantiate itself. Please refer to the FFmpeg HW accelerator documentation to know how to fill this. - encoding: unused - decoding: Set by user</para>
+    /// <para>Legacy hardware accelerator context.</para>
     /// <see cref="AVCodecContext.hwaccel_context" />
     /// </summary>
     public IntPtr HwaccelContext
@@ -1175,17 +1177,6 @@ public unsafe partial class CodecContext : SafeHandle
     {
         get => _ptr->active_thread_type;
         set => _ptr->active_thread_type = value;
-    }
-    
-    /// <summary>
-    /// <para>Set by the client if its custom get_buffer() callback can be called synchronously from another thread, which allows faster multithreaded decoding. draw_horiz_band() will be called from other threads regardless of this setting. Ignored if the default get_buffer() is used. - encoding: Set by user. - decoding: Set by user.</para>
-    /// <see cref="AVCodecContext.thread_safe_callbacks" />
-    /// </summary>
-    [Obsolete("the custom get_buffer2() callback should always be thread-safe. Thread-unsafe get_buffer2() implementations will be invalid starting with LIBAVCODEC_VERSION_MAJOR=60; in other words, libavcodec will behave as if this field was always set to 1. Callers that want to be forward compatible with future libavcodec versions should wrap access to this field in #if LIBAVCODEC_VERSION_MAJOR < 60")]
-    public int ThreadSafeCallbacks
-    {
-        get => _ptr->thread_safe_callbacks;
-        set => _ptr->thread_safe_callbacks = value;
     }
     
     /// <summary>
@@ -1400,16 +1391,6 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
-    /// <see cref="AVCodecContext.debug_mv" />
-    /// </summary>
-    [Obsolete("unused")]
-    public int DebugMv
-    {
-        get => _ptr->debug_mv;
-        set => _ptr->debug_mv = value;
-    }
-    
-    /// <summary>
     /// <para>custom intra quantization matrix - encoding: Set by user, can be NULL. - decoding: unused.</para>
     /// <see cref="AVCodecContext.chroma_intra_matrix" />
     /// </summary>
@@ -1480,16 +1461,6 @@ public unsafe partial class CodecContext : SafeHandle
     {
         get => BufferRef.FromNativeOrNull(_ptr->hw_frames_ctx, false);
         set => _ptr->hw_frames_ctx = value != null ? (AVBufferRef*)value : null;
-    }
-    
-    /// <summary>
-    /// <see cref="AVCodecContext.sub_text_format" />
-    /// </summary>
-    [Obsolete("unused")]
-    public int SubTextFormat
-    {
-        get => _ptr->sub_text_format;
-        set => _ptr->sub_text_format = value;
     }
     
     /// <summary>
@@ -1590,5 +1561,15 @@ public unsafe partial class CodecContext : SafeHandle
     {
         get => _ptr->ch_layout;
         set => _ptr->ch_layout = value;
+    }
+    
+    /// <summary>
+    /// <para>Frame counter, set by libavcodec.</para>
+    /// <see cref="AVCodecContext.frame_num" />
+    /// </summary>
+    public long FrameNum
+    {
+        get => _ptr->frame_num;
+        set => _ptr->frame_num = value;
     }
 }

@@ -12,6 +12,7 @@ namespace Sdcb.FFmpeg.Raw
     {
     }
     
+    /// <summary>@}</summary>
     /// <remarks>This struct is incomplete.</remarks>
     public unsafe struct AVBPrint
     {
