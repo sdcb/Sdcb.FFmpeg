@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 
 using Sdcb.FFmpeg.Codecs;
 using Sdcb.FFmpeg.Filters;
 using Sdcb.FFmpeg.Formats;
+using Sdcb.FFmpeg.Raw;
 using Sdcb.FFmpeg.Toolboxs.Extensions;
 using Sdcb.FFmpeg.Utils;
 
@@ -14,12 +16,17 @@ namespace Sdcb.FFmpeg.Toolboxs.FilterTools
     public record AppositionFilter
     {
         private VideoFilterContext videoFilterContext;
+        //private FilterGraph filterGraph;
+        //private FilterContext sinkCtx;
         public IReadOnlyList<VideoFilterContext> VideoTrack { get; } = new List<VideoFilterContext>();
-        private AppositionFilter(Size outVideoSize,long duration)
+        private AppositionFilter(Size outVideoSize)
         {
             FilterGraph graph = new();
-            FilterContext nullfilter = graph.CreateFilter("nullsrc", "srcbase", $"duration={TimeSpan.FromTicks(duration*10).TotalSeconds}:rate=25:size={outVideoSize.Width}x{outVideoSize.Height}"); //graph.CreateFilter("nullsrc", "srcbase");
-            videoFilterContext = new VideoFilterContext(graph, nullfilter, graph.CreateFilter("buffersink", "out"));
+            //filterGraph = graph;
+            FilterContext nullfilter = graph.CreateFilter("nullsrc", "srcbase", $"duration=0.1:rate=25:size={outVideoSize.Width}x{outVideoSize.Height}"); //graph.CreateFilter("nullsrc", "srcbase");
+            var sinkCtx = graph.CreateFilter("buffersink", "out");
+            sinkCtx.Options.Set("pix_fmts", new int[] { (int)AVPixelFormat.Yuv420p }, AV_OPT_SEARCH.Children);
+            videoFilterContext = new VideoFilterContext(graph, nullfilter, sinkCtx);
         }
         private VideoFilterContext CreateVideoTrackByStream(MediaStream mediaStream,Rectangle rect)
         {
@@ -42,11 +49,10 @@ namespace Sdcb.FFmpeg.Toolboxs.FilterTools
         /// <returns></returns>
         public static AppositionFilter AllocFilter(Size outVideoSize,params AppositionParams[] appositions)
         {
-            var filter = new AppositionFilter(outVideoSize, appositions.Max(s=>s.Context.Duration));
-            //long maxDuration = 0;
+            var filter = new AppositionFilter(outVideoSize);
             foreach (AppositionParams par in appositions)
             {
-                var f= filter.CreateVideoTrackByStream(par.Context.GetVideoStream(), par.Rect);
+                var f= filter.CreateVideoTrackByStream(par.Stream, par.Rect);
                 if (filter.VideoTrack.Count > 0)
                 {
                     filter.VideoTrack[filter.VideoTrack.Count - 1].SinkContext.Link(f.SinkContext,0,0);
@@ -60,53 +66,95 @@ namespace Sdcb.FFmpeg.Toolboxs.FilterTools
             return filter;
         }
 
-        public IEnumerable<Frame> GetConsumingEnumerable(params MediaThreadQueue<Frame>[] frames)
+        public IEnumerable<FrameContext> WriteFrame(params MediaThreadQueue<Frame>[] queues)//index=-1表示已处理的帧
         {
-            int index = 0;
-            while (frames.Max(s=>s.Count)>0)
+            do
             {
-                foreach (var dist in AppositionFrames(frames[index].Take(), index))
-                    yield return dist;
-
-                index++;
-                if (index >= VideoTrack.Count)
+                for (int i = 0; i < queues.Length; i++)
                 {
-                    index=0;
+
+                    if (!queues[i].IsCompleted)
+                    {
+                        var frame = queues[i].Take();
+                        if (frame.Width > 0)
+                            WriteFrame(frame, i);
+                        else
+                        {
+                            yield return new FrameContext(frame, i);
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        WriteFrame(null, i);
+                        yield return new FrameContext(null, i);
+                    }
                 }
-                //foreach (var dist in ReadFrames())
-                //    yield return dist;
+
+                while (true)
+                {
+                    using Frame distFrame = new();
+                    CodecResult r = CodecContext.ToCodecResult(videoFilterContext.SinkContext.GetFrame(distFrame));
+                    if (r == CodecResult.Again) break;
+                    else if (r == CodecResult.EOF) yield break;
+
+                    if (r == CodecResult.Success)
+                    {
+                        yield return new FrameContext(distFrame, -1);
+                    }
+                }
+            } while (true);
+        }
+        private void WriteFrame(Frame? srcFrame, int index)
+        {
+            try
+            {
+                VideoTrack[index].SourceContext.WriteFrame(srcFrame);
+            }
+            finally
+            {
+                if (srcFrame != null)
+                {
+                    srcFrame.Unref();
+                }
             }
         }
-        public IEnumerable<Frame> AppositionFrames(Frame srcFrame, int srcIndex)
+        public IEnumerable<Frame> WriteFrame(Frame distFrame, Frame? srcFrame, int index)
         {
-            using Frame distFrame = new();
-            foreach (var frame in VideoTrack[srcIndex].WriteFrame(distFrame, srcFrame))
-                yield return frame;
-            //if (srcFrame.Width == 0)
-            //    yield return srcFrame;
-            //AddFrame(srcFrame,srcIndex);
-            //foreach (var frame in ReadFrames())
-            //    yield return frame;
-        }
-        //public void AddFrame(Frame srcFrame, int srcIndex)
-        //{
-        //    using Frame distFrame = new();
-        //    if (srcFrame.Width == 0)
-        //        return;
-        //    VideoTrack[srcIndex].WriteFrame(srcFrame);
-        //    srcFrame.Unref();
+            WriteFrame(srcFrame, index);
+            while (true)
+            {
+                CodecResult r = CodecContext.ToCodecResult(videoFilterContext.SinkContext.GetFrame(distFrame));
+                if (r == CodecResult.Again||r == CodecResult.EOF) break;
 
-        //}
-        //public IEnumerable<Frame> ReadFrames()
-        //{
-        //    Frame distframe = new();
-        //    foreach (var frame in videoFilterContext.ReadFrame(distframe))
-        //        yield return frame;
-        //}
-        public void ConfigureEncoder(CodecContext c)
-        {
-            videoFilterContext.ConfigureEncoder(c);
+                if (r == CodecResult.Success)
+                {
+                    yield return distFrame;
+                }
+            }
         }
     }
-    public record AppositionParams(FormatContext Context, Rectangle Rect);
+    public record FrameContext(Frame? Frame,int index);
+    public record AppositionParams(MediaStream Stream, Rectangle Rect);
+
+    public static class FrameContextExtensions
+    {
+        public static IEnumerable<Frame> ApplyAudioFilters(this IEnumerable<FrameContext> frames,AmixFilter amixFilter)
+        {
+            foreach(var inframe in frames)
+            {
+                if (inframe.Frame==null||(inframe.Frame != null&&inframe.index!=-1&&inframe.Frame.SampleRate>0))
+                {
+                    using Frame distframe = new();
+                    foreach (var frame in amixFilter.WriteFrame(distframe, inframe.Frame, inframe.index))
+                    {
+                        yield return frame;
+                    }
+                }else if (inframe.index == -1&& inframe.Frame!=null)
+                {
+                    yield return inframe.Frame;
+                }
+            }
+        }
+    }
 }

@@ -24,26 +24,28 @@ namespace Sdcb.FFmpeg.Toolboxs.Extensions
                 yield return packet;
             }
         }
-        public static IEnumerable<Frame> ComputePtsDts(this IEnumerable<Frame> frames,CodecContext codec)
+        public static IEnumerable<Frame> ComputePtsDts(this IEnumerable<Frame> frames,CodecContext videoCodec)
         {
             long frame_index=0,audioFrame_Pts=0;
             foreach (Frame frame in frames)
             {
                 if (frame.Width > 0)
                 {
-                    var Framerate = codec.Framerate.Num==0|| codec.Framerate.Den==0? codec.TimeBase:codec.Framerate;
-                    var dura= (1 / av_q2d(codec.TimeBase) / av_q2d(Framerate));
+                    var Framerate = videoCodec.Framerate.Num==0|| videoCodec.Framerate.Den==0? videoCodec.TimeBase:videoCodec.Framerate;
+                    var dura= (1 / av_q2d(videoCodec.TimeBase) / av_q2d(Framerate));
                     var pts = frame_index++ * dura;
                     frame.PktDuration = (long)dura;
                     frame.Pts = (long) pts;
                     frame.PktDts = (long) pts;
-                }else if(frame.SampleRate > 0)
+                    yield return frame;
+                }
+                else if(frame.SampleRate > 0)
                 {
                     frame.Pts = audioFrame_Pts;
                     frame.PktDts= audioFrame_Pts;
-                    audioFrame_Pts += codec.FrameSize;
+                    audioFrame_Pts += videoCodec.FrameSize;
+                    yield return frame;
                 }
-                yield return frame;
             }
         }
     }

@@ -5,6 +5,8 @@ using Sdcb.FFmpeg.Raw;
 using Sdcb.FFmpeg.Utils;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+
 using static Sdcb.FFmpeg.Raw.ffmpeg;
 
 namespace Sdcb.FFmpeg.Toolboxs.Extensions;
@@ -91,7 +93,25 @@ public static class PacketsExtensions
             return c;
         }
     }
-
+    public static Task DecodeAllPackets(this IEnumerable<Packet> packets, FormatContext fc,
+        CodecContext? audioCodec = null,
+        CodecContext? videoCodec = null, Action<Frame>? audiofunc = null, Action<Frame>? videofunc = null)
+    {
+        return Task.Run(() =>
+        {
+            foreach (var frame in packets.DecodeAllPackets(fc, audioCodec, videoCodec))
+            {
+                if (frame.Width > 0 && videofunc != null)
+                {
+                    videofunc(frame);
+                }
+                else if (frame.SampleRate > 0 && audiofunc != null)
+                {
+                    audiofunc(frame);
+                }
+            }
+        });
+    }
     public static void WriteAll(this IEnumerable<Packet> packets, FormatContext fc, bool unref = true)
     {
         foreach (Packet packet in packets)
