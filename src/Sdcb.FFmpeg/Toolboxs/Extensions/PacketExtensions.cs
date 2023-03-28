@@ -116,4 +116,19 @@ public static class PacketsExtensions
         ptr->data = (byte*)data;
         ptr->size = size;
     }
+    public static IEnumerable<Packet> RescaleTimestamp(this IEnumerable<Packet> packets, FormatContext source, FormatContext dest)
+    {
+        foreach (var packet in packets)
+        {
+            yield return packet.RescaleTimestamp(source, dest);
+        }
+    }
+    public static Packet RescaleTimestamp(this Packet packet, FormatContext source, FormatContext dest)
+    {
+        var sourceStream = source.Streams[packet.StreamIndex];
+        MediaStream destStream = dest.FindBestStream(sourceStream.Codecpar!.CodecType);
+        packet.StreamIndex = destStream.Index;
+        packet.RescaleTimestamp(sourceStream.TimeBase, destStream.TimeBase);
+        return packet;
+    }
 }
