@@ -2,13 +2,19 @@
 using Sdcb.FFmpeg.Formats;
 using Sdcb.FFmpeg.Raw;
 using Sdcb.FFmpeg.Swscales;
+using Sdcb.FFmpeg.Tests.Filters;
 using Sdcb.FFmpeg.Toolboxs.Extensions;
 using Sdcb.FFmpeg.Toolboxs.FilterTools;
 using Sdcb.FFmpeg.Toolboxs.Generators;
 using Sdcb.FFmpeg.Utils;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Text.Unicode;
+using System.Threading.Tasks;
+
 using Xunit;
 using Xunit.Abstractions;
 
@@ -228,6 +234,129 @@ public class Examples : IDisposable
         //File.WriteAllBytes("test.mp4", remuxMp4);
     }
 
+    [Theory]
+    //[InlineData(@"D:\华智信\项目\039\测试音视频\港片MV0.H264",
+    //    @"D:\华智信\项目\039\测试音视频\港片MV0.H264",
+    //    @"D:\华智信\项目\039\测试音视频\港片MV0.H264",
+    //    @"D:\\项目\\GitHubSource\\CG.Fmcode\\MultiUnitTest\\Source\输出.mp4")]
+    [InlineData(@"D:\华智信\项目\039\HZXDATA.Client\HZXDATA.Client\Sources\彩虹的微笑.mp4",
+        @"D:\华智信\项目\039\HZXDATA.Client\HZXDATA.Client\Sources\彩虹的微笑.mp4",
+        @"D:\华智信\项目\039\HZXDATA.Client\HZXDATA.Client\Sources\彩虹的微笑.mp4",
+        @"D:\\项目\\GitHubSource\\CG.Fmcode\\MultiUnitTest\\Source\输出.mp4")]
+    public async void AppositionMp4WithFilter(string mp4Path, string mp4Path2, string mp4Path3, string destFile)
+    {
+        FFmpegLogger.LogWriter = (a, b) =>
+        _console.WriteLine(b);
+        var context = CreateDecoderFrameQueue(mp4Path);
+        var context1 = CreateDecoderFrameQueue(mp4Path2);
+        var context2 = CreateDecoderFrameQueue(mp4Path3);
+
+
+        AppositionFilter appositionFilter= AppositionFilter.AllocFilter(new System.Drawing.Size() { Width = 1920, Height = 1080 }, new[]
+        {
+            new AppositionParams(context.inFc.GetVideoStream(),new System.Drawing.Rectangle(0, 0, 960, 540)),
+            new AppositionParams(context1.inFc.GetVideoStream(),new System.Drawing.Rectangle(0, 541, 960, 540)),
+            new AppositionParams(context2.inFc.GetVideoStream(),new System.Drawing.Rectangle(961, 360, 960, 540))
+        });
+
+        var outAudioFormat = new AudioSinkParams(GetChannelLayout(2), 48000, AVSampleFormat.Fltp);
+        AmixFilter amixFilter = AmixFilter.AllocFilter(outAudioFormat, new[] 
+        { 
+            new AudioSinkParams(context.inFc.GetAudioStream().Codecpar!.ChLayout,
+            context.inFc.GetAudioStream().Codecpar!.SampleRate,
+            (AVSampleFormat)context.inFc.GetAudioStream().Codecpar!.Format),
+
+            new AudioSinkParams(context1.inFc.GetAudioStream().Codecpar!.ChLayout,
+            context1.inFc.GetAudioStream().Codecpar!.SampleRate,
+            (AVSampleFormat)context1.inFc.GetAudioStream().Codecpar!.Format),
+
+            new AudioSinkParams(context2.inFc.GetAudioStream().Codecpar!.ChLayout,
+            context2.inFc.GetAudioStream().Codecpar!.SampleRate,
+            (AVSampleFormat)context2.inFc.GetAudioStream().Codecpar!.Format),
+        });
+
+        using FormatContext outFc = FormatContext.AllocOutput(fileName: destFile);
+        outFc.VideoCodec = Codec.CommonEncoders.Libx264;
+        MediaStream outVideoStream = outFc.NewStream(outFc.VideoCodec);
+        using CodecContext videoEncoder = new CodecContext(outFc.VideoCodec)
+        {
+            Width = 1920,
+            Height = 1080,
+            TimeBase = new AVRational(1, 25),
+            PixelFormat = AVPixelFormat.Yuv420p,
+            Flags = AV_CODEC_FLAG.GlobalHeader,
+            ThreadCount = Environment.ProcessorCount - 1,
+        };
+        videoEncoder.Open(outFc.VideoCodec, null);
+        outVideoStream.Codecpar!.CopyFrom(videoEncoder);
+        outVideoStream.TimeBase = videoEncoder.TimeBase;
+
+        outFc.AudioCodec = Codec.CommonEncoders.AAC;
+        MediaStream outAudioStream = outFc.NewStream(outFc.AudioCodec);
+        using CodecContext audioEncoder = new(outFc.AudioCodec)
+        {
+            ChLayout = outAudioFormat.ChLayout,
+            SampleFormat = outFc.AudioCodec.Value.NegociateSampleFormat(outAudioFormat.SampleFormat),
+            SampleRate = outFc.AudioCodec.Value.NegociateSampleRates(outAudioFormat.SampleRate),
+            BitRate = outAudioFormat.SampleRate
+        };
+
+        audioEncoder.TimeBase = new AVRational(1, audioEncoder.SampleRate);
+        audioEncoder.Open(outFc.AudioCodec);
+        outAudioStream.Codecpar!.CopyFrom(audioEncoder);
+
+        // begin write
+        IOContext io = IOContext.OpenWrite(destFile);
+        outFc.Pb = io;
+        outFc.WriteHeader();
+        Task t = Task.Run(() =>
+        {
+            appositionFilter.WriteFrame(context.queue, context1.queue, context2.queue)
+            .ApplyMultipleToOneFilter(amixFilter)
+            .ToFrames()
+            .AudioFifo(audioEncoder)
+            //.Select(s => s.Frame).Where(s => s != null && s.Width > 0)!
+            .ConvertAllFrames(audioEncoder, videoEncoder)
+            .ComputePtsDts(videoEncoder)
+            .EncodeAllFrames(outFc, audioEncoder, videoEncoder)
+            .WriteAll(outFc);
+        });
+
+        await Task.WhenAll(t);
+        outFc.WriteTrailer();
+        outFc.Flush();
+        //outFc.Dispose();
+    }
+    private (MediaThreadQueue<Frame> queue,FormatContext inFc, CodecContext audioDecoder, CodecContext videoDecoder) CreateDecoderFrameQueue(string mp4Path)
+    {
+        FormatContext inFc = FormatContext.OpenInputUrl(mp4Path);
+        inFc.LoadStreamInfo();
+
+        // prepare input stream/codec
+        MediaStream inAudioStream = inFc.GetAudioStream();
+        CodecContext audioDecoder = new(Codec.FindDecoderById(inAudioStream.Codecpar!.CodecId));
+        audioDecoder.FillParameters(inAudioStream.Codecpar);
+        audioDecoder.Open();
+        var a = audioDecoder.ChLayout;
+        //audioDecoder.ChLayout = (ulong)ffmpeg.avge(audioDecoder.Channels);
+
+        MediaStream inVideoStream = inFc.GetVideoStream();
+        CodecContext videoDecoder = new(Codec.FindDecoderById(inVideoStream.Codecpar!.CodecId));
+        videoDecoder.FillParameters(inVideoStream.Codecpar!);
+        videoDecoder.Open();
+
+        MediaThreadQueue<Frame> mediaThreadQueue = inFc
+        .ReadPackets(inVideoStream.Index, inAudioStream.Index)
+        .DecodeAllPackets(inFc,audioDecoder,videoDecoder)
+        .ToThreadQueue();
+        return (mediaThreadQueue,inFc, audioDecoder, videoDecoder);
+    }
+    private unsafe AVChannelLayout GetChannelLayout(int nb_channels)
+    {
+        AVChannelLayout layout = new AVChannelLayout();
+        ffmpeg.av_channel_layout_default(&layout, nb_channels);
+        return layout;
+    }
     public void Dispose()
     {
         FFmpegLogger.LogWriter = null;
