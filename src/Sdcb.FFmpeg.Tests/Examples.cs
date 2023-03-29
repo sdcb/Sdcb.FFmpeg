@@ -252,11 +252,11 @@ public class Examples : IDisposable
         var context2 = CreateDecoderFrameQueue(mp4Path3);
 
 
-        AppositionFilter appositionFilter= AppositionFilter.AllocFilter(new System.Drawing.Size() { Width = 1024, Height = 768 }, new[]
+        AppositionFilter appositionFilter= AppositionFilter.AllocFilter(new System.Drawing.Size() { Width = 1920, Height = 1080 }, new[]
         {
-            new AppositionParams(context.inFc.GetVideoStream(),new System.Drawing.Rectangle(0, 0, 512, 384)),
-            new AppositionParams(context1.inFc.GetVideoStream(),new System.Drawing.Rectangle(0, 385, 512, 384)),
-            new AppositionParams(context2.inFc.GetVideoStream(),new System.Drawing.Rectangle(513, 256, 512, 384))
+            new AppositionParams(context.inFc.GetVideoStream(),new System.Drawing.Rectangle(0, 0, 960, 540)),
+            new AppositionParams(context1.inFc.GetVideoStream(),new System.Drawing.Rectangle(0, 541, 960, 540)),
+            new AppositionParams(context2.inFc.GetVideoStream(),new System.Drawing.Rectangle(961, 360, 960, 540))
         });
 
         var outAudioFormat = new AudioSinkParams(GetChannelLayout(2), 48000, AVSampleFormat.Fltp);
@@ -280,8 +280,8 @@ public class Examples : IDisposable
         MediaStream outVideoStream = outFc.NewStream(outFc.VideoCodec);
         using CodecContext videoEncoder = new CodecContext(outFc.VideoCodec)
         {
-            Width = 1024,
-            Height = 768,
+            Width = 1920,
+            Height = 1080,
             TimeBase = new AVRational(1, 25),
             PixelFormat = AVPixelFormat.Yuv420p,
             Flags = AV_CODEC_FLAG.GlobalHeader,
@@ -312,7 +312,8 @@ public class Examples : IDisposable
         Task t = Task.Run(() =>
         {
             appositionFilter.WriteFrame(context.queue, context1.queue, context2.queue)
-            .ApplyAudioFilters(amixFilter)
+            .ApplyMultipleToOneFilter(amixFilter)
+            .ToFrames()
             .AudioFifo(audioEncoder)
             //.Select(s => s.Frame).Where(s => s != null && s.Width > 0)!
             .ConvertAllFrames(audioEncoder, videoEncoder)
