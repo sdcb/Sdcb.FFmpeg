@@ -1,56 +1,37 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <PackageId>Sdcb.FFmpeg</PackageId>
-        <VersionPrefix>6.0.0-preview.1</VersionPrefix>
-        <LangVersion>latest</LangVersion>
-        <!-- Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <Authors>sdcb,Ruslan Balanukhin</Authors>
-        <Copyright>Copyright © sdcb, Ruslan Balanukhin 2022 All rights reserved.</Copyright>
-        <PackageProjectUrl>https://github.com/sdcb/FFmpeg.AutoGen</PackageProjectUrl>
-        <AssemblyName>$(PackageId)</AssemblyName>
-        <SignAssembly>False</SignAssembly>
-        <TargetFrameworks>net6;net48</TargetFrameworks>
-        <GeneratePackageOnBuild Condition=" $(Configuration) == 'Release' ">true</GeneratePackageOnBuild>
-        <Description>FFmpeg auto generated unsafe bindings for C#/.NET and Mono.</Description>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworks>net6;net48</TargetFrameworks>
+    <PackageId>Sdcb.FFmpeg</PackageId>
+    <VersionPrefix>6.0.26</VersionPrefix>
+    <LangVersion>latest</LangVersion>
+    <Authors>sdcb,Ruslan Balanukhin</Authors>
+    <Copyright>Copyright © sdcb, Ruslan Balanukhin 2022 All rights reserved.</Copyright>
+    <PackageProjectUrl>https://github.com/sdcb/FFmpeg.AutoGen</PackageProjectUrl>
+    <AssemblyName>$(PackageId)</AssemblyName>
+    <SignAssembly>False</SignAssembly>
+    <GeneratePackageOnBuild Condition=" $(Configuration) == 'Release' ">true</GeneratePackageOnBuild>
+    <Description>FFmpeg auto generated unsafe bindings for C#/.NET and Mono.</Description>
+    <Nullable>enable</Nullable>
+    <LangVersion>11</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
 
-    <PropertyGroup>
-        <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-        <NoWarn>1701;1702;1705;169;108;1591;1573;1591</NoWarn>
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-        <WarningsAsErrors />
-        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-        <PackageLicenseExpression>LGPL-3.0-only</PackageLicenseExpression>
-    </PropertyGroup>
+  <PropertyGroup>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <NoWarn>1701;1702;1705;169;108;1591;1573;1591</NoWarn>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <PackageLicenseExpression>LGPL-3.0-only</PackageLicenseExpression>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6|AnyCPU'">
-      <LangVersion>preview</LangVersion>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
-      <LangVersion>preview</LangVersion>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
-      <LangVersion>preview</LangVersion>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6|AnyCPU'">
-      <LangVersion>preview</LangVersion>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="all" />
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-      <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
-      <PackageReference Include="System.Memory" Version="4.5.5" />
-      <PackageReference Include="IndexRange" Version="1.0.2" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
+    <PackageReference Include="System.Memory" Version="4.5.5" />
+    <PackageReference Include="IndexRange" Version="1.0.2" />
   </ItemGroup>
 
 </Project>
