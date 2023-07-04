@@ -18,7 +18,7 @@ jobs:
           sudo add-apt-repository ppa:ubuntuhandbook1/ffmpeg6 -y
           sudo apt update
           sudo apt install ffmpeg -y
-          ffmpeg --version
+          ffmpeg -version
       - name: Test
         run: |
           dotnet test -c Release
