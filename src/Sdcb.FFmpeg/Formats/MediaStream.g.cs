@@ -193,6 +193,7 @@ public unsafe partial struct MediaStream
     /// <para>An array of side data that applies to the whole stream (i.e. the container does not allow it to change between packets).</para>
     /// <see cref="AVStream.side_data" />
     /// </summary>
+    [Obsolete("use AVStream's \"codecpar side data\".")]
     public PacketSideData? SideData
     {
         get => PacketSideData.FromNativeOrNull(_ptr->side_data);
@@ -203,6 +204,7 @@ public unsafe partial struct MediaStream
     /// <para>The number of elements in the AVStream.side_data array.</para>
     /// <see cref="AVStream.nb_side_data" />
     /// </summary>
+    [Obsolete("use AVStream's \"codecpar side data\".")]
     public int NbSideData
     {
         get => _ptr->nb_side_data;

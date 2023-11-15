@@ -152,7 +152,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                     { Op: ">" or "<" or "==" or "!=" or "&&" or "||" } => "bool",
                     _ => (DeduceType(e.Left), DeduceType(e.Right)) switch
                     {
-                        (string left, string right) => TypeHelper.CalculatePrecedence(left) < TypeHelper.CalculatePrecedence(left) ? left : right,
+                        (string left, string right) => TypeHelper.CalculatePrecedence(left) < TypeHelper.CalculatePrecedence(right) ? left : right,
                     }
                 },
                 CharExpression => "char",

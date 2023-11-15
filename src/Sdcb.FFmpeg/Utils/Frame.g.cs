@@ -105,6 +105,7 @@ public unsafe partial class Frame : SafeHandle
     /// <para>1 -&gt; keyframe, 0-&gt; not</para>
     /// <see cref="AVFrame.key_frame" />
     /// </summary>
+    [Obsolete("Use AV_FRAME_FLAG_KEY instead")]
     public int KeyFrame
     {
         get => _ptr->key_frame;
@@ -193,7 +194,7 @@ public unsafe partial class Frame : SafeHandle
     
     /// <summary>
     /// <para>original type: void*</para>
-    /// <para>for some private data of the user</para>
+    /// <para>Frame owner's private data.</para>
     /// <see cref="AVFrame.opaque" />
     /// </summary>
     public IntPtr Opaque
@@ -203,7 +204,7 @@ public unsafe partial class Frame : SafeHandle
     }
     
     /// <summary>
-    /// <para>When decoding, this signals how much the picture must be delayed. extra_delay = repeat_pict / (2*fps)</para>
+    /// <para>Number of fields in this frame which should be repeated, i.e. the total duration of this frame should be repeat_pict + 2 normal field durations.</para>
     /// <see cref="AVFrame.repeat_pict" />
     /// </summary>
     public int RepeatPict
@@ -216,6 +217,7 @@ public unsafe partial class Frame : SafeHandle
     /// <para>The content of the picture is interlaced.</para>
     /// <see cref="AVFrame.interlaced_frame" />
     /// </summary>
+    [Obsolete("Use AV_FRAME_FLAG_INTERLACED instead")]
     public int InterlacedFrame
     {
         get => _ptr->interlaced_frame;
@@ -226,6 +228,7 @@ public unsafe partial class Frame : SafeHandle
     /// <para>If the content is interlaced, is top field displayed first.</para>
     /// <see cref="AVFrame.top_field_first" />
     /// </summary>
+    [Obsolete("Use AV_FRAME_FLAG_TOP_FIELD_FIRST instead")]
     public int TopFieldFirst
     {
         get => _ptr->top_field_first;
@@ -380,6 +383,7 @@ public unsafe partial class Frame : SafeHandle
     /// <para>reordered pos from the last AVPacket that has been input into the decoder - encoding: unused - decoding: Read by user.</para>
     /// <see cref="AVFrame.pkt_pos" />
     /// </summary>
+    [Obsolete("use AV_CODEC_FLAG_COPY_OPAQUE to pass through arbitrary user data from packets to frames")]
     public long PktPosition
     {
         get => _ptr->pkt_pos;
@@ -433,6 +437,7 @@ public unsafe partial class Frame : SafeHandle
     /// <para>size of the corresponding packet containing the compressed frame. It is set to a negative value if unknown. - encoding: unused - decoding: set by libavcodec, read by user.</para>
     /// <see cref="AVFrame.pkt_size" />
     /// </summary>
+    [Obsolete("use AV_CODEC_FLAG_COPY_OPAQUE to pass through arbitrary user data from packets to frames")]
     public int PktSize
     {
         get => _ptr->pkt_size;
@@ -452,7 +457,7 @@ public unsafe partial class Frame : SafeHandle
     
     /// <summary>
     /// <para>original type: AVBufferRef*</para>
-    /// <para>AVBufferRef for free use by the API user. FFmpeg will never check the contents of the buffer ref. FFmpeg calls av_buffer_unref() on it when the frame is unreferenced. av_frame_copy_props() calls create a new reference with av_buffer_ref() for the target frame's opaque_ref field.</para>
+    /// <para>Frame owner's private data.</para>
     /// <see cref="AVFrame.opaque_ref" />
     /// </summary>
     public BufferRef? OpaqueRef

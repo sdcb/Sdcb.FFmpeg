@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 namespace Sdcb.FFmpeg.Codecs;
 
 /// <summary>
+/// <para>This structure stores auxiliary information for decoding, presenting, or otherwise processing the coded stream. It is typically exported by demuxers and encoders and can be fed to decoders and muxers either in a per packet basis, or as global side data (applying to the entire coded stream).</para>
 /// <see cref="AVPacketSideData" />
 /// </summary>
 public unsafe partial struct PacketSideData

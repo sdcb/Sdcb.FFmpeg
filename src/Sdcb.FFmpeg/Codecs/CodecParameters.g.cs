@@ -329,4 +329,35 @@ public unsafe partial class CodecParameters : SafeHandle
         get => _ptr->ch_layout;
         set => _ptr->ch_layout = value;
     }
+    
+    /// <summary>
+    /// <para>Video only. Number of frames per second, for streams with constant frame durations. Should be set to { 0, 1 } when some frames have differing durations or if the value is not known.</para>
+    /// <see cref="AVCodecParameters.framerate" />
+    /// </summary>
+    public AVRational Framerate
+    {
+        get => _ptr->framerate;
+        set => _ptr->framerate = value;
+    }
+    
+    /// <summary>
+    /// <para>original type: AVPacketSideData*</para>
+    /// <para>Additional data associated with the entire stream.</para>
+    /// <see cref="AVCodecParameters.coded_side_data" />
+    /// </summary>
+    public PacketSideData CodedSideData
+    {
+        get => PacketSideData.FromNative(_ptr->coded_side_data);
+        set => _ptr->coded_side_data = (AVPacketSideData*)value;
+    }
+    
+    /// <summary>
+    /// <para>Amount of entries in coded_side_data.</para>
+    /// <see cref="AVCodecParameters.nb_coded_side_data" />
+    /// </summary>
+    public int NbCodedSideData
+    {
+        get => _ptr->nb_coded_side_data;
+        set => _ptr->nb_coded_side_data = value;
+    }
 }

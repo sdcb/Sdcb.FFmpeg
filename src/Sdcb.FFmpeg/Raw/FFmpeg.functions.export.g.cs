@@ -195,9 +195,69 @@ namespace Sdcb.FFmpeg.Raw
         [DllImport("avcodec-60", EntryPoint = "av_packet_shrink_side_data", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int av_packet_shrink_side_data(AVPacket* pkt, AVPacketSideDataType type, ulong size);
         
+        /// <summary>Wrap existing data as packet side data.</summary>
+        /// <param name="sd">pointer to an array of side data to which the side data should be added. *sd may be NULL, in which case the array will be initialized</param>
+        /// <param name="nb_sd">pointer to an integer containing the number of entries in the array. The integer value will be increased by 1 on success.</param>
+        /// <param name="type">side data type</param>
+        /// <param name="data">a data array. It must be allocated with the av_malloc() family of functions. The ownership of the data is transferred to the side data array on success</param>
+        /// <param name="size">size of the data array</param>
+        /// <param name="flags">currently unused. Must be zero</param>
+        [DllImport("avcodec-60", EntryPoint = "av_packet_side_data_add", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern AVPacketSideData* av_packet_side_data_add(AVPacketSideData** sd, int* nb_sd, AVPacketSideDataType type, void* data, ulong size, int flags);
+        
+        /// <summary>Wrap existing data as packet side data.</summary>
+        /// <param name="sd">pointer to an array of side data to which the side data should be added. *sd may be NULL, in which case the array will be initialized</param>
+        /// <param name="nb_sd">pointer to an integer containing the number of entries in the array. The integer value will be increased by 1 on success.</param>
+        /// <param name="type">side data type</param>
+        /// <param name="data">a data array. It must be allocated with the av_malloc() family of functions. The ownership of the data is transferred to the side data array on success</param>
+        /// <param name="size">size of the data array</param>
+        /// <param name="flags">currently unused. Must be zero</param>
+        [DllImport("avcodec-60", EntryPoint = "av_packet_side_data_add", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern AVPacketSideData* av_packet_side_data_add(ref AVPacketSideData* sd, int* nb_sd, AVPacketSideDataType type, void* data, ulong size, int flags);
+        
+        /// <summary>Convenience function to free all the side data stored in an array, and the array itself.</summary>
+        /// <param name="sd">pointer to array of side data to free. Will be set to NULL upon return.</param>
+        /// <param name="nb_sd">pointer to an integer containing the number of entries in the array. Will be set to 0 upon return.</param>
+        [DllImport("avcodec-60", EntryPoint = "av_packet_side_data_free", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern void av_packet_side_data_free(AVPacketSideData** sd, int* nb_sd);
+        
+        /// <summary>Convenience function to free all the side data stored in an array, and the array itself.</summary>
+        /// <param name="sd">pointer to array of side data to free. Will be set to NULL upon return.</param>
+        /// <param name="nb_sd">pointer to an integer containing the number of entries in the array. Will be set to 0 upon return.</param>
+        [DllImport("avcodec-60", EntryPoint = "av_packet_side_data_free", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern void av_packet_side_data_free(ref AVPacketSideData* sd, int* nb_sd);
+        
+        /// <summary>Get side information from a side data array.</summary>
+        /// <param name="sd">the array from which the side data should be fetched</param>
+        /// <param name="nb_sd">value containing the number of entries in the array.</param>
+        /// <param name="type">desired side information type</param>
+        [DllImport("avcodec-60", EntryPoint = "av_packet_side_data_get", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern AVPacketSideData* av_packet_side_data_get(AVPacketSideData* sd, int nb_sd, AVPacketSideDataType type);
+        
         [DllImport("avcodec-60", EntryPoint = "av_packet_side_data_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(ConstCharPtrMarshaler))]
         public static extern string av_packet_side_data_name(AVPacketSideDataType type);
+        
+        /// <summary>Allocate a new packet side data.</summary>
+        /// <param name="type">side data type</param>
+        /// <param name="size">desired side data size</param>
+        /// <param name="flags">currently unused. Must be zero</param>
+        [DllImport("avcodec-60", EntryPoint = "av_packet_side_data_new", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern AVPacketSideData* av_packet_side_data_new(AVPacketSideData** psd, int* pnb_sd, AVPacketSideDataType type, ulong size, int flags);
+        
+        /// <summary>Allocate a new packet side data.</summary>
+        /// <param name="type">side data type</param>
+        /// <param name="size">desired side data size</param>
+        /// <param name="flags">currently unused. Must be zero</param>
+        [DllImport("avcodec-60", EntryPoint = "av_packet_side_data_new", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern AVPacketSideData* av_packet_side_data_new(ref AVPacketSideData* psd, int* pnb_sd, AVPacketSideDataType type, ulong size, int flags);
+        
+        /// <summary>Remove side data of the given type from a side data array.</summary>
+        /// <param name="sd">the array from which the side data should be removed</param>
+        /// <param name="nb_sd">pointer to an integer containing the number of entries in the array. Will be reduced by the amount of entries removed upon return</param>
+        /// <param name="type">side information type</param>
+        [DllImport("avcodec-60", EntryPoint = "av_packet_side_data_remove", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern void av_packet_side_data_remove(AVPacketSideData* sd, int* nb_sd, AVPacketSideDataType type);
         
         /// <summary>Unpack a dictionary from side_data.</summary>
         /// <param name="data">data from side_data</param>
@@ -453,14 +513,14 @@ namespace Sdcb.FFmpeg.Raw
         /// <summary>Initialize the AVCodecContext to use the given AVCodec. Prior to using this function the context has to be allocated with avcodec_alloc_context3().</summary>
         /// <param name="avctx">The context to initialize.</param>
         /// <param name="codec">The codec to open this context for. If a non-NULL codec has been previously passed to avcodec_alloc_context3() or for this context, then this parameter MUST be either NULL or equal to the previously passed codec.</param>
-        /// <param name="options">A dictionary filled with AVCodecContext and codec-private options. On return this object will be filled with options that were not found.</param>
+        /// <param name="options">A dictionary filled with AVCodecContext and codec-private options, which are set on top of the options already set in avctx, can be NULL. On return this object will be filled with options that were not found in the avctx codec context.</param>
         [DllImport("avcodec-60", EntryPoint = "avcodec_open2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int avcodec_open2(AVCodecContext* avctx, AVCodec* codec, AVDictionary** options);
         
         /// <summary>Initialize the AVCodecContext to use the given AVCodec. Prior to using this function the context has to be allocated with avcodec_alloc_context3().</summary>
         /// <param name="avctx">The context to initialize.</param>
         /// <param name="codec">The codec to open this context for. If a non-NULL codec has been previously passed to avcodec_alloc_context3() or for this context, then this parameter MUST be either NULL or equal to the previously passed codec.</param>
-        /// <param name="options">A dictionary filled with AVCodecContext and codec-private options. On return this object will be filled with options that were not found.</param>
+        /// <param name="options">A dictionary filled with AVCodecContext and codec-private options, which are set on top of the options already set in avctx, can be NULL. On return this object will be filled with options that were not found in the avctx codec context.</param>
         [DllImport("avcodec-60", EntryPoint = "avcodec_open2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int avcodec_open2(AVCodecContext* avctx, AVCodec* codec, ref AVDictionary* options);
         
@@ -1374,6 +1434,7 @@ namespace Sdcb.FFmpeg.Raw
         /// <param name="type">side information type</param>
         /// <param name="data">the side data array. It must be allocated with the av_malloc() family of functions. The ownership of the data is transferred to st.</param>
         /// <param name="size">side information size</param>
+        [Obsolete("use av_packet_side_data_add() with the stream's  \"codecpar side data\"")]
         [DllImport("avformat-60", EntryPoint = "av_stream_add_side_data", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int av_stream_add_side_data(AVStream* st, AVPacketSideDataType type, byte* data, ulong size);
         
@@ -1398,6 +1459,7 @@ namespace Sdcb.FFmpeg.Raw
         /// <param name="stream">stream</param>
         /// <param name="type">desired side information type</param>
         /// <param name="size">If supplied, *size will be set to the size of the side data or to zero if the desired side data is not present.</param>
+        [Obsolete("use av_packet_side_data_get() with the stream's  \"codecpar side data\"")]
         [DllImport("avformat-60", EntryPoint = "av_stream_get_side_data", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern byte* av_stream_get_side_data(AVStream* stream, AVPacketSideDataType type, ulong* size);
         
@@ -1405,6 +1467,7 @@ namespace Sdcb.FFmpeg.Raw
         /// <param name="stream">stream</param>
         /// <param name="type">desired side information type</param>
         /// <param name="size">side information size</param>
+        [Obsolete("use av_packet_side_data_new() with the stream's  \"codecpar side data\"")]
         [DllImport("avformat-60", EntryPoint = "av_stream_new_side_data", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern byte* av_stream_new_side_data(AVStream* stream, AVPacketSideDataType type, ulong size);
         
@@ -2079,6 +2142,10 @@ namespace Sdcb.FFmpeg.Raw
         [DllImport("avutil-58", EntryPoint = "av_audio_fifo_write", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int av_audio_fifo_write(AVAudioFifo* af, ref void* data, int nb_samples);
         
+        /// <summary>0th order modified bessel function of the first kind.</summary>
+        [DllImport("avutil-58", EntryPoint = "av_bessel_i0", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern double av_bessel_i0(double x);
+        
         /// <summary>Append a description of a channel layout to a bprint buffer.</summary>
         [Obsolete("use av_channel_layout_describe()")]
         [DllImport("avutil-58", EntryPoint = "av_bprint_channel_layout", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -2536,6 +2603,23 @@ namespace Sdcb.FFmpeg.Raw
         [DllImport("avutil-58", EntryPoint = "av_dynamic_hdr_plus_create_side_data", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern AVDynamicHDRPlus* av_dynamic_hdr_plus_create_side_data(AVFrame* frame);
         
+        /// <summary>Parse the user data registered ITU-T T.35 to AVbuffer (AVDynamicHDRPlus). The T.35 buffer must begin with the application mode, skipping the country code, terminal provider codes, and application identifier.</summary>
+        /// <param name="s">A pointer containing the decoded AVDynamicHDRPlus structure.</param>
+        /// <param name="data">The byte array containing the raw ITU-T T.35 data.</param>
+        /// <param name="size">Size of the data array in bytes.</param>
+        [DllImport("avutil-58", EntryPoint = "av_dynamic_hdr_plus_from_t35", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int av_dynamic_hdr_plus_from_t35(AVDynamicHDRPlus* s, byte* data, ulong size);
+        
+        /// <summary>Serialize dynamic HDR10+ metadata to a user data registered ITU-T T.35 buffer, excluding the first 48 bytes of the header, and beginning with the application mode.</summary>
+        /// <param name="s">A pointer containing the decoded AVDynamicHDRPlus structure.</param>
+        [DllImport("avutil-58", EntryPoint = "av_dynamic_hdr_plus_to_t35", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int av_dynamic_hdr_plus_to_t35(AVDynamicHDRPlus* s, byte** data, ulong* size);
+        
+        /// <summary>Serialize dynamic HDR10+ metadata to a user data registered ITU-T T.35 buffer, excluding the first 48 bytes of the header, and beginning with the application mode.</summary>
+        /// <param name="s">A pointer containing the decoded AVDynamicHDRPlus structure.</param>
+        [DllImport("avutil-58", EntryPoint = "av_dynamic_hdr_plus_to_t35", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int av_dynamic_hdr_plus_to_t35(AVDynamicHDRPlus* s, ref byte* data, ulong* size);
+        
         /// <summary>Add the pointer to an element to a dynamic array.</summary>
         /// <param name="tab_ptr">Pointer to the array to grow</param>
         /// <param name="nb_ptr">Pointer to the number of elements in the array</param>
@@ -2716,6 +2800,10 @@ namespace Sdcb.FFmpeg.Raw
         /// <summary>Remove and free all side data instances of the given type.</summary>
         [DllImport("avutil-58", EntryPoint = "av_frame_remove_side_data", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern void av_frame_remove_side_data(AVFrame* frame, AVFrameSideDataType type);
+        
+        /// <summary>Ensure the destination frame refers to the same data described by the source frame, either by creating a new reference for each AVBufferRef from src if they differ from those in dst, by allocating new buffers and copying data if src is not reference counted, or by unrefencing it if src is empty.</summary>
+        [DllImport("avutil-58", EntryPoint = "av_frame_replace", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int av_frame_replace(AVFrame* dst, AVFrame* src);
         
         /// <summary>Returns a string identifying the side data type</summary>
         [DllImport("avutil-58", EntryPoint = "av_frame_side_data_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -3126,7 +3214,7 @@ namespace Sdcb.FFmpeg.Raw
         /// <param name="width">width of the image in pixels</param>
         /// <param name="height">height of the image in pixels</param>
         [DllImport("avutil-58", EntryPoint = "av_image_copy", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern void av_image_copy(ref byte_ptrArray4 dst_data, ref int_array4 dst_linesizes, ref byte_ptrArray4 src_data, int_array4 src_linesizes, AVPixelFormat pix_fmt, int width, int height);
+        public static extern void av_image_copy(byte_ptrArray4 dst_data, int_array4 dst_linesizes, byte_ptrArray4 src_data, int_array4 src_linesizes, AVPixelFormat pix_fmt, int width, int height);
         
         /// <summary>Copy image in src_data to dst_data.</summary>
         /// <param name="dst_data">destination image data buffer to copy to</param>
@@ -3178,7 +3266,7 @@ namespace Sdcb.FFmpeg.Raw
         
         /// <summary>Copy image data located in uncacheable (e.g. GPU mapped) memory. Where available, this function will use special functionality for reading from such memory, which may result in greatly improved performance compared to plain av_image_copy().</summary>
         [DllImport("avutil-58", EntryPoint = "av_image_copy_uc_from", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern void av_image_copy_uc_from(ref byte_ptrArray4 dst_data, long_array4 dst_linesizes, ref byte_ptrArray4 src_data, long_array4 src_linesizes, AVPixelFormat pix_fmt, int width, int height);
+        public static extern void av_image_copy_uc_from(byte_ptrArray4 dst_data, long_array4 dst_linesizes, byte_ptrArray4 src_data, long_array4 src_linesizes, AVPixelFormat pix_fmt, int width, int height);
         
         /// <summary>Copy image data located in uncacheable (e.g. GPU mapped) memory. Where available, this function will use special functionality for reading from such memory, which may result in greatly improved performance compared to plain av_image_copy().</summary>
         [DllImport("avutil-58", EntryPoint = "av_image_copy_uc_from", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -3214,7 +3302,7 @@ namespace Sdcb.FFmpeg.Raw
         /// <param name="width">the width of the image in pixels</param>
         /// <param name="height">the height of the image in pixels</param>
         [DllImport("avutil-58", EntryPoint = "av_image_fill_black", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int av_image_fill_black(ref byte_ptrArray4 dst_data, long_array4 dst_linesize, AVPixelFormat pix_fmt, AVColorRange range, int width, int height);
+        public static extern int av_image_fill_black(byte_ptrArray4 dst_data, long_array4 dst_linesize, AVPixelFormat pix_fmt, AVColorRange range, int width, int height);
         
         /// <summary>Overwrite the image data with black. This is suitable for filling a sub-rectangle of an image, meaning the padding between the right most pixel and the left most pixel on the next line will not be overwritten. For some formats, the image size might be rounded up due to inherent alignment.</summary>
         /// <param name="dst_data">data pointers to destination image</param>

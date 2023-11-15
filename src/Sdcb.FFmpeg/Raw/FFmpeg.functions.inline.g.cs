@@ -204,6 +204,22 @@ namespace Sdcb.FFmpeg.Raw
         // original body hash: uBvsHd8EeFnxDvSdDE1+k5Um29kCuf0aEJhAvDy0wZk=
         
         
+        /// <summary>Wrapper around av_image_copy() to workaround the limitation that the conversion from uint8_t * const * to const uint8_t * const * is not performed automatically in C.</summary>
+        public static void av_image_copy2(byte_ptrArray4 dst_data, int_array4 dst_linesizes, byte_ptrArray4 src_data, int_array4 src_linesizes, AVPixelFormat pix_fmt, int width, int height)
+        {
+            av_image_copy(dst_data, dst_linesizes, src_data, src_linesizes, pix_fmt, width, height);
+        }
+        // original body hash: RdaM2zKuF7t0cNJItdh1SZPg9WiOfPpTwty5cHDiZ2A=
+        
+        
+        /// <summary>Wrapper around av_image_copy() to workaround the limitation that the conversion from uint8_t * const * to const uint8_t * const * is not performed automatically in C.</summary>
+        public static void av_image_copy2(byte** dst_data, int* dst_linesizes, byte** src_data, int* src_linesizes, AVPixelFormat pix_fmt, int width, int height)
+        {
+            av_image_copy(dst_data, dst_linesizes, src_data, src_linesizes, pix_fmt, width, height);
+        }
+        // original body hash: RdaM2zKuF7t0cNJItdh1SZPg9WiOfPpTwty5cHDiZ2A=
+        
+        
         /// <summary>Reinterpret a 64-bit integer as a double.</summary>
         public static double av_int2double(ulong i)
         {

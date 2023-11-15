@@ -18,68 +18,70 @@ namespace Sdcb.FFmpeg.Raw
     
     /// <summary>Macro enum, prefix: AV_CH_</summary>
     [Flags]
-    public enum AV_CH : int
+    public enum AV_CH : ulong
     {
         /// <summary>AV_CH_FRONT_LEFT</summary>
-        FrontLeft = 1 << (int)AVChannel.FrontLeft,
+        FrontLeft = 1UL << (int)AVChannel.FrontLeft,
         /// <summary>AV_CH_FRONT_RIGHT</summary>
-        FrontRight = 1 << (int)AVChannel.FrontRight,
+        FrontRight = 1UL << (int)AVChannel.FrontRight,
         /// <summary>AV_CH_FRONT_CENTER</summary>
-        FrontCenter = 1 << (int)AVChannel.FrontCenter,
+        FrontCenter = 1UL << (int)AVChannel.FrontCenter,
         /// <summary>AV_CH_LOW_FREQUENCY</summary>
-        LowFrequency = 1 << (int)AVChannel.LowFrequency,
+        LowFrequency = 1UL << (int)AVChannel.LowFrequency,
         /// <summary>AV_CH_BACK_LEFT</summary>
-        BackLeft = 1 << (int)AVChannel.BackLeft,
+        BackLeft = 1UL << (int)AVChannel.BackLeft,
         /// <summary>AV_CH_BACK_RIGHT</summary>
-        BackRight = 1 << (int)AVChannel.BackRight,
+        BackRight = 1UL << (int)AVChannel.BackRight,
         /// <summary>AV_CH_FRONT_LEFT_OF_CENTER</summary>
-        FrontLeftOfCenter = 1 << (int)AVChannel.FrontLeftOfCenter,
+        FrontLeftOfCenter = 1UL << (int)AVChannel.FrontLeftOfCenter,
         /// <summary>AV_CH_FRONT_RIGHT_OF_CENTER</summary>
-        FrontRightOfCenter = 1 << (int)AVChannel.FrontRightOfCenter,
+        FrontRightOfCenter = 1UL << (int)AVChannel.FrontRightOfCenter,
         /// <summary>AV_CH_BACK_CENTER</summary>
-        BackCenter = 1 << (int)AVChannel.BackCenter,
+        BackCenter = 1UL << (int)AVChannel.BackCenter,
         /// <summary>AV_CH_SIDE_LEFT</summary>
-        SideLeft = 1 << (int)AVChannel.SideLeft,
+        SideLeft = 1UL << (int)AVChannel.SideLeft,
         /// <summary>AV_CH_SIDE_RIGHT</summary>
-        SideRight = 1 << (int)AVChannel.SideRight,
+        SideRight = 1UL << (int)AVChannel.SideRight,
         /// <summary>AV_CH_TOP_CENTER</summary>
-        TopCenter = 1 << (int)AVChannel.TopCenter,
+        TopCenter = 1UL << (int)AVChannel.TopCenter,
         /// <summary>AV_CH_TOP_FRONT_LEFT</summary>
-        TopFrontLeft = 1 << (int)AVChannel.TopFrontLeft,
+        TopFrontLeft = 1UL << (int)AVChannel.TopFrontLeft,
         /// <summary>AV_CH_TOP_FRONT_CENTER</summary>
-        TopFrontCenter = 1 << (int)AVChannel.TopFrontCenter,
+        TopFrontCenter = 1UL << (int)AVChannel.TopFrontCenter,
         /// <summary>AV_CH_TOP_FRONT_RIGHT</summary>
-        TopFrontRight = 1 << (int)AVChannel.TopFrontRight,
+        TopFrontRight = 1UL << (int)AVChannel.TopFrontRight,
         /// <summary>AV_CH_TOP_BACK_LEFT</summary>
-        TopBackLeft = 1 << (int)AVChannel.TopBackLeft,
+        TopBackLeft = 1UL << (int)AVChannel.TopBackLeft,
         /// <summary>AV_CH_TOP_BACK_CENTER</summary>
-        TopBackCenter = 1 << (int)AVChannel.TopBackCenter,
+        TopBackCenter = 1UL << (int)AVChannel.TopBackCenter,
         /// <summary>AV_CH_TOP_BACK_RIGHT</summary>
-        TopBackRight = 1 << (int)AVChannel.TopBackRight,
+        TopBackRight = 1UL << (int)AVChannel.TopBackRight,
         /// <summary>AV_CH_STEREO_LEFT</summary>
-        StereoLeft = 1 << (int)AVChannel.StereoLeft,
+        StereoLeft = 1UL << (int)AVChannel.StereoLeft,
         /// <summary>AV_CH_STEREO_RIGHT</summary>
-        StereoRight = 1 << (int)AVChannel.StereoRight,
+        StereoRight = 1UL << (int)AVChannel.StereoRight,
         /// <summary>AV_CH_WIDE_LEFT</summary>
-        WideLeft = 1 << (int)AVChannel.WideLeft,
+        WideLeft = 1UL << (int)AVChannel.WideLeft,
         /// <summary>AV_CH_WIDE_RIGHT</summary>
-        WideRight = 1 << (int)AVChannel.WideRight,
+        WideRight = 1UL << (int)AVChannel.WideRight,
         /// <summary>AV_CH_SURROUND_DIRECT_LEFT</summary>
-        SurroundDirectLeft = 1 << (int)AVChannel.SurroundDirectLeft,
+        SurroundDirectLeft = 1UL << (int)AVChannel.SurroundDirectLeft,
         /// <summary>AV_CH_SURROUND_DIRECT_RIGHT</summary>
-        SurroundDirectRight = 1 << (int)AVChannel.SurroundDirectRight,
+        SurroundDirectRight = 1UL << (int)AVChannel.SurroundDirectRight,
         /// <summary>AV_CH_LOW_FREQUENCY_2</summary>
-        LowFrequency_2 = 1 << (int)AVChannel.LowFrequency_2,
+        LowFrequency_2 = 1UL << (int)AVChannel.LowFrequency_2,
         /// <summary>AV_CH_TOP_SIDE_LEFT</summary>
-        TopSideLeft = 1 << (int)AVChannel.TopSideLeft,
+        TopSideLeft = 1UL << (int)AVChannel.TopSideLeft,
         /// <summary>AV_CH_TOP_SIDE_RIGHT</summary>
-        TopSideRight = 1 << (int)AVChannel.TopSideRight,
+        TopSideRight = 1UL << (int)AVChannel.TopSideRight,
         /// <summary>AV_CH_BOTTOM_FRONT_CENTER</summary>
-        BottomFrontCenter = 1 << (int)AVChannel.BottomFrontCenter,
+        BottomFrontCenter = 1UL << (int)AVChannel.BottomFrontCenter,
         /// <summary>AV_CH_BOTTOM_FRONT_LEFT</summary>
-        BottomFrontLeft = 1 << (int)AVChannel.BottomFrontLeft,
+        BottomFrontLeft = 1UL << (int)AVChannel.BottomFrontLeft,
         /// <summary>AV_CH_BOTTOM_FRONT_RIGHT</summary>
-        BottomFrontRight = 1 << (int)AVChannel.BottomFrontRight,
+        BottomFrontRight = 1UL << (int)AVChannel.BottomFrontRight,
+        /// <summary>AV_CH_LAYOUT_NATIVE</summary>
+        LayoutNative = 0x8000000000000000UL,
         /// <summary>AV_CH_LAYOUT_MONO</summary>
         LayoutMono = FrontCenter,
         /// <summary>AV_CH_LAYOUT_STEREO</summary>
@@ -114,6 +116,8 @@ namespace Sdcb.FFmpeg.Raw
         Layout_6POINT0Front = Layout_2_2 | FrontLeftOfCenter | FrontRightOfCenter,
         /// <summary>AV_CH_LAYOUT_HEXAGONAL</summary>
         LayoutHexagonal = Layout_5POINT0Back | BackCenter,
+        /// <summary>AV_CH_LAYOUT_3POINT1POINT2</summary>
+        Layout_3POINT1POINT2 = Layout_3POINT1 | TopFrontLeft | TopFrontRight,
         /// <summary>AV_CH_LAYOUT_6POINT1</summary>
         Layout_6POINT1 = Layout_5POINT1 | BackCenter,
         /// <summary>AV_CH_LAYOUT_6POINT1_BACK</summary>
@@ -130,18 +134,26 @@ namespace Sdcb.FFmpeg.Raw
         Layout_7POINT1Wide = Layout_5POINT1 | FrontLeftOfCenter | FrontRightOfCenter,
         /// <summary>AV_CH_LAYOUT_7POINT1_WIDE_BACK</summary>
         Layout_7POINT1WideBack = Layout_5POINT1Back | FrontLeftOfCenter | FrontRightOfCenter,
-        /// <summary>AV_CH_LAYOUT_7POINT1_TOP_BACK</summary>
-        Layout_7POINT1TopBack = Layout_5POINT1Back | TopFrontLeft | TopFrontRight,
+        /// <summary>AV_CH_LAYOUT_5POINT1POINT2_BACK</summary>
+        Layout_5POINT1POINT2Back = Layout_5POINT1Back | TopFrontLeft | TopFrontRight,
         /// <summary>AV_CH_LAYOUT_OCTAGONAL</summary>
         LayoutOctagonal = Layout_5POINT0 | BackLeft | BackCenter | BackRight,
         /// <summary>AV_CH_LAYOUT_CUBE</summary>
         LayoutCube = LayoutQuad | TopFrontLeft | TopFrontRight | TopBackLeft | TopBackRight,
+        /// <summary>AV_CH_LAYOUT_5POINT1POINT4_BACK</summary>
+        Layout_5POINT1POINT4Back = Layout_5POINT1POINT2Back | TopBackLeft | TopBackRight,
+        /// <summary>AV_CH_LAYOUT_7POINT1POINT2</summary>
+        Layout_7POINT1POINT2 = Layout_7POINT1 | TopFrontLeft | TopFrontRight,
+        /// <summary>AV_CH_LAYOUT_7POINT1POINT4_BACK</summary>
+        Layout_7POINT1POINT4Back = Layout_7POINT1POINT2 | TopBackLeft | TopBackRight,
         /// <summary>AV_CH_LAYOUT_HEXADECAGONAL</summary>
         LayoutHexadecagonal = LayoutOctagonal | WideLeft | WideRight | TopBackLeft | TopBackRight | TopBackCenter | TopFrontCenter | TopFrontLeft | TopFrontRight,
         /// <summary>AV_CH_LAYOUT_STEREO_DOWNMIX</summary>
         LayoutStereoDownmix = StereoLeft | StereoRight,
         /// <summary>AV_CH_LAYOUT_22POINT2</summary>
-        Layout_22POINT2 = Layout_5POINT1Back | FrontLeftOfCenter | FrontRightOfCenter | BackCenter | LowFrequency_2 | SideLeft | SideRight | TopFrontLeft | TopFrontRight | TopFrontCenter | TopCenter | TopBackLeft | TopBackRight | TopSideLeft | TopSideRight | TopBackCenter | BottomFrontCenter | BottomFrontLeft | BottomFrontRight,
+        Layout_22POINT2 = Layout_7POINT1POINT4Back | FrontLeftOfCenter | FrontRightOfCenter | BackCenter | LowFrequency_2 | TopFrontCenter | TopCenter | TopSideLeft | TopSideRight | TopBackCenter | BottomFrontCenter | BottomFrontLeft | BottomFrontRight,
+        /// <summary>AV_CH_LAYOUT_7POINT1_TOP_BACK</summary>
+        Layout_7POINT1TopBack = Layout_5POINT1POINT2Back,
     }
     
     /// <summary>Macro enum, prefix: AV_CODEC_CAP_</summary>
@@ -188,7 +200,7 @@ namespace Sdcb.FFmpeg.Raw
     
     /// <summary>Macro enum, prefix: AV_CODEC_FLAG_</summary>
     [Flags]
-    public enum AV_CODEC_FLAG : int
+    public enum AV_CODEC_FLAG : uint
     {
         /// <summary>AV_CODEC_FLAG_UNALIGNED</summary>
         Unaligned = 1 << 0,
@@ -231,12 +243,12 @@ namespace Sdcb.FFmpeg.Raw
         /// <summary>AV_CODEC_FLAG_INTERLACED_ME</summary>
         InterlacedMe = 1 << 29,
         /// <summary>AV_CODEC_FLAG_CLOSED_GOP</summary>
-        ClosedGop = 1 << 31,
+        ClosedGop = 1U << 31,
     }
     
     /// <summary>Macro enum, prefix: AV_CODEC_FLAG2_</summary>
     [Flags]
-    public enum AV_CODEC_FLAG2 : int
+    public enum AV_CODEC_FLAG2 : uint
     {
         /// <summary>AV_CODEC_FLAG2_FAST</summary>
         Fast = 1 << 0,
@@ -257,7 +269,7 @@ namespace Sdcb.FFmpeg.Raw
         /// <summary>AV_CODEC_FLAG2_RO_FLUSH_NOOP</summary>
         RoFlushNoop = 1 << 30,
         /// <summary>AV_CODEC_FLAG2_ICC_PROFILES</summary>
-        IccProfiles = 1 << 31,
+        IccProfiles = 1U << 31,
     }
     
     /// <summary>Macro enum, prefix: AV_DICT_</summary>
@@ -783,6 +795,10 @@ namespace Sdcb.FFmpeg.Raw
         Wbmp = 263,
         Media100 = 264,
         Vqc = 265,
+        Pdv = 266,
+        Evc = 267,
+        Rtv1 = 268,
+        Vmix = 269,
         /// <summary>A dummy id pointing at the start of audio codecs</summary>
         FirstAudio = 65536,
         PcmS16le = 65536,
@@ -992,6 +1008,8 @@ namespace Sdcb.FFmpeg.Raw
         Ftr = 86116,
         Wavarc = 86117,
         Rka = 86118,
+        Ac4 = 86119,
+        Osq = 86120,
         /// <summary>A dummy ID pointing at the start of subtitle codecs.</summary>
         FirstSubtitle = 94208,
         DvdSubtitle = 94208,
@@ -1035,6 +1053,7 @@ namespace Sdcb.FFmpeg.Raw
         DvdNav = 98312,
         TimedId3 = 98313,
         BinData = 98314,
+        Smpte_2038 = 98315,
         /// <summary>codec_id is not known (like AV_CODEC_ID_NONE) but lavf should attempt to identify it</summary>
         Probe = 102400,
         /// <summary>_FAKE_ codec to indicate a raw MPEG-2 TS stream (only used by libavformat)</summary>
@@ -1233,7 +1252,6 @@ namespace Sdcb.FFmpeg.Raw
         Bitrate = 2,
     }
     
-    /// <summary>@{</summary>
     public enum AVFieldOrder : int
     {
         Unknown = 0,
@@ -1270,6 +1288,8 @@ namespace Sdcb.FFmpeg.Raw
         SliceThreads = 1 << 2,
         /// <summary>AVFILTER_FLAG_METADATA_ONLY</summary>
         MetadataOnly = 1 << 3,
+        /// <summary>AVFILTER_FLAG_HWDEVICE</summary>
+        Hwdevice = 1 << 4,
         /// <summary>AVFILTER_FLAG_SUPPORT_TIMELINE_GENERIC</summary>
         SupportTimelineGeneric = 1 << 16,
         /// <summary>AVFILTER_FLAG_SUPPORT_TIMELINE_INTERNAL</summary>
@@ -1440,6 +1460,8 @@ namespace Sdcb.FFmpeg.Raw
         DynamicHdrVivid = 25,
         /// <summary>Ambient viewing environment metadata, as defined by H.274.</summary>
         AmbientViewingEnvironment = 26,
+        /// <summary>Provide encoder-specific hinting information about changed/unchanged portions of a frame. It can be used to pass information about which macroblocks can be skipped because they didn&apos;t change from the corresponding ones in the previous frame. This could be useful for applications which know this information in advance to speed up encoding.</summary>
+        VideoHint = 27,
     }
     
     /// <summary>Option for overlapping elliptical pixel selectors in an image.</summary>
@@ -1577,7 +1599,7 @@ namespace Sdcb.FFmpeg.Raw
         Chlayout = 19,
     }
     
-    /// <summary>Types and functions for working with AVPacket. @{</summary>
+    /// <summary>Types and functions for working with AVPacketSideData. @{</summary>
     public enum AVPacketSideDataType : int
     {
         /// <summary>An AV_PKT_DATA_PALETTE side data packet contains exactly AVPALETTE_SIZE bytes worth of palette. This side data signals that a new palette is present.</summary>
@@ -2135,8 +2157,20 @@ namespace Sdcb.FFmpeg.Raw
         Rgbaf32be = 220,
         /// <summary>IEEE-754 single precision packed RGBA 32:32:32:32, 128bpp, RGBARGBA..., little-endian</summary>
         Rgbaf32le = 221,
+        /// <summary>interleaved chroma YUV 4:2:2, 24bpp, data in the high bits, big-endian</summary>
+        P212be = 222,
+        /// <summary>interleaved chroma YUV 4:2:2, 24bpp, data in the high bits, little-endian</summary>
+        P212le = 223,
+        /// <summary>interleaved chroma YUV 4:4:4, 36bpp, data in the high bits, big-endian</summary>
+        P412be = 224,
+        /// <summary>interleaved chroma YUV 4:4:4, 36bpp, data in the high bits, little-endian</summary>
+        P412le = 225,
+        /// <summary>planar GBR 4:4:4:4 56bpp, big-endian</summary>
+        Gbrap14be = 226,
+        /// <summary>planar GBR 4:4:4:4 56bpp, little-endian</summary>
+        Gbrap14le = 227,
         /// <summary>number of pixel formats, DO NOT USE THIS if you want to link with shared libav* because the number of formats might differ between versions</summary>
-        Nb = 222,
+        Nb = 228,
     }
     
     /// <summary>Rounding methods.</summary>
@@ -2333,6 +2367,14 @@ namespace Sdcb.FFmpeg.Raw
         DtsHdMa = 60,
         /// <summary>FF_PROFILE_DTS_EXPRESS</summary>
         DtsExpress = 70,
+        /// <summary>FF_PROFILE_DTS_HD_MA_X</summary>
+        DtsHdMaX = 61,
+        /// <summary>FF_PROFILE_DTS_HD_MA_X_IMAX</summary>
+        DtsHdMaXImax = 62,
+        /// <summary>FF_PROFILE_EAC3_DDP_ATMOS</summary>
+        Eac3DdpAtmos = 30,
+        /// <summary>FF_PROFILE_TRUEHD_ATMOS</summary>
+        TruehdAtmos = 30,
         /// <summary>FF_PROFILE_MPEG2_422</summary>
         Mpeg2_422 = 0,
         /// <summary>FF_PROFILE_MPEG2_HIGH</summary>
@@ -2489,6 +2531,10 @@ namespace Sdcb.FFmpeg.Raw
         KlvaSync = 0,
         /// <summary>FF_PROFILE_KLVA_ASYNC</summary>
         KlvaAsync = 1,
+        /// <summary>FF_PROFILE_EVC_BASELINE</summary>
+        EvcBaseline = 0,
+        /// <summary>FF_PROFILE_EVC_MAIN</summary>
+        EvcMain = 1,
     }
     
     /// <summary>Macro enum, prefix: AV_LOG_</summary>

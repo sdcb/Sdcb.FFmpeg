@@ -217,6 +217,7 @@ public unsafe partial class CodecContext : SafeHandle
     /// <para>For some codecs, the time base is closer to the field rate than the frame rate. Most notably, H.264 and MPEG-2 specify time_base as half of frame duration if no telecine is used ...</para>
     /// <see cref="AVCodecContext.ticks_per_frame" />
     /// </summary>
+    [Obsolete("- decoding: Use AVCodecDescriptor.props & AV_CODEC_PROP_FIELDS - encoding: Set AVCodecContext.framerate instead")]
     public int TicksPerFrame
     {
         get => _ptr->ticks_per_frame;
@@ -694,7 +695,7 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>MPEG vs JPEG YUV range. - encoding: Set by user - decoding: Set by libavcodec</para>
+    /// <para>MPEG vs JPEG YUV range. - encoding: Set by user to override the default output color range value, If not specified, libavcodec sets the color range depending on the output format. - decoding: Set by libavcodec, can be set by the user to propagate the color range to components reading from the decoder context.</para>
     /// <see cref="AVCodecContext.color_range" />
     /// </summary>
     public AVColorRange ColorRange
@@ -898,7 +899,7 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>decoder bitstream buffer size - encoding: Set by user. - decoding: unused</para>
+    /// <para>decoder bitstream buffer size - encoding: Set by user. - decoding: May be set by libavcodec.</para>
     /// <see cref="AVCodecContext.rc_buffer_size" />
     /// </summary>
     public int RcBufferSize
@@ -1190,7 +1191,7 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>profile - encoding: Set by user. - decoding: Set by libavcodec.</para>
+    /// <para>profile - encoding: Set by user. - decoding: Set by libavcodec. See the AV_PROFILE_* defines in defs.h.</para>
     /// <see cref="AVCodecContext.profile" />
     /// </summary>
     public int Profile
@@ -1200,7 +1201,7 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>level - encoding: Set by user. - decoding: Set by libavcodec.</para>
+    /// <para>Encoding level descriptor. - encoding: Set by user, corresponds to a specific level defined by the codec, usually corresponding to the profile level, if not specified it is set to FF_LEVEL_UNKNOWN. - decoding: Set by libavcodec. See AV_LEVEL_* in defs.h.</para>
     /// <see cref="AVCodecContext.level" />
     /// </summary>
     public int Level
@@ -1290,7 +1291,7 @@ public unsafe partial class CodecContext : SafeHandle
     }
     
     /// <summary>
-    /// <para>Timebase in which pkt_dts/pts and AVPacket.dts/pts are. - encoding unused. - decoding set by user.</para>
+    /// <para>Timebase in which pkt_dts/pts and AVPacket.dts/pts are expressed. - encoding: unused. - decoding: set by user.</para>
     /// <see cref="AVCodecContext.pkt_timebase" />
     /// </summary>
     public AVRational PktTimebase

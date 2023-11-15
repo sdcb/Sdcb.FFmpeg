@@ -137,7 +137,7 @@ public unsafe partial struct Codec
     
     /// <summary>
     /// <para>original type: AVProfile*</para>
-    /// <para>array of recognized profiles, or NULL if unknown, array is terminated by {FF_PROFILE_UNKNOWN}</para>
+    /// <para>array of recognized profiles, or NULL if unknown, array is terminated by {AV_PROFILE_UNKNOWN}</para>
     /// <see cref="AVCodec.profiles" />
     /// </summary>
     public IEnumerable<MediaProfile> Profiles => NativeUtils.ReadSequence(

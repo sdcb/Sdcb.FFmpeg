@@ -17,7 +17,7 @@ namespace Sdcb.FFmpeg.AutoGen.Processors
                 MacroEnumDef.MakeFlags("AV_CODEC_FLAG_"),
                 MacroEnumDef.MakeFlags("AV_CODEC_FLAG2_"),
                 //new ("SLICE_FLAG_", "SLICE_FLAG"),
-                MacroEnumDef.MakeFlagsExcept("AV_CH_", HashSet("AV_CH_LAYOUT_NATIVE")),
+                MacroEnumDef.MakeFlags("AV_CH_"),
                 MacroEnumDef.MakeFlags("AV_CODEC_CAP_"), 
                 //new ("FF_MB_DECISION_", "FFMacroblockDecision"),
                 //new ("FF_CMP_", "FFComparison"),

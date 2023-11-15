@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Sdcb.FFmpeg.NuGetBuilder;
+using SharpCompress.Archives;
 using System.Diagnostics;
 using System.IO.Compression;
 using System.Xml;
@@ -113,19 +114,20 @@ async Task SetupFFmpegBinaries(string solutionDir, string ffmpegBinaryUrl)
 
     Console.WriteLine($"(3 of 4) Extracting {destinationCacheFile}...");
     {
-        using ZipArchive zip = ZipFile.OpenRead(destinationCacheFile);
-        ExtractPrefixToDest(zip, "/bin/", FFmpegBinDir);
-        ExtractPrefixToDest(zip, "/include/", FFmpegIncludeDir);
+        using IArchive archive = ArchiveFactory.Open(destinationCacheFile);
+        ExtractPrefixToDest(archive.Entries, "/bin", FFmpegBinDir);
+        ExtractPrefixToDest(archive.Entries, "/include", FFmpegIncludeDir);
 
-        static void ExtractPrefixToDest(ZipArchive zip, string prefix, string dest)
+        static void ExtractPrefixToDest(IEnumerable<IArchiveEntry> entries, string prefix, string dest)
         {
-            string zipPrefix = zip.Entries.Single(x => x.FullName.EndsWith(prefix) && x.Length == 0).FullName;
+            IArchiveEntry zipPrefixEntry = entries.Single(x => x.Key.EndsWith(prefix) && x.IsDirectory);
+            string zipPrefix = zipPrefixEntry.Key + "/";
             Directory.CreateDirectory(dest);
 
-            foreach (ZipArchiveEntry entry in zip.Entries.Where(x => x.FullName.StartsWith(zipPrefix) && x.FullName != zipPrefix))
+            foreach (IArchiveEntry entry in entries.Where(x => x.Key.StartsWith(zipPrefix) && x.Key != zipPrefix))
             {
-                string path = Path.Combine(dest, entry.FullName.Replace(zipPrefix, ""));
-                if (entry.Length == 0 && entry.FullName.EndsWith("/"))
+                string path = Path.Combine(dest, entry.Key.Replace(zipPrefix, ""));
+                if (entry.IsDirectory)
                 {
                     // folder
                     Console.WriteLine($"Creating folder {path}...");
@@ -135,7 +137,13 @@ async Task SetupFFmpegBinaries(string solutionDir, string ffmpegBinaryUrl)
                 {
                     // file
                     Console.WriteLine($"Extract file {path}...");
-                    entry.ExtractToFile(path);
+                    using (var entryStream = entry.OpenEntryStream())
+                    {
+                        using (var fileStream = File.Create(path))
+                        {
+                            entryStream.CopyTo(fileStream);
+                        }
+                    }
                 }
             }
         }
