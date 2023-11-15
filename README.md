@@ -17,6 +17,12 @@ For code generations, `Sdcb.FFmpeg` have benifits from:
 * Auto download FFmpeg binaries from known existing sources
 
 ## NuGet Packages
+* FFmpeg 6.1:
+  | Package                         | Link                                                                                                                                       |
+  | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+  | Sdcb.FFmpeg                     | [![NuGet](https://img.shields.io/nuget/v/Sdcb.FFmpeg.svg)](https://nuget.org/packages/Sdcb.FFmpeg)                            |
+  | Sdcb.FFmpeg.runtime.windows-x64 | [![NuGet](https://img.shields.io/nuget/v/Sdcb.FFmpeg.runtime.windows-x64.svg)](https://nuget.org/packages/Sdcb.FFmpeg.runtime.windows-x64) |
+
 * FFmpeg 4.4.3:
   | Package                         | Link                                                                                                                            |
   | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
@@ -32,8 +38,8 @@ For code generations, `Sdcb.FFmpeg` have benifits from:
 * FFmpeg 6.0:
   | Package                         | Link                                                                                                                                       |
   | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-  | Sdcb.FFmpeg                     | [![NuGet](https://img.shields.io/nuget/vpre/Sdcb.FFmpeg.svg)](https://nuget.org/packages/Sdcb.FFmpeg)                            |
-  | Sdcb.FFmpeg.runtime.windows-x64 | [![NuGet](https://img.shields.io/nuget/vpre/Sdcb.FFmpeg.runtime.windows-x64.svg)](https://nuget.org/packages/Sdcb.FFmpeg.runtime.windows-x64) |
+  | Sdcb.FFmpeg                     | [![NuGet](https://img.shields.io/badge/nuget-6.0-blue)](https://nuget.org/packages/Sdcb.FFmpeg/6.0.26)                            |
+  | Sdcb.FFmpeg.runtime.windows-x64 | [![NuGet](https://img.shields.io/badge/nuget-6.0-blue)](https://nuget.org/packages/Sdcb.FFmpeg.runtime.windows-x64/6.0.26) |
 
 
 ## Install

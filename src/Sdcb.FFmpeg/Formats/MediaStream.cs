@@ -19,18 +19,21 @@ namespace Sdcb.FFmpeg.Formats
         /// <summary>
         /// <see cref="av_stream_add_side_data(AVStream*, AVPacketSideDataType, byte*, ulong)"/>
         /// </summary>
+        [Obsolete("use av_packet_side_data_add() with the stream's  \"codecpar side data\"")]
         public void AddSideData(AVPacketSideDataType type, DataPointer data) =>
             av_stream_add_side_data(this, type, (byte*)data.Pointer, (ulong)data.Length).ThrowIfError();
 
         /// <summary>
         /// <see cref="av_stream_new_side_data(AVStream*, AVPacketSideDataType, ulong)"/>
         /// </summary>
+        [Obsolete("use av_packet_side_data_new() with the stream's  \"codecpar side data\"")]
         public IntPtr NewSideData(AVPacketSideDataType type, long size) =>
             NativeUtils.NotNull((IntPtr)av_stream_new_side_data(this, type, (ulong)size));
 
         /// <summary>
         /// <see cref="av_stream_get_side_data(AVStream*, AVPacketSideDataType, ulong*)"/>
         /// </summary>
+        [Obsolete("use av_packet_side_data_get() with the stream's  \"codecpar side data\"")]
         public DataPointer GetSideData(AVPacketSideDataType type)
         {
             ulong size;
