@@ -77,11 +77,12 @@ public partial class IOContext
         {
 #if NET48_OR_GREATER
             byte[] data = ArrayPool<byte>.Shared.Rent(length);
+
             try
             {
-                Marshal.Copy((IntPtr)buffer, data, 0, length);
-                int c = stream.Read(data, 0, length);
-                return c == 0 ? AVERROR_EOF : c;
+                int bytesRead = stream.Read(data, 0, length);
+                Marshal.Copy(data, 0, (IntPtr)buffer, bytesRead);
+                return bytesRead == 0 ? AVERROR_EOF : bytesRead;
             }
             finally
             {
@@ -98,8 +99,8 @@ public partial class IOContext
             byte[] data = ArrayPool<byte>.Shared.Rent(length);
             try
             {
-                Marshal.Copy((IntPtr)buffer, data, 0, length);
                 stream.Write(data, 0, length);
+                Marshal.Copy((IntPtr)buffer, data, 0, length);
                 return length;
             }
             finally
