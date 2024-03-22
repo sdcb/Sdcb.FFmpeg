@@ -142,7 +142,9 @@ namespace Sdcb.FFmpeg.AutoGen
 
         public void WriteInlineFunctions(string outputFile)
         {
-            var existingInlineFunctionMap = ExistingInlineFunctions.ToDictionary(x => x.Name);
+            Dictionary<string, InlineFunctionDefinition> existingInlineFunctionMap = ExistingInlineFunctions
+                .GroupBy(x => x.Name)
+                .ToDictionary(x => x.Key, v => v.First());
             WriteInternal(outputFile,
                 (units, writer) =>
                 {
