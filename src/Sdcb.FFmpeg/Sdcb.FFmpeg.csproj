@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net6;net48</TargetFrameworks>
     <PackageId>Sdcb.FFmpeg</PackageId>
-    <VersionPrefix>6.1.0</VersionPrefix>
+    <VersionPrefix>6.1.0.1</VersionPrefix>
     <LangVersion>latest</LangVersion>
     <Authors>sdcb,Ruslan Balanukhin</Authors>
     <Copyright>Copyright © sdcb, Ruslan Balanukhin 2022 All rights reserved.</Copyright>

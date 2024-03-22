@@ -42,7 +42,7 @@ public unsafe class MediaDictionary : SafeHandle, IDictionary<string, string>
     #region IDictionary<string, string> entries
     public ICollection<string> Keys => this.Select(x => x.Key).ToArray();
 
-    public ICollection<string> Values => this.Select(x => x.Key).ToArray();
+    public ICollection<string> Values => this.Select(x => x.Value).ToArray();
 
     public int Count => av_dict_count(this);
 

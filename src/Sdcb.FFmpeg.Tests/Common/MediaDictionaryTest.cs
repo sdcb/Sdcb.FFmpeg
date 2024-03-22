@@ -148,4 +148,15 @@ public class MediaDictionaryTest
         ffmpeg.av_dict_free(&ptr);
         dict.Reset(ptr);
     }
+
+    [Fact]
+    public unsafe void ValuesTest()
+    {
+        using MediaDictionary dict = new()
+        {
+            ["A1001"] = "100-One",
+        };
+        string[] values = dict.Values.ToArray();
+        Assert.Equal("100-One", values[0]);
+    }
 }
