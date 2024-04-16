@@ -58,6 +58,7 @@ public unsafe partial class FilterContext : SafeHandle
     /// <para>Negotiate the media format, dimensions, etc of all inputs to a filter.</para>
     /// <see cref="avfilter_config_links"/>
     /// </summary>
+    [Obsolete("this function should never be called by users")]
     public void ConfigLinks()
     {
         avfilter_config_links(this).ThrowIfError();

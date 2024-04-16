@@ -1,10 +1,6 @@
 using Sdcb.FFmpeg.Common;
-using Sdcb.FFmpeg.Codecs;
-using Sdcb.FFmpeg.Formats;
-using Sdcb.FFmpeg.Utils;
 using Sdcb.FFmpeg.Raw;
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using static Sdcb.FFmpeg.Raw.ffmpeg;
 
@@ -24,6 +20,7 @@ public unsafe partial class FilterLink : SafeHandle
         avfilter_insert_filter(this, filter, (uint)srcPadIndex, (uint)destPadIndex).ThrowIfError();
     }
 
+    [Obsolete("this function should never be called by users")]
     public void Free()
     {
         AVFilterLink* link = this;
