@@ -93,7 +93,7 @@ public record AudioFilterContext(FilterGraph FilterGraph, FilterContext SourceCo
 
     internal static MediaDictionary GetAudioSrcMetadata(Frame audioFirstFrame)
     {
-        if (audioFirstFrame.Width == 0)
+        if (audioFirstFrame.SampleRate == 0)
         {
             throw new InvalidOperationException($"{nameof(audioFirstFrame)} is not a audio frame.");
         }
